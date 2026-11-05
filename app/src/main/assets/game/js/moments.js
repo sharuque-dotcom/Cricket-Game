@@ -620,7 +620,6 @@ const Moments = (() => {
           if (!st.bounced && st.gt >= tb) { st.bounced = true; Sfx.bounce(); }
           st.ball = p; st.trail.push({ ...p }); if (st.trail.length > 10) st.trail.shift();
           // contact moment: if a shot was played, switch to result animation at contact time
-          const contactT = st.res ? Math.max(tapped.t, Math.min(tIdeal, st.gt)) : null;
           if (st.res && st.gt >= (st.res.visual === 'miss' || st.res.visual === 'bowled' || st.res.visual === 'lbw' || st.res.visual === 'leave' || st.res.visual === 'pad' || st.res.visual === 'duck' ? 99 : Math.max(tapped.t, tIdeal - .02))) {
             startAfter(st.res, p);
             return;

@@ -544,8 +544,9 @@ async function ending(id) {
   const e = ENDINGS[id], s = Game.s, c = s.career;
   Ambient.set(id === 'glory' ? 'gold' : id === 'banned' ? 'tense' : 'night');
   const avg = c.outs ? (c.runs / c.outs).toFixed(1) : c.runs;
+  const art = [{ glory: 'end_glory', debut: 'ch6', aged: 'end_stall', quit: 'end_stall', banned: 'ev_bookie', broken: 'ch3' }[id]].find(n => n && Art.has(n));
   const el = UI.show(`<div class="screen"><div class="scroll pad ending" style="display:flex;flex-direction:column;min-height:100%">
-    <div style="font-size:84px;animation:emIn 1s var(--ease-spring) both">${e.em}</div>
+    ${art ? `<div style="width:calc(100% + 32px);margin:-16px -16px 0;height:42vh;position:relative;overflow:hidden;flex:none"><div class="art-photo" style="position:absolute;inset:0;background:url('${Art.url(art)}') center/cover;animation:kenburns 20s ease-in-out infinite alternate"></div><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,var(--bg))"></div></div>` : `<div style="font-size:84px;animation:emIn 1s var(--ease-spring) both">${e.em}</div>`}
     <div class="etitle" style="color:${e.col}">${e.title}</div>
     <div class="body" style="margin-top:14px;color:#e4dbe9;max-width:340px">${e.text}</div>
     <div class="stat-grid" style="margin-top:20px;width:100%">
