@@ -55,12 +55,14 @@ function titleScreen() {
     <div class="title-logo"><div class="l1">${letters('GULLY', .3)}</div><div class="l2">— TO —</div><div class="l3">${letters('GLORY', .9)}</div></div>
     <div class="title-tag">A cricket life. From a chai stall to the blue cap.</div>
     <div class="title-actions">
-      ${has ? '<button class="btn primary block" data-cont>Continue Career</button>' : ''}
-      <button class="btn ${has ? 'ghost' : 'primary'} block" data-new>New Career</button>
+      <button class="btn primary block" data-story>Story Mode <span class="chip" style="background:#1a0c00;color:var(--gold);border:0">New</span></button>
+      ${has ? '<button class="btn ghost block" data-cont>Continue Career</button>' : ''}
+      <button class="btn ghost block" data-new>${has ? 'New Career' : 'Career Mode'}</button>
       <button class="btn ghost" style="height:40px;font-size:12px;align-self:center" data-snd>${Sfx.muted ? '🔇 Sound off' : '🔊 Sound on'}</button>
     </div></div>`);
   el.addEventListener('pointerdown', () => Sfx.init(), { once: true });
   $('[data-new]', el).onclick = () => { Sfx.init(); Sfx.select(); if (has) { if (!confirm('Start a new career? Your current career will be lost.')) return; Game.wipe(); } createScreen(); };
+  $('[data-story]', el).onclick = () => { Sfx.init(); Sfx.select(); Story.open(); };
   if (has) $('[data-cont]', el).onclick = () => { Sfx.init(); Sfx.select(); Game.load(); hub(); };
   $('[data-snd]', el).onclick = (e) => { Sfx.init(); Sfx.setMuted(!Sfx.muted); try { localStorage.setItem('gg_muted', Sfx.muted ? '1' : ''); } catch (er) {} e.target.textContent = Sfx.muted ? '🔇 Sound off' : '🔊 Sound on'; };
 }
