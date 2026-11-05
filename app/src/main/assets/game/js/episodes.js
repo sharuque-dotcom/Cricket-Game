@@ -228,7 +228,8 @@ const EPISODES = [
     { label: 'e2_end' },
     { exit: 'all' },
     { bg: 'intro' },
-    { n: 'You get home. The stall\'s shutter is half down. Two motorbikes are parked outside, engines running.' },
+    { weather: 'rain' },
+    { n: 'It\'s raining. You get home. The stall\'s shutter is half down. Two motorbikes are parked outside, engines running.' },
     { enter: 'goon', side: 'right' },
     { s: 'goon', t: 'Sunday was yesterday, Satish ji.', mood: 'shout' },
     { n: 'One of them has Papa by the collar.' },
@@ -238,6 +239,7 @@ const EPISODES = [
   // ======================= EPISODE 3 =======================
   { id: 'ep3', no: 3, title: 'The Envelope', art: 'ev_bribe', nodes: [
     { bg: 'intro' },
+    { weather: 'rain' },
     { enter: 'papa', side: 'left' },
     { enter: 'ramesh', side: 'right' },
     { n: 'Ramesh-ji steps out from behind the bikes, smiling with every gold tooth.' },

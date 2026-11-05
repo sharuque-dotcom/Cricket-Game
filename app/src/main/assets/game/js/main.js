@@ -19,6 +19,7 @@ const UI = {
     app.appendChild(el);
     if (old) { old.classList.add('exit'); setTimeout(() => old.remove(), 360); }
     this.cur = el;
+    try { SceneFX.scan(el); } catch (e) {}
     return el;
   },
   waitTap(sel, root) {

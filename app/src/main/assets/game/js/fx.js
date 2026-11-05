@@ -136,3 +136,130 @@ const Art = {
   // full-bleed background layer with slow Ken Burns drift
   bg(n, extra = '') { return this.has(n) ? `<div class="art-bg" style="background-image:url('${this.url(n)}');${extra}"></div>` : ''; },
 };
+
+// ---------- Living backgrounds: particles, light rays, tilt parallax ----------
+const FX_FOR_ART = {
+  title: 'dust', intro: 'embers', ch1: 'dust', ch2: 'dust', ch3: 'dust', ch4: 'bokeh', ch5: 'embers+bokeh', ch6: 'bokeh',
+  bd_maidan: 'fireflies', bd_stadium_day: 'dust', bd_stadium_night: 'bokeh',
+  ev_stall: 'embers', ev_pandey: 'dust', ev_rival: 'dust', ev_bribe: 'dust', ev_maa: 'dust', ev_bookie: 'bokeh', ev_party: 'bokeh', ev_call: 'bokeh',
+  end_glory: 'dust', end_stall: 'embers',
+};
+const RAYS_FOR = new Set(['dust']);
+
+const SceneFX = (() => {
+  const live = new Set();
+  let running = false;
+  const mk = {
+    dust: (W, H) => ({ x: Math.random() * W, y: Math.random() * H, r: rand(.8, 3), vx: rand(.05, .3), vy: -rand(.04, .22), a: rand(.3, .9), p: Math.random() * 6, big: Math.random() < .12 }),
+    embers: (W, H) => ({ x: Math.random() * W, y: H + rand(0, H), r: rand(1.2, 3), vx: rand(-.2, .2), vy: -rand(.4, 1.3), a: rand(.6, 1), p: Math.random() * 6, life: rand(.6, 1) }),
+    bokeh: (W, H) => ({ x: Math.random() * W, y: Math.random() * H, r: rand(12, 46), vx: rand(-.12, .12), vy: rand(-.1, .05), a: rand(.08, .22), p: Math.random() * 6, hue: pick([38, 28, 190, 280, 45]) }),
+    fireflies: (W, H) => ({ x: Math.random() * W, y: H * rand(.35, 1), r: rand(1, 2.2), vx: 0, vy: 0, a: 1, p: Math.random() * 6, ang: Math.random() * 6.28 }),
+    rain: (W, H) => ({ x: Math.random() * W * 1.2, y: Math.random() * H, len: rand(14, 28), sp: rand(9, 15), a: rand(.25, .55) }),
+  };
+  const count = { dust: 55, embers: 38, bokeh: 16, fireflies: 22, rain: 120 };
+
+  function setup(c, mode) {
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    const W = c.clientWidth || innerWidth, H = c.clientHeight || innerHeight;
+    c.width = W * dpr; c.height = H * dpr;
+    const st = { c, g: c.getContext('2d'), W, H, dpr, layers: [] };
+    String(mode || '').split('+').filter(m => mk[m]).forEach(m => st.layers.push({ m, ps: Array.from({ length: count[m] }, () => mk[m](W, H)) }));
+    c._fx = st; return st;
+  }
+  function draw(st, t) {
+    const { g, W, H, dpr } = st;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+    for (const L of st.layers) {
+      g.globalCompositeOperation = L.m === 'rain' ? 'source-over' : 'lighter';
+      for (const p of L.ps) {
+        if (L.m === 'rain') {
+          p.x -= p.sp * .25; p.y += p.sp; if (p.y > H) { p.y = -p.len; p.x = Math.random() * W * 1.2; }
+          g.strokeStyle = `rgba(190,205,255,${p.a})`; g.lineWidth = 1; g.beginPath(); g.moveTo(p.x, p.y); g.lineTo(p.x + p.len * .25, p.y - p.len); g.stroke();
+          continue;
+        }
+        if (L.m === 'fireflies') { p.ang += rand(-.25, .25); p.x += Math.cos(p.ang) * .45; p.y += Math.sin(p.ang) * .3; if (p.x < 0) p.x = W; if (p.x > W) p.x = 0; if (p.y < H * .3) p.y = H; if (p.y > H) p.y = H * .3; }
+        else { p.x += p.vx + (L.m === 'embers' ? Math.sin(t / 600 + p.p) * .35 : 0); p.y += p.vy; }
+        if (L.m === 'embers') { p.life -= .0025; if (p.y < -10 || p.life <= 0) Object.assign(p, mk.embers(W, H), { y: H + 5 }); }
+        if (p.x > W + 50) p.x = -50; if (p.x < -50) p.x = W + 50; if (p.y < -50) p.y = H + 50; if (p.y > H + 50) p.y = -50;
+        const tw = .55 + .45 * Math.sin(t / (L.m === 'fireflies' ? 380 : 900) + p.p);
+        let col, a = p.a * tw;
+        if (L.m === 'dust') col = '255,214,150'; else if (L.m === 'embers') { col = '255,150,60'; a *= p.life; } else if (L.m === 'fireflies') col = '210,255,140'; else col = null;
+        if (L.m === 'bokeh') {
+          const gr = g.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+          gr.addColorStop(0, `hsla(${p.hue},90%,70%,${a})`); gr.addColorStop(.7, `hsla(${p.hue},90%,60%,${a * .5})`); gr.addColorStop(1, `hsla(${p.hue},90%,60%,0)`);
+          g.fillStyle = gr; g.beginPath(); g.arc(p.x, p.y, p.r, 0, 6.283); g.fill();
+        } else {
+          const rr = p.big ? p.r * 3.2 : p.r * (L.m === 'dust' ? 1 : 2.4);
+          const gr = g.createRadialGradient(p.x, p.y, 0, p.x, p.y, rr);
+          gr.addColorStop(0, `rgba(${col},${a})`); gr.addColorStop(1, `rgba(${col},0)`);
+          g.fillStyle = gr; g.beginPath(); g.arc(p.x, p.y, rr, 0, 6.283); g.fill();
+        }
+      }
+    }
+    g.globalCompositeOperation = 'source-over';
+  }
+  function loop(t) {
+    for (const c of live) { if (!document.body.contains(c)) { live.delete(c); continue; } if (!c._fx || c._fx.W !== c.clientWidth) setup(c, c.dataset.fx); draw(c._fx, t); }
+    if (live.size) requestAnimationFrame(loop); else running = false;
+  }
+  function mount(c) { live.add(c); setup(c, c.dataset.fx); if (!running) { running = true; requestAnimationFrame(loop); } }
+  return {
+    canvas(mode) { return mode ? `<canvas class="scene-fx" data-fx="${mode}"></canvas>` : ''; },
+    rays(mode) { return RAYS_FOR.has(mode) ? '<div class="godrays"></div>' : ''; },
+    for(art) { return FX_FOR_ART[art] || 'dust'; },
+    set(c, mode) { c.dataset.fx = mode; setup(c, mode); },
+    // find painted layers in a new screen and add particles above them
+    scan(root) {
+      $$('.art-bg, .art-photo', root).forEach(bg => {
+        if (bg.dataset.fxDone) return; bg.dataset.fxDone = 1;
+        const m = (bg.style.backgroundImage.match(/img\/([a-z0-9_]+)\.jpg/) || [])[1];
+        const mode = FX_FOR_ART[m] || 'dust';
+        const anchor = bg.nextElementSibling && bg.nextElementSibling.classList.contains('art-shade') ? bg.nextElementSibling : bg;
+        anchor.insertAdjacentHTML('afterend', SceneFX.canvas(mode) + SceneFX.rays(mode));
+      });
+      $$('canvas.scene-fx', root).forEach(c => { if (!live.has(c)) mount(c); });
+    },
+  };
+})();
+
+// Tilt parallax (gyroscope), with a slow idle drift when no sensor
+const Parallax = (() => {
+  let tx = 0, ty = 0, cx = 0, cy = 0, lastSensor = 0;
+  addEventListener('deviceorientation', e => {
+    if (e.gamma == null) return;
+    lastSensor = performance.now();
+    tx = clamp(e.gamma, -25, 25) / 25; ty = clamp((e.beta || 45) - 45, -25, 25) / 25;
+  });
+  function tick(t) {
+    if (t - lastSensor > 2000) { tx = Math.sin(t / 4200) * .35; ty = Math.cos(t / 5300) * .25; }
+    cx += (tx - cx) * .06; cy += (ty - cy) * .06;
+    const r = document.documentElement.style;
+    r.setProperty('--px', (cx * 10).toFixed(2)); r.setProperty('--py', (cy * 10).toFixed(2));
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  return {};
+})();
+
+// Fallback touch scrolling for WebViews that don't scroll nested containers
+(() => {
+  let el = null, y0 = 0, top0 = 0, manual = false, lastY = 0, lastT = 0, vel = 0, raf = 0;
+  document.addEventListener('touchstart', e => {
+    cancelAnimationFrame(raf);
+    el = e.target.closest && e.target.closest('.scroll'); if (!el) return;
+    y0 = lastY = e.touches[0].clientY; top0 = el.scrollTop; manual = false; vel = 0; lastT = performance.now();
+  }, { passive: true });
+  document.addEventListener('touchmove', e => {
+    if (!el) return;
+    const y = e.touches[0].clientY, dy = y - y0, now = performance.now();
+    if (!manual && Math.abs(dy) > 12 && el.scrollTop === top0) manual = true;
+    if (manual) el.scrollTop = top0 - dy;
+    vel = (lastY - y) / Math.max(1, now - lastT) * 16; lastY = y; lastT = now;
+  }, { passive: true });
+  document.addEventListener('touchend', () => {
+    if (!el || !manual) { el = null; return; }
+    const target = el; let v = vel;
+    const step = () => { v *= .94; target.scrollTop += v; if (Math.abs(v) > .4) raf = requestAnimationFrame(step); };
+    raf = requestAnimationFrame(step); el = null;
+  }, { passive: true });
+})();

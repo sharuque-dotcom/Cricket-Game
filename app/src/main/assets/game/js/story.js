@@ -75,7 +75,7 @@ const Story = {
       <div class="scroll" style="padding-bottom:24px">
         <div class="book-cover">${Art.bg(b.art)}<div class="art-shade" style="background:linear-gradient(180deg,rgba(11,10,18,0) 30%,rgba(11,10,18,.96))"></div>
           <div class="bc-txt"><div class="tiny" style="color:var(--gold)">Book 1 · Sports Drama</div><div class="display" style="font-size:56px">${b.title}</div><div class="small" style="color:#e4dbe9;margin-top:4px">${b.blurb}</div>
-          <div class="row" style="gap:8px;margin-top:10px">${Object.entries(REL_KEYS).map(([k, l]) => `<span class="rel-chip" style="--c:${CAST[k].col}">${l} ${relHearts(s.rel[k])}</span>`).join('')}</div></div>
+          <div class="rel-row-wrap">${Object.entries(REL_KEYS).map(([k, l]) => `<span class="rel-chip" style="--c:${CAST[k].col}">${l} ${relHearts(s.rel[k])}</span>`).join('')}</div></div>
         </div>
         <div class="pad" style="padding-top:6px">
           ${s.cur ? `<button class="btn primary block" data-resume>Resume · Episode ${EPISODES.find(e => e.id === s.cur.ep).no}</button>` : ''}
@@ -184,6 +184,7 @@ const Story = {
     const el = UI.show(`<div class="screen story-scene">
       <div class="st-bgwrap"><div class="st-bg a"></div><div class="st-bg b"></div></div>
       <div class="st-grad"></div>
+      <canvas class="scene-fx" data-fx="dust" data-story-fx></canvas><div class="godrays" data-story-rays></div>
       <div class="st-stage"><div class="chr left" data-side="left"></div><div class="chr right" data-side="right"></div></div>
       ${this.hudHtml(`EP ${this.ep.no} · ${this.ep.title}`)}
       <div class="st-layer" data-layer></div>
@@ -204,6 +205,9 @@ const Story = {
     next.style.backgroundImage = Art.has(name) ? `url('${Art.url(name)}')` : 'linear-gradient(180deg,#2b1640,#0b0a12)';
     next.style.transition = instant ? 'none' : ''; cur.style.transition = instant ? 'none' : '';
     next.classList.add('on'); cur.classList.remove('on');
+    const mode = this.weather || SceneFX.for(name);
+    const c = $('[data-story-fx]', this.el); if (c) SceneFX.set(c, mode);
+    const r = $('[data-story-rays]', this.el); if (r) r.style.display = mode === 'dust' ? '' : 'none';
   },
 
   portraitHtml(id) {
@@ -261,7 +265,7 @@ const Story = {
         <svg class="tail" viewBox="0 0 40 30"><path d="M4 30 L18 2 L36 30" /></svg>
         <div class="np">${esc(c.name)}</div>
         <div class="bub-tx" data-tx></div><div class="nxt"></div></div>`;
-      if (shout) { shake(); haptic(40); Sfx.edge(); }
+      if (shout) { shake(); haptic(40); Sfx.edge(); const bw = $('.st-bgwrap', this.el); bw.classList.remove('punch'); void bw.offsetWidth; bw.classList.add('punch'); }
     }
     const tx = $('[data-tx]', layer);
     await this.typeInto(tx, text, kind === 'n' ? 26 : 20);
@@ -327,7 +331,8 @@ const Story = {
       const n = nodes[i];
       this.st.cur.pos = i; this.st.cur.scene = this.scene; this.save();
       if (n.label) continue;
-      if (n.bg) { this.setBg(n.bg); await sleep(350); continue; }
+      if (n.weather !== undefined) { this.weather = n.weather; this.setBg(this.scene.bg); continue; }
+      if (n.bg) { this.weather = null; this.setBg(n.bg); await sleep(350); continue; }
       if (n.enter) {
         const side = n.side || (this.scene.left ? 'right' : 'left');
         this.placeChar(side, n.enter); Sfx.whoosh(); await sleep(380); continue;
