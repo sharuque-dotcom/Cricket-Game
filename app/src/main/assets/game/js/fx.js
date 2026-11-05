@@ -114,3 +114,23 @@ const Burst = (() => {
     },
   };
 })();
+
+// ---------- Optional painted art ----------
+// Drop images into game/img/ with these names (jpg). Missing ones fall back to the procedural look.
+const ART_NAMES = ['title', 'intro', 'ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'bd_maidan', 'bd_stadium_day', 'bd_stadium_night',
+  'ev_stall', 'ev_pandey', 'ev_rival', 'ev_bribe', 'ev_maa', 'ev_bookie', 'ev_party', 'ev_call', 'end_glory', 'end_stall'];
+const Art = {
+  imgs: {},
+  load() {
+    return Promise.all(ART_NAMES.map(n => new Promise(res => {
+      const im = new Image();
+      im.onload = () => { this.imgs[n] = im; res(); };
+      im.onerror = () => res();
+      im.src = 'img/' + n + '.jpg';
+    })));
+  },
+  has(n) { return !!this.imgs[n]; },
+  url(n) { return 'img/' + n + '.jpg'; },
+  // full-bleed background layer with slow Ken Burns drift
+  bg(n, extra = '') { return this.has(n) ? `<div class="art-bg" style="background-image:url('${this.url(n)}');${extra}"></div>` : ''; },
+};

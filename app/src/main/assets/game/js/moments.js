@@ -195,6 +195,15 @@ const Moments = (() => {
   // ---------- scenery ----------
   function drawSky() {
     const lv = opt.level;
+    const bdName = lv <= 1 ? 'bd_maidan' : lv <= 3 ? 'bd_stadium_day' : 'bd_stadium_night';
+    if (typeof Art !== 'undefined' && Art.has(bdName)) {
+      // cover-fit the backdrop so its bottom edge sits on the horizon
+      const im = Art.imgs[bdName], hy = cam.hy + 4;
+      const sc = Math.max(W / im.width, hy / im.height);
+      const dw = im.width * sc, dh = im.height * sc;
+      g.drawImage(im, (W - dw) / 2, hy - dh, dw, dh);
+      return;
+    }
     const hy = cam.hy;
     let grd = g.createLinearGradient(0, 0, 0, hy + 10);
     if (lv <= 1) { grd.addColorStop(0, '#6aa4dc'); grd.addColorStop(.7, '#e8c79a'); grd.addColorStop(1, '#f5b971'); }
@@ -546,16 +555,20 @@ const Moments = (() => {
       clearCall();
       stumpsHit = null; umpireUp = 0; batter.swing = null;
       const shotsEl = controls.querySelector('.shots');
-      const bar = controls.querySelector('.tbar'), zone = bar.querySelector('.tz'), mark = bar.querySelector('.tm');
+      const bar = root.querySelector('.tvbar'), zone = bar.querySelector('.tz'), mark = bar.querySelector('.tm');
       shotsEl.classList.add('locked');
-      bar.style.opacity = 1;
+      bar.classList.add('on'); zone.style.opacity = 0;
       const T = del.T * (ctx.slow || 1);
       const zIdeal = .75; // contact point just in front of the batter
       const tIdeal = (19 - zIdeal) / (19 / del.T);
       const span = del.T * 1.18;
       const w = ctx.window;
-      zone.style.left = ((tIdeal - w) / span * 100) + '%'; zone.style.width = (2 * w / span * 100) + '%';
-      mark.style.left = '0%';
+      // The sweet spot drifts up and down: nerves (form, confidence, fatigue, pressure) make it faster and wider
+      const wobA = ctx.wobble || 0, wobF = ctx.wobbleF || 6, wobP = Math.random() * 6.283;
+      const zc = (t) => tIdeal + wobA * Math.sin(t * wobF + wobP) + wobA * .35 * Math.sin(t * wobF * 2.7 + wobP * 2);
+      const placeZone = (t) => { zone.style.bottom = clamp((zc(t) - w) / span * 100, 0, 100) + '%'; zone.style.height = (2 * w / span * 100) + '%'; };
+      placeZone(0);
+      mark.style.bottom = '0%';
       const tb = (19 - del.zb) / (19 / del.T);
       st = { del, phase: 'runup', gt: 0, trail: [], ball: null, tb, hintAt: tb * ctx.readFrac, done: false };
       bowler.phase = 'run'; bowler.t = 0; bowler.dur = .95; bowler.z = 31;
@@ -573,7 +586,7 @@ const Moments = (() => {
 
       function decide(shot, t) {
         let tq;
-        const dtm = t - tIdeal;
+        const dtm = t - zc(t);
         if (shot === 'leave') tq = 0;
         else {
           const a = Math.abs(dtm);
@@ -600,7 +613,9 @@ const Moments = (() => {
         if (st.phase === 'flight') {
           const scale = st.gt > tb ? (ctx.slow || 1) : 1;
           st.gt += dt / scale;
-          mark.style.left = clamp(st.gt / span * 100, 0, 100) + '%';
+          mark.style.bottom = clamp(st.gt / span * 100, 0, 100) + '%';
+          if (!tapped) placeZone(st.gt);
+          if (st.gt >= st.hintAt && zone.style.opacity !== '1') zone.style.opacity = 1;
           const p = ballAt(del, st.gt);
           if (!st.bounced && st.gt >= tb) { st.bounced = true; Sfx.bounce(); }
           st.ball = p; st.trail.push({ ...p }); if (st.trail.length > 10) st.trail.shift();
@@ -610,7 +625,7 @@ const Moments = (() => {
             startAfter(st.res, p);
             return;
           }
-          if (!st.res && st.gt > tIdeal + w * 2.4) { decide(null, st.gt); }
+          if (!st.res && st.gt > tIdeal + wobA * 1.35 + w * 2.4) { decide(null, st.gt); }
           if (st.res && ['miss', 'bowled', 'lbw', 'leave', 'pad', 'duck'].includes(st.res.visual)) {
             if (st.res.visual === 'bowled' && p.z <= .02) { startAfter(st.res, p); return; }
             if (st.res.visual === 'lbw' && p.z <= .55) { startAfter(st.res, p); return; }
@@ -754,12 +769,11 @@ const Moments = (() => {
     timingEl = document.createElement('div'); timingEl.className = 'timing'; root.appendChild(timingEl);
     controls = document.createElement('div'); controls.className = 'm-controls'; root.appendChild(controls);
     if (view === 'bat') {
+      const vb = document.createElement('div'); vb.className = 'tvbar';
+      vb.innerHTML = '<div class="tlbl">TIME</div><div class="ttrack"><div class="tz"></div><div class="tm"></div></div>';
+      root.appendChild(vb);
       const spin = o.bowlerType === 'spin';
       controls.innerHTML = `
-        <div class="tbar" style="position:relative;height:10px;border-radius:9px;background:rgba(255,255,255,.1);margin:0 4px 10px;opacity:.4;transition:opacity .3s">
-          <div class="tz" style="position:absolute;top:0;bottom:0;border-radius:9px;background:linear-gradient(90deg,rgba(6,214,160,.5),#06d6a0,rgba(6,214,160,.5));box-shadow:0 0 12px rgba(6,214,160,.6)"></div>
-          <div class="tm" style="position:absolute;top:-4px;width:4px;height:18px;margin-left:-2px;border-radius:3px;background:#fff;box-shadow:0 0 8px #fff"></div>
-        </div>
         <div class="shots locked">${SHOT_DEFS.map(s => `<button class="shot" data-id="${s.id}"><span class="si">${s.id === 'pull' && spin ? '🧹' : s.icon}</span>${s.id === 'pull' && spin ? s.spinLabel : s.label}</button>`).join('')}</div>`;
     } else {
       controls.innerHTML = `<div class="bhint tiny" style="text-align:center;margin-bottom:8px;min-height:16px"></div>

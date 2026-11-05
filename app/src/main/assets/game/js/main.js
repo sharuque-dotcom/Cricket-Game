@@ -49,7 +49,8 @@ function titleScreen() {
   Ambient.set('dawn');
   const has = Game.hasSave();
   const letters = (w, d) => w.split('').map((c, i) => `<span class="letter" style="animation-delay:${d + i * .07}s">${c}</span>`).join('');
-  const el = UI.show(`<div class="screen title-screen">
+  const el = UI.show(`<div class="screen title-screen ${Art.has('title') ? 'has-art' : ''}">
+    ${Art.bg('title')}${Art.has('title') ? '<div class="art-shade" style="background:linear-gradient(180deg,rgba(11,10,18,.15) 30%,rgba(11,10,18,.92) 80%)"></div>' : ''}
     <div class="title-sky"></div><div class="title-sun-rays"></div><div class="title-sun"></div>${cityMarkup()}<div class="title-ground"></div>${kidMarkup()}
     <div class="title-logo"><div class="l1">${letters('GULLY', .3)}</div><div class="l2">— TO —</div><div class="l3">${letters('GLORY', .9)}</div></div>
     <div class="title-tag">A cricket life. From a chai stall to the blue cap.</div>
@@ -103,6 +104,7 @@ async function cinematic(lines, art) {
 }
 
 function sceneArt() {
+  if (Art.has('intro')) return Art.bg('intro') + '<div class="art-shade" style="background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.65))"></div>';
   // layered parallax: dawn sky, town, chai stall with steam
   return `<div class="cine-layer" style="background:linear-gradient(180deg,#0b0820 0%,#2a1540 45%,#7a2e3a 70%,#d9733a 85%,#1a0e08 86%)"></div>
   <div class="cine-layer" style="opacity:.9;animation:drift 18s ease-in-out infinite alternate">${cityMarkup().replace('title-city', 'cine-city" style="position:absolute;left:-5%;width:110%;top:62%;height:24%')}</div>
@@ -137,7 +139,9 @@ async function introCinematic() {
 async function chapterCard() {
   const sd = Game.stageDef;
   Ambient.set(sd.ambient);
+  const art = 'ch' + sd.ch;
   const el = UI.show(`<div class="screen chapter">
+    ${Art.bg(art)}${Art.has(art) ? '<div class="art-shade" style="background:radial-gradient(circle at 50% 45%,rgba(11,10,18,.35),rgba(11,10,18,.9) 75%)"></div>' : ''}
     <div class="num">${sd.ch}</div>
     <div class="tiny kicker" style="letter-spacing:.5em">Chapter</div>
     <div class="name">${sd.title}</div>
@@ -158,7 +162,7 @@ function ring(label, val, col, bad) {
 function hub() {
   const s = Game.s, sd = Game.stageDef;
   Ambient.set(sd.ambient);
-  const el = UI.show(`<div class="screen hub">
+  const el = UI.show(`<div class="screen hub">${Art.has('ch' + sd.ch) ? `<div class="hub-art" style="background-image:url('${Art.url('ch' + sd.ch)}')"></div>` : ''}
     <div class="hub-head">
       <div class="row between">
         <div class="row"><div class="avatar">${esc(s.name.split(' ').map(w => w[0]).join('').slice(0, 2))}</div>
@@ -397,7 +401,7 @@ async function eventScreen(ev) {
   Game.markSeen(ev);
   if (ev.id === 'praise' || ev.id === 'troll') s.lastRating = null; // don't re-trigger
   const el = UI.show(`<div class="screen event">
-    <div class="event-art" style="background:radial-gradient(circle at 50% 55%, ${ev.bg[0]}, ${ev.bg[1]} 75%)"><div class="bigem">${ev.em}</div></div>
+    <div class="event-art" style="background:radial-gradient(circle at 50% 55%, ${ev.bg[0]}, ${ev.bg[1]} 75%)">${Art.has('ev_' + ev.id) ? `<div class="art-photo" style="background-image:url('${Art.url('ev_' + ev.id)}')"></div>` : `<div class="bigem">${ev.em}</div>`}</div>
     <div class="event-card">
       <div class="who">${esc(Game.fill(ev.who))}</div>
       <h2>${esc(ev.title)}</h2>
@@ -579,6 +583,6 @@ window.GG = {
 // ---------- Boot ----------
 (async function boot() {
   try { if (localStorage.getItem('gg_muted')) Sfx.setMuted(true); } catch (e) {}
-  try { await document.fonts.ready; } catch (e) {}
+  try { await Promise.race([Promise.all([document.fonts.ready, Art.load()]), sleep(4000)]); } catch (e) {}
   titleScreen();
 })();

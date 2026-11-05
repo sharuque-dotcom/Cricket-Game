@@ -301,10 +301,14 @@ const Match = {
     const bowlSkill = m.opp.str + 6;
     const ctx = {
       batSkill: skill, bowlSkill, ready: Game.readiness(),
-      window: clamp(.06 + skill / 100 * .075 + Game.readiness() * .12 - pressure * .025, .045, .16),
+      window: clamp(.045 + skill / 100 * .06 + Game.readiness() * .1 - pressure * .02, .04, .12),
       readFrac: clamp(.95 - readSkill / 100 * 1.15, .05, .9),
       slow: clamp(1 + (s.cond.focus - 40) / 220 + s.skills.temperament / 500, 1, 1.4),
     };
+    // Nerves make the sweet spot dance: poor form, low confidence, tiredness and big moments
+    const nerves = clamp((62 - s.cond.form) / 55 + (58 - s.cond.confidence) / 75 + pressure * .9 + Math.max(0, s.cond.fatigue - 40) / 120 - s.skills.temperament / 250, 0, 1.6);
+    ctx.wobble = ctx.window * (.45 + nerves * 1.5);
+    ctx.wobbleF = 5 + nerves * 9;
     let got = 0, legal = 0, startRuns = m.bat.r;
     while (legal < balls) {
       const need = m.target ? m.target - m.us.r : null;
