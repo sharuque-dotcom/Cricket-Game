@@ -126,19 +126,23 @@ const Story = {
     });
   },
 
+  // Launch build: free rewards only. Gem packs and VIP return with Google Play Billing.
   store() {
-    const packs = [['Pocket of Diamonds', 25, '₹49'], ['Bag of Diamonds', 70, '₹129'], ['Chest of Diamonds', 160, '₹249'], ['Vault of Diamonds', 450, '₹599']];
+    const gemsLeft = Math.max(0, this.adsLeft('gems')), keysLeft = Math.max(0, this.adsLeft('key'));
     openSheet(`<div class="pad">
-      <div class="row between"><div class="display" style="font-size:34px">Store</div><div class="row" style="gap:6px"><span class="cur-pill">${GEM_SVG}<b>${this.st.diamonds}</b></span><span class="cur-pill">${KEY_SVG}<b>${this.st.keys}</b></span></div></div>
-      <div class="vip-card"><div><div class="tiny" style="color:#1a0c00">VIP Pass</div><b class="display" style="font-size:30px;color:#1a0c00">Unlimited keys</b><div class="small" style="color:#3b2400">+15 diamonds every week · ₹149/month</div></div><span class="chip" style="background:#1a0c00;color:var(--gold);border:0">Soon</span></div>
-      <div class="packs">${packs.map(([n, d, p], i) => `<div class="pack"><div class="pack-gems">${GEM_SVG.repeat(Math.min(4, i + 1))}</div><b class="cond">${n}</b><div class="row" style="justify-content:center;gap:4px">${GEM_SVG}<b>${d}</b></div><span class="price">${p}</span></div>`).join('')}</div>
-      <button class="btn ghost block" style="margin-top:12px" data-ad ${this.adsLeft('gems') > 0 ? '' : 'disabled'}>▶ Watch an ad · +5 diamonds <span class="tiny" style="margin-left:6px">${Math.max(0, this.adsLeft('gems'))} left today</span></button>
-      <div class="tiny" style="text-align:center;margin-top:12px">Prototype: purchases are not live yet</div></div>`, sh => {
-      $('[data-ad]', sh).onclick = async (e) => {
-        const ok = await this.watchAd('gems', e.currentTarget, () => { this.st.diamonds += 5; toast(`${GEM_SVG} +5 diamonds`); });
+      <div class="row between"><div class="display" style="font-size:34px">Free rewards</div><div class="row" style="gap:6px"><span class="cur-pill">${GEM_SVG}<b>${this.st.diamonds}</b></span><span class="cur-pill">${KEY_SVG}<b>${this.st.keys}</b></span></div></div>
+      <div class="small muted" style="margin-top:4px">Watch a short video to earn rewards. Limits reset every day.</div>
+      <button class="btn primary block" style="margin-top:14px" data-ad="gems" ${gemsLeft ? '' : 'disabled'}>▶ +5 diamonds <span class="tiny" style="margin-left:6px;color:#1a0c00">${gemsLeft} left today</span></button>
+      <button class="btn ghost block" style="margin-top:8px" data-ad="key" ${keysLeft ? '' : 'disabled'}>▶ +1 key <span class="tiny" style="margin-left:6px">${keysLeft} left today</span></button>
+      <div class="small muted" style="text-align:center;margin-top:14px">Free key every 3 hours · +2 diamonds for every new episode</div></div>`, sh => {
+      $$('[data-ad]', sh).forEach(btn => btn.onclick = async (e) => {
+        const kind = btn.dataset.ad;
+        const ok = await this.watchAd(kind, e.currentTarget, () => {
+          if (kind === 'gems') { this.st.diamonds += 5; toast(`${GEM_SVG} +5 diamonds`); }
+          else { this.st.keys++; toast(`${KEY_SVG} +1 key`); }
+        });
         if (ok) closeSheet();
-      };
-      $$('.pack', sh).forEach(p => p.onclick = () => toast('Payments arrive in the next build.'));
+      });
     });
   },
 

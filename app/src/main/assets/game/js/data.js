@@ -12,14 +12,14 @@ const STAT_LABELS = {
 const BAD_UP = new Set(['fatigue', 'injury']);
 
 const TEAMS_IPL = [
-  { id: 'MI', name: 'Mumbai Indigos', c1: '#1d4ed8', c2: '#0ea5e9', star: 'Rohit Sharna', bowler: 'Jasprit Bumrath', batter: 'Suryakumar Yadhav' },
-  { id: 'CSK', name: 'Chennai Super Kingz', c1: '#eab308', c2: '#1e3a8a', star: 'MS Dhony', bowler: 'Ravindra Jadega', batter: 'MS Dhony' },
-  { id: 'RCB', name: 'Royal Chargers Bengaluru', c1: '#dc2626', c2: '#111111', star: 'Birat Kohli', bowler: 'Mohammed Siraaj', batter: 'Birat Kohli' },
-  { id: 'KKR', name: 'Kolkata Night Riders', c1: '#6d28d9', c2: '#d4a017', star: 'Andre Russel', bowler: 'Mitchell Starck', batter: 'Andre Russel' },
-  { id: 'SRH', name: 'Sunrise Hyderabad', c1: '#f97316', c2: '#111111', star: 'Pat Cumminz', bowler: 'Pat Cumminz', batter: 'Travis Heid' },
-  { id: 'RR', name: 'Rajasthan Royales', c1: '#ec4899', c2: '#1e3a8a', star: 'Sanju Samsun', bowler: 'Trent Bolte', batter: 'Jos Battler' },
-  { id: 'GT', name: 'Gujarat Titanz', c1: '#0f2a4a', c2: '#c8a24a', star: 'Shubman Gil', bowler: 'Rashid Khaan', batter: 'Shubman Gil' },
-  { id: 'PBKS', name: 'Punjab Kingz', c1: '#e11d48', c2: '#9ca3af', star: 'Shreyas Iyar', bowler: 'Arshdeep Singhh', batter: 'Shreyas Iyar' },
+  { id: 'MUM', name: 'Mumbai Monsoons', c1: '#1d4ed8', c2: '#0ea5e9', star: 'Ishaan Mehta', bowler: 'Faiz Lone', batter: 'Aakash Varma' },
+  { id: 'CHE', name: 'Chennai Chargers', c1: '#eab308', c2: '#1e3a8a', star: 'Dev Rawat', bowler: 'Hari Patel', batter: 'Dev Rawat' },
+  { id: 'BLR', name: 'Bengaluru Blasters', c1: '#dc2626', c2: '#111111', star: 'Karan Malhotra', bowler: 'Imran Qadri', batter: 'Karan Malhotra' },
+  { id: 'KOL', name: 'Kolkata Tigers', c1: '#6d28d9', c2: '#d4a017', star: 'Marlon Grant', bowler: 'Liam Hargrove', batter: 'Marlon Grant' },
+  { id: 'HYD', name: 'Hyderabad Hawks', c1: '#f97316', c2: '#111111', star: 'Sam Whitlock', bowler: 'Sam Whitlock', batter: 'Cody Brennan' },
+  { id: 'JAI', name: 'Jaipur Jaguars', c1: '#ec4899', c2: '#1e3a8a', star: 'Nikhil Menon', bowler: 'Blake Harrow', batter: 'Tom Ashby' },
+  { id: 'AHM', name: 'Ahmedabad Lions', c1: '#0f2a4a', c2: '#c8a24a', star: 'Rehan Sandhu', bowler: 'Zahir Wardak', batter: 'Rehan Sandhu' },
+  { id: 'PUN', name: 'Punjab Panthers', c1: '#e11d48', c2: '#9ca3af', star: 'Varun Kamath', bowler: 'Harjot Gill', batter: 'Varun Kamath' },
 ];
 
 // level drives ball speed, opponent quality and pressure in key moments
@@ -45,36 +45,36 @@ const STAGES = [
       { name: 'Agra U-19', cat: 'U-19', fmt: 'ODI', comp: 'U-19 One-Day', c2: '#a16207', bowler: 'Faiz Qureshi', bowlerType: 'spin', batter: 'Ankit Jadaun', str: 54 },
       { name: 'Varanasi U-19', cat: 'U-19', fmt: 'ODI', comp: 'U-19 One-Day', c2: '#4338ca', bowler: 'Deepak "Rocket" Maurya', bowlerType: 'pace', batter: 'Shivam Pandey', str: 57 },
     ],
-    gate: { name: 'State Ranji Squad', need: 58, pass: 'An email from the state association. Subject line: "Ranji Trophy – Probables".', fail: 'Sixteen names. Vikrant Chauhan is one of them. You are not.' },
+    gate: { name: 'State First-Class Squad', need: 58, pass: 'An email from the state association. Subject line: "Bharat Trophy – Probables".', fail: 'Sixteen names. Vikrant Chauhan is one of them. You are not.' },
     ambient: 'dawn',
   },
   {
     id: 'ranji', ch: 3, title: 'The Grind', level: 2, format: 'FC', overs: 90,
-    sub: 'The domestic season. Ranji Trophy and the Vijay Hazaray Trophy. Empty stands, long days, ₹40,000 a match. This is where cricketers are made — or forgotten.',
+    sub: 'The domestic season. Bharat Trophy and the Bharat One-Day Cup. Empty stands, long days, ₹40,000 a match. This is where cricketers are made — or forgotten.',
     team: 'Uttar Pradesh', c1: '#15803d', schedule: 'TMTMTM', venue: 'Ekana Stadium, Lucknow',
     opps: [
-      { name: 'Mumbai', cat: 'First-class', fmt: 'FC', comp: 'Ranji Trophy', c2: '#1d4ed8', bowler: 'Tushar Deshpandey', bowlerType: 'pace', batter: 'Sarfaraz Khaan', str: 64 },
-      { name: 'Karnataka', cat: 'List A', fmt: 'ODI', comp: 'Vijay Hazaray Trophy', c2: '#b91c1c', bowler: 'Prasidh Krishnaa', bowlerType: 'pace', batter: 'Mayank Agarwall', str: 62 },
-      { name: 'Vidarbha', cat: 'First-class', fmt: 'FC', comp: 'Ranji Trophy', c2: '#ea580c', bowler: 'Aditya Sarvatey', bowlerType: 'spin', batter: 'Karun Nayar', str: 60 },
+      { name: 'Mumbai', cat: 'First-class', fmt: 'FC', comp: 'Bharat Trophy', c2: '#1d4ed8', bowler: 'Rohan Deshmukh', bowlerType: 'pace', batter: 'Salman Qureshi', str: 64 },
+      { name: 'Karnataka', cat: 'List A', fmt: 'ODI', comp: 'Bharat One-Day Cup', c2: '#b91c1c', bowler: 'Pranav Rao', bowlerType: 'pace', batter: 'Manish Hegde', str: 62 },
+      { name: 'Vidarbha', cat: 'First-class', fmt: 'FC', comp: 'Bharat Trophy', c2: '#ea580c', bowler: 'Amol Thakre', bowlerType: 'spin', batter: 'Kiran Kulkarni', str: 60 },
     ],
     gate: { name: 'Domestic T20 + Auction Registration', need: 62, pass: 'You\'re in the state T20 squad. And your name goes into the auction pool.', fail: 'The T20 squad is announced. Two of the "lobby" boys made it. You didn\'t.' },
     ambient: 'night',
   },
   {
     id: 'smat', ch: 4, title: 'The Auction', level: 3, format: 'T20', overs: 20,
-    sub: 'Syed Mustaq Ali Trophy. Every IPL scout is in the stands with an iPad. Three games to change your life.',
+    sub: 'Bharat T20 Cup. Every PCL scout is in the stands with an iPad. Three games to change your life.',
     team: 'Uttar Pradesh', c1: '#15803d', schedule: 'TMTMM', venue: 'Holkar Stadium, Indore',
     opps: [
-      { name: 'Punjab', cat: 'T20', fmt: 'T20', comp: 'Syed Mustaq Ali Trophy', c2: '#e11d48', bowler: 'Arshdeep Singhh', bowlerType: 'pace', batter: 'Abhishek Sharmaa', str: 66 },
-      { name: 'Bengal', cat: 'T20', fmt: 'T20', comp: 'Syed Mustaq Ali Trophy', c2: '#0369a1', bowler: 'Mukesh Kumaar', bowlerType: 'pace', batter: 'Abhishek Porel', str: 64 },
-      { name: 'Baroda', cat: 'T20', fmt: 'T20', comp: 'Syed Mustaq Ali Trophy', c2: '#7c2d12', bowler: 'Krunal Pandiya', bowlerType: 'spin', batter: 'Hardik Pandiya', str: 70 },
+      { name: 'Punjab', cat: 'T20', fmt: 'T20', comp: 'Bharat T20 Cup', c2: '#e11d48', bowler: 'Harjot Gill', bowlerType: 'pace', batter: 'Ankit Bajwa', str: 66 },
+      { name: 'Bengal', cat: 'T20', fmt: 'T20', comp: 'Bharat T20 Cup', c2: '#0369a1', bowler: 'Mukul Das', bowlerType: 'pace', batter: 'Arnab Sen', str: 64 },
+      { name: 'Baroda', cat: 'T20', fmt: 'T20', comp: 'Bharat T20 Cup', c2: '#7c2d12', bowler: 'Kunal Rathwa', bowlerType: 'spin', batter: 'Hitesh Solanki', str: 70 },
     ],
-    gate: { name: 'IPL Auction', need: 0, auction: true },
+    gate: { name: 'PCL Auction', need: 0, auction: true },
     ambient: 'night',
   },
   {
     id: 'ipl', ch: 5, title: 'The Big Lights', level: 4, format: 'T20', overs: 20,
-    sub: 'Indian Prime League. 40,000 people, 50 crore watching, and a camera on your face for every dot ball.',
+    sub: 'Premier Cricket League. 40,000 people, 50 crore watching, and a camera on your face for every dot ball.',
     team: '', c1: '', schedule: 'TMMTMM', venue: '',
     opps: [], // filled from TEAMS_IPL at runtime
     gate: { name: 'India Call-up', need: 66, pass: 'The phone rings at 11:42 PM. Unknown number. Delhi.', fail: 'The squad is announced on TV. You watch it in a hotel room, alone.' },
@@ -85,9 +85,9 @@ const STAGES = [
     sub: 'India vs Australia. A T20I, an ODI and a Test. 1.4 billion people. One kid from a chai stall in Rajgarh.',
     team: 'India', c1: '#1d4ed8', schedule: 'TMTMM', venue: 'Wankhede Stadium, Mumbai',
     opps: [
-      { name: 'Australia', cat: 'T20I', fmt: 'T20', comp: '1st T20I', c2: '#ca8a04', bowler: 'Mitchell Starck', bowlerType: 'pace', batter: 'Travis Heid', str: 82 },
-      { name: 'Australia', cat: 'ODI', fmt: 'ODI', comp: '1st ODI', c2: '#ca8a04', bowler: 'Adam Zamper', bowlerType: 'spin', batter: 'Glenn Maxwel', str: 82 },
-      { name: 'Australia', cat: 'Test', fmt: 'FC', comp: '1st Test', c2: '#ca8a04', bowler: 'Pat Cumminz', bowlerType: 'pace', batter: 'Steve Smyth', str: 84 },
+      { name: 'Australia', cat: 'T20I', fmt: 'T20', comp: '1st T20I', c2: '#ca8a04', bowler: 'Liam Hargrove', bowlerType: 'pace', batter: 'Cody Brennan', str: 82 },
+      { name: 'Australia', cat: 'ODI', fmt: 'ODI', comp: '1st ODI', c2: '#ca8a04', bowler: 'Nathan Ellery', bowlerType: 'spin', batter: 'Ryan McAllister', str: 82 },
+      { name: 'Australia', cat: 'Test', fmt: 'FC', comp: '1st Test', c2: '#ca8a04', bowler: 'Sam Whitlock', bowlerType: 'pace', batter: 'Oliver Grant', str: 84 },
     ],
     gate: { name: 'Glory', need: 0, final: true },
     ambient: 'gold',
@@ -139,7 +139,7 @@ const STORY = [
       { t: 'Say nothing. Sneak off to the maidan.', d: 'Skills up. Home goes cold.', fx: { technique: 2, family: -10, mental: -3 }, out: 'Pandey-ji sees you at the nets at 5:30 AM. "Ghar pe bataya?" Did you tell them at home? You don\'t answer.' },
     ] },
   { id: 'pandey', stage: 0, week: 2, em: '🧢', bg: ['#365314', '#0c0a09'], who: 'Coach Pandey-ji', title: 'The Old Coach',
-    body: 'Pandey-ji has run the Gymkhana nets for thirty years. Played four Ranji games in 1991. Never got a fifth. He watches you for twenty minutes, spits paan into the dust and says: "Your bat comes down from gully. Fix it, or go sell chai."',
+    body: 'Pandey-ji has run the Gymkhana nets for thirty years. Played four first-class games in 1991. Never got a fifth. He watches you for twenty minutes, spits paan into the dust and says: "Your bat comes down from gully. Fix it, or go sell chai."',
     choices: [
       { t: '"Teach me. Whatever it takes."', d: 'He\'ll make you suffer.', fx: { coachTrust: 12, technique: 1.5, fatigue: 10 }, out: '"Tomorrow. 5 AM. Bring a tyre." You have no idea what the tyre is for. You\'ll find out.' },
       { t: '"My swing gets me runs."', d: 'Back yourself.', fx: { coachTrust: -8, confidence: 7, power: 1 }, out: 'He laughs. "Runs in gully are free, beta. Wait till a real quick bowls at your nose."' },
@@ -180,8 +180,8 @@ const STORY = [
       { t: 'Go home. Work double shifts.', d: 'Miss training. Coach won\'t like it.', fx: { money: 9000, family: 12, fatigue: 22, form: -8, coachTrust: -6 }, out: 'Two weeks of chai, dishes and night-shift loading at the mandi. Maa comes home thinner but smiling.' },
       { t: 'Let Papa handle it.', d: 'Stay focused on cricket.', fx: { family: -14, mental: -8, focus: 4 }, flag: 'papaScooter', out: 'Papa sells the scooter. He walks to the stall now. 4 km, every morning. Nobody tells you. You find out anyway.' },
     ] },
-  { id: 'birat', stage: 1, week: 5, em: '⭐', bg: ['#1e3a8a', '#0b0a12'], who: 'National Cricket Academy', title: 'Birat Kohli Walks In',
-    body: 'The U-19 camp goes silent. Birat Kohli — the Birat Kohli — is here for a rehab session and stops by the nets. He watches you for an over. Then he walks over. "Ask me one thing. Quickly, I have physio."',
+  { id: 'birat', stage: 1, week: 5, em: '⭐', bg: ['#1e3a8a', '#0b0a12'], who: 'National Academy', title: 'Karan Malhotra Walks In',
+    body: 'The U-19 camp goes silent. Karan Malhotra — the Karan Malhotra — is here for a rehab session and stops by the nets. He watches you for an over. Then he walks over. "Ask me one thing. Quickly, I have physio."',
     choices: [
       { t: '"How do you stay so fit?"', d: 'Fitness, discipline.', fx: { fitness: 3, coachTrust: 4, mental: 4 }, flag: 'biratFit', out: '"No sugar for eight years. No excuses for longer." He pokes your stomach. "Start tomorrow."' },
       { t: '"How do you chase under pressure?"', d: 'Temperament.', fx: { temperament: 3, confidence: 8 }, out: '"I break it into overs. Then balls. Then this ball. Pressure is just maths you haven\'t done yet."' },
@@ -190,10 +190,10 @@ const STORY = [
 
   // ---------- Chapter 3 ----------
   { id: 'rocky', stage: 2, week: 1, em: '🧔', bg: ['#14532d', '#0b0a12'], who: 'Rocky Bhatia, 34', title: 'The Veteran',
-    body: 'Rocky Bhatia: 9,000 first-class runs, 28 hundreds, zero India caps. He\'s icing his knee in the corner of the dressing room. "Kid. Nobody remembers Ranji runs. Selectors watch the IPL. But Ranji makes you a cricketer. Choose what you want to be."',
+    body: 'Rocky Bhatia: 9,000 first-class runs, 28 hundreds, zero India caps. He\'s icing his knee in the corner of the dressing room. "Kid. Nobody remembers first-class runs. Selectors watch the PCL. But first-class cricket makes you a cricketer. Choose what you want to be."',
     choices: [
       { t: '"Teach me how to bat long."', d: 'Become a cricketer.', fx: { iq: 3, temperament: 2, coachTrust: 4 }, flag: 'mentor', out: 'He talks for three hours. Leaves, fields, how to bore a bowler into a mistake. You fill half a notebook.' },
-      { t: '"How do I get noticed by IPL scouts?"', d: 'Become famous.', fx: { fans: 200, reputation: 2, iq: 1 }, out: '"Strike rate. Highlights. Be loud." He shrugs. "It worked for everyone except me."' },
+      { t: '"How do I get noticed by PCL scouts?"', d: 'Become famous.', fx: { fans: 200, reputation: 2, iq: 1 }, out: '"Strike rate. Highlights. Be loud." He shrugs. "It worked for everyone except me."' },
     ] },
   { id: 'bookie', stage: 2, week: 3, em: '🎲', bg: ['#3f0d12', '#000000'], who: 'Sunny Bhai', title: 'A Small Favour',
     body: 'A man in the team hotel lobby. Gold chain, kind smile. "Big fan, big fan. Small request — {fixAsk} tomorrow. Two lakh rupees. Cash. Nobody gets hurt, nobody finds out." He slides a phone number across the table.',
@@ -214,7 +214,7 @@ const STORY = [
 
   // ---------- Chapter 4 ----------
   { id: 'agent', stage: 3, week: 1, em: '🕴️', bg: ['#1f2937', '#0b0a12'], who: 'Rohan Mehra, Sports Agent', title: 'The Agent',
-    body: 'Linen blazer, two phones, sunglasses indoors. "I represent eleven IPL players. I\'ll get you on every franchise\'s shortlist, get your price up, get you brands. I take fifteen percent. Of everything. Forever."',
+    body: 'Linen blazer, two phones, sunglasses indoors. "I represent eleven PCL players. I\'ll get you on every franchise\'s shortlist, get your price up, get you brands. I take fifteen percent. Of everything. Forever."',
     choices: [
       { t: 'Sign with him.', d: 'Higher auction buzz. 15% cut.', fx: { reputation: 6, fans: 500, selector: 6 }, flag: 'agent', out: '"Smart." He\'s already on the phone before the ink dries. "Yes, the UP kid. Trust me."' },
       { t: 'Stay independent.', d: 'Keep every rupee. Fewer doors.', fx: { integrity: 3, mental: 2 }, out: 'He shrugs and gives you his card anyway. "When you\'re unsold, call me."' },
@@ -228,7 +228,7 @@ const STORY = [
 
   // ---------- Chapter 5 ----------
   { id: 'ipl1', stage: 4, week: 1, em: '🏟️', bg: ['#1e1b4b', '#000000'], who: '{iplStar}', title: 'The Big Dressing Room',
-    body: 'Your locker is between a World Cup winner and a man with 3 million followers. {iplStar} walks in, scans the room, and stops at you. "Rajgarh, right? I watched your Mustaq Ali knock. What do you need from me this season?"',
+    body: 'Your locker is between a World Cup winner and a man with 3 million followers. {iplStar} walks in, scans the room, and stops at you. "Rajgarh, right? I watched your T20 Cup knock. What do you need from me this season?"',
     choices: [
       { t: '"Tell me what I\'m doing wrong."', d: 'Learn fast.', fx: { iq: 3, technique: 1, accuracy: 1, coachTrust: 6 }, out: 'He tells you. In detail. For forty minutes. It\'s the best and most humbling coaching of your life.' },
       { t: '"Just a chance, bhaiya."', d: 'Humble. Hungry.', fx: { confidence: 6, mental: 4 }, out: '"You\'ll get it. Then it\'s on you." He means it as kindness. It sounds like a warning.' },
@@ -240,11 +240,11 @@ const STORY = [
       { t: 'One photo, then home.', d: 'Balance.', fx: { fans: 400, mental: 3, focus: -2 }, out: 'You call Pandey-ji back from the cab. He just asks: "Sleep by eleven?" Yes, sir.' },
       { t: 'Skip it. Ice bath.', d: 'The dull, correct choice.', fx: { focus: 10, fatigue: -10, coachTrust: 5 }, out: 'The physio finds you in the recovery room at 10 PM and laughs. "You\'re the only one here."' },
     ] },
-  { id: 'dhony', stage: 4, week: 4, em: '🧘', bg: ['#713f12', '#0b0a12'], who: 'MS Dhony', title: 'Captain Cool',
-    body: 'You\'re sitting alone on the boundary rope after training. MS Dhony sits down next to you. Says nothing for two whole minutes. Then: "The scoreboard is not your problem. The next ball is your problem. Only the next ball."',
+  { id: 'dhony', stage: 4, week: 4, em: '🧘', bg: ['#713f12', '#0b0a12'], who: 'Dev Rawat', title: 'Captain Cool',
+    body: 'You\'re sitting alone on the boundary rope after training. Dev Rawat sits down next to you. Says nothing for two whole minutes. Then: "The scoreboard is not your problem. The next ball is your problem. Only the next ball."',
     choices: [
       { t: '"How do you stay so calm?"', d: 'Temperament.', fx: { temperament: 4, focus: 12, confidence: 6 }, out: '"I\'m not calm. I just don\'t show the other team." He gets up, dusts his pants. "Neither should you."' },
-      { t: '"Teach me the helicopter."', d: 'Power.', fx: { power: 3, fans: 900, confidence: 6 }, out: 'He shows you the wrist. Once. "Took me ten years in Ranchi. Good luck." He\'s grinning.' },
+      { t: '"Teach me your finishing shot."', d: 'Power.', fx: { power: 3, fans: 900, confidence: 6 }, out: 'He shows you the wrist. Once. "Took me ten years in Dehradun. Good luck." He\'s grinning.' },
     ] },
   { id: 'surrogate', stage: 4, week: 5, em: '📺', bg: ['#14532d', '#000000'], who: 'Rohan, on the phone', title: 'Fantasy App Deal',
     body: '"₹40 lakh for one ad. It\'s a \'fantasy gaming\' app." Everyone knows what it really is — betting with a fig leaf. Half the league does these ads. Papa still owes Ramesh-ji money.',
@@ -254,15 +254,15 @@ const STORY = [
     ] },
 
   // ---------- Chapter 6 ----------
-  { id: 'call', stage: 5, week: 1, em: '📞', bg: ['#1d4ed8', '#020617'], who: 'Ajit Agarkur, Chief Selector', title: 'The Call',
+  { id: 'call', stage: 5, week: 1, em: '📞', bg: ['#1d4ed8', '#020617'], who: 'Sunil Bhatnagar, Chief Selector', title: 'The Call',
     body: '"{first}? Congratulations. You\'re in the India T20I squad against Australia. Don\'t tell anyone till the press release at nine." He hangs up. Your hands are shaking. Who do you call first?',
     choices: [
       { t: 'Papa.', d: '', fx: { family: 18, mental: 12, confidence: 6 }, out: 'He picks up at the stall. You hear the kettle, the bus horns, then nothing at all. Then Papa, crying, telling the whole bus stand.' },
       { t: 'Pandey-ji.', d: '', fx: { coachTrust: 15, mental: 8, temperament: 2 }, out: 'He listens. Long silence. "Your bat still comes down from gully." Then, quietly: "Shabash, beta."' },
-      { t: 'Post it everywhere.', d: 'Before the press release.', fx: { fans: 25000, reputation: -8 }, out: 'The BCCB media manager calls you at 9:01. It is not a friendly call.' },
+      { t: 'Post it everywhere.', d: 'Before the press release.', fx: { fans: 25000, reputation: -8 }, out: 'The Board\'s media manager calls you at 9:01. It is not a friendly call.' },
     ] },
   { id: 'cap', stage: 5, week: 3, em: '🧢', bg: ['#1e40af', '#020617'], who: 'Wankhede, team huddle', title: 'Cap Number 312',
-    body: 'The huddle on the outfield. Birat Kohli holds a blue cap. "Every cap has a story. This one started at a chai stall in Rajgarh." He hands it to you. Thirty-five thousand people are already chanting your name.',
+    body: 'The huddle on the outfield. Karan Malhotra holds a blue cap. "Every cap has a story. This one started at a chai stall in Rajgarh." He hands it to you. Thirty-five thousand people are already chanting your name.',
     choices: [
       { t: 'Say a few words.', d: '', fx: { confidence: 12, reputation: 6 }, out: '"For Papa. For Pandey-ji. For every gully." The huddle roars. You don\'t remember anything after that.' },
       { t: 'Just nod. Pull it on.', d: '', fx: { focus: 14, temperament: 2 }, out: 'It fits. Of course it fits. You\'ve been wearing it in your head since you were nine.' },
@@ -358,5 +358,5 @@ const ENDINGS = {
 };
 
 // Career stats are split by these categories (shown in this order)
-const FORMAT_CATS = ['Club', 'U-19', 'First-class', 'List A', 'T20', 'IPL', 'Test', 'ODI', 'T20I'];
-const STAGE_DEFAULT_CAT = { maidan: ['Club', 'T20', 'Club League'], u19: ['U-19', 'ODI', 'U-19 One-Day'], ranji: ['First-class', 'FC', 'Ranji Trophy'], smat: ['T20', 'T20', 'Syed Mustaq Ali Trophy'], ipl: ['IPL', 'T20', 'Indian Prime League'], india: ['T20I', 'T20', 'T20I'] };
+const FORMAT_CATS = ['Club', 'U-19', 'First-class', 'List A', 'T20', 'PCL', 'Test', 'ODI', 'T20I'];
+const STAGE_DEFAULT_CAT = { maidan: ['Club', 'T20', 'Club League'], u19: ['U-19', 'ODI', 'U-19 One-Day'], ranji: ['First-class', 'FC', 'Bharat Trophy'], smat: ['T20', 'T20', 'Bharat T20 Cup'], ipl: ['PCL', 'T20', 'Premier Cricket League'], india: ['T20I', 'T20', 'T20I'] };

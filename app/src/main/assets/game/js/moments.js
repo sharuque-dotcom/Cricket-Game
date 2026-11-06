@@ -235,7 +235,7 @@ const Moments = (() => {
       const top = hy - (lv >= 4 ? 90 : 70);
       g.fillStyle = lv >= 4 ? '#0b0f22' : '#2b2440';
       g.beginPath(); g.moveTo(0, hy); g.lineTo(0, top + 20); g.quadraticCurveTo(W / 2, top - 22, W, top + 20); g.lineTo(W, hy); g.fill();
-      const density = lv >= 4 ? 1 : lv === 3 ? .7 : .25; // Ranji stands are nearly empty
+      const density = lv >= 4 ? 1 : lv === 3 ? .7 : .25; // first-class stands are nearly empty
       for (const c of crowd) {
         if (c.u > density && lv < 4) continue;
         const cx = (c.p / 7) * W, cy = top + 14 + c.v * (hy - top - 18) + Math.sin(cx / W * 3.14) * -10;
@@ -256,7 +256,7 @@ const Moments = (() => {
       }
       // advertising boards
       g.fillStyle = lv >= 4 ? '#1d4ed8' : '#3b3355'; g.fillRect(0, hy - 7, W, 7);
-      if (lv >= 4) { g.fillStyle = 'rgba(255,255,255,.75)'; g.font = '700 6px Barlow'; for (let i = 0; i < 8; i++) g.fillText(['DREAM BIG', 'GULLY TO GLORY', 'CHAI POINT', 'BHARAT PAY'][i % 4], i * W / 8 + 4 - (clock / 60 % (W / 8)), hy - 1.5); }
+      if (lv >= 4) { g.fillStyle = 'rgba(255,255,255,.75)'; g.font = '700 6px Barlow'; for (let i = 0; i < 8; i++) g.fillText(['DREAM BIG', 'GULLY TO GLORY', 'PAPA CHAI', 'RAJGARH TYRES'][i % 4], i * W / 8 + 4 - (clock / 60 % (W / 8)), hy - 1.5); }
     }
   }
 

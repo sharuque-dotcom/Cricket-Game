@@ -5,3 +5,7 @@ local.properties
 *.iml
 .idea/
 *.keystore
+
+# release signing (never commit)
+keystore.properties
+*.jks

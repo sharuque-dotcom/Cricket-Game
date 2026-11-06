@@ -261,7 +261,7 @@ function playerTab() {
 function formatTable() {
   const fs = Game.s.fmtStats || {};
   const rows = FORMAT_CATS.filter(k => fs[k] && fs[k].m);
-  if (!rows.length) return `<div class="card" style="margin-top:12px"><div class="tiny">Career by format</div><div class="small muted" style="margin-top:6px">No matches yet. Club, U-19, First-class, List A, T20, IPL, Test, ODI and T20I stats will appear here.</div></div>`;
+  if (!rows.length) return `<div class="card" style="margin-top:12px"><div class="tiny">Career by format</div><div class="small muted" style="margin-top:6px">No matches yet. Club, U-19, First-class, List A, T20, PCL, Test, ODI and T20I stats will appear here.</div></div>`;
   return `<div class="card" style="margin-top:12px;padding:12px 10px"><div class="tiny" style="padding:0 4px">Career by format</div>
     <table class="fmt-table"><thead><tr><th>Format</th><th>M</th><th>Runs</th><th>Avg</th><th>SR</th><th>HS</th><th>Wkts</th><th>Econ</th></tr></thead><tbody>
     ${rows.map(k => { const r = fs[k]; return `<tr><td>${k}</td><td>${r.m}</td><td>${r.runs}</td><td>${r.outs ? (r.runs / r.outs).toFixed(1) : (r.runs || '-')}</td><td>${r.balls ? Math.round(r.runs / r.balls * 100) : '-'}</td><td>${r.hs}</td><td>${r.wkts}</td><td>${r.bb ? (r.rc / r.bb * 6).toFixed(1) : '-'}</td></tr>`; }).join('')}
@@ -277,7 +277,7 @@ function lifeTab() {
       <div class="s"><b>${l.fans.toLocaleString('en-IN')}</b><span class="tiny">Fans</span></div>
     </div>
     ${l.debt ? `<div class="card" style="margin-top:12px;border-color:rgba(230,57,70,.4)"><b class="red cond">Debt: ${fmtMoney(l.debt)}</b><div class="small muted">Ramesh-ji charges 20% a month. He will come back.</div></div>` : ''}
-    ${ipl ? `<div class="card" style="margin-top:12px;background:linear-gradient(120deg,${ipl.c1}55,transparent)"><div class="tiny">IPL contract</div><b class="cond" style="font-size:18px">${esc(ipl.name)} · ${fmtMoney(s.price)}</b></div>` : ''}
+    ${ipl ? `<div class="card" style="margin-top:12px;background:linear-gradient(120deg,${ipl.c1}55,transparent)"><div class="tiny">PCL contract</div><b class="cond" style="font-size:18px">${esc(ipl.name)} · ${fmtMoney(s.price)}</b></div>` : ''}
     <div class="card" style="margin-top:12px"><div class="tiny">People & Mind</div>${bars([['family', l.family, 'saffron'], ['mental', l.mental, 'teal'], ['coachTrust', l.coachTrust], ['reputation', l.reputation, 'violet'], ['integrity', l.integrity, l.integrity < 40 ? 'red' : 'teal']])}</div>
     <div class="card" style="margin-top:12px"><div class="tiny">How it all connects</div><div class="small muted" style="margin-top:6px;line-height:1.6">
       <b class="saffron">Form, Confidence, Focus</b> widen your timing window and help you read the ball earlier.<br>
@@ -506,7 +506,7 @@ async function auction() {
   Ambient.set('gold');
   const el = UI.show(`<div class="screen"><div class="scroll pad" style="text-align:center">
     <div class="tiny" style="margin-top:10px;color:var(--gold);letter-spacing:.4em">● LIVE</div>
-    <div class="display" style="font-size:48px;margin-top:4px">IPL Auction</div>
+    <div class="display" style="font-size:48px;margin-top:4px">PCL Auction</div>
     <div class="card" style="margin-top:14px;text-align:left"><div class="row"><div class="avatar">${esc(s.name.split(' ').map(w => w[0]).join('').slice(0, 2))}</div><div class="col"><b class="cond" style="font-size:18px">${esc(s.name)}</b><span class="tiny">Uncapped · ${{ bat: 'Batter', bowl: 'Fast bowler', all: 'All-rounder' }[s.role]} · Avg rating ${avg.toFixed(1)}</span></div></div></div>
     <div class="tiny" style="margin-top:22px">Current bid</div>
     <div class="auction-price" data-price>₹20 L</div>
@@ -538,14 +538,14 @@ async function auction() {
     s.ipl = winner.id; s.price = price;
     Game.apply({ money: price, fans: Math.round(price / 2000), reputation: 10, confidence: 15 });
     $('[data-msg]', el).innerHTML = `<b class="gold">${esc(winner.name)}</b> buy you for <b>${fmtMoney(price)}</b>. Papa watches it live on a phone at the stall. The whole bus stand watches with him.`;
-    Game.diary(`IPL auction: sold to ${winner.name} for ${fmtMoney(price)}.`);
+    Game.diary(`PCL auction: sold to ${winner.name} for ${fmtMoney(price)}.`);
   } else {
     cEl.textContent = 'Any interest? ...'; await sleep(1500);
     cEl.textContent = 'No bids.'; await sleep(900);
     Sfx.gavel(); Sfx.fail();
     el.insertAdjacentHTML('beforeend', `<div class="stamp unsold">UNSOLD</div>`);
     $('[data-msg]', el).innerHTML = 'Silence. The auctioneer moves to the next name. You watch the rest of the auction alone in your room. Back to domestic cricket.';
-    Game.diary('IPL auction: unsold.');
+    Game.diary('PCL auction: unsold.');
   }
   $('[data-after]', el).style.opacity = 1;
   await UI.waitTap('[data-go]');

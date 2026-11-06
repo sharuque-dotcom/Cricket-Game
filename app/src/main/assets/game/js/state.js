@@ -26,7 +26,23 @@ const Game = {
   },
 
   save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(this.s)); } catch (e) {} },
-  load() { try { const j = localStorage.getItem(SAVE_KEY); if (j) { this.s = JSON.parse(j); this.s.fmtStats = this.s.fmtStats || {}; return true; } } catch (e) {} return false; },
+  load() {
+    try {
+      const j = localStorage.getItem(SAVE_KEY);
+      if (j) {
+        const s = this.s = JSON.parse(j); s.fmtStats = s.fmtStats || {};
+        const OLD = { MI: 'MUM', CSK: 'CHE', RCB: 'BLR', KKR: 'KOL', SRH: 'HYD', RR: 'JAI', GT: 'AHM', PBKS: 'PUN' };
+        if (OLD[s.ipl]) s.ipl = OLD[s.ipl];
+        if (s.fmtStats.IPL) { s.fmtStats.PCL = s.fmtStats.IPL; delete s.fmtStats.IPL; }
+        if (s.iplOpps && s.iplOpps.some(o => !TEAMS_IPL.find(t => t.name === o.name))) {
+          const opps = TEAMS_IPL.filter(t => t.id !== s.ipl).sort(() => Math.random() - .5).slice(0, 4);
+          s.iplOpps = opps.map((t, i) => ({ name: t.name, cat: 'PCL', fmt: 'T20', comp: 'Premier Cricket League', c2: t.c1, bowler: t.bowler, bowlerType: /Wardak|Patel/.test(t.bowler) ? 'spin' : 'pace', batter: t.batter, str: 72 + i * 2 }));
+        }
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  },
   wipe() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} this.s = null; },
   hasSave() { try { return !!localStorage.getItem(SAVE_KEY); } catch (e) { return false; } },
 
@@ -189,7 +205,7 @@ const Game = {
     s.stage++; s.week = 1; s.season++; s.age++; s.stageRatings = []; s.selector = 0;
     if (s.stage === 4 && s.ipl) {
       const opps = TEAMS_IPL.filter(t => t.id !== s.ipl).sort(() => Math.random() - .5).slice(0, 4);
-      s.iplOpps = opps.map((t, i) => ({ name: t.name, cat: 'IPL', fmt: 'T20', comp: 'Indian Prime League', c2: t.c1, bowler: t.bowler, bowlerType: /Rashid|Jadega|Chahel|Krunal/.test(t.bowler) ? 'spin' : 'pace', batter: t.batter, str: 72 + i * 2 }));
+      s.iplOpps = opps.map((t, i) => ({ name: t.name, cat: 'PCL', fmt: 'T20', comp: 'Premier Cricket League', c2: t.c1, bowler: t.bowler, bowlerType: /Wardak|Patel/.test(t.bowler) ? 'spin' : 'pace', batter: t.batter, str: 72 + i * 2 }));
     }
     this.save();
   },

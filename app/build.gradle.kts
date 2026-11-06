@@ -1,5 +1,13 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
+}
+
+// Release signing reads ../keystore.properties (git-ignored). Without it, release builds are unsigned.
+val keystoreProps = Properties().apply {
+    val f = rootProject.file("keystore.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
 }
 
 android {
@@ -10,13 +18,25 @@ android {
         applicationId = "com.gullytoglory.game"
         minSdk = 24
         targetSdk = 36
-        versionCode = 12
-        versionName = "0.7.1"
+        versionCode = 13
+        versionName = "1.0.0"
+    }
+
+    signingConfigs {
+        if (keystoreProps.getProperty("storeFile") != null) {
+            create("release") {
+                storeFile = file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfigs.findByName("release")?.let { signingConfig = it }
         }
     }
 

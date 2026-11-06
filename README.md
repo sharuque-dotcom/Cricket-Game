@@ -14,7 +14,18 @@ Download `dist/GullyToGlory.apk` on your Android phone and open it (allow "insta
 - **Story**: six chapters (Maidan → U-19 Trials → Ranji → Auction → IPL → India) with choices: bribes, bookies, family crises, agents, and mentors.
 - **Endings**: Glory, Capped, Banned, Broken, The Stall, Walked Away.
 
-All real cricketers appear under altered names (Birat Kohli, MS Dhony, Jasprit Bumrath…).
+All players, teams and leagues are fictional.
+
+## Release
+See `store/STORE_LISTING.md` for the Play Store launch kit (listing text, graphics, privacy policy, data safety answers).
+Release builds are signed via a git-ignored `keystore.properties` at the repo root:
+```
+storeFile=/path/to/upload.jks
+storePassword=...
+keyAlias=upload
+keyPassword=...
+```
+Then `./gradlew bundleRelease` writes `app/build/outputs/bundle/release/app-release.aab`.
 
 ## Build
 ```
