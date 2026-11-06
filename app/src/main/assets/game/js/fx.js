@@ -276,15 +276,16 @@ const Parallax = (() => {
 // ---------- Rewarded ads ----------
 // On the phone: real AdMob rewarded video via AndroidBridge. In a desktop browser: a labelled test stand-in.
 const Ads = {
-  pending: {},
+  pending: {}, timers: {},
   native() { return !!(window.AndroidBridge && AndroidBridge.showRewardedAd); },
   // resolves to 'rewarded' | 'skipped' | 'unavailable'
   show(placement) {
     return new Promise(resolve => {
       if (this.native()) {
         this.pending[placement] = resolve;
-        try { AndroidBridge.showRewardedAd(placement); } catch (e) { delete this.pending[placement]; resolve('unavailable'); }
-        setTimeout(() => { if (this.pending[placement] === resolve && !document.hidden) { delete this.pending[placement]; resolve('unavailable'); } }, 60000);
+        try { AndroidBridge.showRewardedAd(placement); } catch (e) { this.result(placement, 'unavailable'); return; }
+        // only give up if the ad never opened; once it is on screen we wait for its result
+        this.timers[placement] = setTimeout(() => this.result(placement, 'unavailable'), 20000);
         return;
       }
       const ov = document.createElement('div'); ov.className = 'fake-ad';
@@ -293,7 +294,17 @@ const Ads = {
       let n = 5; const t = setInterval(() => { n--; ov.querySelector('.ad-count').textContent = n; if (n <= 0) { clearInterval(t); ov.remove(); resolve('rewarded'); } }, 1000);
     });
   },
-  result(placement, r) { const f = this.pending[placement]; if (f) { delete this.pending[placement]; f(r); } },
+  shown(placement) { clearTimeout(this.timers[placement]); delete this.timers[placement]; },
+  result(placement, r) {
+    this.shown(placement);
+    try { if (this.native() && AndroidBridge.takeAdResult) AndroidBridge.takeAdResult(placement); } catch (e) {}
+    const f = this.pending[placement]; if (f) { delete this.pending[placement]; f(r); }
+  },
+  // back from the ad screen: pick up any result the app stored while we were paused
+  collect() {
+    if (!this.native() || !AndroidBridge.takeAdResult) return;
+    Object.keys(this.pending).forEach(p => { let r = ''; try { r = AndroidBridge.takeAdResult(p); } catch (e) {} if (r) this.result(p, r); });
+  },
 };
 
 // ---------- Local notifications (scheduled on the phone, no server) ----------
