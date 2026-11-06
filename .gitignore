@@ -9,3 +9,6 @@ local.properties
 # release signing (never commit)
 keystore.properties
 *.jks
+
+# Play upload bundles (build output, sent to the owner directly)
+*.aab
