@@ -1,7 +1,7 @@
 // Story Mode engine: episodic, choice-driven chapters with keys, diamonds and playable cricket moments.
 const STORY_KEY = 'gg_story_v1';
 const KEY_MAX = 2, KEY_MS = 3 * 60 * 60 * 1000; // one key every 3 hours
-const AD_CAP = { key: 3, gems: 5 }; // rewarded ads allowed per day
+const AD_CAP = { key: 6, gems: 8 }; // rewarded ads allowed per day (lower these once gem packs are on sale)
 const GEM_SVG = `<svg class="ico" viewBox="0 0 24 24"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9fbff"/><stop offset=".5" stop-color="#3fd0e0"/><stop offset="1" stop-color="#1a7f9c"/></linearGradient></defs><path d="M6 3h12l4 6-10 12L2 9z" fill="url(#gg)" stroke="#0b3a47" stroke-width="1.2"/><path d="M2 9h20M8 3l4 18 4-18M6 3l2 6M18 3l-2 6" fill="none" stroke="rgba(255,255,255,.55)" stroke-width=".9"/></svg>`;
 const KEY_SVG = `<svg class="ico" viewBox="0 0 24 24"><defs><linearGradient id="gk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1b8"/><stop offset=".55" stop-color="#ffc83d"/><stop offset="1" stop-color="#b9770e"/></linearGradient></defs><circle cx="7.5" cy="12" r="5" fill="none" stroke="url(#gk)" stroke-width="3"/><path d="M12 12h10M18 12v4M21 12v3" stroke="url(#gk)" stroke-width="3" stroke-linecap="round"/></svg>`;
 
@@ -242,7 +242,7 @@ const Story = {
     const mode = this.weather || SceneFX.for(name);
     const c = $('[data-story-fx]', this.el); if (c) SceneFX.set(c, mode);
     const r = $('[data-story-rays]', this.el); if (r) r.style.display = DAY_ART.has(name) && !this.weather ? '' : 'none';
-    Sfx.ambience(this.weather === 'rain' ? 'rain' : ({ intro: 'stall', ch1: 'maidan', ch2: 'maidan', ch3: 'maidan', bd_maidan: 'night', ev_call: 'room', bg_home: 'room', bg_street_dusk: 'night', bg_club_match: 'maidan', bg_clubhouse_wall: 'maidan', bg_mandi_night: 'rain' }[name] || 'night'));
+    Sfx.ambience(this.weather === 'rain' ? 'rain' : ({ intro: 'stall', ch1: 'maidan', ch2: 'maidan', ch3: 'maidan', bd_maidan: 'night', ev_call: 'room', bg_home: 'room', bg_street_dusk: 'night', bg_club_match: 'maidan', bg_clubhouse_wall: 'maidan', bg_mandi_night: 'rain', bg_burnt_stall: 'stall', bg_hospital: 'room', bg_tennis_night: 'night', bg_hostel: 'room', bg_dressing_room: 'room', bg_hotel_lobby: 'room', bg_newsroom: 'room', bg_hearing_room: 'room', bg_stall_rebuilt: 'stall', ev_party: 'night', ch4: 'room', ch5: 'night', bd_stadium_night: 'night' }[name] || 'night'));
   },
 
   portraitHtml(id) {
@@ -386,7 +386,7 @@ const Story = {
         this.placeChar(side, n.enter); Sfx.whoosh(); await sleep(380); continue;
       }
       if (n.exit) { this.removeChar(n.exit); await sleep(300); continue; }
-      if (n.if) { if (this.st.flags[n.if]) i = this.labels[n.go] - 1; continue; }
+      if (n.if) { const ok = typeof n.if === 'function' ? n.if(this.st) : this.st.flags[n.if]; if (ok) i = this.labels[n.go] - 1; continue; }
       if (n.go) { i = this.labels[n.go] - 1; continue; }
       if (n.fx || n.set) { this.applyFx(n.fx, n.set); if (!n.s && !n.n) continue; }
       if (n.n) { await this.line('n', null, n.n, n.reveal ? 'reveal' : null); continue; }
@@ -421,7 +421,7 @@ const Story = {
     const pressure = cfg.kind === 'chase' ? .6 : .45;
     Moments.open($('.mroot', el), { view: 'bat', level: 0, whiteBall: false, bowlerType: 'pace', pressure, myKit: '#b45309', batKit: '#f4ede4', bowlKit: cfg.kind === 'duel' ? '#7c3aed' : '#475569' });
     UI.pressure(pressure > .5);
-    const skill = 36 + (f.tyre ? 7 : 0) + (f.wonDuel ? 3 : 0) + Math.max(0, s.rel.pandey);
+    const skill = 36 + (f.tyre ? 7 : 0) + (f.wonDuel ? 3 : 0) + (f.goodBat ? 5 : 0) + (f.rockyMentor ? 5 : 0) + (f.campImpress ? 2 : 0) + Math.max(0, s.rel.pandey);
     const steady = f.focused || f.calm;
     const ctx = {
       batSkill: skill, bowlSkill: (cfg.kind === 'duel' ? 40 : 42) + (cfg.hard && f[cfg.hard] ? 7 : 0), ready: f.pinkyBox ? .03 : 0,
@@ -467,15 +467,18 @@ const Story = {
       <div class="scroll pad" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
         <div class="tbc">To be continued<span>...</span></div>
         <div class="cliff">${esc(this.fill(n.cliff))}</div>
-        ${first ? `<div class="reward">${GEM_SVG}<b>+2</b><span>Episode complete</span></div><button class="btn ghost" style="margin:10px auto 0;height:42px;font-size:13px" data-double>▶ Watch an ad · double it (+2 ${GEM_SVG})</button>` : ''}
-        <div class="rel-sum">${Object.entries(REL_KEYS).map(([k, l]) => `<div class="rel-row" style="--c:${CAST[k].col}"><span>${l}</span><span>${relHearts(s.rel[k])}</span></div>`).join('')}</div>
+        ${first ? `<div class="reward">${GEM_SVG}<b>+2</b><span>Episode complete</span></div><button class="btn block btn-double" data-double>▶ Watch an ad · Double it <span class="dbl-gem">${GEM_SVG}+2</span></button>` : ''}
         ${next ? `<button class="btn primary block" style="margin-top:18px" data-next>Next: Episode ${next.no} · <span style="display:inline-flex;align-items:center;gap:4px">${KEY_SVG}1</span></button>` : `<div class="card" style="margin-top:18px"><b class="cond gold">Episode ${NEXT_TEASER.no}: ${NEXT_TEASER.title}, coming soon</b><div class="small muted">Turn on notifications so you don't miss it.</div></div>`}
         <button class="btn ghost block" style="margin-top:8px" data-book>Episodes</button>
+        <div class="rel-sum">${Object.entries(REL_KEYS).map(([k, l]) => `<div class="rel-row" style="--c:${CAST[k].col}"><span>${l}</span><span>${relHearts(s.rel[k])}</span></div>`).join('')}</div>
       </div></div>`);
     Sfx.stinger(); if (first) setTimeout(() => { Sfx.coin(); Burst.sparks(innerWidth / 2, innerHeight * .45, 40, '#7ef0ff'); }, 900);
     if (next) $('[data-next]', el).onclick = () => this.tryStart(nextIdx);
     const dbl = $('[data-double]', el);
-    if (dbl) dbl.onclick = async () => { const ok = await this.watchAd('double', dbl, () => { this.st.diamonds += 2; toast(`${GEM_SVG} +2 diamonds`); }); if (ok) dbl.remove(); };
+    if (dbl) dbl.onclick = async () => {
+      const ok = await this.watchAd('double', dbl, () => { this.st.diamonds += 2; toast(`${GEM_SVG} +2 diamonds`); });
+      if (ok) { dbl.outerHTML = `<div class="dbl-done">✓ Doubled · ${GEM_SVG}+4 this episode</div>`; Burst.sparks(innerWidth / 2, innerHeight * .42, 40, '#7ef0ff'); }
+    };
     $('[data-book]', el).onclick = () => this.bookScreen();
     this.scheduleReminders();
     if (e.no >= 3 && !s.notifyAsked && !Notify.granted()) setTimeout(() => this.askNotify(false), 2200);

@@ -556,3 +556,11 @@ input { font: inherit; }
 /* Sheets size to their content (up to max-height) and scroll inside; the page-level
    .scroll rule (flex-basis 0) would otherwise collapse them to zero height. */
 .sheet > .scroll { flex: 0 1 auto; min-height: 0; }
+
+/* End card: the double-reward button sits right under the reward, above Next */
+.btn-double { margin-top: 12px; height: 58px; color: #1a0c00; background: linear-gradient(135deg, #fff1b8, #ffd166 40%, #ffb020); box-shadow: 0 10px 30px -8px rgba(255,209,102,.8), inset 0 1px 0 rgba(255,255,255,.6); animation: dblPulse 1.8s ease-in-out infinite; }
+.btn-double::after { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.6) 50%, transparent 70%); transform: translateX(-120%); animation: shine 2.4s .6s infinite; }
+.btn-double .dbl-gem { display: inline-flex; align-items: center; gap: 3px; margin-left: 6px; padding: 3px 9px; border-radius: 99px; background: rgba(26,12,0,.85); color: #dffbff; }
+@keyframes dblPulse { 50% { transform: scale(1.025); } }
+.dbl-done { margin-top: 12px; padding: 14px; border-radius: 14px; background: rgba(46,196,182,.14); border: 1px solid rgba(46,196,182,.5); font-family: 'Barlow'; font-weight: 800; letter-spacing: .04em; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.ep-end .rel-sum { margin-top: 22px; }

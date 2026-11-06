@@ -41,6 +41,9 @@ const Sfx = (() => {
   const api = {
     init,
     setMuted(m) { muted = m; if (master) master.gain.value = m ? 0 : 0.8; },
+    // stop every sound instantly when the app goes to the background, resume when it returns
+    suspend() { try { if (ctx && ctx.state === 'running') ctx.suspend(); } catch (e) {} },
+    resume() { try { if (ctx && ctx.state === 'suspended' && !document.hidden) ctx.resume(); } catch (e) {} },
     get muted() { return muted; },
     tap() { tone(520, .07, { type: 'triangle', gain: .12, slide: 180 }); },
     select() { tone(660, .09, { type: 'triangle', gain: .14 }); tone(990, .12, { type: 'triangle', gain: .1, delay: .05 }); },
@@ -136,3 +139,6 @@ function haptic(ms) {
     else if (navigator.vibrate) navigator.vibrate(ms);
   } catch (e) {}
 }
+
+// Screen off / app switched / tab hidden: silence everything
+document.addEventListener('visibilitychange', () => { if (document.hidden) Sfx.suspend(); else Sfx.resume(); });

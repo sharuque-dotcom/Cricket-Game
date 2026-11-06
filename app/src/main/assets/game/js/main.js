@@ -583,8 +583,8 @@ async function ending(id) {
 
 // ---------- Android lifecycle hooks ----------
 window.GG = {
-  onPause() { Sfx.crowd(false); Sfx.ambience('off'); try { Story.scheduleReminders(); } catch (e) {} },
-  onResume() {},
+  onPause() { Sfx.suspend(); try { Story.scheduleReminders(); } catch (e) {} },
+  onResume() { Sfx.resume(); },
   onBack() {
     if (UI.sheet) { closeSheet(); return 'handled'; }
     const now = Date.now();
@@ -602,5 +602,6 @@ window.GG = {
 (async function boot() {
   try { if (localStorage.getItem('gg_muted')) Sfx.setMuted(true); } catch (e) {}
   try { await Promise.race([Promise.all([document.fonts.ready, Art.load()]), sleep(4000)]); } catch (e) {}
+  Art.applyFallbacks();
   titleScreen();
 })();

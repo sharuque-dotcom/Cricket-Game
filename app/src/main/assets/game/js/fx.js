@@ -119,7 +119,8 @@ const Burst = (() => {
 // Drop images into game/img/ with these names (jpg). Missing ones fall back to the procedural look.
 const ART_NAMES = ['title', 'intro', 'ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'bd_maidan', 'bd_stadium_day', 'bd_stadium_night',
   'ev_stall', 'ev_pandey', 'ev_rival', 'ev_bribe', 'ev_maa', 'ev_bookie', 'ev_party', 'ev_call', 'end_glory', 'end_stall',
-  'bg_home', 'bg_street_dusk', 'bg_club_match', 'bg_clubhouse_wall', 'bg_mandi_night', 'cover_fixer', 'cover_bollywood'];
+  'bg_home', 'bg_street_dusk', 'bg_club_match', 'bg_clubhouse_wall', 'bg_mandi_night', 'cover_fixer', 'cover_bollywood',
+  'bg_burnt_stall', 'bg_hospital', 'bg_tennis_night', 'bg_hostel', 'bg_dressing_room', 'bg_hotel_lobby', 'bg_newsroom', 'bg_hearing_room', 'bg_stall_rebuilt'];
 const Art = {
   imgs: {},
   load() {
@@ -129,12 +130,15 @@ const Art = {
       im.onerror = () => res();
       im.src = 'img/' + n + '.jpg';
     })).concat(['papa', 'pinky', 'pandey', 'vikrant', 'neha', 'safari', 'ramesh', 'goon',
-      'papa_angry', 'papa_sad', 'neha_happy', 'neha_serious', 'vikrant_angry', 'pandey_proud'].map(c => new Promise(res => {
+      'papa_angry', 'papa_sad', 'neha_happy', 'neha_serious', 'vikrant_angry', 'pandey_proud',
+      'chauhan', 'selector', 'maa', 'sunny', 'rocky', 'tara', 'rathore'].map(c => new Promise(res => {
       const im = new Image(); im.onload = () => { this.imgs['char_' + c] = im; res(); }; im.onerror = () => res(); im.src = 'img/char_' + c + '.webp';
     }))));
   },
   has(n) { return !!this.imgs[n]; },
-  url(n) { return 'img/' + n + '.jpg'; },
+  url(n) { return this.imgs[n] ? this.imgs[n].getAttribute('src') : 'img/' + n + '.jpg'; },
+  // new scenes borrow the closest existing painting until their own art is added
+  applyFallbacks() { const F = typeof BG_FALLBACK !== 'undefined' ? BG_FALLBACK : {}; for (const k in F) if (!this.imgs[k] && this.imgs[F[k]]) this.imgs[k] = this.imgs[F[k]]; },
   // full-bleed background layer with slow Ken Burns drift
   bg(n, extra = '') { return this.has(n) ? `<div class="art-bg" style="background-image:url('${this.url(n)}');${extra}"></div>` : ''; },
 };
@@ -146,6 +150,7 @@ const FX_FOR_ART = {
   ev_stall: 'embers', ev_pandey: 'dust', ev_rival: 'dust', ev_bribe: 'dust', ev_maa: 'dust', ev_bookie: 'bokeh', ev_party: 'bokeh', ev_call: 'bokeh',
   end_glory: 'dust', end_stall: 'embers',
   bg_home: 'dust', bg_street_dusk: 'fireflies', bg_club_match: 'dust', bg_clubhouse_wall: 'dust', bg_mandi_night: 'rain+bokeh', cover_fixer: 'rain', cover_bollywood: 'bokeh',
+  bg_burnt_stall: 'embers', bg_hospital: 'dust', bg_tennis_night: 'bokeh', bg_hostel: 'dust', bg_dressing_room: 'dust', bg_hotel_lobby: 'bokeh', bg_newsroom: 'dust', bg_hearing_room: 'dust', bg_stall_rebuilt: 'dust',
 };
 const DAY_ART = new Set(['title', 'ch1', 'ch2', 'ch3', 'bd_stadium_day', 'bg_club_match', 'bg_clubhouse_wall', 'ev_pandey', 'ev_rival', 'end_glory']);
 

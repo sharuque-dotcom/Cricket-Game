@@ -118,11 +118,13 @@ public class MainActivity extends Activity {
         super.onPause();
         web.evaluateJavascript("window.GG && GG.onPause && GG.onPause()", null);
         web.onPause();
+        web.pauseTimers();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        web.resumeTimers();
         web.onResume();
         web.evaluateJavascript("window.GG && GG.onResume && GG.onResume()", null);
     }
