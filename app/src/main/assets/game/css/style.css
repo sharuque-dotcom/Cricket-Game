@@ -525,3 +525,16 @@ input { font: inherit; }
 .story-scene .godrays { z-index: auto; }
 .st-bgwrap.punch { animation: punch .55s var(--ease-out); }
 @keyframes punch { 0% { scale: 1.08; } 100% { scale: 1; } }
+
+/* Reveal moments */
+.st-dark { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.4s ease; background: radial-gradient(circle at 50% 42%, rgba(20,0,4,.55), rgba(0,0,0,.96) 65%); }
+.reveal-on .st-dark { opacity: 1; }
+.st-bgwrap { transition: scale 5s cubic-bezier(.2,.6,.2,1); }
+.reveal-on .st-bgwrap { scale: 1.14; }
+.reveal-on .chr { filter: brightness(.22) saturate(.4) !important; transform: none !important; }
+.reveal-on .st-hud { opacity: .25; transition: opacity 1s; }
+.cap.reveal { top: 38%; animation: revealIn 1.6s var(--ease-out) both; }
+@keyframes revealIn { from { opacity: 0; transform: scale(1.25); filter: blur(10px); } to { opacity: 1; transform: none; filter: none; } }
+.cap.reveal .cap-in { background: none; font-family: 'Bebas'; font-weight: 400; font-size: 46px; line-height: .98; letter-spacing: .03em; color: #fff3ea; text-shadow: 0 0 28px rgba(230,57,70,.75), 0 4px 0 rgba(0,0,0,.6); padding: 0 24px; }
+.cap.reveal .cap-in::before { display: none; }
+.cap.reveal .cap-in::after { left: 30%; right: 30%; bottom: -16px; height: 3px; background: linear-gradient(90deg, transparent, #e63946, transparent); }

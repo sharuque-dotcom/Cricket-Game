@@ -232,7 +232,7 @@ const EPISODES = [
     { n: 'It\'s raining. You get home. The stall\'s shutter is half down. Two motorbikes are parked outside, engines running.' },
     { enter: 'goon', side: 'right' },
     { s: 'goon', t: 'Sunday was yesterday, Satish ji.', mood: 'shout' },
-    { n: 'One of them has Papa by the collar.' },
+    { n: 'One of them has Papa by the collar.', reveal: true },
     { end: true, cliff: 'Ramesh-ji\'s men are at the stall. And Papa is alone.' },
   ] },
 
@@ -327,8 +327,8 @@ const EPISODES = [
     { n: 'Number one: Vikrant Chauhan. Of course.' },
     { n: 'Twelve. Thirteen. Fourteen. Fifteen. Sixteen.' },
     { n: 'Your name is there.' },
-    { n: 'But someone has drawn a line straight through it.' },
-    { n: 'In red pen.' },
+    { n: 'But someone has drawn a line straight through it.', reveal: true },
+    { n: 'In red pen.', reveal: true },
     { end: true, cliff: 'Who crossed out your name? And why does Neha always carry a red pen?' },
   ] },
 ];

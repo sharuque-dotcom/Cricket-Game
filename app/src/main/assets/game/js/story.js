@@ -184,7 +184,7 @@ const Story = {
     const el = UI.show(`<div class="screen story-scene">
       <div class="st-bgwrap"><div class="st-bg a"></div><div class="st-bg b"></div></div>
       <div class="st-grad"></div>
-      <canvas class="scene-fx" data-fx="dust" data-story-fx></canvas><div class="godrays" data-story-rays></div>
+      <canvas class="scene-fx" data-fx="dust" data-story-fx></canvas><div class="godrays" data-story-rays></div><div class="st-dark"></div>
       <div class="st-stage"><div class="chr left" data-side="left"></div><div class="chr right" data-side="right"></div></div>
       ${this.hudHtml(`EP ${this.ep.no} · ${this.ep.title}`)}
       <div class="st-layer" data-layer></div>
@@ -208,6 +208,7 @@ const Story = {
     const mode = this.weather || SceneFX.for(name);
     const c = $('[data-story-fx]', this.el); if (c) SceneFX.set(c, mode);
     const r = $('[data-story-rays]', this.el); if (r) r.style.display = mode === 'dust' ? '' : 'none';
+    Sfx.ambience(this.weather === 'rain' ? 'rain' : ({ intro: 'stall', ch1: 'maidan', ch2: 'maidan', ch3: 'maidan', bd_maidan: 'night', ev_call: 'room' }[name] || 'night'));
   },
 
   portraitHtml(id) {
@@ -250,9 +251,12 @@ const Story = {
   async line(kind, who, text, mood) {
     const layer = $('[data-layer]', this.el);
     text = this.fill(text);
+    const reveal = mood === 'reveal';
+    this.el.classList.toggle('reveal-on', reveal);
     if (kind === 'n') {
       this.focus(null);
-      layer.innerHTML = `<div class="cap"><div class="cap-in"><span data-tx></span></div></div>`;
+      layer.innerHTML = `<div class="cap ${reveal ? 'reveal' : ''}"><div class="cap-in"><span data-tx></span></div></div>`;
+      if (reveal) { Sfx.boom(); haptic(220); setTimeout(() => Sfx.heartbeat(), 700); setTimeout(() => Sfx.heartbeat(), 1800); }
     } else if (kind === 'th') {
       this.focus(null);
       layer.innerHTML = `<div class="thought"><div class="th-label">${esc(this.st.name.split(' ')[0])} · thinking</div><div class="th-tx" data-tx></div><i class="d1"></i><i class="d2"></i><i class="d3"></i></div>`;
@@ -268,7 +272,7 @@ const Story = {
       if (shout) { shake(); haptic(40); Sfx.edge(); const bw = $('.st-bgwrap', this.el); bw.classList.remove('punch'); void bw.offsetWidth; bw.classList.add('punch'); }
     }
     const tx = $('[data-tx]', layer);
-    await this.typeInto(tx, text, kind === 'n' ? 26 : 20);
+    await this.typeInto(tx, text, reveal ? 75 : kind === 'n' ? 26 : 20);
     layer.firstElementChild.classList.add('ready');
     await this.waitTap();
   },
@@ -341,7 +345,7 @@ const Story = {
       if (n.if) { if (this.st.flags[n.if]) i = this.labels[n.go] - 1; continue; }
       if (n.go) { i = this.labels[n.go] - 1; continue; }
       if (n.fx || n.set) { this.applyFx(n.fx, n.set); if (!n.s && !n.n) continue; }
-      if (n.n) { await this.line('n', null, n.n); continue; }
+      if (n.n) { await this.line('n', null, n.n, n.reveal ? 'reveal' : null); continue; }
       if (n.th) { await this.line('th', 'me', n.th); continue; }
       if (n.s) { await this.line('s', n.s, n.t, n.mood); continue; }
       if (n.phone) { await this.phone(n.phone, n.msgs); continue; }

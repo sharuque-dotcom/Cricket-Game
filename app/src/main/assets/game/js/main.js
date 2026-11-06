@@ -20,6 +20,7 @@ const UI = {
     if (old) { old.classList.add('exit'); setTimeout(() => old.remove(), 360); }
     this.cur = el;
     try { SceneFX.scan(el); } catch (e) {}
+    if (!el.classList.contains('story-scene')) Sfx.ambience('off');
     return el;
   },
   waitTap(sel, root) {
