@@ -335,7 +335,31 @@ const Moments = (() => {
   }
 
   // Batter: drawn from behind (bat view) or front (bowl view), with a swinging bat
+  // Painted sprites (fall back to stick figures if missing)
+  function sprite(name) { return typeof Art !== 'undefined' && Art.imgs['char_' + name]; }
+  function drawSprite(im, x, z, heightM, alpha = 1, flip = false) {
+    const [px, py, u] = P(x, 0, z);
+    const h = heightM * u, w = h * im.width / im.height;
+    g.save(); g.globalAlpha = alpha; g.translate(px, py); if (flip) g.scale(-1, 1);
+    g.shadowColor = 'rgba(0,0,0,.45)'; g.shadowBlur = Math.min(18, u * .2);
+    g.drawImage(im, -w / 2, -h, w, h); g.restore();
+    // ground shadow
+    g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(px, py, w * .35, Math.max(2, u * .06), 0, 0, 6.283); g.fill();
+  }
+  function batterPose() {
+    const sw = batter.swing; if (!sw) return 'stance';
+    const k = (clock - sw.t0) / 260;
+    if (k < .35) return 'backlift';
+    return { drive: 'drive', pull: 'pull', loft: 'loft', defend: 'defend', leave: 'leave', miss: 'drive' }[sw.kind] || 'drive';
+  }
+
   function drawBatter() {
+    {
+      const near = view === 'bat';
+      const pose = batterPose();
+      const im = near ? sprite('sp_' + pose) : sprite(pose === 'stance' ? 'sp_fstance' : 'sp_fswing');
+      if (im) { drawSprite(im, near ? -.42 : -.3, .55, near ? 2.05 : 2.0, near ? .96 : 1); return; }
+    }
     const near = view === 'bat';
     const bx = near ? -.42 : -.3, bz = .55;
     const [px, py, u] = P(bx, 0, bz);
@@ -373,6 +397,10 @@ const Moments = (() => {
   }
 
   function drawBowlerFar() {
+    {
+      const im = sprite(bowler.phase === 'run' || bowler.phase === 'idle' ? 'sp_run' : 'sp_deliver');
+      if (im) { drawSprite(im, .45, bowler.z, 1.95); return; }
+    }
     // Runs in from deep behind the far stumps; only in bat view
     const z = bowler.z;
     const kit = opt.bowlKit || '#2ec4b6';
