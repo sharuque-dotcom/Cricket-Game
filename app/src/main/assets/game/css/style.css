@@ -551,3 +551,7 @@ input { font: inherit; }
 .chr.left .cut { margin-left: -4%; } .chr.right .cut { margin-right: -4%; }
 .chr .cut.swap { animation: exprSwap .4s var(--ease-spring); }
 @keyframes exprSwap { 0% { transform: translateY(8px) scale(.98); opacity: .6; } 100% { transform: none; opacity: 1; } }
+
+/* Sheets size to their content (up to max-height) and scroll inside; the page-level
+   .scroll rule (flex-basis 0) would otherwise collapse them to zero height. */
+.sheet > .scroll { flex: 0 1 auto; min-height: 0; }
