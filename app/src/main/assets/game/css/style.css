@@ -544,3 +544,10 @@ input { font: inherit; }
 .fmt-table td { text-align: right; padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,.05); }
 .fmt-table th:first-child, .fmt-table td:first-child { text-align: left; color: var(--text); }
 .fmt-table td:first-child { color: var(--gold); font-weight: 800; }
+
+/* Cut-out characters */
+.chr { height: 70%; }
+.chr .cut { position: relative; height: 100%; width: auto; max-width: 118%; object-fit: contain; object-position: bottom; filter: drop-shadow(0 0 22px rgba(0,0,0,.65)) drop-shadow(0 0 2px rgba(0,0,0,.6)); }
+.chr.left .cut { margin-left: -4%; } .chr.right .cut { margin-right: -4%; }
+.chr .cut.swap { animation: exprSwap .4s var(--ease-spring); }
+@keyframes exprSwap { 0% { transform: translateY(8px) scale(.98); opacity: .6; } 100% { transform: none; opacity: 1; } }

@@ -213,7 +213,7 @@ const Story = {
 
   portraitHtml(id) {
     const c = CAST[id];
-    if (Art.has('char_' + id)) return `<img class="cut" src="${Art.imgs['char_' + id].src}" alt="">`;
+    if (Art.has('char_' + id)) return `<img class="cut" src="${Art.imgs['char_' + id].src}" alt="" draggable="false">`;
     // Painted-card fallback: framed character card using their event art, or a stylised silhouette
     const art = c.art && Art.has(c.art) ? `<div class="card-art" style="background-image:url('${Art.url(c.art)}')"></div>` : `<svg class="sil" viewBox="0 0 200 260"><defs><linearGradient id="sg_${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c.col}" stop-opacity=".55"/><stop offset=".5" stop-color="#1a1526"/><stop offset="1" stop-color="#0b0a12"/></linearGradient></defs><path d="M100 30c22 0 38 18 38 42 0 18-9 33-22 39v10c34 6 62 26 70 60l6 79H8l6-79c8-34 36-54 70-60v-10c-13-6-22-21-22-39 0-24 16-42 38-42z" fill="url(#sg_${id})" stroke="${c.col}" stroke-width="2.5" stroke-opacity=".9"/></svg>`;
     return `<div class="chr-card" style="--c:${c.col}">${art}<div class="chr-card-shade"></div><div class="chr-card-name">${c.name}</div></div>`;
@@ -230,6 +230,14 @@ const Story = {
   removeChar(which) {
     const sides = which === 'all' ? ['left', 'right'] : ['left', 'right'].filter(sd => this.scene[sd] === which);
     sides.forEach(sd => { this.scene[sd] = null; const slot = $(`.chr.${sd}`, this.el); slot.classList.remove('in', 'in-instant', 'talk'); slot.classList.add('out'); setTimeout(() => { if (!this.scene[sd]) slot.innerHTML = ''; }, 400); });
+  },
+  // swap to an expression portrait if we have one (falls back to the base portrait)
+  expr(id, ex) {
+    const slot = $$('.chr', this.el).find(c => c.dataset.id === id); if (!slot) return;
+    const img = $('.cut', slot); if (!img) return;
+    const key = ex && Art.has('char_' + id + '_' + ex) ? 'char_' + id + '_' + ex : 'char_' + id;
+    const src = Art.imgs[key].src;
+    if (img.getAttribute('src') !== src) { img.src = src; img.classList.remove('swap'); void img.offsetWidth; img.classList.add('swap'); }
   },
   focus(id) {
     $$('.chr', this.el).forEach(c => c.classList.toggle('talk', !!id && c.dataset.id === id && !!this.scene[c.dataset.side]));
@@ -248,7 +256,7 @@ const Story = {
     });
   },
 
-  async line(kind, who, text, mood) {
+  async line(kind, who, text, mood, ex) {
     const layer = $('[data-layer]', this.el);
     text = this.fill(text);
     const reveal = mood === 'reveal';
@@ -264,6 +272,8 @@ const Story = {
       const c = CAST[who]; const side = this.scene.left === who ? 'left' : this.scene.right === who ? 'right' : 'center';
       this.focus(who);
       const shout = mood === 'shout';
+      const autoEx = ex || (shout ? 'angry' : mood === 'soft' ? { papa: 'sad', neha: 'happy', pandey: 'proud' }[who] : null);
+      this.expr(who, autoEx);
       layer.innerHTML = `<div class="bub ${side} ${mood || ''}" style="--c:${c.col}">
         ${shout ? burstSvg() : ''}
         <svg class="tail" viewBox="0 0 40 30"><path d="M4 30 L18 2 L36 30" /></svg>
@@ -347,7 +357,7 @@ const Story = {
       if (n.fx || n.set) { this.applyFx(n.fx, n.set); if (!n.s && !n.n) continue; }
       if (n.n) { await this.line('n', null, n.n, n.reveal ? 'reveal' : null); continue; }
       if (n.th) { await this.line('th', 'me', n.th); continue; }
-      if (n.s) { await this.line('s', n.s, n.t, n.mood); continue; }
+      if (n.s) { await this.line('s', n.s, n.t, n.mood, n.ex); continue; }
       if (n.phone) { await this.phone(n.phone, n.msgs); continue; }
       if (n.choice) {
         const o = await this.choice(n.choice);

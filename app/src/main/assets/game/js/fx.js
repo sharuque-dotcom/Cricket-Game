@@ -127,8 +127,9 @@ const Art = {
       im.onload = () => { this.imgs[n] = im; res(); };
       im.onerror = () => res();
       im.src = 'img/' + n + '.jpg';
-    })).concat(['papa', 'pinky', 'pandey', 'vikrant', 'neha', 'safari', 'ramesh', 'goon'].map(c => new Promise(res => {
-      const im = new Image(); im.onload = () => { this.imgs['char_' + c] = im; res(); }; im.onerror = () => res(); im.src = 'img/char_' + c + '.png';
+    })).concat(['papa', 'pinky', 'pandey', 'vikrant', 'neha', 'safari', 'ramesh', 'goon',
+      'papa_angry', 'papa_sad', 'neha_happy', 'neha_serious', 'vikrant_angry', 'pandey_proud'].map(c => new Promise(res => {
+      const im = new Image(); im.onload = () => { this.imgs['char_' + c] = im; res(); }; im.onerror = () => res(); im.src = 'img/char_' + c + '.webp';
     }))));
   },
   has(n) { return !!this.imgs[n]; },
