@@ -289,3 +289,23 @@ const Ads = {
   },
   result(placement, r) { const f = this.pending[placement]; if (f) { delete this.pending[placement]; f(r); } },
 };
+
+// ---------- Local notifications (scheduled on the phone, no server) ----------
+const Notify = {
+  KEY_ID: 101, COMEBACK_ID: 102,
+  native() { return !!(window.AndroidBridge && AndroidBridge.scheduleNotify); },
+  state() { try { return this.native() ? AndroidBridge.notifyState() : 'prompt'; } catch (e) { return 'prompt'; } },
+  granted() { return this.state() === 'granted'; },
+  _resolve: null,
+  // shows Android's permission dialog; resolves true/false
+  request() {
+    return new Promise(res => {
+      if (!this.native()) { res(false); return; }
+      this._resolve = res;
+      try { AndroidBridge.requestNotify(); } catch (e) { res(false); }
+    });
+  },
+  result(granted) { const r = this._resolve; this._resolve = null; if (r) r(!!granted); },
+  schedule(id, delayMs, title, body) { if (this.native()) try { AndroidBridge.scheduleNotify(id, Math.round(delayMs), title, body); } catch (e) {} },
+  cancel(id) { if (this.native()) try { AndroidBridge.cancelNotify(id); } catch (e) {} },
+};

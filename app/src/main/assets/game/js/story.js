@@ -88,7 +88,7 @@ const Story = {
               <div class="grow" style="text-align:left"><div class="tiny">Episode ${e.no}</div><b class="cond" style="font-size:18px">${e.title}</b></div>
               <div class="ep-cta">${done ? '<span class="tiny">Replay</span>' : locked ? '🔒' : `<span class="cost-tag">${KEY_SVG}1</span>`}</div></button>`;
           }).join('')}
-            <div class="ep-row locked soon"><div class="ep-thumb" style="background-image:url('${Art.has('bg_mandi_night') ? Art.url('bg_mandi_night') : ''}')"><span>4</span></div><div class="grow" style="text-align:left"><div class="tiny" style="color:var(--saffron)">New episode in 6 days</div><b class="cond" style="font-size:18px">The Red Pen</b></div><div class="ep-cta">🔔</div></div>
+            <div class="ep-row locked soon"><div class="ep-thumb" style="background-image:url('${Art.has(NEXT_TEASER.art) ? Art.url(NEXT_TEASER.art) : ''}')"><span>${NEXT_TEASER.no}</span></div><div class="grow" style="text-align:left"><div class="tiny" style="color:var(--saffron)">${NEXT_TEASER.note}</div><b class="cond" style="font-size:18px">${NEXT_TEASER.title}</b></div><div class="ep-cta">${Notify.granted() ? '✅' : '🔔'}</div></div>
           </div>
           <div class="tiny" style="margin:16px 2px 8px">${s.keys < KEY_MAX ? `Next key in ${this.nextKeyIn()}` : 'Keys full'}</div>
           <div class="tiny" style="margin:22px 2px 10px">More books</div>
@@ -98,7 +98,7 @@ const Story = {
     this.bindHud(el, false);
     $$('[data-ep]', el).forEach(btn => btn.onclick = () => this.tryStart(+btn.dataset.ep));
     if (s.cur) $('[data-resume]', el).onclick = () => { Sfx.select(); this.resume(); };
-    $('.ep-row.soon', el).onclick = () => toast('🔔 We\'ll ping you when Episode 4 drops.');
+    $('.ep-row.soon', el).onclick = () => this.askNotify(true);
   },
 
   tryStart(i) {
@@ -107,7 +107,7 @@ const Story = {
     this.refillKeys();
     if (s.keys < 1) return this.noKeys();
     s.keys--; if (s.keys === KEY_MAX - 1) s.keyTs = Date.now();
-    this.save(); Sfx.coin(); this.startEpisode(i, false);
+    this.save(); this.scheduleReminders(); Sfx.coin(); this.startEpisode(i, false);
   },
 
   noKeys() {
@@ -424,7 +424,7 @@ const Story = {
     const skill = 36 + (f.tyre ? 7 : 0) + (f.wonDuel ? 3 : 0) + Math.max(0, s.rel.pandey);
     const steady = f.focused || f.calm;
     const ctx = {
-      batSkill: skill, bowlSkill: cfg.kind === 'duel' ? 40 : 42, ready: f.pinkyBox ? .03 : 0,
+      batSkill: skill, bowlSkill: (cfg.kind === 'duel' ? 40 : 42) + (cfg.hard && f[cfg.hard] ? 7 : 0), ready: f.pinkyBox ? .03 : 0,
       window: .07 + (f.drill ? .03 : 0), readFrac: f.drill ? .15 : .55, slow: 1.12,
     };
     ctx.wobble = ctx.window * (steady ? .45 : .8) * (f.drill ? .7 : 1); ctx.wobbleF = steady ? 5 : 8;
@@ -448,7 +448,7 @@ const Story = {
     UI.pressure(false);
     const win = cfg.kind === 'chase' ? runs >= need : !out;
     await sleep(500);
-    Moments.showCall(win ? (cfg.kind === 'chase' ? 'WON IT!' : 'SURVIVED!') : (cfg.kind === 'chase' ? 'SO CLOSE' : 'BOWLED'), win ? 'call-six' : 'call-out', win ? 'The maidan erupts.' : 'Silence.');
+    Moments.showCall(win ? (cfg.winCall || (cfg.kind === 'chase' ? 'WON IT!' : 'SURVIVED!')) : (cfg.loseCall || (cfg.kind === 'chase' ? 'SO CLOSE' : 'BOWLED')), win ? 'call-six' : 'call-out', win ? (cfg.winSub || 'The maidan erupts.') : (cfg.loseSub || 'Silence.'));
     if (win) { Burst.confetti(180); Sfx.cheer(1.4); haptic(150); } else Sfx.groan();
     await sleep(2200);
     Moments.close();
@@ -469,7 +469,7 @@ const Story = {
         <div class="cliff">${esc(this.fill(n.cliff))}</div>
         ${first ? `<div class="reward">${GEM_SVG}<b>+2</b><span>Episode complete</span></div><button class="btn ghost" style="margin:10px auto 0;height:42px;font-size:13px" data-double>▶ Watch an ad · double it (+2 ${GEM_SVG})</button>` : ''}
         <div class="rel-sum">${Object.entries(REL_KEYS).map(([k, l]) => `<div class="rel-row" style="--c:${CAST[k].col}"><span>${l}</span><span>${relHearts(s.rel[k])}</span></div>`).join('')}</div>
-        ${next ? `<button class="btn primary block" style="margin-top:18px" data-next>Next: Episode ${next.no} · <span style="display:inline-flex;align-items:center;gap:4px">${KEY_SVG}1</span></button>` : `<div class="card" style="margin-top:18px"><b class="cond gold">Episode 4 drops next week</b><div class="small muted">Turn on notifications so you don't miss it.</div></div>`}
+        ${next ? `<button class="btn primary block" style="margin-top:18px" data-next>Next: Episode ${next.no} · <span style="display:inline-flex;align-items:center;gap:4px">${KEY_SVG}1</span></button>` : `<div class="card" style="margin-top:18px"><b class="cond gold">Episode ${NEXT_TEASER.no}: ${NEXT_TEASER.title}, coming soon</b><div class="small muted">Turn on notifications so you don't miss it.</div></div>`}
         <button class="btn ghost block" style="margin-top:8px" data-book>Episodes</button>
       </div></div>`);
     Sfx.stinger(); if (first) setTimeout(() => { Sfx.coin(); Burst.sparks(innerWidth / 2, innerHeight * .45, 40, '#7ef0ff'); }, 900);
@@ -477,6 +477,45 @@ const Story = {
     const dbl = $('[data-double]', el);
     if (dbl) dbl.onclick = async () => { const ok = await this.watchAd('double', dbl, () => { this.st.diamonds += 2; toast(`${GEM_SVG} +2 diamonds`); }); if (ok) dbl.remove(); };
     $('[data-book]', el).onclick = () => this.bookScreen();
+    this.scheduleReminders();
+    if (e.no >= 3 && !s.notifyAsked && !Notify.granted()) setTimeout(() => this.askNotify(false), 2200);
+  },
+
+  // Soft pre-prompt first; Android's own dialog only if the player says yes.
+  askNotify(fromBell) {
+    const st = Notify.state();
+    if (st === 'granted') { toast('🔔 Notifications are on. We\'ll tell you when the story continues.'); return; }
+    if (st === 'denied' && !fromBell) return;
+    openSheet(`<div class="pad" style="text-align:center">
+      <div style="font-size:54px;line-height:1;margin:4px 0 6px">🔔</div>
+      <div class="display" style="font-size:36px">Don't miss what happens next</div>
+      <div class="small muted" style="margin:8px auto 0;max-width:300px">We'll tell you when your free key refills and when the next episode is waiting. No spam.</div>
+      ${st === 'denied' ? '<div class="small" style="margin-top:10px;color:var(--gold)">Notifications are off for this app. Turn them on in Android Settings → Apps → Gully to Glory → Notifications.</div>' : ''}
+      <button class="btn primary block" style="margin-top:16px" data-yes ${st === 'denied' ? 'disabled' : ''}>Notify me</button>
+      <button class="btn ghost block" style="margin-top:8px" data-no>Not now</button></div>`, sh => {
+      $('[data-yes]', sh).onclick = async () => {
+        this.st.notifyAsked = true; this.save(); closeSheet();
+        const ok = await Notify.request();
+        if (ok) { toast('🔔 You\'re in. We\'ll ping you.'); this.scheduleReminders(); } else toast('No problem. You can turn them on any time.');
+        if (document.querySelector('.story-book')) this.bookScreen();
+      };
+      $('[data-no]', sh).onclick = () => { this.st.notifyAsked = true; this.save(); closeSheet(); };
+    });
+  },
+
+  // Key-refill reminder + next-day comeback nudge built from the latest cliffhanger.
+  scheduleReminders() {
+    if (!this.st || !Notify.granted()) return;
+    const s = this.st;
+    this.refillKeys();
+    if (s.keys < KEY_MAX) {
+      const due = Math.max(60 * 1000, KEY_MS - (Date.now() - s.keyTs));
+      const nextEp = EPISODES.find(e => !s.done[e.id]);
+      Notify.schedule(Notify.KEY_ID, due, '🔑 Your key is ready', nextEp ? `Episode ${nextEp.no}, "${nextEp.title}", is waiting for you.` : 'Replay an episode and try a different choice.');
+    } else Notify.cancel(Notify.KEY_ID);
+    const lastDone = [...EPISODES].reverse().find(e => s.done[e.id]);
+    const cliff = lastDone ? (lastDone.nodes.find(n => n.end) || {}).cliff : null;
+    Notify.schedule(Notify.COMEBACK_ID, 22 * 60 * 60 * 1000, 'Gully to Glory', cliff ? this.fill(cliff) : 'Rajgarh is waiting. Your story isn\'t over.');
   },
 };
 

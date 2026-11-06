@@ -2,6 +2,10 @@ package com.gullytoglory.game;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -59,6 +63,7 @@ public class MainActivity extends Activity {
         web.setWebChromeClient(new WebChromeClient());
         web.addJavascriptInterface(new Bridge(this), "AndroidBridge");
         MobileAds.initialize(this, status -> loadRewarded());
+        NotifyReceiver.ensureChannel(this);
         setContentView(web);
         hideSystemBars();
         if (Build.VERSION.SDK_INT >= 30) {
@@ -133,6 +138,48 @@ public class MainActivity extends Activity {
     @Override
     public void onBackPressed() { handleBack(); }
 
+    // ---------- Local notifications ----------
+    private static final int REQ_NOTIFY = 7;
+
+    String notifyState() {
+        if (Build.VERSION.SDK_INT < 33) return "granted";
+        if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) return "granted";
+        return getSharedPreferences("gg", MODE_PRIVATE).getBoolean("askedNotify", false) ? "denied" : "prompt";
+    }
+
+    void requestNotify() {
+        if (Build.VERSION.SDK_INT < 33) { sendNotifyResult(true); return; }
+        getSharedPreferences("gg", MODE_PRIVATE).edit().putBoolean("askedNotify", true).apply();
+        requestPermissions(new String[]{ android.Manifest.permission.POST_NOTIFICATIONS }, REQ_NOTIFY);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int code, String[] perms, int[] results) {
+        super.onRequestPermissionsResult(code, perms, results);
+        if (code == REQ_NOTIFY) sendNotifyResult(results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void sendNotifyResult(boolean granted) {
+        web.post(() -> web.evaluateJavascript("window.GG && GG.notifyResult && GG.notifyResult(" + granted + ")", null));
+    }
+
+    private PendingIntent notifyIntent(int id, String title, String body) {
+        Intent i = new Intent(this, NotifyReceiver.class).putExtra("id", id).putExtra("title", title).putExtra("body", body);
+        return PendingIntent.getBroadcast(this, id, i, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    void scheduleNotify(int id, long delayMs, String title, String body) {
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (am == null) return;
+        // inexact alarm: no special permission needed, battery friendly
+        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + Math.max(1000, delayMs), notifyIntent(id, title, body));
+    }
+
+    void cancelNotify(int id) {
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (am != null) am.cancel(notifyIntent(id, "", ""));
+    }
+
     // ---------- Rewarded ads ----------
     private void loadRewarded() {
         if (adLoading || rewarded != null) return;
@@ -173,6 +220,18 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public boolean adReady() { return act.rewarded != null; }
+
+        @JavascriptInterface
+        public String notifyState() { return act.notifyState(); }
+
+        @JavascriptInterface
+        public void requestNotify() { act.runOnUiThread(act::requestNotify); }
+
+        @JavascriptInterface
+        public void scheduleNotify(int id, double delayMs, String title, String body) { act.scheduleNotify(id, (long) delayMs, title, body); }
+
+        @JavascriptInterface
+        public void cancelNotify(int id) { act.cancelNotify(id); }
 
         @JavascriptInterface
         public void showRewardedAd(String placement) { act.runOnUiThread(() -> act.showRewarded(placement)); }

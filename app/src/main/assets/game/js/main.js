@@ -583,7 +583,7 @@ async function ending(id) {
 
 // ---------- Android lifecycle hooks ----------
 window.GG = {
-  onPause() { Sfx.crowd(false); },
+  onPause() { Sfx.crowd(false); Sfx.ambience('off'); try { Story.scheduleReminders(); } catch (e) {} },
   onResume() {},
   onBack() {
     if (UI.sheet) { closeSheet(); return 'handled'; }
@@ -593,6 +593,7 @@ window.GG = {
     return 'handled';
   },
   adResult(placement, result) { Ads.result(placement, result); },
+  notifyResult(granted) { Notify.result(granted); },
   // test hook
   _dev: { Game, Match, Moments },
 };
