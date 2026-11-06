@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace = "com.gullytoglory.game"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.gullytoglory.game"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 11
-        versionName = "0.7.0"
+        targetSdk = 36
+        versionCode = 12
+        versionName = "0.7.1"
     }
 
     buildTypes {

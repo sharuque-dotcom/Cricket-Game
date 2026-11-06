@@ -13,6 +13,8 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.graphics.Insets;
+import android.window.OnBackInvokedDispatcher;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -59,6 +61,18 @@ public class MainActivity extends Activity {
         MobileAds.initialize(this, status -> loadRewarded());
         setContentView(web);
         hideSystemBars();
+        if (Build.VERSION.SDK_INT >= 30) {
+            web.setOnApplyWindowInsetsListener((v, insets) -> {
+                Insets c = insets.getInsets(WindowInsets.Type.displayCutout());
+                v.setPadding(c.left, c.top, c.right, c.bottom);
+                return insets;
+            });
+        }
+        // Android 13+ back handling (Android 16 no longer calls onBackPressed)
+        if (Build.VERSION.SDK_INT >= 33) {
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT, this::handleBack);
+        }
 
         if (savedInstanceState != null) {
             web.restoreState(savedInstanceState);
@@ -108,14 +122,16 @@ public class MainActivity extends Activity {
         web.evaluateJavascript("window.GG && GG.onResume && GG.onResume()", null);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onBackPressed() {
-        // Let the game decide; it calls AndroidBridge.exit() if it wants to close.
+    // Let the game decide what back does: close a sheet, or exit on a second press.
+    private void handleBack() {
         web.evaluateJavascript("(window.GG && GG.onBack) ? GG.onBack() : 'exit'", value -> {
             if (value != null && value.contains("exit")) finish();
         });
     }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onBackPressed() { handleBack(); }
 
     // ---------- Rewarded ads ----------
     private void loadRewarded() {
