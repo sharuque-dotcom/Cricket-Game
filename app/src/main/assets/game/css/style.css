@@ -538,3 +538,9 @@ input { font: inherit; }
 .cap.reveal .cap-in { background: none; font-family: 'Bebas'; font-weight: 400; font-size: 46px; line-height: .98; letter-spacing: .03em; color: #fff3ea; text-shadow: 0 0 28px rgba(230,57,70,.75), 0 4px 0 rgba(0,0,0,.6); padding: 0 24px; }
 .cap.reveal .cap-in::before { display: none; }
 .cap.reveal .cap-in::after { left: 30%; right: 30%; bottom: -16px; height: 3px; background: linear-gradient(90deg, transparent, #e63946, transparent); }
+
+.fmt-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-family: 'Barlow'; font-weight: 600; font-size: 13px; font-variant-numeric: tabular-nums; }
+.fmt-table th { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-align: right; padding: 6px 4px; border-bottom: 1px solid var(--line); }
+.fmt-table td { text-align: right; padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,.05); }
+.fmt-table th:first-child, .fmt-table td:first-child { text-align: left; color: var(--text); }
+.fmt-table td:first-child { color: var(--gold); font-weight: 800; }

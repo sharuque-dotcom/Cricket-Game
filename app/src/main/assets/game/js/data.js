@@ -29,9 +29,9 @@ const STAGES = [
     sub: 'Rajgarh, Uttar Pradesh. Age 16. A taped bat, a borrowed pad, and a dream nobody else believes in.',
     team: 'Rajgarh Gymkhana', c1: '#b45309', schedule: 'TMTMTM', venue: 'Company Bagh Maidan, Rajgarh',
     opps: [
-      { name: 'Meerut Lions XI', c2: '#475569', bowler: 'Bunty Tyagi', bowlerType: 'pace', batter: 'Golu Rana', str: 38 },
-      { name: 'Hapur Sporting Club', c2: '#15803d', bowler: 'Sajid "Leggie" Ansari', bowlerType: 'spin', batter: 'Monu Gurjar', str: 42 },
-      { name: 'Chauhan Cricket Academy', c2: '#7c3aed', bowler: 'Vikrant Chauhan', bowlerType: 'pace', batter: 'Vikrant Chauhan', str: 46 },
+      { name: 'Meerut Lions XI', cat: 'Club', fmt: 'T20', comp: 'Rajgarh Club League', c2: '#475569', bowler: 'Bunty Tyagi', bowlerType: 'pace', batter: 'Golu Rana', str: 38 },
+      { name: 'Hapur Sporting Club', cat: 'Club', fmt: 'T20', comp: 'Rajgarh Club League', c2: '#15803d', bowler: 'Sajid "Leggie" Ansari', bowlerType: 'spin', batter: 'Monu Gurjar', str: 42 },
+      { name: 'Chauhan Cricket Academy', cat: 'Club', fmt: 'T20', comp: 'Rajgarh Club League', c2: '#7c3aed', bowler: 'Vikrant Chauhan', bowlerType: 'pace', batter: 'Vikrant Chauhan', str: 46 },
     ],
     gate: { name: 'District U-19 Trials', need: 52, pass: 'Your name is on the trial list. Rajgarh District Under-19.', fail: 'The list goes up on the clubhouse wall. Your name isn\'t on it.' },
     ambient: 'dawn',
@@ -41,21 +41,21 @@ const STAGES = [
     sub: 'Under-19 zonal cricket. 200 boys, 16 places, and every one of them is as hungry as you.',
     team: 'Rajgarh District U-19', c1: '#0e7490', schedule: 'TMTMTM', venue: 'Green Park, Kanpur',
     opps: [
-      { name: 'Lucknow U-19', c2: '#be123c', bowler: 'Arjun Tripathi', bowlerType: 'pace', batter: 'Kunal Awasthi', str: 50 },
-      { name: 'Agra U-19', c2: '#a16207', bowler: 'Faiz Qureshi', bowlerType: 'spin', batter: 'Ankit Jadaun', str: 54 },
-      { name: 'Varanasi U-19', c2: '#4338ca', bowler: 'Deepak "Rocket" Maurya', bowlerType: 'pace', batter: 'Shivam Pandey', str: 57 },
+      { name: 'Lucknow U-19', cat: 'U-19', fmt: 'ODI', comp: 'U-19 One-Day', c2: '#be123c', bowler: 'Arjun Tripathi', bowlerType: 'pace', batter: 'Kunal Awasthi', str: 50 },
+      { name: 'Agra U-19', cat: 'U-19', fmt: 'ODI', comp: 'U-19 One-Day', c2: '#a16207', bowler: 'Faiz Qureshi', bowlerType: 'spin', batter: 'Ankit Jadaun', str: 54 },
+      { name: 'Varanasi U-19', cat: 'U-19', fmt: 'ODI', comp: 'U-19 One-Day', c2: '#4338ca', bowler: 'Deepak "Rocket" Maurya', bowlerType: 'pace', batter: 'Shivam Pandey', str: 57 },
     ],
     gate: { name: 'State Ranji Squad', need: 58, pass: 'An email from the state association. Subject line: "Ranji Trophy – Probables".', fail: 'Sixteen names. Vikrant Chauhan is one of them. You are not.' },
     ambient: 'dawn',
   },
   {
     id: 'ranji', ch: 3, title: 'The Grind', level: 2, format: 'FC', overs: 90,
-    sub: 'Ranji Trophy. Empty stands, five-day sweat, ₹40,000 a match. This is where cricketers are made — or forgotten.',
+    sub: 'The domestic season. Ranji Trophy and the Vijay Hazaray Trophy. Empty stands, long days, ₹40,000 a match. This is where cricketers are made — or forgotten.',
     team: 'Uttar Pradesh', c1: '#15803d', schedule: 'TMTMTM', venue: 'Ekana Stadium, Lucknow',
     opps: [
-      { name: 'Mumbai', c2: '#1d4ed8', bowler: 'Tushar Deshpandey', bowlerType: 'pace', batter: 'Sarfaraz Khaan', str: 64 },
-      { name: 'Karnataka', c2: '#b91c1c', bowler: 'Prasidh Krishnaa', bowlerType: 'pace', batter: 'Mayank Agarwall', str: 62 },
-      { name: 'Vidarbha', c2: '#ea580c', bowler: 'Aditya Sarvatey', bowlerType: 'spin', batter: 'Karun Nayar', str: 60 },
+      { name: 'Mumbai', cat: 'First-class', fmt: 'FC', comp: 'Ranji Trophy', c2: '#1d4ed8', bowler: 'Tushar Deshpandey', bowlerType: 'pace', batter: 'Sarfaraz Khaan', str: 64 },
+      { name: 'Karnataka', cat: 'List A', fmt: 'ODI', comp: 'Vijay Hazaray Trophy', c2: '#b91c1c', bowler: 'Prasidh Krishnaa', bowlerType: 'pace', batter: 'Mayank Agarwall', str: 62 },
+      { name: 'Vidarbha', cat: 'First-class', fmt: 'FC', comp: 'Ranji Trophy', c2: '#ea580c', bowler: 'Aditya Sarvatey', bowlerType: 'spin', batter: 'Karun Nayar', str: 60 },
     ],
     gate: { name: 'Domestic T20 + Auction Registration', need: 62, pass: 'You\'re in the state T20 squad. And your name goes into the auction pool.', fail: 'The T20 squad is announced. Two of the "lobby" boys made it. You didn\'t.' },
     ambient: 'night',
@@ -65,9 +65,9 @@ const STAGES = [
     sub: 'Syed Mustaq Ali Trophy. Every IPL scout is in the stands with an iPad. Three games to change your life.',
     team: 'Uttar Pradesh', c1: '#15803d', schedule: 'TMTMM', venue: 'Holkar Stadium, Indore',
     opps: [
-      { name: 'Punjab', c2: '#e11d48', bowler: 'Arshdeep Singhh', bowlerType: 'pace', batter: 'Abhishek Sharmaa', str: 66 },
-      { name: 'Bengal', c2: '#0369a1', bowler: 'Mukesh Kumaar', bowlerType: 'pace', batter: 'Abhishek Porel', str: 64 },
-      { name: 'Baroda', c2: '#7c2d12', bowler: 'Krunal Pandiya', bowlerType: 'spin', batter: 'Hardik Pandiya', str: 70 },
+      { name: 'Punjab', cat: 'T20', fmt: 'T20', comp: 'Syed Mustaq Ali Trophy', c2: '#e11d48', bowler: 'Arshdeep Singhh', bowlerType: 'pace', batter: 'Abhishek Sharmaa', str: 66 },
+      { name: 'Bengal', cat: 'T20', fmt: 'T20', comp: 'Syed Mustaq Ali Trophy', c2: '#0369a1', bowler: 'Mukesh Kumaar', bowlerType: 'pace', batter: 'Abhishek Porel', str: 64 },
+      { name: 'Baroda', cat: 'T20', fmt: 'T20', comp: 'Syed Mustaq Ali Trophy', c2: '#7c2d12', bowler: 'Krunal Pandiya', bowlerType: 'spin', batter: 'Hardik Pandiya', str: 70 },
     ],
     gate: { name: 'IPL Auction', need: 0, auction: true },
     ambient: 'night',
@@ -82,12 +82,12 @@ const STAGES = [
   },
   {
     id: 'india', ch: 6, title: 'The Blue Cap', level: 5, format: 'T20', overs: 20,
-    sub: 'India vs Australia. Three T20Is. 1.4 billion people. One kid from a chai stall in Rajgarh.',
+    sub: 'India vs Australia. A T20I, an ODI and a Test. 1.4 billion people. One kid from a chai stall in Rajgarh.',
     team: 'India', c1: '#1d4ed8', schedule: 'TMTMM', venue: 'Wankhede Stadium, Mumbai',
     opps: [
-      { name: 'Australia', c2: '#ca8a04', bowler: 'Mitchell Starck', bowlerType: 'pace', batter: 'Travis Heid', str: 82 },
-      { name: 'Australia', c2: '#ca8a04', bowler: 'Adam Zamper', bowlerType: 'spin', batter: 'Glenn Maxwel', str: 82 },
-      { name: 'Australia', c2: '#ca8a04', bowler: 'Pat Cumminz', bowlerType: 'pace', batter: 'Steve Smyth', str: 84 },
+      { name: 'Australia', cat: 'T20I', fmt: 'T20', comp: '1st T20I', c2: '#ca8a04', bowler: 'Mitchell Starck', bowlerType: 'pace', batter: 'Travis Heid', str: 82 },
+      { name: 'Australia', cat: 'ODI', fmt: 'ODI', comp: '1st ODI', c2: '#ca8a04', bowler: 'Adam Zamper', bowlerType: 'spin', batter: 'Glenn Maxwel', str: 82 },
+      { name: 'Australia', cat: 'Test', fmt: 'FC', comp: '1st Test', c2: '#ca8a04', bowler: 'Pat Cumminz', bowlerType: 'pace', batter: 'Steve Smyth', str: 84 },
     ],
     gate: { name: 'Glory', need: 0, final: true },
     ambient: 'gold',
@@ -356,3 +356,7 @@ const ENDINGS = {
   aged: { em: '🫖', title: 'THE STALL', col: '#FF9F1C', text: 'Ten years of trials, lists and "next season." You\'re back at the stall, pouring chai for the morning bus. Sometimes a kid with a taped bat walks past. You always tell them: "Bring a tyre. 5 AM."' },
   quit: { em: '🌧️', title: 'WALKED AWAY', col: '#9A93A8', text: 'Some days the dream is heavier than you are. You take the sugar mill job. Papa never says "I told you so." Somehow that\'s worse.' },
 };
+
+// Career stats are split by these categories (shown in this order)
+const FORMAT_CATS = ['Club', 'U-19', 'First-class', 'List A', 'T20', 'IPL', 'Test', 'ODI', 'T20I'];
+const STAGE_DEFAULT_CAT = { maidan: ['Club', 'T20', 'Club League'], u19: ['U-19', 'ODI', 'U-19 One-Day'], ranji: ['First-class', 'FC', 'Ranji Trophy'], smat: ['T20', 'T20', 'Syed Mustaq Ali Trophy'], ipl: ['IPL', 'T20', 'Indian Prime League'], india: ['T20I', 'T20', 'T20I'] };

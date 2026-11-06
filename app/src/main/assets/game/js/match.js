@@ -1,8 +1,8 @@
 // Match flow: VS intro → toss → innings (simulated chunks + playable key moments) → result.
 const FORMAT = {
   T20: { balls: 120, par: [138, 150, 160, 168, 182, 186], sr: 125, outP: .034, label: 'T20', fee: [300, 1500, 0, 35000, 0, 300000] },
-  ODI: { balls: 300, par: [230, 245, 262, 275, 290, 300], sr: 82, outP: .02, label: '50 overs', fee: [300, 2500, 0, 0, 0, 600000] },
-  FC: { balls: 540, par: [260, 280, 310, 330, 340, 350], sr: 52, outP: .011, label: 'First-class', fee: [0, 0, 60000, 0, 0, 1500000] },
+  ODI: { balls: 300, par: [230, 245, 262, 275, 290, 300], sr: 82, outP: .02, label: '50 overs', fee: [300, 2500, 35000, 0, 0, 600000] },
+  FC: { balls: 540, par: [260, 280, 310, 330, 340, 350], sr: 52, outP: .011, label: 'Multi-day', fee: [0, 0, 60000, 0, 0, 1500000] },
 };
 const PAPERS = ['Dainik Rajgarh Times', 'Kanpur Kesari', 'The Lucknow Herald', 'Sports Today', 'The Times of Bharat', 'The Times of Bharat'];
 
@@ -12,9 +12,9 @@ const Match = {
   async play() {
     const s = Game.s, sd = Game.stageDef;
     const idx = Game.matchIndex();
-    const opp = Game.currentOpps()[idx % Game.currentOpps().length];
+    const opp = Game.fixture(idx);
     const my = Game.myTeam();
-    const fmt = FORMAT[sd.format];
+    const fmt = FORMAT[opp.fmt] || FORMAT[sd.format];
     const level = sd.level;
     const m = this.m = {
       opp, my, fmt, level, idx,
@@ -49,12 +49,12 @@ const Match = {
     const ready = Game.readiness();
     const readyTxt = ready > .05 ? ['Sharp', 'green'] : ready > -.03 ? ['Steady', 'gold'] : ready > -.1 ? ['Rusty', 'saffron'] : ['Running on empty', 'red'];
     UI.show(`<div class="screen vs-screen" style="--c1:${m.my.c1};--c2:${m.opp.c2}">
-      <div class="vs-half top"><div class="tiny" style="color:rgba(255,255,255,.7)">${sd.format === 'FC' ? 'Ranji Trophy' : sd.title}</div><div class="tn">${esc(m.my.name)}</div></div>
+      <div class="vs-half top"><div class="tiny" style="color:rgba(255,255,255,.7)">${esc(m.opp.comp)}</div><div class="tn">${esc(m.my.name)}</div></div>
       <div class="vs-half bot"><div class="tn">${esc(m.opp.name)}</div><div class="tiny" style="color:rgba(255,255,255,.7)">Danger: ${esc(m.opp.bowler)}</div></div>
       <div class="vs-badge">VS</div>
       <div class="vs-meta">
         <div class="card" style="background:rgba(8,8,14,.85)">
-          <div class="row between"><span class="tiny">Format</span><b class="cond">${m.fmt.label}</b></div>
+          <div class="row between"><span class="tiny">Format</span><b class="cond">${m.opp.cat} · ${m.fmt.label}</b></div>
           <div class="row between" style="margin-top:6px"><span class="tiny">Venue</span><span class="small">${esc(sd.venue || (TEAMS_IPL.find(t => t.id === s.ipl) || {}).name + ' home')}</span></div>
           <div class="row between" style="margin-top:6px"><span class="tiny">Your readiness</span><b class="cond ${readyTxt[1]}">${readyTxt[0]}</b></div>
         </div>
@@ -504,6 +504,10 @@ const Match = {
     // career stats
     const c = s.career; c.matches++;
     if (m.bat.played) { c.runs += m.bat.r; c.balls += m.bat.b; if (m.bat.out) c.outs++; c.hs = Math.max(c.hs, m.bat.r); if (m.bat.r >= 100) c.hundreds++; else if (m.bat.r >= 50) c.fifties++; }
+    const fs = s.fmtStats[m.opp.cat] = s.fmtStats[m.opp.cat] || { m: 0, runs: 0, balls: 0, outs: 0, hs: 0, f: 0, h: 0, wkts: 0, bb: 0, rc: 0, best: '' };
+    fs.m++;
+    if (m.bat.played) { fs.runs += m.bat.r; fs.balls += m.bat.b; if (m.bat.out) fs.outs++; fs.hs = Math.max(fs.hs, m.bat.r); if (m.bat.r >= 100) fs.h++; else if (m.bat.r >= 50) fs.f++; }
+    if (m.bowl.played) { fs.wkts += m.bowl.w; fs.bb += m.bowl.b; fs.rc += m.bowl.r; const [bw, br] = (fs.best || '0/999').split('/').map(Number); if (m.bowl.w > bw || (m.bowl.w === bw && m.bowl.r < br)) fs.best = `${m.bowl.w}/${m.bowl.r}`; }
     if (m.bowl.played) { c.wkts += m.bowl.w; c.ballsBowled += m.bowl.b; c.runsConceded += m.bowl.r; const [bw, br] = (c.best || '0/999').split('/').map(Number); if (m.bowl.w > bw || (m.bowl.w === bw && m.bowl.r < br)) c.best = `${m.bowl.w}/${m.bowl.r}`; }
 
     // consequences

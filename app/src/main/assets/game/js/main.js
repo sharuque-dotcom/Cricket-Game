@@ -200,19 +200,19 @@ function weekTab() {
   const matchNow = Game.isMatchWeek();
   let nextM = -1; for (let i = s.week - 1; i < sched.length; i++) if (sched[i] === 'M') { nextM = i; break; }
   const mi = sched.slice(0, nextM + 1).split('M').length - 2;
-  const opps = Game.currentOpps();
-  const opp = nextM >= 0 ? opps[mi % opps.length] : null;
+  const opp = nextM >= 0 ? Game.fixture(mi) : null;
   const tip = c.fatigue > 70 ? '😮‍💨 You\'re exhausted. Training now gives less and risks injury.' : c.injury > 60 ? '🩹 Your body is screaming. A physio or rest day would help.' : s.life.mental < 30 ? '🌧️ Your head is not in a good place. Family, yoga or a psych session help.' : s.life.money < 0 ? '💸 You\'re broke. Work shifts or a sponsor shoot can help.' : matchNow ? '🔥 Match at the end of this week. Arrive fresh and focused.' : '💡 Training is better when you\'re not tired. Balance work and rest.';
   const slotsNames = ['Morning', 'Afternoon', 'Evening'];
   return `<div class="stagger">
     <div class="row between" style="margin:2px 0 12px">
       <div class="week-pill"><b>WEEK ${s.week}</b><span class="tiny">of ${sched.length} · Ch.${sd.ch} ${sd.title}</span></div>
-      <span class="chip">${sd.format === 'FC' ? 'Ranji' : sd.format}</span>
+      <span class="chip">${opp ? esc(opp.cat) : sd.title}</span>
     </div>
     <div class="rings">${ring('Form', c.form, 'var(--gold)')}${ring('Confid.', c.confidence, 'var(--saffron)')}${ring('Focus', c.focus, 'var(--teal)')}${ring('Fatigue', c.fatigue, 'var(--violet)', true)}${ring('Injury', c.injury, 'var(--red)', true)}</div>
     <div class="card fixture ${matchNow ? 'today' : ''}" style="margin-top:14px">
       ${opp ? `<div class="tiny" style="color:rgba(255,255,255,.75)">${matchNow ? (s.missNext ? '🩹 Match day — you\'re injured' : '🔥 Match day this week') : `Next match in ${nextM - s.week + 1} week${nextM - s.week + 1 > 1 ? 's' : ''}`}</div>
       <div class="vs" style="margin-top:4px">vs ${esc(opp.name)}</div>
+      <div class="row" style="gap:6px;margin-top:6px"><span class="chip">${esc(opp.comp)}</span><span class="chip">${{ T20: 'T20', ODI: '50 overs', FC: opp.cat === 'Test' ? '5 days' : '4 days' }[opp.fmt]}</span></div>
       <div class="small muted" style="margin-top:2px">Watch out: ${esc(opp.bowler)} (${opp.bowlerType}) · ${esc(opp.batter)}</div>`
       : `<div class="tiny">Coming up</div><div class="vs" style="margin-top:4px">${esc(sd.gate.name)}</div><div class="small muted">Selectors decide at the end of this week.</div>`}
     </div>
@@ -253,8 +253,19 @@ function playerTab() {
       <div class="s"><b>${econ}</b><span class="tiny">Economy</span></div>
       <div class="s"><b>${c.best || '-'}</b><span class="tiny">Best</span></div>
     </div>
+    ${formatTable()}
     ${sections.map(([t, l]) => `<div class="card" style="margin-top:12px"><div class="tiny">${t}</div>${bars(l)}</div>`).join('')}
   </div>`;
+}
+
+function formatTable() {
+  const fs = Game.s.fmtStats || {};
+  const rows = FORMAT_CATS.filter(k => fs[k] && fs[k].m);
+  if (!rows.length) return `<div class="card" style="margin-top:12px"><div class="tiny">Career by format</div><div class="small muted" style="margin-top:6px">No matches yet. Club, U-19, First-class, List A, T20, IPL, Test, ODI and T20I stats will appear here.</div></div>`;
+  return `<div class="card" style="margin-top:12px;padding:12px 10px"><div class="tiny" style="padding:0 4px">Career by format</div>
+    <table class="fmt-table"><thead><tr><th>Format</th><th>M</th><th>Runs</th><th>Avg</th><th>SR</th><th>HS</th><th>Wkts</th><th>Econ</th></tr></thead><tbody>
+    ${rows.map(k => { const r = fs[k]; return `<tr><td>${k}</td><td>${r.m}</td><td>${r.runs}</td><td>${r.outs ? (r.runs / r.outs).toFixed(1) : (r.runs || '-')}</td><td>${r.balls ? Math.round(r.runs / r.balls * 100) : '-'}</td><td>${r.hs}</td><td>${r.wkts}</td><td>${r.bb ? (r.rc / r.bb * 6).toFixed(1) : '-'}</td></tr>`; }).join('')}
+    </tbody></table></div>`;
 }
 
 function lifeTab() {

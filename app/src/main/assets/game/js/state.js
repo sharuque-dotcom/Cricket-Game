@@ -17,7 +17,7 @@ const Game = {
       life: { money: 3000, family: 60, fans: 40, reputation: 10, coachTrust: 40, integrity: 70, mental: 65, debt: 0 },
       selector: 0, stageRatings: [], lastRating: null, fails: 0, injuries: 0,
       career: { matches: 0, runs: 0, balls: 0, outs: 0, hs: 0, fifties: 0, hundreds: 0, wkts: 0, ballsBowled: 0, runsConceded: 0, best: '' },
-      flags: {}, seen: {}, diary: [], plan: [null, null, null],
+      fmtStats: {}, flags: {}, seen: {}, diary: [], plan: [null, null, null],
       ipl: null, price: 0, missNext: false,
     };
     this.diary('Week 1. Rajgarh. Everyone says it\'s impossible. Good.');
@@ -26,7 +26,7 @@ const Game = {
   },
 
   save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(this.s)); } catch (e) {} },
-  load() { try { const j = localStorage.getItem(SAVE_KEY); if (j) { this.s = JSON.parse(j); return true; } } catch (e) {} return false; },
+  load() { try { const j = localStorage.getItem(SAVE_KEY); if (j) { this.s = JSON.parse(j); this.s.fmtStats = this.s.fmtStats || {}; return true; } } catch (e) {} return false; },
   wipe() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} this.s = null; },
   hasSave() { try { return !!localStorage.getItem(SAVE_KEY); } catch (e) { return false; } },
 
@@ -189,7 +189,7 @@ const Game = {
     s.stage++; s.week = 1; s.season++; s.age++; s.stageRatings = []; s.selector = 0;
     if (s.stage === 4 && s.ipl) {
       const opps = TEAMS_IPL.filter(t => t.id !== s.ipl).sort(() => Math.random() - .5).slice(0, 4);
-      s.iplOpps = opps.map((t, i) => ({ name: t.name, c2: t.c1, bowler: t.bowler, bowlerType: /Rashid|Jadega|Chahel|Krunal/.test(t.bowler) ? 'spin' : 'pace', batter: t.batter, str: 72 + i * 2 }));
+      s.iplOpps = opps.map((t, i) => ({ name: t.name, cat: 'IPL', fmt: 'T20', comp: 'Indian Prime League', c2: t.c1, bowler: t.bowler, bowlerType: /Rashid|Jadega|Chahel|Krunal/.test(t.bowler) ? 'spin' : 'pace', batter: t.batter, str: 72 + i * 2 }));
     }
     this.save();
   },
@@ -200,6 +200,12 @@ const Game = {
   },
 
   currentOpps() { const s = this.s; return s.stage === 4 ? s.iplOpps : this.stageDef.opps; },
+  // fixture with category / format / competition filled in
+  fixture(i) {
+    const opps = this.currentOpps(), o = opps[i % opps.length];
+    const d = STAGE_DEFAULT_CAT[this.stageDef.id];
+    return Object.assign({ cat: d[0], fmt: d[1], comp: d[2] }, o);
+  },
   myTeam() {
     const s = this.s;
     if (s.stage === 4) { const t = TEAMS_IPL.find(x => x.id === s.ipl); return { name: t.name, c1: t.c1 }; }
