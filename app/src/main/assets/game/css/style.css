@@ -524,13 +524,14 @@ input { font: inherit; }
 @keyframes rays { from { transform: rotate(-4deg) translateX(-3%); opacity: .55; } to { transform: rotate(3deg) translateX(3%); opacity: 1; } }
 .story-scene .godrays { z-index: auto; }
 .st-bgwrap.punch { animation: punch .55s var(--ease-out); }
-@keyframes punch { 0% { scale: 1.08; } 100% { scale: 1; } }
+@keyframes punch { 0% { transform: scale(1.06); } 100% { transform: none; } }
 
 /* Reveal moments */
 .st-dark { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.4s ease; background: radial-gradient(circle at 50% 42%, rgba(20,0,4,.55), rgba(0,0,0,.96) 65%); }
 .reveal-on .st-dark { opacity: 1; }
-.st-bgwrap { transition: scale 5s cubic-bezier(.2,.6,.2,1); }
-.reveal-on .st-bgwrap { scale: 1.14; }
+/* Reveal: no zoom on the big background layer (Android WebView left stale tiles); pulse the darkness instead */
+.reveal-on .st-dark { animation: revealPulse 2.4s ease-in-out infinite; }
+@keyframes revealPulse { 0%, 100% { opacity: 1; } 50% { opacity: .9; } }
 .reveal-on .chr { filter: brightness(.22) saturate(.4) !important; transform: none !important; }
 .reveal-on .st-hud { opacity: .25; transition: opacity 1s; }
 .cap.reveal { top: 38%; animation: revealIn 1.6s var(--ease-out) both; }
