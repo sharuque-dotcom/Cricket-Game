@@ -1,6 +1,7 @@
 // Story Mode engine: episodic, choice-driven chapters with keys, diamonds and playable cricket moments.
 const STORY_KEY = 'gg_story_v1';
 const KEY_MAX = 2, KEY_MS = 3 * 60 * 60 * 1000; // one key every 3 hours
+const AD_CAP = { key: 3, gems: 5 }; // rewarded ads allowed per day
 const GEM_SVG = `<svg class="ico" viewBox="0 0 24 24"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9fbff"/><stop offset=".5" stop-color="#3fd0e0"/><stop offset="1" stop-color="#1a7f9c"/></linearGradient></defs><path d="M6 3h12l4 6-10 12L2 9z" fill="url(#gg)" stroke="#0b3a47" stroke-width="1.2"/><path d="M2 9h20M8 3l4 18 4-18M6 3l2 6M18 3l-2 6" fill="none" stroke="rgba(255,255,255,.55)" stroke-width=".9"/></svg>`;
 const KEY_SVG = `<svg class="ico" viewBox="0 0 24 24"><defs><linearGradient id="gk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1b8"/><stop offset=".55" stop-color="#ffc83d"/><stop offset="1" stop-color="#b9770e"/></linearGradient></defs><circle cx="7.5" cy="12" r="5" fill="none" stroke="url(#gk)" stroke-width="3"/><path d="M12 12h10M18 12v4M21 12v3" stroke="url(#gk)" stroke-width="3" stroke-linecap="round"/></svg>`;
 
@@ -11,6 +12,7 @@ const Story = {
   load() {
     try { this.st = JSON.parse(localStorage.getItem(STORY_KEY)); } catch (e) { this.st = null; }
     if (!this.st) this.st = { name: '', diamonds: 22, keys: KEY_MAX, keyTs: Date.now(), done: {}, rel: { papa: 0, pinky: 0, pandey: 0, neha: 0, vikrant: 0 }, flags: {}, cur: null };
+    if (!this.st.keyTs) this.st.keyTs = Date.now();
     this.refillKeys();
     return this.st;
   },
@@ -113,9 +115,13 @@ const Story = {
       <div class="big-ico">${KEY_SVG}</div>
       <div class="display" style="font-size:36px">Out of keys</div>
       <div class="muted small" style="margin-top:6px">Next free key in <b class="gold">${this.nextKeyIn()}</b></div>
-      <button class="btn primary block" style="margin-top:16px" data-ad>▶ Watch an ad · +1 key</button>
+      <button class="btn primary block" style="margin-top:16px" data-ad ${this.adsLeft('key') > 0 ? '' : 'disabled'}>▶ Watch an ad · +1 key</button>
+      <div class="tiny" style="margin-top:6px">${this.adsLeft('key') > 0 ? `${this.adsLeft('key')} ad keys left today` : 'Ad keys used up for today'}</div>
       <button class="btn ghost block" style="margin-top:8px" data-shop>Open store</button></div>`, sh => {
-      $('[data-ad]', sh).onclick = () => { closeSheet(); this.fakeAd(() => { this.st.keys++; this.save(); this.bumpCur(); toast(`${KEY_SVG} +1 key`); }); };
+      $('[data-ad]', sh).onclick = async (e) => {
+        const ok = await this.watchAd('key', e.currentTarget, () => { this.st.keys++; toast(`${KEY_SVG} +1 key`); });
+        if (ok) closeSheet();
+      };
       $('[data-shop]', sh).onclick = () => { closeSheet(); setTimeout(() => this.store(), 300); };
     });
   },
@@ -126,11 +132,35 @@ const Story = {
       <div class="row between"><div class="display" style="font-size:34px">Store</div><div class="row" style="gap:6px"><span class="cur-pill">${GEM_SVG}<b>${this.st.diamonds}</b></span><span class="cur-pill">${KEY_SVG}<b>${this.st.keys}</b></span></div></div>
       <div class="vip-card"><div><div class="tiny" style="color:#1a0c00">VIP Pass</div><b class="display" style="font-size:30px;color:#1a0c00">Unlimited keys</b><div class="small" style="color:#3b2400">+15 diamonds every week · ₹149/month</div></div><span class="chip" style="background:#1a0c00;color:var(--gold);border:0">Soon</span></div>
       <div class="packs">${packs.map(([n, d, p], i) => `<div class="pack"><div class="pack-gems">${GEM_SVG.repeat(Math.min(4, i + 1))}</div><b class="cond">${n}</b><div class="row" style="justify-content:center;gap:4px">${GEM_SVG}<b>${d}</b></div><span class="price">${p}</span></div>`).join('')}</div>
-      <button class="btn ghost block" style="margin-top:12px" data-ad>▶ Watch an ad · +5 diamonds</button>
+      <button class="btn ghost block" style="margin-top:12px" data-ad ${this.adsLeft('gems') > 0 ? '' : 'disabled'}>▶ Watch an ad · +5 diamonds <span class="tiny" style="margin-left:6px">${Math.max(0, this.adsLeft('gems'))} left today</span></button>
       <div class="tiny" style="text-align:center;margin-top:12px">Prototype: purchases are not live yet</div></div>`, sh => {
-      $('[data-ad]', sh).onclick = () => { closeSheet(); this.fakeAd(() => { this.st.diamonds += 5; this.save(); this.bumpCur(); toast(`${GEM_SVG} +5 diamonds`); }); };
+      $('[data-ad]', sh).onclick = async (e) => {
+        const ok = await this.watchAd('gems', e.currentTarget, () => { this.st.diamonds += 5; toast(`${GEM_SVG} +5 diamonds`); });
+        if (ok) closeSheet();
+      };
       $$('.pack', sh).forEach(p => p.onclick = () => toast('Payments arrive in the next build.'));
     });
+  },
+
+  adsLeft(kind) {
+    const s = this.st, day = new Date().toDateString();
+    if (s.adDay !== day) { s.adDay = day; s.adUsed = { key: 0, gems: 0 }; }
+    return AD_CAP[kind] - (s.adUsed[kind] || 0);
+  },
+  // play a rewarded ad; calls give() only if the player watched to the end
+  async watchAd(kind, btn, give) {
+    if (kind !== 'double' && this.adsLeft(kind) <= 0) { toast('Daily ad limit reached. Come back tomorrow.'); return false; }
+    const label = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.innerHTML = 'Loading ad…'; }
+    Sfx.crowd(false);
+    const r = await Ads.show(kind);
+    if (btn) { btn.disabled = false; btn.innerHTML = label; }
+    if (r === 'rewarded') {
+      if (kind !== 'double') this.st.adUsed[kind] = (this.st.adUsed[kind] || 0) + 1;
+      give(); this.save(); this.bumpCur(); Sfx.success(); return true;
+    }
+    toast(r === 'skipped' ? 'Watch the whole ad to get the reward.' : 'No ad available right now. Try again in a minute.');
+    return false;
   },
 
   fakeAd(done) {
@@ -433,13 +463,15 @@ const Story = {
       <div class="scroll pad" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
         <div class="tbc">To be continued<span>...</span></div>
         <div class="cliff">${esc(this.fill(n.cliff))}</div>
-        ${first ? `<div class="reward">${GEM_SVG}<b>+2</b><span>Episode complete</span></div>` : ''}
+        ${first ? `<div class="reward">${GEM_SVG}<b>+2</b><span>Episode complete</span></div><button class="btn ghost" style="margin:10px auto 0;height:42px;font-size:13px" data-double>▶ Watch an ad · double it (+2 ${GEM_SVG})</button>` : ''}
         <div class="rel-sum">${Object.entries(REL_KEYS).map(([k, l]) => `<div class="rel-row" style="--c:${CAST[k].col}"><span>${l}</span><span>${relHearts(s.rel[k])}</span></div>`).join('')}</div>
         ${next ? `<button class="btn primary block" style="margin-top:18px" data-next>Next: Episode ${next.no} · <span style="display:inline-flex;align-items:center;gap:4px">${KEY_SVG}1</span></button>` : `<div class="card" style="margin-top:18px"><b class="cond gold">Episode 4 drops next week</b><div class="small muted">Turn on notifications so you don't miss it.</div></div>`}
         <button class="btn ghost block" style="margin-top:8px" data-book>Episodes</button>
       </div></div>`);
     Sfx.stinger(); if (first) setTimeout(() => { Sfx.coin(); Burst.sparks(innerWidth / 2, innerHeight * .45, 40, '#7ef0ff'); }, 900);
     if (next) $('[data-next]', el).onclick = () => this.tryStart(nextIdx);
+    const dbl = $('[data-double]', el);
+    if (dbl) dbl.onclick = async () => { const ok = await this.watchAd('double', dbl, () => { this.st.diamonds += 2; toast(`${GEM_SVG} +2 diamonds`); }); if (ok) dbl.remove(); };
     $('[data-book]', el).onclick = () => this.bookScreen();
   },
 };

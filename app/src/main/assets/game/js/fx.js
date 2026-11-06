@@ -266,3 +266,26 @@ const Parallax = (() => {
     raf = requestAnimationFrame(step); el = null;
   }, { passive: true });
 })();
+
+// ---------- Rewarded ads ----------
+// On the phone: real AdMob rewarded video via AndroidBridge. In a desktop browser: a labelled test stand-in.
+const Ads = {
+  pending: {},
+  native() { return !!(window.AndroidBridge && AndroidBridge.showRewardedAd); },
+  // resolves to 'rewarded' | 'skipped' | 'unavailable'
+  show(placement) {
+    return new Promise(resolve => {
+      if (this.native()) {
+        this.pending[placement] = resolve;
+        try { AndroidBridge.showRewardedAd(placement); } catch (e) { delete this.pending[placement]; resolve('unavailable'); }
+        setTimeout(() => { if (this.pending[placement] === resolve && !document.hidden) { delete this.pending[placement]; resolve('unavailable'); } }, 60000);
+        return;
+      }
+      const ov = document.createElement('div'); ov.className = 'fake-ad';
+      ov.innerHTML = `<div class="tiny">Test ad (browser only)</div><div class="display" style="font-size:40px;margin:10px 0">Ad plays here</div><div class="muted small">On the phone this is a real rewarded video.</div><div class="ad-count">5</div>`;
+      document.body.appendChild(ov);
+      let n = 5; const t = setInterval(() => { n--; ov.querySelector('.ad-count').textContent = n; if (n <= 0) { clearInterval(t); ov.remove(); resolve('rewarded'); } }, 1000);
+    });
+  },
+  result(placement, r) { const f = this.pending[placement]; if (f) { delete this.pending[placement]; f(r); } },
+};

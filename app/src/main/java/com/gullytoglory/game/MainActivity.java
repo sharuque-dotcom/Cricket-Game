@@ -19,8 +19,20 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+
+import org.json.JSONObject;
+
 public class MainActivity extends Activity {
     private WebView web;
+    private RewardedAd rewarded;
+    private boolean adLoading = false;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -44,6 +56,7 @@ public class MainActivity extends Activity {
         web.setWebViewClient(new WebViewClient());
         web.setWebChromeClient(new WebChromeClient());
         web.addJavascriptInterface(new Bridge(this), "AndroidBridge");
+        MobileAds.initialize(this, status -> loadRewarded());
         setContentView(web);
         hideSystemBars();
 
@@ -104,9 +117,49 @@ public class MainActivity extends Activity {
         });
     }
 
+    // ---------- Rewarded ads ----------
+    private void loadRewarded() {
+        if (adLoading || rewarded != null) return;
+        adLoading = true;
+        RewardedAd.load(this, getString(R.string.admob_rewarded_id), new AdRequest.Builder().build(),
+            new RewardedAdLoadCallback() {
+                @Override public void onAdLoaded(RewardedAd ad) { rewarded = ad; adLoading = false; }
+                @Override public void onAdFailedToLoad(LoadAdError err) { rewarded = null; adLoading = false; }
+            });
+    }
+
+    private void sendAdResult(String placement, String result) {
+        String js = "window.GG && GG.adResult && GG.adResult(" + JSONObject.quote(placement) + "," + JSONObject.quote(result) + ")";
+        web.post(() -> web.evaluateJavascript(js, null));
+    }
+
+    private void showRewarded(String placement) {
+        if (rewarded == null) { sendAdResult(placement, "unavailable"); loadRewarded(); return; }
+        final boolean[] earned = { false };
+        RewardedAd ad = rewarded;
+        rewarded = null;
+        ad.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override public void onAdDismissedFullScreenContent() {
+                sendAdResult(placement, earned[0] ? "rewarded" : "skipped");
+                loadRewarded();
+            }
+            @Override public void onAdFailedToShowFullScreenContent(AdError e) {
+                sendAdResult(placement, "unavailable");
+                loadRewarded();
+            }
+        });
+        ad.show(this, reward -> earned[0] = true);
+    }
+
     static class Bridge {
-        private final Activity act;
-        Bridge(Activity a) { act = a; }
+        private final MainActivity act;
+        Bridge(MainActivity a) { act = a; }
+
+        @JavascriptInterface
+        public boolean adReady() { return act.rewarded != null; }
+
+        @JavascriptInterface
+        public void showRewardedAd(String placement) { act.runOnUiThread(() -> act.showRewarded(placement)); }
 
         @JavascriptInterface
         public void vibrate(int ms) {

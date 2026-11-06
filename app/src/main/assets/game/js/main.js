@@ -592,6 +592,7 @@ window.GG = {
     UI.backAt = now; toast('Press back again to exit. Progress is saved.');
     return 'handled';
   },
+  adResult(placement, result) { Ads.result(placement, result); },
   // test hook
   _dev: { Game, Match, Moments },
 };

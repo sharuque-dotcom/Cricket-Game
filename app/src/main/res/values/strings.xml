@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Gully to Glory</string>
+    <!-- AdMob IDs. These are Google's public TEST ids: replace both with your own from admob.google.com before release. -->
+    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_rewarded_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
 </resources>
