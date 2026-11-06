@@ -306,7 +306,7 @@ const Story = {
       const c = CAST[who]; const side = this.scene.left === who ? 'left' : this.scene.right === who ? 'right' : 'center';
       this.focus(who);
       const shout = mood === 'shout';
-      const autoEx = ex || (shout ? 'angry' : mood === 'soft' ? { papa: 'sad', neha: 'happy', pandey: 'proud' }[who] : null);
+      const autoEx = ex || (shout ? 'angry' : mood === 'soft' ? { papa: 'sad', pandey: 'proud' }[who] : null);
       this.expr(who, autoEx);
       layer.innerHTML = `<div class="bub ${side} ${mood || ''}" style="--c:${c.col}">
         ${shout ? burstSvg() : ''}

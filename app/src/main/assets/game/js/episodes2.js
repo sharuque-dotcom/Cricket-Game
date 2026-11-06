@@ -75,7 +75,7 @@ EPISODES.push(
     { n: 'Navin Mandi. 11:40 PM. Rain on tin roofs. Trucks asleep. Somewhere a radio is playing an old Kishore Kumar song.' },
     { if: 'alone', go: 'e4_spot' },
     { enter: 'neha', side: 'left' },
-    { s: 'neha', t: 'There. By the potato sacks. Don\'t breathe so loud.', mood: 'soft' },
+    { s: 'neha', t: 'There. By the potato sacks. Don\'t breathe so loud.', mood: 'soft', ex: 'worried' },
     { exit: 'neha' },
     { label: 'e4_spot' },
     { enter: 'safari', side: 'right' },
@@ -142,7 +142,7 @@ EPISODES.push(
     { n: 'Monday. The district trials and the club committee, in the same building, on the same morning.' },
     { n: 'Thirty-two boys in white. And one girl outside the committee room, holding her scorebook like a shield.' },
     { enter: 'neha', side: 'right' },
-    { s: 'neha', t: 'They call me in at 9:30. If you have something, now\'s the time. If you don\'t… I understand.', ex: 'serious' },
+    { s: 'neha', t: 'They call me in at 9:30. If you have something, now\'s the time. If you don\'t… I understand.', ex: 'worried' },
     { choice: [
       { t: 'Walk in and play the recording to the committee.', d: 'Clear her name. Make enemies.', show: s => s.flags.recorded2 || s.flags.recorded, fx: { neha: 3, pandey: 1 }, set: 'exposed' },
       { t: 'Ask Pandey-ji to vouch for her.', d: 'Thirty years of respect, spent in one morning.', cost: 30, fx: { neha: 2, pandey: 1 }, set: 'vouch' },
@@ -257,7 +257,7 @@ EPISODES.push(
     { go: 'e6_roof' },
     { label: 'e6_tellDeal' },
     { n: 'You tell her. All of it. She is quiet for a long time.' },
-    { s: 'neha', t: 'Your Papa is free. I can\'t be angry about that. I\'m trying.', ex: 'serious' },
+    { s: 'neha', t: 'Your Papa is free. I can\'t be angry about that. I\'m trying.', ex: 'worried' },
     { fx: { neha: -1 } },
     { label: 'e6_roof' },
     { choice: [

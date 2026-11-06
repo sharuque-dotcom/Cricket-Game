@@ -147,7 +147,7 @@ EPISODES.push(
     { bg: 'bg_street_dusk' },
     { enter: 'neha', side: 'right' },
     { n: 'Hazratganj, 12:20 AM. Two kulhad chais at the only stall still open.' },
-    { s: 'neha', t: 'The builder who wants your bus-stand plot? His company was registered three weeks before the fire. I checked.', ex: 'serious' },
+    { s: 'neha', t: 'The builder who wants your bus-stand plot? His company was registered three weeks before the fire. I checked.', ex: 'worried' },
     { s: 'neha', t: 'Also, you have dal on your collar. Very romantic.', ex: 'happy' },
     { n: 'You get back to the hostel at 1:40 AM. Vikrant is awake. He says nothing. He doesn\'t report you either.' },
     { fx: { vikrant: 1 } },
