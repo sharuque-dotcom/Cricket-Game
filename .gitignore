@@ -12,3 +12,4 @@ keystore.properties
 
 # Play upload bundles (build output, sent to the owner directly)
 *.aab
+*-debug.apk
