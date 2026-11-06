@@ -118,7 +118,8 @@ const Burst = (() => {
 // ---------- Optional painted art ----------
 // Drop images into game/img/ with these names (jpg). Missing ones fall back to the procedural look.
 const ART_NAMES = ['title', 'intro', 'ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'bd_maidan', 'bd_stadium_day', 'bd_stadium_night',
-  'ev_stall', 'ev_pandey', 'ev_rival', 'ev_bribe', 'ev_maa', 'ev_bookie', 'ev_party', 'ev_call', 'end_glory', 'end_stall'];
+  'ev_stall', 'ev_pandey', 'ev_rival', 'ev_bribe', 'ev_maa', 'ev_bookie', 'ev_party', 'ev_call', 'end_glory', 'end_stall',
+  'bg_home', 'bg_street_dusk', 'bg_club_match', 'bg_clubhouse_wall', 'bg_mandi_night', 'cover_fixer', 'cover_bollywood'];
 const Art = {
   imgs: {},
   load() {
@@ -144,8 +145,9 @@ const FX_FOR_ART = {
   bd_maidan: 'fireflies', bd_stadium_day: 'dust', bd_stadium_night: 'bokeh',
   ev_stall: 'embers', ev_pandey: 'dust', ev_rival: 'dust', ev_bribe: 'dust', ev_maa: 'dust', ev_bookie: 'bokeh', ev_party: 'bokeh', ev_call: 'bokeh',
   end_glory: 'dust', end_stall: 'embers',
+  bg_home: 'dust', bg_street_dusk: 'fireflies', bg_club_match: 'dust', bg_clubhouse_wall: 'dust', bg_mandi_night: 'rain+bokeh', cover_fixer: 'rain', cover_bollywood: 'bokeh',
 };
-const RAYS_FOR = new Set(['dust']);
+const DAY_ART = new Set(['title', 'ch1', 'ch2', 'ch3', 'bd_stadium_day', 'bg_club_match', 'bg_clubhouse_wall', 'ev_pandey', 'ev_rival', 'end_glory']);
 
 const SceneFX = (() => {
   const live = new Set();
@@ -206,7 +208,7 @@ const SceneFX = (() => {
   function mount(c) { live.add(c); setup(c, c.dataset.fx); if (!running) { running = true; requestAnimationFrame(loop); } }
   return {
     canvas(mode) { return mode ? `<canvas class="scene-fx" data-fx="${mode}"></canvas>` : ''; },
-    rays(mode) { return RAYS_FOR.has(mode) ? '<div class="godrays"></div>' : ''; },
+    rays(art) { return DAY_ART.has(art) ? '<div class="godrays"></div>' : ''; },
     for(art) { return FX_FOR_ART[art] || 'dust'; },
     set(c, mode) { c.dataset.fx = mode; setup(c, mode); },
     // find painted layers in a new screen and add particles above them
@@ -216,7 +218,7 @@ const SceneFX = (() => {
         const m = (bg.style.backgroundImage.match(/img\/([a-z0-9_]+)\.jpg/) || [])[1];
         const mode = FX_FOR_ART[m] || 'dust';
         const anchor = bg.nextElementSibling && bg.nextElementSibling.classList.contains('art-shade') ? bg.nextElementSibling : bg;
-        anchor.insertAdjacentHTML('afterend', SceneFX.canvas(mode) + SceneFX.rays(mode));
+        anchor.insertAdjacentHTML('afterend', SceneFX.canvas(mode) + SceneFX.rays(m));
       });
       $$('canvas.scene-fx', root).forEach(c => { if (!live.has(c)) mount(c); });
     },

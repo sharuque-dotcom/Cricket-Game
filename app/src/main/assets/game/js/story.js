@@ -86,7 +86,7 @@ const Story = {
               <div class="grow" style="text-align:left"><div class="tiny">Episode ${e.no}</div><b class="cond" style="font-size:18px">${e.title}</b></div>
               <div class="ep-cta">${done ? '<span class="tiny">Replay</span>' : locked ? '🔒' : `<span class="cost-tag">${KEY_SVG}1</span>`}</div></button>`;
           }).join('')}
-            <div class="ep-row locked soon"><div class="ep-thumb" style="background-image:url('${Art.has('ch2') ? Art.url('ch2') : ''}')"><span>4</span></div><div class="grow" style="text-align:left"><div class="tiny" style="color:var(--saffron)">New episode in 6 days</div><b class="cond" style="font-size:18px">The Red Pen</b></div><div class="ep-cta">🔔</div></div>
+            <div class="ep-row locked soon"><div class="ep-thumb" style="background-image:url('${Art.has('bg_mandi_night') ? Art.url('bg_mandi_night') : ''}')"><span>4</span></div><div class="grow" style="text-align:left"><div class="tiny" style="color:var(--saffron)">New episode in 6 days</div><b class="cond" style="font-size:18px">The Red Pen</b></div><div class="ep-cta">🔔</div></div>
           </div>
           <div class="tiny" style="margin:16px 2px 8px">${s.keys < KEY_MAX ? `Next key in ${this.nextKeyIn()}` : 'Keys full'}</div>
           <div class="tiny" style="margin:22px 2px 10px">More books</div>
@@ -207,8 +207,8 @@ const Story = {
     next.classList.add('on'); cur.classList.remove('on');
     const mode = this.weather || SceneFX.for(name);
     const c = $('[data-story-fx]', this.el); if (c) SceneFX.set(c, mode);
-    const r = $('[data-story-rays]', this.el); if (r) r.style.display = mode === 'dust' ? '' : 'none';
-    Sfx.ambience(this.weather === 'rain' ? 'rain' : ({ intro: 'stall', ch1: 'maidan', ch2: 'maidan', ch3: 'maidan', bd_maidan: 'night', ev_call: 'room' }[name] || 'night'));
+    const r = $('[data-story-rays]', this.el); if (r) r.style.display = DAY_ART.has(name) && !this.weather ? '' : 'none';
+    Sfx.ambience(this.weather === 'rain' ? 'rain' : ({ intro: 'stall', ch1: 'maidan', ch2: 'maidan', ch3: 'maidan', bd_maidan: 'night', ev_call: 'room', bg_home: 'room', bg_street_dusk: 'night', bg_club_match: 'maidan', bg_clubhouse_wall: 'maidan', bg_mandi_night: 'rain' }[name] || 'night'));
   },
 
   portraitHtml(id) {

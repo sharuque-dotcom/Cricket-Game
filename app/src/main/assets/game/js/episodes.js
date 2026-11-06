@@ -23,8 +23,8 @@ const REL_KEYS = { papa: 'Papa', pinky: 'Pinky', pandey: 'Pandey-ji', neha: 'Neh
 
 const BOOKS = [
   { id: 'b1', title: 'Gully to Glory', art: 'title', blurb: 'A chai-stall kid. A town that laughs at him. A dream with a price tag.', live: true },
-  { id: 'b2', title: 'The Fixer', art: 'ev_bookie', blurb: 'One no-ball. Two crore. A syndicate that never lets go.', live: false },
-  { id: 'b3', title: 'Bollywood Wife', art: 'ev_party', blurb: 'She\'s a superstar. He\'s India\'s captain. The cameras are always on.', live: false },
+  { id: 'b2', title: 'The Fixer', art: 'cover_fixer', blurb: 'One no-ball. Two crore. A syndicate that never lets go.', live: false },
+  { id: 'b3', title: 'Bollywood Wife', art: 'cover_bollywood', blurb: 'She\'s a superstar. He\'s India\'s captain. The cameras are always on.', live: false },
 ];
 
 const EPISODES = [
@@ -131,7 +131,7 @@ const EPISODES = [
     { s: 'neha', t: 'Because Vikrant has never once said thank you to the scorer. See you tomorrow, chaiwala.' },
     { go: 'nh_after' },
     { label: 'nh_walk' },
-    { bg: 'bd_maidan' },
+    { bg: 'bg_street_dusk' },
     { n: 'The streetlights flicker on one by one. Neither of you is in a hurry.' },
     { s: 'neha', t: 'Everyone in this town has a plan for me. Marriage by twenty-two. B.Ed. Government job.' },
     { s: 'neha', t: 'I want to be the one asking the questions at a press conference. Not making the tea for it.', mood: 'soft' },
@@ -140,7 +140,7 @@ const EPISODES = [
     { s: 'neha', t: 'Front page is earned, cricketer. Not promised.', ex: 'happy' },
     { label: 'nh_after' },
     { exit: 'all' },
-    { bg: 'ev_call' },
+    { bg: 'bg_home' },
     { n: 'That night. Papa\'s phone buzzes on the shelf. He reads it twice. His face goes grey.' },
     { phone: 'Ramesh-ji', msgs: [
       { t: 'Satish ji namaste 🙏' },
@@ -298,7 +298,7 @@ const EPISODES = [
     { th: 'No. But now they know who they\'re playing with.' },
     { label: 'e3_match' },
     { exit: 'all' },
-    { bg: 'ch3' },
+    { bg: 'bg_club_match' },
     { n: 'Saturday. Rajgarh Gymkhana vs Meerut Lions XI. Two hundred people. One borrowed scoreboard.' },
     { if: 'wonDuel', go: 'e3_bat' },
     { n: 'You\'re carrying the drinks. Over 17, the opener pulls his hamstring. Pandey-ji looks at the bench. At you.' },
@@ -329,7 +329,7 @@ const EPISODES = [
     { s: 'pandey', t: 'Every great one has a day like this. Most of them quit after it. Will you?' },
     { label: 'e3_list' },
     { exit: 'all' },
-    { bg: 'ch2' },
+    { bg: 'bg_clubhouse_wall' },
     { n: 'Monday morning. The district trials list goes up on the clubhouse wall.' },
     { n: 'Thirty-two boys crowd around it. You read from the top. Your hands are shaking.' },
     { n: 'Number one: Vikrant Chauhan. Of course.' },
