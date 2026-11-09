@@ -157,7 +157,12 @@
    "go": "dropped"
   },
   {
-   "if": "keptSecret",
+   "if": {
+    "all": [
+     "keptSecret",
+     "!toldKabir"
+    ]
+   },
    "go": "imran_break"
   },
   {

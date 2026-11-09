@@ -162,7 +162,11 @@
    "t": "Physio. Now. He'll hate you. He'll also still be bowling in ten years."
   },
   {
-   "set": "imranSafe"
+   "s": "kabir",
+   "t": "Hairline fracture. He stays home for the tour. If he heals, he flies in as cover."
+  },
+  {
+   "set": "toldKabir"
   },
   {
    "label": "press"
