@@ -1,0 +1,356 @@
+{
+ "id": "bc14",
+ "no": 14,
+ "book": "bluecap",
+ "title": "Ice",
+ "art": "bg_physio_room",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_physio_room"
+  },
+  {
+   "enter": "physio",
+   "side": "right"
+  },
+  {
+   "s": "physio",
+   "t": "Hairline fracture, proximal phalanx. Small crack. Big problem for a batter."
+  },
+  {
+   "s": "physio",
+   "t": "Option one, painkilling injection before the final. You won't feel it. You also won't feel if you make it worse."
+  },
+  {
+   "s": "physio",
+   "t": "Option two, rest, strap it, and hope. Four days is not much hope."
+  },
+  {
+   "choice": [
+    {
+     "t": "The injection.",
+     "d": "Play the final, whatever it costs.",
+     "set": "injection"
+    },
+    {
+     "t": "Rest and strap it.",
+     "d": "Trust your body.",
+     "fx": {
+      "kabir": 1
+     },
+     "set": "strapped"
+    },
+    {
+     "t": "Fly in a hand specialist overnight.",
+     "d": "The best surgeon in Mumbai, on the next flight.",
+     "cost": 25,
+     "set": "specialist"
+    }
+   ]
+  },
+  {
+   "if": "specialist",
+   "go": "spec"
+  },
+  {
+   "s": "physio",
+   "t": "Your call. I'll be at the boundary with ice either way.",
+   "mood": "soft"
+  },
+  {
+   "go": "imran"
+  },
+  {
+   "label": "spec"
+  },
+  {
+   "n": "The specialist arrives at 6 AM, re-sets the finger with a tiny splint and a big invoice. \"Three days. Then you'll grip a bat like nothing happened.\""
+  },
+  {
+   "label": "imran"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "if": "imranBroke",
+   "go": "imran_cast"
+  },
+  {
+   "if": "toldKabir",
+   "go": "imran_back"
+  },
+  {
+   "go": "neha"
+  },
+  {
+   "label": "imran_back"
+  },
+  {
+   "n": "A knock on the physio room door. A lanky boy with a thin moustache and a new red ball."
+  },
+  {
+   "enter": "imran",
+   "side": "left"
+  },
+  {
+   "s": "imran",
+   "t": "Healed. Flown in as cover. Kabir sir told me what you did. In the camp. With the shin."
+  },
+  {
+   "s": "imran",
+   "t": "I hated you for six weeks. Then the doctor showed me the X-ray. Two more days and I'd be selling fish.",
+   "mood": "soft"
+  },
+  {
+   "s": "imran",
+   "t": "Sorry in advance. I'm going to hug you."
+  },
+  {
+   "fx": {
+    "imran": 4
+   },
+   "set": "imranBack"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "go": "neha"
+  },
+  {
+   "label": "imran_cast"
+  },
+  {
+   "n": "Imran is in the next bed, his leg in a cast to the knee. Tibia. Six months, maybe more."
+  },
+  {
+   "enter": "imran",
+   "side": "left"
+  },
+  {
+   "s": "imran",
+   "t": "Don't. Don't say anything. It was my choice. You kept your promise.",
+   "ex": "sad"
+  },
+  {
+   "s": "imran",
+   "t": "Just... win the final. Then I'll have something to tell Amma.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "label": "neha"
+  },
+  {
+   "if": {
+    "any": [
+     "taraScandal",
+     {
+      "rel": "neha",
+      "max": 0
+     }
+    ]
+   },
+   "go": "neha_far"
+  },
+  {
+   "phone": "Neha",
+   "msgs": [
+    {
+     "t": "My paper killed the story. A website in Mumbai will run it. Tonight."
+    },
+    {
+     "t": "Everything. Mehra. Jassi's debts. Karan's payments."
+    },
+    {
+     "t": "It will end Karan's career before the final. Tell me why I shouldn't."
+    }
+   ]
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Publish. People deserve the truth.\"",
+     "d": "Even if it costs Karan.",
+     "fx": {
+      "neha": 1,
+      "karan": -2
+     },
+     "set": "nehaPublished"
+    },
+    {
+     "t": "\"Wait four days. Let us catch him doing it.\"",
+     "d": "Ask her to trust you.",
+     "show": {
+      "any": [
+       "toldNehaTunnel",
+       "delhiNight",
+       "nehaSecondChance",
+       "nehaInterview",
+       {
+        "rel": "neha",
+        "min": 4
+       }
+      ]
+     },
+     "fx": {
+      "neha": 1
+     },
+     "set": "nehaWaits"
+    },
+    {
+     "t": "Say nothing.",
+     "d": "It's her story.",
+     "set": "nehaDecides"
+    }
+   ]
+  },
+  {
+   "if": "nehaWaits",
+   "go": "waits"
+  },
+  {
+   "n": "At midnight the story goes live. By 1 AM it's the top trend in India. By 2 AM, Karan is standing at your door."
+  },
+  {
+   "set": "nehaPublished"
+  },
+  {
+   "enter": "karan",
+   "side": "right"
+  },
+  {
+   "s": "karan",
+   "t": "Did you give it to her?",
+   "ex": "worried"
+  },
+  {
+   "if": "toldNehaTunnel",
+   "go": "admit"
+  },
+  {
+   "s": "karan",
+   "t": "...No. You'd look guiltier. Okay. Okay. It's out. Maybe that's better. Maybe now he can't hide either."
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "admit"
+  },
+  {
+   "th": "I told her in Delhi. On a rooftop. I told her everything."
+  },
+  {
+   "s": "karan",
+   "t": "You don't have to answer. I can see it.",
+   "mood": "soft"
+  },
+  {
+   "fx": {
+    "karan": -1
+   }
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "waits"
+  },
+  {
+   "phone": "Neha",
+   "msgs": [
+    {
+     "t": "Four days. Not a minute more."
+    },
+    {
+     "t": "And if this goes wrong, I'm writing that too."
+    },
+    {
+     "t": "Be careful, cricketer."
+    }
+   ]
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "neha_far"
+  },
+  {
+   "n": "A link from an unknown account: a Mumbai website has the whole story. Mehra, Jassi, Karan's payments. The byline: Neha. She didn't call you first. Why would she?"
+  },
+  {
+   "set": "nehaPublished"
+  },
+  {
+   "label": "cliff"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "3 AM. Your phone. No number."
+  },
+  {
+   "enter": "raghav",
+   "side": "right"
+  },
+  {
+   "s": "raghav",
+   "t": "Change of plan. Your captain is... shaky. So you'll do the job. Ball three of the seventeenth over. Run yourself out.",
+   "mood": "soft"
+  },
+  {
+   "s": "raghav",
+   "t": "Or Rajgarh has another fire. I hear the new stall is blue. Paint burns beautifully."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "It's not Karan's job anymore. It's yours. Or the stall burns."
+  }
+ ]
+}

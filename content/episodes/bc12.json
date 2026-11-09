@@ -1,0 +1,167 @@
+{
+ "id": "bc12",
+ "no": 12,
+ "book": "bluecap",
+ "title": "The Successor",
+ "art": "bg_hotel_lobby",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "6 AM. Karan hasn't slept. Veer is safe at home. The school says the man was \"a parent\". Nobody knows whose."
+  },
+  {
+   "if": "ishitaDeal",
+   "go": "phone"
+  },
+  {
+   "bg": "bg_hotel_lobby"
+  },
+  {
+   "n": "Breakfast in the hotel lobby. Ishita is at the next table. With Raghav Mehra. She laughs at something he says. She doesn't look at you once."
+  },
+  {
+   "enter": "ishita",
+   "side": "right"
+  },
+  {
+   "s": "ishita",
+   "t": "Oh, and Raghav? Last night's party photos of the young players will be in the papers at home by lunch. I'm so sorry, {first}.",
+   "ex": "cold"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "There was no party. There are photos anyway. Kabir Sir drops you for the second match \"to manage the noise\"."
+  },
+  {
+   "set": "dropped"
+  },
+  {
+   "fx": {
+    "kabir": -1
+   }
+  },
+  {
+   "go": "meeting"
+  },
+  {
+   "label": "phone"
+  },
+  {
+   "bg": "bg_hotel_lobby"
+  },
+  {
+   "n": "A room-service tray outside your door. Under the napkin: a phone. A sticky note: \"Don't thank me. Read.\""
+  },
+  {
+   "n": "Raghav Mehra's second phone, cloned. Messages to four players across three years. And one thread, unread, still being typed into."
+  },
+  {
+   "n": "\"FINAL. 17th over. Ball 3. Captain drops it. If boy is at crease, boy runs himself out.\"",
+   "reveal": true
+  },
+  {
+   "set": "ishitaPhone"
+  },
+  {
+   "th": "The 17th over. Ball three. He's already written the match."
+  },
+  {
+   "label": "meeting"
+  },
+  {
+   "bg": "bg_intl_dressing"
+  },
+  {
+   "n": "Team meeting. Karan stands at the front, captain's armband in his hand instead of on his arm."
+  },
+  {
+   "enter": "karan",
+   "side": "right"
+  },
+  {
+   "s": "karan",
+   "t": "After this series I'm stepping down as captain. Personal reasons. That's all I'm going to say.",
+   "mood": "soft"
+  },
+  {
+   "n": "Silence. Then Kabir Sir slowly puts down his stopwatch."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "phone": "Unknown",
+   "msgs": [
+    {
+     "t": "The captaincy will be vacant soon."
+    },
+    {
+     "t": "I am a very generous man to my friends."
+    },
+    {
+     "t": "Twenty-one is young for a captain. Not too young. — R"
+    }
+   ]
+  },
+  {
+   "choice": [
+    {
+     "t": "Screenshot it. Send it to Rathore.",
+     "d": "Evidence.",
+     "set": "sentRathore"
+    },
+    {
+     "t": "Delete it.",
+     "d": "You don't want anything from him.",
+     "set": "deletedOffer"
+    }
+   ]
+  },
+  {
+   "end": true,
+   "cliff": "Raghav doesn't just want a fixed final. He wants to choose the next captain. And he's choosing you."
+  }
+ ]
+}

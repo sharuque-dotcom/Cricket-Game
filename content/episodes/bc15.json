@@ -1,0 +1,200 @@
+{
+ "id": "bc15",
+ "no": 15,
+ "book": "bluecap",
+ "title": "Fire Twice",
+ "art": "bg_stall_rebuilt",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_street_dusk"
+  },
+  {
+   "n": "Rajgarh. 2:15 AM. A black car without headlights rolls into the bus stand. Two men get out with a jerry can."
+  },
+  {
+   "if": {
+    "any": [
+     "rathoreGuard",
+     "guards"
+    ]
+   },
+   "go": "guarded"
+  },
+  {
+   "n": "Rocky Bhatia sees them first. He's been sleeping on the bench for four nights with a stump under his pillow."
+  },
+  {
+   "n": "By the time the first match is struck, eleven tennis-ball cricketers are running at the car. The men drop the can and drive into a ditch."
+  },
+  {
+   "n": "The awning burns. Only the awning. Papa puts it out with a bucket of chai water and a word Maa pretends not to hear.",
+   "reveal": true
+  },
+  {
+   "set": "stallScorched"
+  },
+  {
+   "go": "call"
+  },
+  {
+   "label": "guarded"
+  },
+  {
+   "n": "They get three steps. Then torches come on from both sides of the road. \"Police. Drop it.\""
+  },
+  {
+   "n": "One of them starts talking before they've even been handcuffed. A name. Mehra. A phone number. A payment of two lakh rupees.",
+   "reveal": true
+  },
+  {
+   "set": "goonsCaught"
+  },
+  {
+   "label": "call"
+  },
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "Video call. Papa's face, black with smoke, grinning like a boy."
+  },
+  {
+   "enter": "papa",
+   "side": "left"
+  },
+  {
+   "s": "papa",
+   "t": "They came. They left. The stall is fine. Your Maa is angrier than the fire was."
+  },
+  {
+   "s": "papa",
+   "t": "Listen to me. Play the final. If you lose because you're scared, they win. If you lose playing, that's just cricket.",
+   "mood": "soft"
+  },
+  {
+   "s": "papa",
+   "t": "And if anybody tells you to get out on purpose, you tell them your father sells chai, not wickets."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "fx": {
+    "papa": 2
+   }
+  },
+  {
+   "n": "There's a knock. Kabir Sir. And behind him, a man in a plain grey shirt who flew fourteen hours with an empty file folder."
+  },
+  {
+   "enter": "rathore",
+   "side": "right"
+  },
+  {
+   "s": "rathore",
+   "t": "{first}. You look older. Good. We need him to send the instruction, on the day, to a device we control. And we need it to reach us before the ball is bowled."
+  },
+  {
+   "enter": "kabir",
+   "side": "left"
+  },
+  {
+   "s": "kabir",
+   "t": "Nobody in the team knows except the three of us. And Karan."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Wire me. Like last time.\"",
+     "d": "You've done this before.",
+     "set": "wire2"
+    },
+    {
+     "t": "\"Use the cloned phone. He texts it in real time.\"",
+     "d": "Ishita's gift.",
+     "show": "ishitaPhone",
+     "set": "usePhone"
+    },
+    {
+     "t": "\"I'll handle it myself on the field.\"",
+     "d": "No wires. No plans.",
+     "set": "alone"
+    }
+   ]
+  },
+  {
+   "if": "alone",
+   "go": "alone"
+  },
+  {
+   "s": "rathore",
+   "t": "Good. Then all you have to do is the hardest part. Play cricket like nothing is happening."
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "alone"
+  },
+  {
+   "s": "rathore",
+   "t": "Then I'll be in the stands, and I'll be praying. I don't usually pray.",
+   "mood": "soft"
+  },
+  {
+   "label": "cliff"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "Team sheet for the final, slipped under your door. You're at six. Karan has written one line on the back in pencil."
+  },
+  {
+   "n": "\"If he texts me, I'll drop it. I have to. My son, champ. I'm sorry.\"",
+   "reveal": true
+  },
+  {
+   "end": true,
+   "cliff": "The stall survived. Now the final has to."
+  }
+ ]
+}

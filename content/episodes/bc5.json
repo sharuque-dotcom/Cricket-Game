@@ -1,0 +1,346 @@
+{
+ "id": "bc5",
+ "no": 5,
+ "book": "bluecap",
+ "title": "Viral",
+ "art": "ev_viral",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "ev_viral"
+  },
+  {
+   "n": "3:20 AM. 2.4 million views. 3.1 million. The number moves faster than your heartbeat."
+  },
+  {
+   "phone": "Pinky",
+   "msgs": [
+    {
+     "t": "Bhaiya people are saying horrible things"
+    },
+    {
+     "t": "Papa took the TV off the wall"
+    },
+    {
+     "t": "I don't believe them. Just tell me it's fake."
+    }
+   ]
+  },
+  {
+   "th": "It isn't fake. It just isn't true."
+  },
+  {
+   "bg": "bg_academy_nets"
+  },
+  {
+   "enter": "kabir",
+   "side": "right"
+  },
+  {
+   "s": "kabir",
+   "t": "The integrity unit wants a statement by noon. Two sponsors want you off the list by one. I want to know one thing.",
+   "ex": "angry"
+  },
+  {
+   "s": "kabir",
+   "t": "Did you take that man's money?"
+  },
+  {
+   "choice": [
+    {
+     "t": "Tell him everything about Sunny.",
+     "d": "The truth, all of it.",
+     "fx": {
+      "kabir": 2
+     },
+     "set": "toldKabirTruth"
+    },
+    {
+     "t": "\"It's two years old. It's handled.\"",
+     "d": "Keep it short.",
+     "fx": {
+      "kabir": -1
+     }
+    }
+   ]
+  },
+  {
+   "if": "toldKabirTruth",
+   "go": "k_truth"
+  },
+  {
+   "s": "kabir",
+   "t": "Handled. Good. Then handle my nets. Pads on."
+  },
+  {
+   "go": "lunch"
+  },
+  {
+   "label": "k_truth"
+  },
+  {
+   "n": "He listens to all of it without blinking. The envelope, the hearing, the photo. When you finish, he clicks the stopwatch off."
+  },
+  {
+   "s": "kabir",
+   "t": "Then you train. Let the lawyers talk. Nets in ten.",
+   "mood": "soft"
+  },
+  {
+   "label": "lunch"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "Lunch hall. A table of six goes quiet when you sit down. Then five of them stand up and leave."
+  },
+  {
+   "if": {
+    "not": "toldKabir"
+   },
+   "go": "imran_sits"
+  },
+  {
+   "phone": "Imran",
+   "msgs": [
+    {
+     "t": "Saw the video. Doesn't change anything."
+    },
+    {
+     "t": "Still angry with you about the shin though."
+    },
+    {
+     "t": "...Eat something."
+    }
+   ]
+  },
+  {
+   "go": "statement"
+  },
+  {
+   "label": "imran_sits"
+  },
+  {
+   "enter": "imran",
+   "side": "right"
+  },
+  {
+   "s": "imran",
+   "t": "Sorry in advance. I'm sitting here. Also I'm eating your dal."
+  },
+  {
+   "fx": {
+    "imran": 1
+   }
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "label": "statement"
+  },
+  {
+   "if": "signedIshita",
+   "go": "ish_signed"
+  },
+  {
+   "phone": "Ishita Bedi",
+   "msgs": [
+    {
+     "t": "Agencies protect their people. Just saying. 🙂"
+    },
+    {
+     "t": "Offer's still open."
+    }
+   ]
+  },
+  {
+   "go": "choose"
+  },
+  {
+   "label": "ish_signed"
+  },
+  {
+   "bg": "bg_brand_shoot"
+  },
+  {
+   "enter": "ishita",
+   "side": "right"
+  },
+  {
+   "s": "ishita",
+   "t": "Smile. Chin up. We release a charity cheque at six, the shoe ad at eight, and by tomorrow nobody remembers a hotel lobby."
+  },
+  {
+   "s": "ishita",
+   "t": "This is what you pay me for, {first}. Trust the process."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "set": "brandShoot"
+  },
+  {
+   "label": "choose"
+  },
+  {
+   "th": "Noon. They want words. Which words?"
+  },
+  {
+   "choice": [
+    {
+     "t": "Post the truth yourself. Every detail.",
+     "d": "Your words, your account.",
+     "set": "postedTruth"
+    },
+    {
+     "t": "Give Neha the exclusive interview.",
+     "d": "She'll ask the hard questions. Fairly.",
+     "show": {
+      "not": {
+       "any": [
+        "taraScandal",
+        {
+         "rel": "neha",
+         "max": 0
+        }
+       ]
+      }
+     },
+     "fx": {
+      "neha": 2
+     },
+     "set": "nehaInterview"
+    },
+    {
+     "t": "Say nothing. Let the bat answer.",
+     "d": "Silence is a statement too.",
+     "fx": {
+      "kabir": 1
+     },
+     "set": "silentStatement"
+    },
+    {
+     "t": "Hire a forensic expert to prove the clip was cut.",
+     "d": "Science beats outrage.",
+     "cost": 30,
+     "set": "forensic"
+    }
+   ]
+  },
+  {
+   "if": "postedTruth",
+   "go": "r_post"
+  },
+  {
+   "if": "nehaInterview",
+   "go": "r_neha"
+  },
+  {
+   "if": "forensic",
+   "go": "r_forensic"
+  },
+  {
+   "n": "You post nothing. The trolls get louder for a day. Then a cat video goes viral and the internet moves on. Mostly."
+  },
+  {
+   "go": "night"
+  },
+  {
+   "label": "r_post"
+  },
+  {
+   "n": "Four hundred words. No lawyer, no agency. By evening the comments split down the middle. Half of India believes you. That's more than yesterday."
+  },
+  {
+   "go": "night"
+  },
+  {
+   "label": "r_neha"
+  },
+  {
+   "n": "Neha's interview goes up at 9 PM. She doesn't go easy on you. That's exactly why people believe it."
+  },
+  {
+   "go": "night"
+  },
+  {
+   "label": "r_forensic"
+  },
+  {
+   "n": "The expert's report is out by 6 PM: the clip was edited. Three seconds of you walking away were cut out. The story flips. Now people want to know who cut it."
+  },
+  {
+   "label": "night"
+  },
+  {
+   "bg": "bg_academy_room"
+  },
+  {
+   "n": "11:48 PM. A call from a number with no caller ID."
+  },
+  {
+   "enter": "raghav",
+   "side": "right"
+  },
+  {
+   "s": "raghav",
+   "t": "Mr. {first}. Raghav Mehra. Forgive the hour. Men like me don't sleep much."
+  },
+  {
+   "s": "raghav",
+   "t": "I can make that clip disappear from every phone in India by sunrise. I own more of the internet than you'd think."
+  },
+  {
+   "s": "raghav",
+   "t": "Or I can release the other one. The one with sound.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "There's a second video. And Raghav Mehra wants something for it."
+  }
+ ]
+}

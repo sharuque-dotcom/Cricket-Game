@@ -1,0 +1,226 @@
+{
+ "id": "bc16",
+ "no": 16,
+ "book": "bluecap",
+ "title": "The Night Before",
+ "art": "bg_overseas_hotel",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "11 PM. Fourteen hours to the final. You knock on Karan's door. He opens it with Veer's school drawing in his hand."
+  },
+  {
+   "enter": "karan",
+   "side": "right"
+  },
+  {
+   "s": "karan",
+   "t": "He drew me holding a trophy. I'm the tallest person in the picture. Taller than the stadium.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Rathore's people will be at Veer's school tomorrow. I promise.\"",
+     "d": "Make him believe it.",
+     "fx": {
+      "karan": 2
+     }
+    },
+    {
+     "t": "\"Drop the catch if you have to. I'll cover it.\"",
+     "d": "Give him permission.",
+     "fx": {
+      "karan": 1
+     },
+     "set": "forgaveKaran"
+    },
+    {
+     "t": "Charter a jet. Bring Veer and his mother here tonight.",
+     "d": "Out of Mehra's reach. In the stands tomorrow.",
+     "cost": 40,
+     "fx": {
+      "karan": 4
+     },
+     "set": "familySafe"
+    }
+   ]
+  },
+  {
+   "if": "familySafe",
+   "go": "safe"
+  },
+  {
+   "s": "karan",
+   "t": "You're a good kid. I don't know if that's enough. I'll know at the seventeenth over.",
+   "ex": "worried"
+  },
+  {
+   "go": "team"
+  },
+  {
+   "label": "safe"
+  },
+  {
+   "n": "At 4 AM a small plane lands at the city airport. At 6 AM a seven-year-old in pyjamas runs down the hotel corridor shouting \"PAPA!\""
+  },
+  {
+   "s": "karan",
+   "t": "...I don't know how to pay you back.",
+   "mood": "soft"
+  },
+  {
+   "s": "karan",
+   "t": "Yes I do. I'm going to catch everything tomorrow. Everything."
+  },
+  {
+   "label": "team"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "if": "imranBack",
+   "go": "imran"
+  },
+  {
+   "if": "imranInSquad",
+   "go": "imran"
+  },
+  {
+   "go": "neha"
+  },
+  {
+   "label": "imran"
+  },
+  {
+   "enter": "imran",
+   "side": "left"
+  },
+  {
+   "s": "imran",
+   "t": "Can't sleep. Brought banana chips. Amma's last packet. Emergency only. This is an emergency."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "label": "neha"
+  },
+  {
+   "if": {
+    "any": [
+     "taraScandal",
+     {
+      "rel": "neha",
+      "max": 0
+     }
+    ]
+   },
+   "go": "vik"
+  },
+  {
+   "phone": "Neha",
+   "msgs": [
+    {
+     "t": "I'm in the press box tomorrow. Flew in. Don't ask how much it cost."
+    },
+    {
+     "t": "Whatever happens at ball three, I'll write it true."
+    },
+    {
+     "t": "Hit one for Rajgarh."
+    }
+   ]
+  },
+  {
+   "label": "vik"
+  },
+  {
+   "if": "vikrantTestifies",
+   "go": "vik_rec"
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "vik_rec"
+  },
+  {
+   "enter": "vikrant_blue",
+   "side": "right"
+  },
+  {
+   "s": "vikrant_blue",
+   "t": "My statement. Signed. Rathore has a copy. My father will never speak to me again.",
+   "mood": "soft"
+  },
+  {
+   "s": "vikrant_blue",
+   "t": "Tomorrow, chaiwala, if you run yourself out, I'll kill you before Mehra can."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "label": "cliff"
+  },
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "7:02 AM. Final day. Your phone lights up with a photo."
+  },
+  {
+   "n": "Papa at the stall, pouring chai. Two men in grey suits sitting on the bench. One of them is raising his glass to the camera.",
+   "reveal": true
+  },
+  {
+   "n": "\"17th over. Ball 3. Your father makes excellent chai. — R\""
+  },
+  {
+   "end": true,
+   "cliff": "Final day. Mehra's men are drinking Papa's chai. Ball three is waiting."
+  }
+ ]
+}

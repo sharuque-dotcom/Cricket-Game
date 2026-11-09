@@ -1,0 +1,179 @@
+{
+ "id": "bc7",
+ "no": 7,
+ "book": "bluecap",
+ "title": "The Tunnel",
+ "art": "bg_stadium_tunnel",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_stadium_tunnel"
+  },
+  {
+   "n": "Back in Bengaluru. Midnight again. This time Karan Dhillon is waiting for you in the tunnel. On purpose."
+  },
+  {
+   "enter": "karan",
+   "side": "right"
+  },
+  {
+   "s": "karan",
+   "t": "No phone. Leave it on the bench. Thank you."
+  },
+  {
+   "s": "karan",
+   "t": "My younger brother, Jassi. Online betting. He lost forty crore that he didn't have. To an app owned by a company owned by a company owned by Raghav Mehra.",
+   "ex": "worried"
+  },
+  {
+   "s": "karan",
+   "t": "I've been paying it off for two years. Endorsements, prize money, my house. It was never going to be enough. It was never about money."
+  },
+  {
+   "s": "karan",
+   "t": "They have photos of my son's school gate. Veer. He's seven.",
+   "mood": "soft"
+  },
+  {
+   "s": "karan",
+   "t": "Now they want the series final. One dropped catch. One run-out. Whatever they text me on the day."
+  },
+  {
+   "th": "The national captain. Crying in a tunnel. And I'm the only one who knows."
+  },
+  {
+   "s": "karan",
+   "t": "And champ? He asked about you. By name. You're in his plans too."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Then we beat him. Together.\"",
+     "d": "Stand with your captain.",
+     "fx": {
+      "karan": 2
+     },
+     "set": "karanAlly"
+    },
+    {
+     "t": "\"We go to the integrity unit. Tonight.\"",
+     "d": "By the book.",
+     "fx": {
+      "karan": -1
+     },
+     "set": "planRathore"
+    },
+    {
+     "t": "\"This isn't my fight.\"",
+     "d": "You've had enough of men like Mehra.",
+     "fx": {
+      "karan": -2
+     },
+     "set": "walkedAway"
+    }
+   ]
+  },
+  {
+   "if": "karanAlly",
+   "go": "ally"
+  },
+  {
+   "if": "planRathore",
+   "go": "acu"
+  },
+  {
+   "s": "karan",
+   "t": "Fair. I'd say the same at your age. Just don't be standing next to me when it all falls down."
+  },
+  {
+   "go": "kabir"
+  },
+  {
+   "label": "ally"
+  },
+  {
+   "s": "karan",
+   "t": "You're either very brave or very new.",
+   "mood": "soft"
+  },
+  {
+   "s": "karan",
+   "t": "...Thank you. Nobody has said \"together\" to me in two years."
+  },
+  {
+   "go": "kabir"
+  },
+  {
+   "label": "acu"
+  },
+  {
+   "s": "karan",
+   "t": "The unit leaks, champ. Somebody in that office talks to Mehra. He'd know in an hour."
+  },
+  {
+   "th": "Somebody, maybe. Not Rathore. Rathore never leaked anything in his life."
+  },
+  {
+   "set": "trustRathore"
+  },
+  {
+   "label": "kabir"
+  },
+  {
+   "n": "A cough in the dark. Behind the last pillar, with a stopwatch in his hand, Kabir Joshi has been standing the whole time.",
+   "reveal": true
+  },
+  {
+   "enter": "kabir",
+   "side": "left"
+  },
+  {
+   "s": "kabir",
+   "t": "Squad meeting. 7 AM. Both of you. Don't be late."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Kabir Sir heard every word. And he walked away without saying which side he's on."
+  }
+ ]
+}

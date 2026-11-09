@@ -11,12 +11,6 @@
         "kabir": "Kabir Sir",
         "imran": "Imran",
         "karan": "Karan"
-      },
-      "teaser": {
-        "no": 5,
-        "title": "Viral",
-        "art": "bg_academy_room",
-        "note": "Coming soon"
       }
     }
   ],
@@ -44,6 +38,102 @@
       "no": 4,
       "file": "episodes/bc4.json",
       "rev": 1
+    },
+    {
+      "id": "bc5",
+      "no": 5,
+      "file": "episodes/bc5.json",
+      "rev": 1
+    },
+    {
+      "id": "bc6",
+      "no": 6,
+      "file": "episodes/bc6.json",
+      "rev": 1
+    },
+    {
+      "id": "bc7",
+      "no": 7,
+      "file": "episodes/bc7.json",
+      "rev": 1
+    },
+    {
+      "id": "bc8",
+      "no": 8,
+      "file": "episodes/bc8.json",
+      "rev": 1
+    },
+    {
+      "id": "bc9",
+      "no": 9,
+      "file": "episodes/bc9.json",
+      "rev": 1
+    },
+    {
+      "id": "bc10",
+      "no": 10,
+      "file": "episodes/bc10.json",
+      "rev": 1
+    },
+    {
+      "id": "bc11",
+      "no": 11,
+      "file": "episodes/bc11.json",
+      "rev": 1
+    },
+    {
+      "id": "bc12",
+      "no": 12,
+      "file": "episodes/bc12.json",
+      "rev": 1
+    },
+    {
+      "id": "bc13",
+      "no": 13,
+      "file": "episodes/bc13.json",
+      "rev": 1
+    },
+    {
+      "id": "bc14",
+      "no": 14,
+      "file": "episodes/bc14.json",
+      "rev": 1
+    },
+    {
+      "id": "bc15",
+      "no": 15,
+      "file": "episodes/bc15.json",
+      "rev": 1
+    },
+    {
+      "id": "bc16",
+      "no": 16,
+      "file": "episodes/bc16.json",
+      "rev": 1
+    },
+    {
+      "id": "bc17",
+      "no": 17,
+      "file": "episodes/bc17.json",
+      "rev": 1
+    },
+    {
+      "id": "bc18",
+      "no": 18,
+      "file": "episodes/bc18.json",
+      "rev": 1
+    },
+    {
+      "id": "bc19",
+      "no": 19,
+      "file": "episodes/bc19.json",
+      "rev": 1
+    },
+    {
+      "id": "bc20",
+      "no": 20,
+      "file": "episodes/bc20.json",
+      "rev": 1
     }
   ],
   "fallback": {
@@ -52,23 +142,66 @@
     "bg_academy_room": "bg_hostel",
     "bg_stadium_tunnel": "bg_dressing_room",
     "bg_rooftop_lounge": "bg_hotel_lobby",
-    "cover_bluecap": "ch6"
+    "cover_bluecap": "ch6",
+    "ev_viral": "bg_hostel",
+    "bg_brand_shoot": "ev_party",
+    "bg_delhi_night": "bg_street_dusk",
+    "bg_press_room": "bg_hearing_room",
+    "ev_blue_cap": "bd_stadium_day",
+    "bg_intl_stadium": "bd_stadium_night",
+    "bg_intl_dressing": "bg_dressing_room",
+    "bg_airport_gate": "bg_hotel_lobby",
+    "bg_overseas_hotel": "bg_hostel",
+    "bg_physio_room": "bg_hospital",
+    "ev_last_over": "bd_stadium_night",
+    "bg_awards_gala": "ev_party",
+    "bg_rajgarh_festival": "bg_stall_rebuilt",
+    "char_vikrant_blue": "char_vikrant",
+    "char_neha_delhi": "char_neha"
   },
   "fx": {
     "ev_the_call": "dust",
     "bg_academy_nets": "dust",
     "bg_academy_room": "dust",
     "bg_stadium_tunnel": "dust",
-    "bg_rooftop_lounge": "bokeh"
+    "bg_rooftop_lounge": "bokeh",
+    "ev_viral": "bokeh",
+    "bg_brand_shoot": "dust",
+    "bg_delhi_night": "bokeh",
+    "bg_press_room": "dust",
+    "ev_blue_cap": "dust",
+    "bg_intl_stadium": "bokeh",
+    "bg_intl_dressing": "dust",
+    "bg_airport_gate": "dust",
+    "bg_overseas_hotel": "rain",
+    "bg_physio_room": "dust",
+    "ev_last_over": "bokeh",
+    "bg_awards_gala": "bokeh",
+    "bg_rajgarh_festival": "embers+bokeh"
   },
   "day": [
-    "bg_academy_nets"
+    "bg_academy_nets",
+    "ev_blue_cap",
+    "bg_airport_gate"
   ],
   "amb": {
     "ev_the_call": "stall",
     "bg_academy_nets": "maidan",
     "bg_academy_room": "room",
     "bg_stadium_tunnel": "night",
-    "bg_rooftop_lounge": "night"
+    "bg_rooftop_lounge": "night",
+    "ev_viral": "room",
+    "bg_brand_shoot": "room",
+    "bg_delhi_night": "night",
+    "bg_press_room": "room",
+    "ev_blue_cap": "maidan",
+    "bg_intl_stadium": "night",
+    "bg_intl_dressing": "room",
+    "bg_airport_gate": "room",
+    "bg_overseas_hotel": "rain",
+    "bg_physio_room": "room",
+    "ev_last_over": "night",
+    "bg_awards_gala": "night",
+    "bg_rajgarh_festival": "stall"
   }
 }

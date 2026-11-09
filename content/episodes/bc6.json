@@ -1,0 +1,305 @@
+{
+ "id": "bc6",
+ "no": 6,
+ "book": "bluecap",
+ "title": "Delhi",
+ "art": "bg_delhi_night",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_delhi_night"
+  },
+  {
+   "n": "Camp break. Thirty-six hours. You land in Delhi with a backpack and no plan. The air tastes like smoke and winter."
+  },
+  {
+   "enter": "neha_delhi",
+   "side": "right"
+  },
+  {
+   "if": {
+    "all": [
+     {
+      "rel": "neha",
+      "min": 4
+     },
+     "!taraScandal"
+    ]
+   },
+   "go": "close"
+  },
+  {
+   "if": {
+    "any": [
+     "taraScandal",
+     {
+      "rel": "neha",
+      "max": 0
+     }
+    ]
+   },
+   "go": "cold"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "You came. I said \"if you're ever in Delhi\". People don't usually take that literally."
+  },
+  {
+   "th": "Two years. She cut her hair. She still holds the red pen like it's a weapon."
+  },
+  {
+   "go": "work"
+  },
+  {
+   "label": "close"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "Two years of video calls and you're finally here. Your face is smaller in real life.",
+   "ex": "happy"
+  },
+  {
+   "n": "She hugs you for a long time. Long enough that the chai seller on the corner looks away politely."
+  },
+  {
+   "go": "work"
+  },
+  {
+   "label": "cold"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "I'm here as a reporter. You're here as a story. Sit."
+  },
+  {
+   "th": "I deserved that."
+  },
+  {
+   "label": "work"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "Listen. I've been on Mehra Sports Group for eight months. Shell companies inside shell companies."
+  },
+  {
+   "s": "neha_delhi",
+   "t": "Sunny's court papers mention a \"Mr. M\" thirty-seven times. And there's another name next to Mehra's that I can't explain."
+  },
+  {
+   "s": "neha_delhi",
+   "t": "Karan Dhillon. Payments from the captain to a Mehra company. Forty crore in two years.",
+   "mood": "soft"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "Your captain is either corrupt, or somebody is bleeding him dry. You're in that camp. Which is it?"
+  },
+  {
+   "choice": [
+    {
+     "t": "Tell her about the tunnel.",
+     "d": "She'll know what to do with it.",
+     "fx": {
+      "neha": 2,
+      "karan": -1
+     },
+     "set": "toldNehaTunnel"
+    },
+    {
+     "t": "\"I can't tell you. Not yet.\"",
+     "d": "Protect Karan.",
+     "fx": {
+      "karan": 1,
+      "neha": -1
+     },
+     "set": "keptKaranSecret"
+    }
+   ]
+  },
+  {
+   "if": "toldNehaTunnel",
+   "go": "told"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "\"Not yet.\" So there is something. Fine. I'll find it without you. I always do."
+  },
+  {
+   "go": "roof"
+  },
+  {
+   "label": "told"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "\"Keep my family out of it.\" Then he's not corrupt. He's a hostage.",
+   "mood": "soft"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "That changes the story. It doesn't kill it."
+  },
+  {
+   "label": "roof"
+  },
+  {
+   "n": "Midnight. Her rooftop. Fairy lights on a water tank, two plastic chairs, two cups of chai going cold."
+  },
+  {
+   "if": {
+    "any": [
+     "taraScandal",
+     {
+      "rel": "neha",
+      "max": 0
+     }
+    ]
+   },
+   "go": "roof_cold"
+  },
+  {
+   "choice": [
+    {
+     "t": "Stay until sunrise.",
+     "d": "Miss the first flight. Kabir Sir will kill you.",
+     "cost": 20,
+     "fx": {
+      "neha": 3,
+      "kabir": -1
+     },
+     "set": "delhiNight"
+    },
+    {
+     "t": "Catch the last flight back to camp.",
+     "d": "Cricket first. She knows that.",
+     "fx": {
+      "kabir": 1,
+      "neha": -1
+     }
+    }
+   ]
+  },
+  {
+   "if": "delhiNight",
+   "go": "sunrise"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "Go. Before I ask you to stay.",
+   "mood": "soft"
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "sunrise"
+  },
+  {
+   "n": "You talk about everything except cricket. At 5 AM, Delhi turns pink. She falls asleep on your shoulder, still holding the red pen."
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "roof_cold"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"I'm sorry. For all of it. Can we start again?\"",
+     "d": "Ask for a second chance.",
+     "cost": 25,
+     "fx": {
+      "neha": 4
+     },
+     "set": "nehaSecondChance"
+    },
+    {
+     "t": "Keep it professional.",
+     "d": "Some chapters close.",
+     "fx": {
+      "neha": 1
+     }
+    }
+   ]
+  },
+  {
+   "if": "nehaSecondChance",
+   "go": "second"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "Good luck in the camp, cricketer. I mean that."
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "second"
+  },
+  {
+   "s": "neha_delhi",
+   "t": "...Slowly. Very slowly. Starting with you buying the chai.",
+   "ex": "happy"
+  },
+  {
+   "label": "cliff"
+  },
+  {
+   "n": "Her phone buzzes. Her editor. She reads it twice, then turns the screen to you."
+  },
+  {
+   "n": "\"Kill the Mehra story. Order from the top. The paper's owners sold thirty percent to Mehra Media last night.\"",
+   "reveal": true
+  },
+  {
+   "s": "neha_delhi",
+   "t": "He bought my newspaper. Overnight. To shut me up.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Raghav Mehra didn't threaten Neha. He just bought the ground she was standing on."
+  }
+ ]
+}

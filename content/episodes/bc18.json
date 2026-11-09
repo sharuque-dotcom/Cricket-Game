@@ -1,0 +1,286 @@
+{
+ "id": "bc18",
+ "no": 18,
+ "book": "bluecap",
+ "title": "Awards Night",
+ "art": "bg_awards_gala",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_awards_gala"
+  },
+  {
+   "n": "A five-star ballroom. Chandeliers, cameras, the whole team in borrowed suits. The host announces: \"Emerging Player of the Series.\""
+  },
+  {
+   "n": "And to present it: \"Mr. Raghav Mehra.\""
+  },
+  {
+   "enter": "raghav",
+   "side": "right"
+  },
+  {
+   "if": "didFix",
+   "go": "fix"
+  },
+  {
+   "s": "raghav",
+   "t": "A boy from a chai stall. Look at him now. I always say: this game rewards those who understand how it works.",
+   "mood": "soft"
+  },
+  {
+   "n": "He hands you the trophy. He doesn't let go of it. He leans in, smiling for the cameras."
+  },
+  {
+   "s": "raghav",
+   "t": "You ran at ball three. I'll remember that. Rajgarh will remember it too.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "Take the microphone. Say it all. Live.",
+     "d": "In front of every camera in the country.",
+     "set": "exposeLive"
+    },
+    {
+     "t": "Smile. Take the trophy. Let Rathore finish it quietly.",
+     "d": "The careful way.",
+     "set": "quietWay"
+    }
+   ]
+  },
+  {
+   "if": "quietWay",
+   "go": "quiet"
+  },
+  {
+   "n": "You turn to the microphone. The room goes silent the way a stadium goes silent before a big appeal."
+  },
+  {
+   "th": "Papa sells chai, not wickets."
+  },
+  {
+   "if": {
+    "any": [
+     "wire2",
+     {
+      "all": [
+       "usePhone",
+       "ishitaPhone"
+      ]
+     },
+     {
+      "all": [
+       "vikrantTestifies",
+       "karanClean"
+      ]
+     },
+     {
+      "all": [
+       "recordedRaghav",
+       {
+        "any": [
+         "goonsCaught",
+         "sentRathore",
+         "vikrantTestifies"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "go": "win"
+  },
+  {
+   "n": "You say everything. Jassi, Karan, the fire, ball three. Mehra laughs. \"A talented boy with a vivid imagination. My lawyers will be in touch.\""
+  },
+  {
+   "n": "Without the proof in your hands, it's your word against a billionaire's. The cameras cut away.",
+   "reveal": true
+  },
+  {
+   "set": "mehraFree"
+  },
+  {
+   "go": "end"
+  },
+  {
+   "label": "win"
+  },
+  {
+   "n": "You say everything. Then Rathore stands up at table nine and plays it through the ballroom speakers. His voice. His instructions. Ball three."
+  },
+  {
+   "s": "raghav",
+   "t": "Turn that off. TURN IT OFF.",
+   "ex": "angry",
+   "mood": "shout"
+  },
+  {
+   "n": "Four officers in plain clothes walk across the ballroom. The cameras don't cut away. Not one.",
+   "reveal": true
+  },
+  {
+   "set": "mehraDown"
+  },
+  {
+   "go": "end"
+  },
+  {
+   "label": "quiet"
+  },
+  {
+   "n": "You smile. You take the trophy. At 2 AM, Rathore calls."
+  },
+  {
+   "if": {
+    "any": [
+     "wire2",
+     {
+      "all": [
+       "usePhone",
+       "ishitaPhone"
+      ]
+     },
+     {
+      "all": [
+       "vikrantTestifies",
+       "karanClean"
+      ]
+     },
+     {
+      "all": [
+       "recordedRaghav",
+       {
+        "any": [
+         "goonsCaught",
+         "sentRathore",
+         "vikrantTestifies"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "go": "quiet_win"
+  },
+  {
+   "phone": "Rathore",
+   "msgs": [
+    {
+     "t": "Not enough. His lawyers will eat it."
+    },
+    {
+     "t": "We'll keep watching. So will he."
+    }
+   ]
+  },
+  {
+   "set": "mehraFree"
+  },
+  {
+   "go": "end"
+  },
+  {
+   "label": "quiet_win"
+  },
+  {
+   "phone": "Rathore",
+   "msgs": [
+    {
+     "t": "Arrested at the airport. 1:40 AM. Trying to board his own jet."
+    },
+    {
+     "t": "No cameras. Your way was quieter. It worked."
+    }
+   ]
+  },
+  {
+   "set": "mehraDown"
+  },
+  {
+   "go": "end"
+  },
+  {
+   "label": "fix"
+  },
+  {
+   "s": "raghav",
+   "t": "Our boy. So sensible. I knew you would understand how the game works.",
+   "mood": "soft"
+  },
+  {
+   "n": "Rathore stands behind you, not unkindly, and puts a hand on your shoulder."
+  },
+  {
+   "enter": "rathore",
+   "side": "left"
+  },
+  {
+   "s": "rathore",
+   "t": "We'll talk after the dinner, {first}. Bring your phone."
+  },
+  {
+   "set": "mehraDown"
+  },
+  {
+   "label": "end"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "if": "mehraDown",
+   "go": "c_down"
+  },
+  {
+   "end": true,
+   "cliff": "Raghav Mehra walks out of the ballroom smiling. \"See you next season, champ.\""
+  },
+  {
+   "label": "c_down"
+  },
+  {
+   "end": true,
+   "cliff": "In handcuffs, Raghav Mehra laughs. \"You think I'm the top of this? I'm a branch manager.\""
+  }
+ ]
+}

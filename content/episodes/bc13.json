@@ -1,0 +1,257 @@
+{
+ "id": "bc13",
+ "no": 13,
+ "book": "bluecap",
+ "title": "Blood",
+ "art": "bg_intl_dressing",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_intl_dressing"
+  },
+  {
+   "n": "Third match. An hour before the toss. Vikrant throws his helmet against the lockers so hard a visor cracks."
+  },
+  {
+   "enter": "vikrant_blue",
+   "side": "left"
+  },
+  {
+   "s": "vikrant_blue",
+   "t": "\"Twenty-one is young for a captain.\" Mehra's offering YOU the captaincy? After everything my family did for him?",
+   "ex": "angry"
+  },
+  {
+   "s": "vikrant_blue",
+   "t": "Is that why you're so brave, chaiwala? Because you've already got the job?",
+   "mood": "shout"
+  },
+  {
+   "choice": [
+    {
+     "t": "Show him the message. And everything else.",
+     "d": "No more secrets in this room.",
+     "fx": {
+      "vikrant": 2
+     },
+     "set": "showedVikrant"
+    },
+    {
+     "t": "Shove him into the lockers.",
+     "d": "You're done being called chaiwala.",
+     "fx": {
+      "vikrant": -2,
+      "kabir": -2
+     },
+     "set": "fought"
+    },
+    {
+     "t": "Walk out.",
+     "d": "Not before a match.",
+     "fx": {
+      "kabir": 1
+     }
+    }
+   ]
+  },
+  {
+   "if": "showedVikrant",
+   "go": "showed"
+  },
+  {
+   "if": "fought",
+   "go": "fight"
+  },
+  {
+   "s": "vikrant_blue",
+   "t": "Run away then. You're good at it."
+  },
+  {
+   "go": "match"
+  },
+  {
+   "label": "fight"
+  },
+  {
+   "n": "It takes three teammates and Kabir Sir's voice to separate you. Two fines. One split lip. The whole team watching."
+  },
+  {
+   "enter": "kabir",
+   "side": "right"
+  },
+  {
+   "s": "kabir",
+   "t": "The man who wants to break this team doesn't need to do anything. You're doing it for him.",
+   "ex": "angry"
+  },
+  {
+   "go": "match"
+  },
+  {
+   "label": "showed"
+  },
+  {
+   "n": "He reads all of it. The texts, the threats, the photo of Veer's school. His hands are shaking when he gives the phone back."
+  },
+  {
+   "s": "vikrant_blue",
+   "t": "He bought my father. He's not buying me.",
+   "mood": "soft"
+  },
+  {
+   "s": "vikrant_blue",
+   "t": "...And he's definitely not buying you. You're too cheap, chaiwala."
+  },
+  {
+   "if": "vikrantTestifies",
+   "go": "match"
+  },
+  {
+   "set": "vikrantTestifies"
+  },
+  {
+   "label": "match"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "if": "dropped",
+   "go": "dropped"
+  },
+  {
+   "if": "keptSecret",
+   "go": "imran_break"
+  },
+  {
+   "if": "imranInSquad",
+   "go": "imran_star"
+  },
+  {
+   "go": "bat"
+  },
+  {
+   "label": "imran_star"
+  },
+  {
+   "n": "Imran opens the bowling and takes four wickets in eleven balls. He celebrates every one by pretending to row a boat."
+  },
+  {
+   "go": "bat"
+  },
+  {
+   "label": "imran_break"
+  },
+  {
+   "n": "Imran's third over. He lands on his left foot and something cracks so loudly the stump microphone picks it up. He doesn't get up.",
+   "reveal": true
+  },
+  {
+   "set": "imranBroke"
+  },
+  {
+   "fx": {
+    "imran": -1
+   }
+  },
+  {
+   "label": "bat"
+  },
+  {
+   "bg": "bg_intl_stadium"
+  },
+  {
+   "moment": {
+    "kind": "chase",
+    "title": "14 off 6",
+    "desc": "Third match. The series is level. Vikrant at the other end, swearing at you and the bowler equally. Fourteen to win.",
+    "bowler": "Marco Venn",
+    "balls": 6,
+    "need": 14
+   },
+   "win": "won",
+   "lose": "lost"
+  },
+  {
+   "label": "dropped"
+  },
+  {
+   "n": "You're not playing. You carry drinks. Vikrant hits the winning runs and points his bat at the dressing room. At you. You can't tell if it's a joke."
+  },
+  {
+   "go": "hit"
+  },
+  {
+   "label": "won"
+  },
+  {
+   "n": "Series lead. Vikrant runs the length of the pitch to hug you, then remembers he's angry and turns it into a shoulder bump."
+  },
+  {
+   "set": "wonThird"
+  },
+  {
+   "go": "hit"
+  },
+  {
+   "label": "lost"
+  },
+  {
+   "n": "Two short. The visiting team celebrates. The series goes to a final."
+  },
+  {
+   "label": "hit"
+  },
+  {
+   "bg": "bg_intl_dressing"
+  },
+  {
+   "n": "Nets after the match. A throwdown specialist's ball jumps off a damp patch and slams into your bottom hand. You hear it before you feel it."
+  },
+  {
+   "n": "Your right index finger is turning purple. The final is in five days.",
+   "reveal": true
+  },
+  {
+   "end": true,
+   "cliff": "A broken finger, a blackmailed captain, and a ball Raghav Mehra has already chosen."
+  }
+ ]
+}

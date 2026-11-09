@@ -1,0 +1,248 @@
+{
+ "id": "bc8",
+ "no": 8,
+ "book": "bluecap",
+ "title": "Fifteen",
+ "art": "bg_press_room",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_academy_nets"
+  },
+  {
+   "n": "6:50 AM. Kabir Sir's office is a shipping container behind net six. He doesn't offer you a chair."
+  },
+  {
+   "enter": "kabir",
+   "side": "right"
+  },
+  {
+   "s": "kabir",
+   "t": "Twenty-two years ago a man like Mehra bought my opening partner. I knew. I said nothing. He played forty Tests. I opened a coaching academy."
+  },
+  {
+   "s": "kabir",
+   "t": "I've regretted it every day since. I'm not doing it twice.",
+   "mood": "soft"
+  },
+  {
+   "s": "kabir",
+   "t": "You're on the plane. Not because of the tunnel. Because of net three. Don't make me regret that as well."
+  },
+  {
+   "fx": {
+    "kabir": 2
+   },
+   "set": "kabirAlly"
+  },
+  {
+   "if": "toldKabir",
+   "go": "imran_out"
+  },
+  {
+   "if": "keptSecret",
+   "go": "imran_limp"
+  },
+  {
+   "s": "kabir",
+   "t": "Shaikh's on the plane too. Tell him before I do. He'll cry. I don't do crying."
+  },
+  {
+   "enter": "imran",
+   "side": "left"
+  },
+  {
+   "s": "imran",
+   "t": "The OTHER HALF OF THE BOAT, BHAI!",
+   "mood": "shout"
+  },
+  {
+   "fx": {
+    "imran": 1
+   },
+   "set": "imranInSquad"
+  },
+  {
+   "go": "press"
+  },
+  {
+   "label": "imran_out"
+  },
+  {
+   "s": "kabir",
+   "t": "Shaikh isn't fit. Standby list. If he heals, he flies in. You did that for him, by the way. He doesn't know it yet."
+  },
+  {
+   "go": "press"
+  },
+  {
+   "label": "imran_limp"
+  },
+  {
+   "s": "kabir",
+   "t": "Shaikh's on the plane. He's limping when he thinks I'm not looking. Is there something I should know?"
+  },
+  {
+   "choice": [
+    {
+     "t": "Keep his secret.",
+     "d": "You promised.",
+     "fx": {
+      "imran": 1,
+      "kabir": -1
+     }
+    },
+    {
+     "t": "Tell him now.",
+     "d": "Before it's too late.",
+     "fx": {
+      "imran": -2,
+      "kabir": 2
+     },
+     "set": "toldLate"
+    }
+   ]
+  },
+  {
+   "if": "toldLate",
+   "go": "late"
+  },
+  {
+   "s": "kabir",
+   "t": "Hm. Then I'll watch him myself."
+  },
+  {
+   "set": "imranInSquad"
+  },
+  {
+   "go": "press"
+  },
+  {
+   "label": "late"
+  },
+  {
+   "s": "kabir",
+   "t": "Physio. Now. He'll hate you. He'll also still be bowling in ten years."
+  },
+  {
+   "set": "imranSafe"
+  },
+  {
+   "label": "press"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_press_room"
+  },
+  {
+   "n": "Press conference. Forty cameras. The squad is read out in alphabetical order. Your name is eleventh. Somebody's flash goes off right in your eyes."
+  },
+  {
+   "n": "First question. Not for the captain. For you."
+  },
+  {
+   "n": "\"Is it true you're close to Raghav Mehra? Is that why you're on this list?\""
+  },
+  {
+   "choice": [
+    {
+     "t": "\"I made mistakes at nineteen. I never fixed a ball.\"",
+     "d": "Calm, honest.",
+     "fx": {
+      "kabir": 1
+     }
+    },
+    {
+     "t": "\"Ask the Board.\"",
+     "d": "Shut it down.",
+     "set": "coldPress"
+    },
+    {
+     "t": "\"Ask Raghav Mehra why he's so interested in me.\"",
+     "d": "Throw it back at him. Live on TV.",
+     "fx": {
+      "karan": 1
+     },
+     "set": "namedMehra"
+    }
+   ]
+  },
+  {
+   "if": "namedMehra",
+   "go": "named"
+  },
+  {
+   "n": "The room moves on. The cameras don't."
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "named"
+  },
+  {
+   "n": "The room goes silent. Then forty phones start typing at once. Next to you, Karan stares at the table so he doesn't smile.",
+   "reveal": true
+  },
+  {
+   "label": "cliff"
+  },
+  {
+   "phone": "Pinky",
+   "msgs": [
+    {
+     "t": "Bhaiya. Don't panic."
+    },
+    {
+     "t": "There's a black car outside the stall since morning. Two men. Just sitting."
+    },
+    {
+     "t": "They ordered chai. Papa served them. They didn't drink it."
+    }
+   ]
+  },
+  {
+   "end": true,
+   "cliff": "Mehra's men aren't watching you anymore. They're watching Papa."
+  }
+ ]
+}

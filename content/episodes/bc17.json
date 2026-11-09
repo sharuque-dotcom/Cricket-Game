@@ -1,0 +1,297 @@
+{
+ "id": "bc17",
+ "no": 17,
+ "book": "bluecap",
+ "title": "The Final",
+ "art": "ev_last_over",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_intl_stadium"
+  },
+  {
+   "n": "Series final. Eighty thousand people. Fireworks before the first ball. You call home from the tunnel."
+  },
+  {
+   "if": "goonsCaught",
+   "go": "safe"
+  },
+  {
+   "if": {
+    "any": [
+     "rathoreGuard",
+     "guards"
+    ]
+   },
+   "go": "safe"
+  },
+  {
+   "phone": "Pandey-ji",
+   "msgs": [
+    {
+     "t": "The two suits are sitting on the bench, yes."
+    },
+    {
+     "t": "So are forty boys with bats. And Rocky. And the whole bus stand."
+    },
+    {
+     "t": "Nobody is drinking chai with anyone. Play."
+    }
+   ]
+  },
+  {
+   "go": "field"
+  },
+  {
+   "label": "safe"
+  },
+  {
+   "phone": "Papa",
+   "msgs": [
+    {
+     "t": "The police took the two suits an hour ago. One of them cried."
+    },
+    {
+     "t": "Now hit something."
+    }
+   ]
+  },
+  {
+   "label": "field"
+  },
+  {
+   "n": "They bat first. 186 for 6 in the sixteenth over. The seventeenth begins. Karan is at mid-off. Every muscle in his face is still."
+  },
+  {
+   "n": "Ball three. A mistimed drive. It goes straight up. Straight down. Straight at the captain.",
+   "reveal": true
+  },
+  {
+   "if": {
+    "any": [
+     "familySafe",
+     {
+      "all": [
+       "karanAlly",
+       {
+        "rel": "karan",
+        "min": 4
+       }
+      ]
+     }
+    ]
+   },
+   "go": "catch"
+  },
+  {
+   "if": "forgaveKaran",
+   "go": "drop"
+  },
+  {
+   "if": {
+    "rel": "karan",
+    "min": 5
+   },
+   "go": "catch"
+  },
+  {
+   "label": "drop"
+  },
+  {
+   "n": "It hits his palms. It bounces out. The crowd groans. Karan doesn't look at the ball. He looks at the sky."
+  },
+  {
+   "set": "karanDropped"
+  },
+  {
+   "go": "chase"
+  },
+  {
+   "label": "catch"
+  },
+  {
+   "n": "He takes it. Two hands, chest height, eyes closed. He holds the ball up to the stand where a seven-year-old is screaming."
+  },
+  {
+   "set": "karanClean"
+  },
+  {
+   "label": "chase"
+  },
+  {
+   "n": "202 to win. Seventeenth over of the chase. You're at the crease. Your phone is in the dressing room, buzzing on the bench. You know what it says."
+  },
+  {
+   "n": "Ball three. Short of a length. An easy single. Your partner calls. If you just... stop running...",
+   "reveal": true
+  },
+  {
+   "choice": [
+    {
+     "t": "Run. Play the ball on its merit.",
+     "d": "Papa sells chai, not wickets.",
+     "fx": {
+      "papa": 2,
+      "kabir": 2
+     },
+     "set": "refusedFix"
+    },
+    {
+     "t": "Stop. Let them run you out.",
+     "d": "Keep everyone safe. Throw away everything else.",
+     "set": "didFix"
+    }
+   ]
+  },
+  {
+   "if": "didFix",
+   "go": "fix"
+  },
+  {
+   "n": "You run like the stall is on fire. You make your ground by a bat's width. In the stands, Rathore lowers a phone, and nods."
+  },
+  {
+   "n": "Last over. Twelve to win."
+  },
+  {
+   "bg": "ev_last_over"
+  },
+  {
+   "moment": {
+    "kind": "chase",
+    "title": "12 off 6",
+    "desc": "The series final. Eighty thousand people. Twelve to win off Marco Venn. Nothing left to hide.",
+    "bowler": "Marco Venn",
+    "balls": 6,
+    "need": 12,
+    "winCall": "CHAMPIONS!",
+    "winSub": "Rajgarh doesn't sleep tonight.",
+    "loseCall": "SO CLOSE",
+    "loseSub": "Eighty thousand people stand and clap anyway."
+   },
+   "win": "won",
+   "lose": "lost"
+  },
+  {
+   "label": "won"
+  },
+  {
+   "set": "champion2"
+  },
+  {
+   "n": "The last ball disappears over long-on. Vikrant reaches you first. Then Imran, somehow, from somewhere. Then the whole team, and Karan at the bottom of the pile, laughing like a boy."
+  },
+  {
+   "go": "after"
+  },
+  {
+   "label": "lost"
+  },
+  {
+   "set": "lostFinal"
+  },
+  {
+   "n": "Four runs short. You sink to your knees. A hand on your shoulder. Karan. \"You ran, champ. That's the only thing anyone will remember.\""
+  },
+  {
+   "go": "after"
+  },
+  {
+   "label": "fix"
+  },
+  {
+   "n": "You stop. The throw comes in. The bails come off. You walk back without looking at the replay screen. The crowd doesn't understand. Yet.",
+   "reveal": true
+  },
+  {
+   "set": "lostFinal"
+  },
+  {
+   "n": "They lose by nine runs. In the dressing room, nobody talks to you. Kabir Sir doesn't look at you at all."
+  },
+  {
+   "label": "after"
+  },
+  {
+   "bg": "bg_stadium_tunnel"
+  },
+  {
+   "enter": "rathore",
+   "side": "right"
+  },
+  {
+   "if": "didFix",
+   "go": "r_fix"
+  },
+  {
+   "s": "rathore",
+   "t": "We have the texts. We have the numbers. They come back to a Mehra company, but not to Mehra. Not yet."
+  },
+  {
+   "s": "rathore",
+   "t": "We need him to say it out loud. And tomorrow night he's presenting the awards. On stage. In front of everyone."
+  },
+  {
+   "go": "end"
+  },
+  {
+   "label": "r_fix"
+  },
+  {
+   "s": "rathore",
+   "t": "We had a wire on you, {first}. Or a phone. Or eighty thousand witnesses. It doesn't matter which.",
+   "mood": "soft"
+  },
+  {
+   "s": "rathore",
+   "t": "I can't unsee what I saw at ball three."
+  },
+  {
+   "label": "end"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Awards night. Raghav Mehra on stage. And you, in a suit, with a choice."
+  }
+ ]
+}

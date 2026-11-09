@@ -1,0 +1,233 @@
+{
+ "id": "bc10",
+ "no": 10,
+ "book": "bluecap",
+ "title": "Departure",
+ "art": "bg_airport_gate",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_academy_room"
+  },
+  {
+   "n": "The tour leaves in nine hours. You can't fly halfway around the world and leave Papa alone with a black car."
+  },
+  {
+   "choice": [
+    {
+     "t": "Call Rathore. Ask for police at the stall.",
+     "d": "He's never let you down.",
+     "fx": {
+      "papa": 1
+     },
+     "set": "rathoreGuard"
+    },
+    {
+     "t": "Ask Rocky and the tennis-ball boys to stand guard.",
+     "d": "Rajgarh looks after its own.",
+     "set": "rockyGuard"
+    },
+    {
+     "t": "Hire a private security firm for the stall.",
+     "d": "Four men, round the clock.",
+     "cost": 30,
+     "fx": {
+      "papa": 2
+     },
+     "set": "guards"
+    }
+   ]
+  },
+  {
+   "phone": "Papa",
+   "msgs": [
+    {
+     "t": "I heard what you did. I'm not closing the stall."
+    },
+    {
+     "t": "I closed once for a fire. Not for cowards in a car."
+    },
+    {
+     "t": "Go play. Eat properly. Call Maa, she's pretending she isn't crying."
+    }
+   ]
+  },
+  {
+   "bg": "bg_airport_gate"
+  },
+  {
+   "n": "Departure gate, 5:40 AM. Fifteen players in matching blazers. A golden sunrise on the wing of the plane. And at the first-class lounge door, a man in a velvet bandhgala."
+  },
+  {
+   "enter": "raghav",
+   "side": "right"
+  },
+  {
+   "s": "raghav",
+   "t": "Ah. The boy from the press conference. You said my name on live television. Very few people do that twice."
+  },
+  {
+   "s": "raghav",
+   "t": "Let me be simple, because you're tired. Your father's stall. Your sister's college. That little video. All safe. Forever."
+  },
+  {
+   "s": "raghav",
+   "t": "All I need is one thing in the final. You'll get a text with an over and a ball. On that ball, you get out. That's all. Cricket is full of bad luck.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"No.\"",
+     "d": "To his face.",
+     "set": "refusedRaghav"
+    },
+    {
+     "t": "\"...I'll think about it.\"",
+     "d": "Make him believe you'll play along.",
+     "set": "fakeDeal"
+    },
+    {
+     "t": "Record him on the phone in your pocket.",
+     "d": "Old habits from Book 1.",
+     "show": {
+      "any": [
+       "wired",
+       "recorded",
+       "recorded2",
+       "photos"
+      ]
+     },
+     "set": "recordedRaghav"
+    }
+   ]
+  },
+  {
+   "if": "refusedRaghav",
+   "go": "no"
+  },
+  {
+   "if": "recordedRaghav",
+   "go": "rec"
+  },
+  {
+   "s": "raghav",
+   "t": "Think on the plane. Fourteen hours. Lots of time to think.",
+   "mood": "soft"
+  },
+  {
+   "go": "plane"
+  },
+  {
+   "label": "no"
+  },
+  {
+   "s": "raghav",
+   "t": "Everybody says no the first time. It's a sort of ritual. I'll ask again when you have more to lose.",
+   "mood": "soft"
+  },
+  {
+   "go": "plane"
+  },
+  {
+   "label": "rec"
+  },
+  {
+   "n": "Your thumb finds the record button through the blazer pocket. Forty-one seconds. Every word."
+  },
+  {
+   "s": "raghav",
+   "t": "Think on the plane, beta."
+  },
+  {
+   "th": "I'll do better than think."
+  },
+  {
+   "label": "plane"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "Seat 34C. Middle seat. As the plane lifts off, someone sits down in 34B and buckles up."
+  },
+  {
+   "enter": "ishita",
+   "side": "right"
+  },
+  {
+   "if": "signedIshita",
+   "go": "ish_agent"
+  },
+  {
+   "s": "ishita",
+   "t": "Fancy seeing you here. I swapped seats with your physio. She was delighted. Business class."
+  },
+  {
+   "go": "ish_ask"
+  },
+  {
+   "label": "ish_agent"
+  },
+  {
+   "s": "ishita",
+   "t": "As your agent, I go where you go. Also I swapped seats with your physio. She owes me forever now."
+  },
+  {
+   "label": "ish_ask"
+  },
+  {
+   "s": "ishita",
+   "t": "I know what he asked you at the gate. I've watched him do it to six players.",
+   "mood": "soft"
+  },
+  {
+   "s": "ishita",
+   "t": "I can help you destroy him. I have the keys to his whole life. But I want something too."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Raghav Mehra's own agent wants to bring him down. What does she want in return?"
+  }
+ ]
+}

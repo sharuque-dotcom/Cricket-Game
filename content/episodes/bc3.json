@@ -24,6 +24,22 @@
   "selector_call": {
    "name": "Selection Office",
    "col": "#94a3b8"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
   }
  },
  "nodes": [
@@ -214,11 +230,11 @@
    "go": "vik_soft"
   },
   {
-   "enter": "vikrant",
+   "enter": "vikrant_blue",
    "side": "left"
   },
   {
-   "s": "vikrant",
+   "s": "vikrant_blue",
    "t": "Intra-squad game. They've put me on to bowl the last over at you. Fate, chaiwala.",
    "ex": "angry"
   },
@@ -229,11 +245,11 @@
    "label": "vik_soft"
   },
   {
-   "enter": "vikrant",
+   "enter": "vikrant_blue",
    "side": "left"
   },
   {
-   "s": "vikrant",
+   "s": "vikrant_blue",
    "t": "Last over, they've given me the ball against you. Nothing personal. I'm still going to try to take your head off."
   },
   {

@@ -1,0 +1,249 @@
+{
+ "id": "bc20",
+ "no": 20,
+ "book": "bluecap",
+ "title": "The Next Cap",
+ "art": "bg_rajgarh_festival",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "raghav": {
+   "name": "Raghav Mehra",
+   "col": "#f59e0b"
+  },
+  "physio": {
+   "name": "Dr. Meera",
+   "col": "#5eead4"
+  },
+  "vikrant_blue": {
+   "name": "Vikrant",
+   "col": "#a78bfa"
+  },
+  "neha_delhi": {
+   "name": "Neha",
+   "col": "#2ec4b6"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "if": "didFix",
+   "go": "dark"
+  },
+  {
+   "bg": "bg_press_room"
+  },
+  {
+   "n": "Board headquarters, Delhi. A smaller room than the press conference. Three officials, one coffee each, and Kabir Sir in the corner."
+  },
+  {
+   "n": "\"Vice-captain. For the World Cup. Karan asked for you specifically.\"",
+   "reveal": true
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Yes.\"",
+     "d": "One word. Papa would be proud of the brevity.",
+     "fx": {
+      "kabir": 1
+     },
+     "set": "viceCaptain"
+    },
+    {
+     "t": "\"Give it to Vikrant. He's earned it.\"",
+     "d": "Surprise everyone.",
+     "fx": {
+      "vikrant": 3
+     },
+     "set": "gaveVikrant"
+    }
+   ]
+  },
+  {
+   "if": "gaveVikrant",
+   "go": "vik"
+  },
+  {
+   "enter": "kabir",
+   "side": "right"
+  },
+  {
+   "s": "kabir",
+   "t": "Net three. I said don't make me regret it. You haven't. Yet.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "go": "mehra"
+  },
+  {
+   "label": "vik"
+  },
+  {
+   "n": "Two hours later, a message from Vikrant: one word. \"Chaiwala.\" Then another: \"...Thank you.\""
+  },
+  {
+   "label": "mehra"
+  },
+  {
+   "if": "mehraDown",
+   "go": "m_down"
+  },
+  {
+   "phone": "Rathore",
+   "msgs": [
+    {
+     "t": "Mehra's free. For now. He's bought two more franchises this week."
+    },
+    {
+     "t": "He will come for you again. I'll be watching when he does."
+    }
+   ]
+  },
+  {
+   "go": "home"
+  },
+  {
+   "label": "m_down"
+  },
+  {
+   "phone": "Rathore",
+   "msgs": [
+    {
+     "t": "Mehra wants a deal. He'll give names for a shorter sentence."
+    },
+    {
+     "t": "The first name he gave me isn't from cricket. It's from the film industry."
+    }
+   ]
+  },
+  {
+   "label": "home"
+  },
+  {
+   "bg": "bg_rajgarh_festival"
+  },
+  {
+   "n": "Rajgarh. Your last evening before the World Cup camp. A boy with a taped bat and a tennis ball wrapped in electrical tape is waiting at the maidan."
+  },
+  {
+   "n": "He is maybe ten. He looks at you the way you once looked at a poster."
+  },
+  {
+   "moment": {
+    "kind": "nets",
+    "title": "The Kid",
+    "desc": "Gully rules. One tip, one hand. A ten-year-old with a taped ball wants to bowl you out. Survive three balls. Try not to look too pleased.",
+    "bowler": "The kid from the nets",
+    "balls": 3,
+    "winCall": "STILL IN",
+    "winSub": "The kid demands a rematch.",
+    "loseCall": "BOWLED!",
+    "loseSub": "The whole maidan goes wild. He'll tell this story forever."
+   },
+   "win": "kid_end",
+   "lose": "kid_end"
+  },
+  {
+   "label": "kid_end"
+  },
+  {
+   "enter": "papa",
+   "side": "left"
+  },
+  {
+   "s": "papa",
+   "t": "One season, you said. Three years ago. One season.",
+   "mood": "soft"
+  },
+  {
+   "th": "One more, Papa. Then one more after that."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "if": "champion2",
+   "go": "end_glory"
+  },
+  {
+   "end": true,
+   "cliff": "Book 2 complete: capped, tested, unbought. The World Cup is next. Book 3 is coming soon."
+  },
+  {
+   "label": "end_glory"
+  },
+  {
+   "end": true,
+   "cliff": "Book 2 complete: series champion, unbought, the blue cap on your head. The World Cup is next. Book 3 is coming soon."
+  },
+  {
+   "label": "dark"
+  },
+  {
+   "bg": "bg_stall_rebuilt"
+  },
+  {
+   "n": "Two years later. 5:12 AM. The first bus to Meerut honks like it has been personally insulted."
+  },
+  {
+   "n": "You pour chai. A boy with a taped bat walks past, sees your face, and stops."
+  },
+  {
+   "n": "\"Bhaiya... are you HIM?\""
+  },
+  {
+   "choice": [
+    {
+     "t": "\"I used to be.\"",
+     "d": "The truth.",
+     "set": "darkTruth"
+    },
+    {
+     "t": "\"Come back at five. I'll bowl at you.\"",
+     "d": "Coaching doesn't need a Board.",
+     "fx": {
+      "papa": 2
+     },
+     "set": "darkCoach"
+    }
+   ]
+  },
+  {
+   "enter": "papa",
+   "side": "left"
+  },
+  {
+   "s": "papa",
+   "t": "Glasses, beta. The Meerut bus is in four minutes.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Book 2 ends here, at the stall where it all began. Replay Episode 17 to run at ball three."
+  }
+ ]
+}
