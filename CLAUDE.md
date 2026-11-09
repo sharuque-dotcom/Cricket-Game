@@ -16,9 +16,9 @@ Android cricket career + interactive-story game ("Choices for cricket"). Live on
 ## Build
 - Android SDK at `~/android-sdk` (the "Cricket-Game" cloud environment installs it). `local.properties` → `sdk.dir`.
 - `gradle assembleDebug bundleRelease --no-daemon -q --max-workers=1` (single worker avoids Maven 429s).
-- Bump `versionCode`/`versionName` in `app/build.gradle.kts` every Play upload (last: 20 / 1.4.0).
+- Bump `versionCode`/`versionName` in `app/build.gradle.kts` every Play upload (last: 22 / 1.4.0).
 - Release signing needs git-ignored `keystore.properties` + the upload `.jks` (owner keeps it; ask them to upload it). Never commit keys.
-- AdMob IDs in `res/values/strings.xml` are Google TEST ids until the owner provides real ones.
+- AdMob IDs are `resValue`s in `app/build.gradle.kts`: release = real ids (app `~5540920416`, rewarded `/5327178322`), debug = Google test ids. Never ship test ids in release or real ids in debug.
 
 ## Testing
 Playwright + Chromium are preinstalled: load `file://.../assets/game/index.html`, drive via `Story.*`, `GG._dev.{Game,Match,Moments}`. Check every episode's labels/backgrounds still resolve after story edits. For server episodes run `node tools/check-content.js`; test against a local server by setting `localStorage.gg_content_base` (needs `Access-Control-Allow-Origin: *`).

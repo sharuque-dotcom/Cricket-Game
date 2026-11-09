@@ -584,7 +584,7 @@ async function ending(id) {
 // ---------- Android lifecycle hooks ----------
 window.GG = {
   onPause() { Sfx.suspend(); try { Story.scheduleReminders(); } catch (e) {} },
-  onResume() { Sfx.resume(); try { Content.refresh().then(Content.announce); } catch (e) {} },
+  onResume() { Sfx.resume(); Ads.collect(); setTimeout(() => Ads.collect(), 2000); try { Content.refresh().then(Content.announce); } catch (e) {} },
   onBack() {
     if (UI.sheet) { closeSheet(); return 'handled'; }
     const now = Date.now();
@@ -593,6 +593,7 @@ window.GG = {
     return 'handled';
   },
   adResult(placement, result) { Ads.result(placement, result); },
+  adShown(placement) { Ads.shown(placement); },
   notifyResult(granted) { Notify.result(granted); },
   // test hook
   _dev: { Game, Match, Moments, Content },

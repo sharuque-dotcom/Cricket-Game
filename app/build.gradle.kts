@@ -18,7 +18,7 @@ android {
         applicationId = "com.gullytoglory.game"
         minSdk = 24
         targetSdk = 36
-        versionCode = 20
+        versionCode = 22
         versionName = "1.4.0"
     }
 
@@ -34,7 +34,15 @@ android {
     }
 
     buildTypes {
+        // Debug builds always show Google's test ads, so testing on your own phone
+        // never clicks real ads (AdMob treats that as invalid traffic).
+        debug {
+            resValue("string", "admob_app_id", "ca-app-pub-3940256099942544~3347511713")
+            resValue("string", "admob_rewarded_id", "ca-app-pub-3940256099942544/5224354917")
+        }
         release {
+            resValue("string", "admob_app_id", "ca-app-pub-1591932924572024~5540920416")
+            resValue("string", "admob_rewarded_id", "ca-app-pub-1591932924572024/5327178322")
             isMinifyEnabled = false
             signingConfigs.findByName("release")?.let { signingConfig = it }
         }

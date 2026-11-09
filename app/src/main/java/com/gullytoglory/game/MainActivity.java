@@ -183,37 +183,69 @@ public class MainActivity extends Activity {
     }
 
     // ---------- Rewarded ads ----------
+    // Results are kept here until the game collects them, so a reward is never lost
+    // if the WebView was paused when the ad closed.
+    private final java.util.Map<String, String> adResults = new java.util.concurrent.ConcurrentHashMap<>();
+    private final android.os.Handler main = new android.os.Handler(android.os.Looper.getMainLooper());
+    private long loadRetryMs = 15000;
+
     private void loadRewarded() {
         if (adLoading || rewarded != null) return;
         adLoading = true;
         RewardedAd.load(this, getString(R.string.admob_rewarded_id), new AdRequest.Builder().build(),
             new RewardedAdLoadCallback() {
-                @Override public void onAdLoaded(RewardedAd ad) { rewarded = ad; adLoading = false; }
-                @Override public void onAdFailedToLoad(LoadAdError err) { rewarded = null; adLoading = false; }
+                @Override public void onAdLoaded(RewardedAd ad) { rewarded = ad; adLoading = false; loadRetryMs = 15000; }
+                @Override public void onAdFailedToLoad(LoadAdError err) {
+                    rewarded = null; adLoading = false;
+                    // retry with backoff (15s, 30s, ... up to 5 min) so an ad is ready next time
+                    main.postDelayed(MainActivity.this::loadRewarded, loadRetryMs);
+                    loadRetryMs = Math.min(loadRetryMs * 2, 300000);
+                }
             });
     }
 
-    private void sendAdResult(String placement, String result) {
-        String js = "window.GG && GG.adResult && GG.adResult(" + JSONObject.quote(placement) + "," + JSONObject.quote(result) + ")";
+    private void callJs(String js) {
         web.post(() -> web.evaluateJavascript(js, null));
     }
 
+    private void sendAdResult(String placement, String result) {
+        adResults.put(placement, result);
+        callJs("window.GG && GG.adResult && GG.adResult(" + JSONObject.quote(placement) + "," + JSONObject.quote(result) + ")");
+    }
+
+    String takeAdResult(String placement) {
+        String r = adResults.remove(placement);
+        return r == null ? "" : r;
+    }
+
     private void showRewarded(String placement) {
+        adResults.remove(placement);
         if (rewarded == null) { sendAdResult(placement, "unavailable"); loadRewarded(); return; }
+        // AdMob does not promise the reward callback comes before the dismiss callback,
+        // so the first final outcome wins and "skipped" waits a moment for a late reward.
         final boolean[] earned = { false };
+        final boolean[] done = { false };
         RewardedAd ad = rewarded;
         rewarded = null;
         ad.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override public void onAdShowedFullScreenContent() {
+                callJs("window.GG && GG.adShown && GG.adShown(" + JSONObject.quote(placement) + ")");
+            }
             @Override public void onAdDismissedFullScreenContent() {
-                sendAdResult(placement, earned[0] ? "rewarded" : "skipped");
+                main.postDelayed(() -> {
+                    if (!done[0]) { done[0] = true; sendAdResult(placement, earned[0] ? "rewarded" : "skipped"); }
+                }, 1500);
                 loadRewarded();
             }
             @Override public void onAdFailedToShowFullScreenContent(AdError e) {
-                sendAdResult(placement, "unavailable");
+                if (!done[0]) { done[0] = true; sendAdResult(placement, "unavailable"); }
                 loadRewarded();
             }
         });
-        ad.show(this, reward -> earned[0] = true);
+        ad.show(this, reward -> main.post(() -> {
+            earned[0] = true;
+            if (!done[0]) { done[0] = true; sendAdResult(placement, "rewarded"); }
+        }));
     }
 
     static class Bridge {
@@ -234,6 +266,9 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void cancelNotify(int id) { act.cancelNotify(id); }
+
+        @JavascriptInterface
+        public String takeAdResult(String placement) { return act.takeAdResult(placement); }
 
         @JavascriptInterface
         public void showRewardedAd(String placement) { act.runOnUiThread(() -> act.showRewarded(placement)); }
