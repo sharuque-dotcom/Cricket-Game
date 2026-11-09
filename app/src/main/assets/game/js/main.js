@@ -584,7 +584,7 @@ async function ending(id) {
 // ---------- Android lifecycle hooks ----------
 window.GG = {
   onPause() { Sfx.suspend(); try { Story.scheduleReminders(); } catch (e) {} },
-  onResume() { Sfx.resume(); },
+  onResume() { Sfx.resume(); try { Content.refresh().then(Content.announce); } catch (e) {} },
   onBack() {
     if (UI.sheet) { closeSheet(); return 'handled'; }
     const now = Date.now();
@@ -595,13 +595,16 @@ window.GG = {
   adResult(placement, result) { Ads.result(placement, result); },
   notifyResult(granted) { Notify.result(granted); },
   // test hook
-  _dev: { Game, Match, Moments },
+  _dev: { Game, Match, Moments, Content },
 };
 
 // ---------- Boot ----------
 (async function boot() {
   try { if (localStorage.getItem('gg_muted')) Sfx.setMuted(true); } catch (e) {}
-  try { await Promise.race([Promise.all([document.fonts.ready, Art.load()]), sleep(4000)]); } catch (e) {}
+  Content.init(); // episodes downloaded on an earlier launch
+  let fresh = null; const check = Content.refresh(true).then(a => { fresh = a; });
+  try { await Promise.race([Promise.all([document.fonts.ready, Art.load(), Promise.race([check, sleep(2500)])]), sleep(4000)]); } catch (e) {}
   Art.applyFallbacks();
   titleScreen();
+  check.then(() => Content.announce(fresh)); // slow network: new episodes appear once they arrive
 })();

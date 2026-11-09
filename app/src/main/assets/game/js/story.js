@@ -47,6 +47,7 @@ const Story = {
   // ---------- Book / episode list ----------
   open() {
     this.load();
+    Content.refresh().then(Content.announce);
     if (!this.st.name) return this.askName();
     this.bookScreen();
   },
@@ -70,6 +71,7 @@ const Story = {
   bookScreen() {
     this.refillKeys(); this.save();
     const s = this.st;
+    if (s.cur && !EPISODES.some(e => e.id === s.cur.ep)) { s.cur = null; this.save(); } // episode was withdrawn from the server
     const b = BOOKS[0];
     const nextIdx = EPISODES.findIndex(e => !s.done[e.id]);
     const el = UI.show(`<div class="screen story-book">
@@ -242,7 +244,7 @@ const Story = {
     const mode = this.weather || SceneFX.for(name);
     const c = $('[data-story-fx]', this.el); if (c) SceneFX.set(c, mode);
     const r = $('[data-story-rays]', this.el); if (r) r.style.display = DAY_ART.has(name) && !this.weather ? '' : 'none';
-    Sfx.ambience(this.weather === 'rain' ? 'rain' : ({ intro: 'stall', ch1: 'maidan', ch2: 'maidan', ch3: 'maidan', bd_maidan: 'night', ev_call: 'room', bg_home: 'room', bg_street_dusk: 'night', bg_club_match: 'maidan', bg_clubhouse_wall: 'maidan', bg_mandi_night: 'rain', bg_burnt_stall: 'stall', bg_hospital: 'room', bg_tennis_night: 'night', bg_hostel: 'room', bg_dressing_room: 'room', bg_hotel_lobby: 'room', bg_newsroom: 'room', bg_hearing_room: 'room', bg_stall_rebuilt: 'stall', ev_party: 'night', ch4: 'room', ch5: 'night', bd_stadium_night: 'night' }[name] || 'night'));
+    Sfx.ambience(this.weather === 'rain' ? 'rain' : CONTENT_AMB[name] || ({ intro: 'stall', ch1: 'maidan', ch2: 'maidan', ch3: 'maidan', bd_maidan: 'night', ev_call: 'room', bg_home: 'room', bg_street_dusk: 'night', bg_club_match: 'maidan', bg_clubhouse_wall: 'maidan', bg_mandi_night: 'rain', bg_burnt_stall: 'stall', bg_hospital: 'room', bg_tennis_night: 'night', bg_hostel: 'room', bg_dressing_room: 'room', bg_hotel_lobby: 'room', bg_newsroom: 'room', bg_hearing_room: 'room', bg_stall_rebuilt: 'stall', ev_party: 'night', ch4: 'room', ch5: 'night', bd_stadium_night: 'night' }[name] || 'night'));
   },
 
   portraitHtml(id) {
@@ -342,7 +344,7 @@ const Story = {
   async choice(opts) {
     const layer = $('[data-layer]', this.el);
     this.focus(null);
-    const list = opts.filter(o => !o.show || o.show(this.st));
+    const list = opts.filter(o => o.show === undefined || storyCond(o.show, this.st));
     layer.innerHTML = `<div class="choices-box"><div class="ch-head"><span></span>Choose<span></span></div>${list.map((o, i) => {
       const prem = !!o.cost; const can = !prem || this.st.diamonds >= o.cost;
       return `<button class="opt ${prem ? 'prem' : ''} ${can ? '' : 'cant'}" data-i="${i}" style="animation-delay:${.08 + i * .09}s"><div class="opt-main"><b>${this.fill(o.t)}</b>${o.d ? `<span>${o.d}</span>` : ''}</div>${prem ? `<div class="gem-cost">${GEM_SVG}<b>${o.cost}</b></div>` : ''}</button>`;
@@ -365,7 +367,8 @@ const Story = {
     if (set) this.st.flags[set] = true;
     if (!fx) return;
     for (const k in fx) {
-      const v = fx[k]; if (!v || !(k in this.st.rel)) continue;
+      const v = fx[k]; if (!v) continue;
+      if (!(k in this.st.rel)) { if (!(k in REL_KEYS)) continue; this.st.rel[k] = 0; }
       this.st.rel[k] += v;
       rememberToast(k, v);
     }
@@ -386,7 +389,7 @@ const Story = {
         this.placeChar(side, n.enter); Sfx.whoosh(); await sleep(380); continue;
       }
       if (n.exit) { this.removeChar(n.exit); await sleep(300); continue; }
-      if (n.if) { const ok = typeof n.if === 'function' ? n.if(this.st) : this.st.flags[n.if]; if (ok) i = this.labels[n.go] - 1; continue; }
+      if (n.if) { const ok = storyCond(n.if, this.st); if (ok) i = this.labels[n.go] - 1; continue; }
       if (n.go) { i = this.labels[n.go] - 1; continue; }
       if (n.fx || n.set) { this.applyFx(n.fx, n.set); if (!n.s && !n.n) continue; }
       if (n.n) { await this.line('n', null, n.n, n.reveal ? 'reveal' : null); continue; }

@@ -1,0 +1,34 @@
+{
+  "id": "ep13",
+  "no": 13,
+  "title": "The Blue Cap",
+  "art": "bg_stall_rebuilt",
+  "cast": {
+    "kabir": { "name": "Kabir Sir", "col": "#60a5fa" }
+  },
+  "nodes": [
+    { "bg": "bg_stall_rebuilt" },
+    { "n": "Rajgarh. Six months later." },
+    { "enter": "papa", "side": "left" },
+    { "s": "papa", "t": "{first}! A letter. Blue envelope. Very official.", "mood": "shout" },
+    { "enter": "kabir", "side": "right" },
+    { "s": "kabir", "t": "The state camp starts Monday. Are you coming or not?" },
+    { "choice": [
+      { "t": "\"I'm coming.\"", "d": "Chase it.", "fx": { "papa": -1 }, "set": "camp" },
+      { "t": "\"Papa needs me here.\"", "d": "Stay.", "fx": { "papa": 2 } },
+      { "t": "Show him the old recording.", "d": "Only if you kept it.", "show": { "any": ["recorded", "recorded2"] }, "go": "proof" }
+    ] },
+    { "if": "camp", "go": "go_camp" },
+    { "th": "Maybe next year." },
+    { "go": "done" },
+    { "label": "proof" },
+    { "s": "kabir", "t": "...You kept all of it? Then you'll need a lawyer before a coach." },
+    { "go": "done" },
+    { "label": "go_camp" },
+    { "moment": { "title": "Camp trial", "desc": "Six balls. Twelve runs.", "kind": "chase", "need": 12, "balls": 6, "bowler": "Camp quick" }, "win": "won", "lose": "done" },
+    { "label": "won" },
+    { "s": "kabir", "t": "Not bad, chaiwala." },
+    { "label": "done" },
+    { "end": true, "cliff": "The blue envelope had a second letter inside. Nobody had opened it." }
+  ]
+}
