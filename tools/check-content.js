@@ -8,8 +8,8 @@ const ctx = { console, localStorage: { getItem: () => null, setItem() {} }, setT
 vm.createContext(ctx);
 for (const f of ['episodes.js', 'episodes2.js', 'episodes3.js', 'content.js'])
   vm.runInContext(fs.readFileSync(path.join(js, f), 'utf8'), ctx, { filename: f });
-vm.runInContext('this.EPISODES=EPISODES;this.CAST=CAST;this.Content=Content;this.CONTENT_ENGINE=CONTENT_ENGINE;', ctx);
-const { EPISODES, CAST, Content, CONTENT_ENGINE } = ctx;
+vm.runInContext('this.BOOKS=BOOKS;this.EPISODES=EPISODES;this.CAST=CAST;this.Content=Content;this.CONTENT_ENGINE=CONTENT_ENGINE;', ctx);
+const { BOOKS, EPISODES, CAST, Content, CONTENT_ENGINE } = ctx;
 const builtIn = new Set(EPISODES.map(e => e.id));
 const imgs = new Set(fs.readdirSync(path.join(root, 'app/src/main/assets/game/img')).map(f => f.replace(/\.(jpg|webp)$/, '')));
 
@@ -25,7 +25,10 @@ function checkEpisode(file, entry, man) {
   const art = new Set(Object.keys((man && man.art) || {})), fb = Object.assign({}, vm.runInContext('BG_FALLBACK', ctx), (man && man.fallback) || {});
   const names = [ep.art, ...(ep.nodes || []).map(n => n && n.bg)].filter(Boolean);
   for (const n of new Set(names)) if (!imgs.has(n) && !art.has(n) && !fb[n]) console.log(`  ! ${ep.id}: background "${n}" has no image or fallback`);
-  if (!errs.length) console.log(`  ✓ ${ep.id} · Episode ${ep.no} "${ep.title}" · ${ep.nodes.length} nodes`);
+  const book = ep.book || 'b1', books = BOOKS.map(b => b.id).concat(((man && man.books) || []).map(b => b.id));
+  if (!books.includes(book)) fail(`${ep.id}: book "${book}" is not in BOOKS or manifest books`);
+  if (!errs.length) console.log(`  ✓ ${ep.id} · ${book} Episode ${ep.no} "${ep.title}" · ${ep.nodes.length} nodes`);
+  return ep;
 }
 
 const arg = process.argv[2];
@@ -38,9 +41,9 @@ else {
   const nos = new Set();
   for (const entry of man.episodes) {
     if (!/^[a-z0-9_\-/]+\.json$/i.test(entry.file || '')) { fail(`${entry.id}: bad file path`); continue; }
-    if (nos.has(entry.no)) fail(`${entry.id}: episode number ${entry.no} used twice`); nos.add(entry.no);
     if (typeof entry.rev !== 'number') fail(`${entry.id}: needs a numeric rev (bump it on every change)`);
-    checkEpisode(path.join(dir, entry.file), entry, man);
+    const ep = checkEpisode(path.join(dir, entry.file), entry, man);
+    if (ep) { const k = (ep.book || 'b1') + '#' + ep.no; if (nos.has(k) || EPISODES.some(e => (e.book || 'b1') + '#' + e.no === k)) fail(`${ep.id}: episode number ${ep.no} already used in ${ep.book || 'b1'}`); nos.add(k); }
   }
   for (const [k, p] of Object.entries(Object.assign({}, man.art, man.chars))) if (!fs.existsSync(path.join(dir, p))) fail(`image ${k}: ${p} missing`);
 }

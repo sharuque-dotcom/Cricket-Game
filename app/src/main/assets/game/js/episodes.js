@@ -21,10 +21,14 @@ const CAST = {
 };
 const REL_KEYS = { papa: 'Papa', pinky: 'Pinky', pandey: 'Pandey-ji', neha: 'Neha', vikrant: 'Vikrant' };
 
+// The library. Episodes join a book through their `book` field (default 'b1').
+// after: sequel, locked until that book is finished. carry: starts with that book's choices and relationships.
+// The server manifest can add books or update these (see content/README.md).
 const BOOKS = [
-  { id: 'b1', title: 'Gully to Glory', art: 'title', blurb: 'A chai-stall kid. A town that laughs at him. A dream with a price tag.', live: true },
-  { id: 'b2', title: 'The Fixer', art: 'cover_fixer', blurb: 'One no-ball. Two crore. A syndicate that never lets go.', live: false },
-  { id: 'b3', title: 'Bollywood Wife', art: 'cover_bollywood', blurb: 'She\'s a superstar. He\'s India\'s captain. The cameras are always on.', live: false },
+  { id: 'b1', title: 'Gully to Glory', art: 'title', genre: 'Sports drama', blurb: 'A chai-stall kid. A town that laughs at him. A dream with a price tag.', live: true },
+  { id: 'bluecap', title: 'The Blue Cap', art: 'ch6', genre: 'Sports drama · Book 2', blurb: 'The call-up finally comes. So does everyone who wants a piece of you.', live: false, after: 'b1', carry: 'b1' },
+  { id: 'b2', title: 'The Fixer', art: 'cover_fixer', genre: 'Crime thriller', blurb: 'One no-ball. Two crore. A syndicate that never lets go.', live: false },
+  { id: 'b3', title: 'Bollywood Wife', art: 'cover_bollywood', genre: 'Romance', blurb: 'She\'s a superstar. He\'s India\'s captain. The cameras are always on.', live: false },
 ];
 
 const EPISODES = [

@@ -5,7 +5,7 @@ Android cricket career + interactive-story game ("Choices for cricket"). Live on
 ## Layout
 - `app/src/main/java/.../MainActivity.java` — WebView shell; JS bridge `AndroidBridge` (vibrate, AdMob rewarded ads, local notifications); `NotifyReceiver.java` posts reminders.
 - `app/src/main/assets/game/` — the whole game (plain HTML/CSS/JS, no build step).
-  - `js/story.js` Story Mode engine (keys, diamonds, choices, ads caps `AD_CAP`, notifications, end card).
+  - `js/story.js` Story Mode engine (keys, diamonds, choices, ads caps `AD_CAP`, notifications, end card). Name → **library** of `BOOKS` (`episodes.js`) → book's episode list. Progress is per book in `st.books[id]`; `st.done/rel/flags/cur` are accessors for the current book (`st.book`). Sequels: `after` (locked until finished) + `carry` (copies flags/rel). Episodes join a book via `book` (default `b1`).
   - `js/episodes.js` (Ep 1–3), `episodes2.js` (4–6), `episodes3.js` (7–12, `BG_FALLBACK`). Node format documented at top of `episodes.js`.
   - `js/moments.js` canvas cricket key moments (painted sprites `char_sp_*`); `js/match.js` career matches; `js/data.js` career content (all names fictional — keep it that way, no real players/teams/brands).
   - `js/content.js` live episodes: downloads `content/manifest.json` + episode JSON from the repo's default branch (raw.githubusercontent `HEAD`, jsDelivr fallback), validates, cleans `<>`, caches in localStorage. New episodes = no Play release (see `content/README.md`). Conditions in JSON use `storyCond` strings/objects, not functions.

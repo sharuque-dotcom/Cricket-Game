@@ -53,6 +53,7 @@ const Content = (() => {
     if (typeof ep.no !== 'number') err.push('no must be a number');
     if (typeof ep.title !== 'string' || !ep.title) err.push('missing title');
     if (ep.art && !RE_NAME.test(ep.art)) err.push('bad art name');
+    if (ep.book !== undefined && !RE_NAME.test(ep.book)) err.push('bad book id');
     if (!Array.isArray(ep.nodes) || !ep.nodes.length) return err.concat('no nodes');
     const allCast = Object.assign({}, cast, ep.cast || {});
     for (const k in ep.cast || {}) {
@@ -116,17 +117,42 @@ const Content = (() => {
   }
 
   // Put downloaded episodes, art and teaser into the live game. Returns ids that weren't there before.
+  // Books from the manifest: new ones join the library, existing ones get updated (e.g. live: true).
+  function applyBooks(list) {
+    const ok = (v) => v === undefined || RE_NAME.test(v);
+    for (const b of list || []) {
+      if (!b || !RE_NAME.test(b.id || '') || !ok(b.art) || !ok(b.after) || !ok(b.carry)) continue;
+      const keep = {};
+      ['title', 'genre', 'blurb'].forEach(k => { if (typeof b[k] === 'string') keep[k] = b[k]; });
+      ['art', 'after', 'carry'].forEach(k => { if (b[k] !== undefined) keep[k] = b[k]; });
+      if (typeof b.live === 'boolean') keep.live = b.live;
+      if (b.teaser && typeof b.teaser === 'object' && ok(b.teaser.art)) keep.teaser = { no: b.teaser.no, title: String(b.teaser.title || ''), art: b.teaser.art, note: String(b.teaser.note || 'Coming soon') };
+      if (b.rel && typeof b.rel === 'object') { keep.rel = {}; for (const k in b.rel) if (RE_NAME.test(k)) keep.rel[k] = String(b.rel[k]); }
+      const have = BOOKS.find(x => x.id === b.id);
+      if (have) Object.assign(have, keep); else if (keep.title) BOOKS.push(Object.assign({ id: b.id, live: true }, keep));
+    }
+  }
+  // the relationship list an episode's `rel` should add to (a sequel shares its first book's list)
+  function relMap(id, seen) {
+    const b = BOOKS.find(x => x.id === id);
+    if (!b || b.id === 'b1') return REL_KEYS;
+    if (b.rel) return b.rel;
+    if (b.carry && !(seen || []).includes(b.carry)) return relMap(b.carry, (seen || []).concat(id));
+    return (b.rel = {});
+  }
+
   function apply(d) {
     if (!d || !d.manifest) return [];
     if (!bundledIds) bundledIds = new Set(EPISODES.map(e => e.id));
     const m = d.manifest, added = [];
+    applyBooks(m.books);
     for (let i = EPISODES.length - 1; i >= 0; i--) if (EPISODES[i]._remote && !(d.episodes || {})[EPISODES[i].id]) EPISODES.splice(i, 1);
     const list = (m.episodes || []).filter(x => x && d.episodes && d.episodes[x.id]).sort((a, b) => a.no - b.no);
     for (const entry of list) {
       const ep = d.episodes[entry.id];
       if (bundledIds.has(ep.id)) continue;
       Object.assign(CAST, ep.cast || {});
-      if (ep.rel) for (const k in ep.rel) if (CAST[k]) REL_KEYS[k] = ep.rel[k];
+      if (ep.rel) { const R = relMap(ep.book || 'b1'); for (const k in ep.rel) if (CAST[k]) R[k] = ep.rel[k]; }
       const live = Object.assign({}, ep, { _remote: true, _rev: ep._rev || 0 });
       const idx = EPISODES.findIndex(e => e.id === ep.id);
       if (idx >= 0) EPISODES[idx] = live; else { EPISODES.push(live); added.push(ep.id); }
@@ -197,12 +223,19 @@ const Content = (() => {
       })().catch(e => { console.warn('content refresh', e); return []; }).finally(() => { busy = null; });
       return busy;
     },
+    // re-draw the library or episode list if it's on screen
+    redraw() {
+      if (UI.sheet || !Story.st) return;
+      if (document.querySelector('.library')) Story.library();
+      else if (document.querySelector('.story-book .book-cover')) Story.bookScreen();
+    },
     // after a refresh, update whatever screen is showing
     announce(added) {
       if (!added || !added.length) return;
       const eps = EPISODES.filter(e => added.includes(e.id));
-      toast(eps.length === 1 ? `New episode: ${eps[0].no}. ${eps[0].title}` : `${eps.length} new episodes are here`);
-      if (document.querySelector('.story-book') && !UI.sheet) Story.bookScreen();
+      const bookOf = (e) => (BOOKS.find(b => b.id === (e.book || 'b1')) || {}).title || '';
+      toast(eps.length === 1 ? `New episode: ${bookOf(eps[0])}, Ep ${eps[0].no}. ${eps[0].title}` : `${eps.length} new episodes are here`);
+      Content.redraw();
     },
   };
 })();

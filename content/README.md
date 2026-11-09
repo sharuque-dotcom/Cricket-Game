@@ -36,6 +36,33 @@ To withdraw an episode, delete its line from `manifest.json`.
 - **No HTML.** `<` and `>` are removed from all text.
 - Every `choice` needs at least one free option that always shows.
 
+## Books (the library)
+
+Players pick a story from the library after entering their name. Each book keeps its own progress, choices and relationship hearts. Diamonds and keys are shared across books.
+
+Built-in books, in `js/episodes.js`:
+
+| id | Book | State in the app |
+|---|---|---|
+| `b1` | Gully to Glory | live, 12 episodes |
+| `bluecap` | The Blue Cap (Book 2) | coming soon; sequel of `b1` |
+| `b2` | The Fixer | coming soon |
+| `b3` | Bollywood Wife | coming soon |
+
+To launch a book, put its episodes on the server with `"book": "bluecap"` in each episode file, numbered from 1, and switch the book on in `manifest.json`:
+
+```json
+"books": [
+  { "id": "bluecap", "live": true, "teaser": { "no": 4, "title": "Nets at Dawn", "art": "ch6", "note": "Next Friday" } }
+]
+```
+
+- **`after`**: the book is a sequel. It stays locked until that book is finished. `bluecap` has `after: "b1"`.
+- **`carry`**: the sequel starts with that book's choices (flags) and relationships. So `"if": "recorded"` in Blue Cap remembers what the player did in Book 1.
+- **A brand-new book** also needs `title`, `genre`, `blurb` and `art` (cover). Add `rel` to list the characters whose hearts show, e.g. `{ "dev": "Dev" }`.
+- **`teaser`**: the "coming soon" row at the end of that book's episode list. The top-level `teaser` is for Book 1.
+- A book with no episodes on the server always shows as "Coming soon".
+
 ## New pictures (manifest.json)
 
 ```json

@@ -11,11 +11,49 @@ const Story = {
   // ---------- persistence ----------
   load() {
     try { this.st = JSON.parse(localStorage.getItem(STORY_KEY)); } catch (e) { this.st = null; }
-    if (!this.st) this.st = { name: '', diamonds: 22, keys: KEY_MAX, keyTs: Date.now(), done: {}, rel: { papa: 0, pinky: 0, pandey: 0, neha: 0, vikrant: 0 }, flags: {}, cur: null };
-    if (!this.st.keyTs) this.st.keyTs = Date.now();
+    if (!this.st) this.st = { name: '', diamonds: 22, keys: KEY_MAX, keyTs: Date.now() };
+    const s = this.st;
+    if (!s.keyTs) s.keyTs = Date.now();
+    if (!s.books) { // saves from v1.3 kept one story: it becomes Book 1
+      s.books = {};
+      if (s.done || s.flags || s.cur) s.books.b1 = { done: s.done || {}, rel: s.rel || this.freshRel('b1'), flags: s.flags || {}, cur: s.cur || null, flagsAtStart: s.flagsAtStart };
+      ['done', 'rel', 'flags', 'cur', 'flagsAtStart'].forEach(k => { s[k] = undefined; });
+    }
+    if (!s.book || !this.bookDef(s.book)) s.book = 'b1';
+    // st.done / st.rel / st.flags / st.cur always mean "the book being played"
+    ['done', 'rel', 'flags', 'cur', 'flagsAtStart'].forEach(k => Object.defineProperty(s, k, {
+      get: () => this.bk()[k], set: (v) => { this.bk()[k] = v; }, enumerable: false, configurable: true,
+    }));
     this.refillKeys();
-    return this.st;
+    return s;
   },
+
+  // ---------- books ----------
+  bookDef(id) { return BOOKS.find(b => b.id === id); },
+  book() { return this.bookDef(this.st.book) || BOOKS[0]; },
+  eps(id) { id = id || this.st.book; return EPISODES.filter(e => (e.book || 'b1') === id); },
+  relKeys(id) { const b = this.bookDef(id || this.st.book) || {}; return b.rel || (b.carry ? this.relKeys(b.carry) : b.id === 'b1' ? REL_KEYS : {}); },
+  freshRel(id) { const r = {}; for (const k in this.relKeys(id)) r[k] = 0; return r; },
+  bk(id) {
+    id = id || this.st.book;
+    const all = this.st.books;
+    if (!all[id]) {
+      const b = this.bookDef(id) || {}, from = b.carry && all[b.carry];
+      // a sequel starts with the earlier book's choices and relationships
+      all[id] = { done: {}, rel: Object.assign(this.freshRel(id), from ? from.rel : {}), flags: from ? { ...from.flags } : {}, cur: null };
+    }
+    return all[id];
+  },
+  // read-only status for the library: never creates progress for a book the player hasn't opened
+  bookInfo(b) {
+    const eps = this.eps(b.id), p = this.st.books[b.id] || { done: {} };
+    const done = eps.filter(e => p.done[e.id]).length;
+    const finished = !!eps.length && done === eps.length;
+    const locked = !!(b.after && !this.bookInfo(this.bookDef(b.after) || { id: b.after }).finished);
+    const playable = b.live !== false && eps.length > 0;
+    return { eps, done, finished, locked, playable, started: done > 0 || !!p.cur };
+  },
+  teaser(b) { b = b || this.book(); return b.teaser || (b.id === 'b1' && typeof NEXT_TEASER !== 'undefined' ? NEXT_TEASER : null); },
   save() { try { localStorage.setItem(STORY_KEY, JSON.stringify(this.st)); } catch (e) {} },
   refillKeys() {
     const s = this.st, now = Date.now();
@@ -39,9 +77,9 @@ const Story = {
     if (g) { g.textContent = this.st.diamonds; g.parentElement.classList.remove('bump'); void g.offsetWidth; g.parentElement.classList.add('bump'); }
     if (k) k.textContent = this.st.keys;
   },
-  bindHud(el, inEpisode) {
+  bindHud(el, where) {
     $$('[data-store]', el).forEach(b => b.onclick = (e) => { e.stopPropagation(); this.store(); });
-    $('[data-menu]', el).onclick = (e) => { e.stopPropagation(); inEpisode ? this.pauseMenu() : titleScreen(); };
+    $('[data-menu]', el).onclick = (e) => { e.stopPropagation(); where === true ? this.pauseMenu() : where === 'book' ? (Sfx.select(), this.library()) : titleScreen(); };
   },
 
   // ---------- Book / episode list ----------
@@ -49,8 +87,51 @@ const Story = {
     this.load();
     Content.refresh().then(Content.announce);
     if (!this.st.name) return this.askName();
-    this.bookScreen();
+    this.library();
   },
+
+  // ---------- Library: every book, pick what interests you ----------
+  library() {
+    const s = this.st;
+    // forget a saved place in an episode the server has withdrawn
+    for (const id in s.books) { const c = s.books[id].cur; if (c && !EPISODES.some(e => e.id === c.ep)) s.books[id].cur = null; }
+    this.refillKeys(); this.save();
+    const last = this.bookDef(s.book), lastInfo = last && this.bookInfo(last);
+    const cont = last && lastInfo.playable && !lastInfo.locked && lastInfo.started && !lastInfo.finished ? last : null;
+    const card = (b) => {
+      const i = this.bookInfo(b);
+      const tag = !i.playable ? '<span class="lb-tag soon">Coming soon</span>'
+        : i.locked ? `<span class="lb-tag lock">🔒 Finish ${esc((this.bookDef(b.after) || {}).title || 'the last book')} first</span>`
+        : i.finished ? '<span class="lb-tag done">✓ Completed</span>'
+        : i.started ? `<span class="lb-tag prog">Episode ${Math.min(i.done + 1, i.eps.length)} of ${i.eps.length}</span>`
+        : `<span class="lb-tag new">New · ${i.eps.length} episode${i.eps.length === 1 ? '' : 's'}</span>`;
+      const open = i.playable && !i.locked;
+      return `<button class="lib-book ${open ? '' : 'shut'} ${i.finished ? 'fin' : ''}" data-book-id="${esc(b.id)}">
+        ${Art.has(b.art) ? `<div class="lb-art" style="background-image:url('${Art.url(b.art)}')"></div>` : ''}<div class="lb-shade"></div>
+        <div class="lb-txt">${tag}<div class="tiny lb-genre">${esc(b.genre || '')}</div><div class="display lb-title">${esc(b.title)}</div><div class="small lb-blurb">${esc(b.blurb || '')}</div>
+        ${open && i.eps.length ? `<div class="lb-bar"><i style="width:${Math.round(i.done / i.eps.length * 100)}%"></i></div>` : ''}</div></button>`;
+    };
+    const order = BOOKS.slice().sort((a, b) => this.bookRank(a) - this.bookRank(b));
+    const el = UI.show(`<div class="screen story-book library">
+      ${this.hudHtml('Library')}
+      <div class="scroll pad" style="padding-bottom:28px">
+        <div class="display" style="font-size:40px;margin:2px 0 2px">Hi ${esc((s.name || '').split(' ')[0])}, pick a story</div>
+        <div class="small muted" style="margin-bottom:14px">Every choice you make stays with that story.</div>
+        ${cont ? `<button class="btn primary block lib-cont" data-cont>Continue · ${esc(cont.title)}<span class="tiny" style="color:#1a0c00;margin-left:6px">Ep ${Math.min(lastInfo.done + 1, lastInfo.eps.length)}</span></button>` : ''}
+        <div class="lib-grid stagger">${order.map(card).join('')}</div>
+      </div></div>`);
+    this.bindHud(el, 'library');
+    if (cont) $('[data-cont]', el).onclick = () => { Sfx.select(); this.openBook(cont.id); };
+    $$('[data-book-id]', el).forEach(btn => btn.onclick = () => {
+      const b = this.bookDef(btn.dataset.bookId), i = this.bookInfo(b);
+      if (!i.playable) return this.askNotify(true);
+      if (i.locked) { Sfx.fail(); toast(`Finish ${(this.bookDef(b.after) || {}).title || 'the last book'} first. ${b.title} picks up where it ends.`); return; }
+      Sfx.select(); this.openBook(b.id);
+    });
+  },
+  // in progress first, then new, finished, locked sequels, coming soon
+  bookRank(b) { const i = this.bookInfo(b); return (!i.playable ? 40 : i.locked ? 30 : i.finished ? 20 : i.started ? 0 : 10) + BOOKS.indexOf(b) / 100; },
+  openBook(id) { this.st.book = id; this.bk(); this.save(); this.bookScreen(); },
 
   askName() {
     const el = UI.show(`<div class="screen story-book">${Art.bg('title')}<div class="art-shade" style="background:linear-gradient(180deg,rgba(11,10,18,.3),rgba(11,10,18,.95) 70%)"></div>
@@ -64,47 +145,47 @@ const Story = {
     $('[data-go]', el).onclick = () => {
       const n = ($('[data-name]', el).value || '').trim();
       if (n.length < 2) { toast('Every legend needs a name.'); return; }
-      this.st.name = n.replace(/\b\w/g, c => c.toUpperCase()); this.save(); Sfx.select(); this.bookScreen();
+      this.st.name = n.replace(/\b\w/g, c => c.toUpperCase()); this.save(); Sfx.select(); this.library();
     };
   },
 
   bookScreen() {
     this.refillKeys(); this.save();
     const s = this.st;
-    if (s.cur && !EPISODES.some(e => e.id === s.cur.ep)) { s.cur = null; this.save(); } // episode was withdrawn from the server
-    const b = BOOKS[0];
-    const nextIdx = EPISODES.findIndex(e => !s.done[e.id]);
+    const b = this.book(), EPS = this.eps(), T = this.teaser(b), RK = this.relKeys();
+    if (s.cur && !EPS.some(e => e.id === s.cur.ep)) { s.cur = null; this.save(); } // episode was withdrawn from the server
+    const nextIdx = EPS.findIndex(e => !s.done[e.id]);
     const el = UI.show(`<div class="screen story-book">
       ${this.hudHtml('Story Mode')}
       <div class="scroll" style="padding-bottom:24px">
         <div class="book-cover">${Art.bg(b.art)}<div class="art-shade" style="background:linear-gradient(180deg,rgba(11,10,18,0) 30%,rgba(11,10,18,.96))"></div>
-          <div class="bc-txt"><div class="tiny" style="color:var(--gold)">Book 1 · Sports Drama</div><div class="display" style="font-size:56px">${b.title}</div><div class="small" style="color:#e4dbe9;margin-top:4px">${b.blurb}</div>
-          <div class="rel-row-wrap">${Object.entries(REL_KEYS).map(([k, l]) => `<span class="rel-chip" style="--c:${CAST[k].col}">${l} ${relHearts(s.rel[k])}</span>`).join('')}</div></div>
+          <div class="bc-txt"><div class="tiny" style="color:var(--gold)">${esc(b.genre || '')}</div><div class="display" style="font-size:56px">${esc(b.title)}</div><div class="small" style="color:#e4dbe9;margin-top:4px">${esc(b.blurb || '')}</div>
+          <div class="rel-row-wrap">${Object.entries(RK).filter(([k]) => CAST[k]).map(([k, l]) => `<span class="rel-chip" style="--c:${CAST[k].col}">${l} ${relHearts(s.rel[k])}</span>`).join('')}</div></div>
         </div>
         <div class="pad" style="padding-top:6px">
-          ${s.cur ? `<button class="btn primary block" data-resume>Resume · Episode ${EPISODES.find(e => e.id === s.cur.ep).no}</button>` : ''}
-          <div class="ep-list stagger">${EPISODES.map((e, i) => {
+          ${s.cur ? `<button class="btn primary block" data-resume>Resume · Episode ${EPS.find(e => e.id === s.cur.ep).no}</button>` : ''}
+          <div class="ep-list stagger">${EPS.map((e, i) => {
             const done = s.done[e.id], next = i === nextIdx, locked = i > nextIdx && nextIdx !== -1;
             return `<button class="ep-row ${done ? 'done' : ''} ${next ? 'next' : ''} ${locked ? 'locked' : ''}" data-ep="${i}" ${locked ? 'disabled' : ''}>
               <div class="ep-thumb" style="${Art.has(e.art) ? `background-image:url('${Art.url(e.art)}')` : ''}"><span>${e.no}</span></div>
               <div class="grow" style="text-align:left"><div class="tiny">Episode ${e.no}</div><b class="cond" style="font-size:18px">${e.title}</b></div>
               <div class="ep-cta">${done ? '<span class="tiny">Replay</span>' : locked ? '🔒' : `<span class="cost-tag">${KEY_SVG}1</span>`}</div></button>`;
           }).join('')}
-            <div class="ep-row locked soon"><div class="ep-thumb" style="background-image:url('${Art.has(NEXT_TEASER.art) ? Art.url(NEXT_TEASER.art) : ''}')"><span>${NEXT_TEASER.no}</span></div><div class="grow" style="text-align:left"><div class="tiny" style="color:var(--saffron)">${NEXT_TEASER.note}</div><b class="cond" style="font-size:18px">${NEXT_TEASER.title}</b></div><div class="ep-cta">${Notify.granted() ? '✅' : '🔔'}</div></div>
+            ${T ? `<div class="ep-row locked soon"><div class="ep-thumb" style="background-image:url('${Art.has(T.art) ? Art.url(T.art) : ''}')"><span>${esc(String(T.no || ''))}</span></div><div class="grow" style="text-align:left"><div class="tiny" style="color:var(--saffron)">${esc(T.note || 'Coming soon')}</div><b class="cond" style="font-size:18px">${esc(T.title || '')}</b></div><div class="ep-cta">${Notify.granted() ? '✅' : '🔔'}</div></div>` : ''}
           </div>
           <div class="tiny" style="margin:16px 2px 8px">${s.keys < KEY_MAX ? `Next key in ${this.nextKeyIn()}` : 'Keys full'}</div>
-          <div class="tiny" style="margin:22px 2px 10px">More books</div>
-          <div class="book-shelf">${BOOKS.slice(1).map(bk => `<div class="shelf-book">${Art.has(bk.art) ? `<div class="sb-art" style="background-image:url('${Art.url(bk.art)}')"></div>` : ''}<div class="sb-shade"></div><div class="sb-txt"><span class="chip" style="background:rgba(230,57,70,.85);border:0">Coming soon</span><div class="display" style="font-size:28px;margin-top:6px">${bk.title}</div><div class="small" style="opacity:.85">${bk.blurb}</div></div></div>`).join('')}</div>
+          <button class="btn ghost block" style="margin-top:14px" data-lib>All stories</button>
         </div>
       </div></div>`);
-    this.bindHud(el, false);
+    this.bindHud(el, 'book');
     $$('[data-ep]', el).forEach(btn => btn.onclick = () => this.tryStart(+btn.dataset.ep));
     if (s.cur) $('[data-resume]', el).onclick = () => { Sfx.select(); this.resume(); };
-    $('.ep-row.soon', el).onclick = () => this.askNotify(true);
+    const soon = $('.ep-row.soon', el); if (soon) soon.onclick = () => this.askNotify(true);
+    $('[data-lib]', el).onclick = () => { Sfx.select(); this.library(); };
   },
 
   tryStart(i) {
-    const e = EPISODES[i], s = this.st;
+    const e = this.eps()[i], s = this.st;
     if (s.done[e.id]) { Sfx.select(); return this.startEpisode(i, true); }
     this.refillKeys();
     if (s.keys < 1) return this.noKeys();
@@ -188,7 +269,7 @@ const Story = {
 
   // ---------- Episode playback ----------
   async startEpisode(i, replay) {
-    const e = EPISODES[i];
+    const e = this.eps()[i];
     this.ep = e; this.replay = replay; this.abort = false;
     this.labels = {}; e.nodes.forEach((n, k) => { if (n.label) this.labels[n.label] = k; });
     if (!replay) { this.st.flagsAtStart = { ...this.st.flags }; }
@@ -199,8 +280,9 @@ const Story = {
     this.run(0);
   },
   resume() {
-    const c = this.st.cur; const i = EPISODES.findIndex(e => e.id === c.ep);
-    this.ep = EPISODES[i]; this.replay = c.replay; this.abort = false;
+    const c = this.st.cur; const E = this.eps(); const i = E.findIndex(e => e.id === c.ep);
+    if (i < 0) { this.st.cur = null; this.save(); return this.bookScreen(); }
+    this.ep = E[i]; this.replay = c.replay; this.abort = false;
     this.labels = {}; this.ep.nodes.forEach((n, k) => { if (n.label) this.labels[n.label] = k; });
     this.scene = c.scene || { bg: null, left: null, right: null };
     this.run(c.pos);
@@ -208,9 +290,9 @@ const Story = {
 
   async titleCard(e) {
     const el = UI.show(`<div class="screen ep-card">${Art.bg(e.art)}<div class="art-shade" style="background:radial-gradient(circle at 50% 45%,rgba(11,10,18,.2),rgba(11,10,18,.92) 75%)"></div>
-      <div class="ep-card-in"><div class="tiny" style="letter-spacing:.5em;color:var(--gold)">Book 1 · Episode ${e.no}</div>
-      <div class="ep-card-title">${e.title}</div><div class="ep-card-rule"></div>
-      <div class="small" style="color:#e9dccb">${BOOKS[0].title}</div></div>
+      <div class="ep-card-in"><div class="tiny" style="letter-spacing:.5em;color:var(--gold)">Episode ${e.no}</div>
+      <div class="ep-card-title">${esc(e.title)}</div><div class="ep-card-rule"></div>
+      <div class="small" style="color:#e9dccb">${esc(this.book().title)}</div></div>
       <div class="cine-tap tiny">Tap to begin</div></div>`);
     Sfx.stinger(); haptic(30);
     await new Promise(r => setTimeout(() => el.addEventListener('click', r, { once: true }), 700));
@@ -368,7 +450,7 @@ const Story = {
     if (!fx) return;
     for (const k in fx) {
       const v = fx[k]; if (!v) continue;
-      if (!(k in this.st.rel)) { if (!(k in REL_KEYS)) continue; this.st.rel[k] = 0; }
+      if (!(k in this.st.rel)) { if (!(k in this.relKeys())) continue; this.st.rel[k] = 0; }
       this.st.rel[k] += v;
       rememberToast(k, v);
     }
@@ -424,7 +506,7 @@ const Story = {
     const pressure = cfg.kind === 'chase' ? .6 : .45;
     Moments.open($('.mroot', el), { view: 'bat', level: 0, whiteBall: false, bowlerType: 'pace', pressure, myKit: '#b45309', batKit: '#f4ede4', bowlKit: cfg.kind === 'duel' ? '#7c3aed' : '#475569' });
     UI.pressure(pressure > .5);
-    const skill = 36 + (f.tyre ? 7 : 0) + (f.wonDuel ? 3 : 0) + (f.goodBat ? 5 : 0) + (f.rockyMentor ? 5 : 0) + (f.campImpress ? 2 : 0) + Math.max(0, s.rel.pandey);
+    const skill = 36 + (f.tyre ? 7 : 0) + (f.wonDuel ? 3 : 0) + (f.goodBat ? 5 : 0) + (f.rockyMentor ? 5 : 0) + (f.campImpress ? 2 : 0) + Math.max(0, s.rel.pandey || 0);
     const steady = f.focused || f.calm;
     const ctx = {
       batSkill: skill, bowlSkill: (cfg.kind === 'duel' ? 40 : 42) + (cfg.hard && f[cfg.hard] ? 7 : 0), ready: f.pinkyBox ? .03 : 0,
@@ -464,16 +546,19 @@ const Story = {
     s.done[e.id] = true; s.cur = null;
     if (first) s.diamonds += 2;
     this.save();
-    const nextIdx = EPISODES.findIndex(x => x.id === e.id) + 1;
-    const next = EPISODES[nextIdx];
+    const E = this.eps(), nextIdx = E.findIndex(x => x.id === e.id) + 1;
+    const next = E[nextIdx], T = this.teaser();
+    // finished the book? point at the sequel if it's out
+    const sequel = !next && BOOKS.find(x => x.after === this.st.book && this.bookInfo(x).playable);
     const el = UI.show(`<div class="screen ep-end">${Art.bg(e.art)}<div class="art-shade" style="background:linear-gradient(180deg,rgba(11,10,18,.55),rgba(11,10,18,.97) 65%)"></div>
       <div class="scroll pad" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
         <div class="tbc">To be continued<span>...</span></div>
         <div class="cliff">${esc(this.fill(n.cliff))}</div>
         ${first ? `<div class="reward">${GEM_SVG}<b>+2</b><span>Episode complete</span></div><button class="btn block btn-double" data-double>▶ Watch an ad · Double it <span class="dbl-gem">${GEM_SVG}+2</span></button>` : ''}
-        ${next ? `<button class="btn primary block" style="margin-top:18px" data-next>Next: Episode ${next.no} · <span style="display:inline-flex;align-items:center;gap:4px">${KEY_SVG}1</span></button>` : `<div class="card" style="margin-top:18px"><b class="cond gold">Episode ${NEXT_TEASER.no}: ${NEXT_TEASER.title}, coming soon</b><div class="small muted">Turn on notifications so you don't miss it.</div></div>`}
+        ${next ? `<button class="btn primary block" style="margin-top:18px" data-next>Next: Episode ${next.no} · <span style="display:inline-flex;align-items:center;gap:4px">${KEY_SVG}1</span></button>` : sequel ? `<button class="btn primary block" style="margin-top:18px" data-sequel>Start ${esc(sequel.title)}</button>` : T ? `<div class="card" style="margin-top:18px"><b class="cond gold">${/^\d+$/.test(String(T.no)) ? `Episode ${T.no}: ` : ''}${esc(T.title || '')}, ${esc((T.note || 'coming soon').toLowerCase())}</b><div class="small muted">Turn on notifications so you don't miss it.</div></div>` : ''}
         <button class="btn ghost block" style="margin-top:8px" data-book>Episodes</button>
-        <div class="rel-sum">${Object.entries(REL_KEYS).map(([k, l]) => `<div class="rel-row" style="--c:${CAST[k].col}"><span>${l}</span><span>${relHearts(s.rel[k])}</span></div>`).join('')}</div>
+        <button class="btn ghost block" style="margin-top:8px" data-lib>All stories</button>
+        <div class="rel-sum">${Object.entries(this.relKeys()).filter(([k]) => CAST[k]).map(([k, l]) => `<div class="rel-row" style="--c:${CAST[k].col}"><span>${l}</span><span>${relHearts(s.rel[k])}</span></div>`).join('')}</div>
       </div></div>`);
     Sfx.stinger(); if (first) setTimeout(() => { Sfx.coin(); Burst.sparks(innerWidth / 2, innerHeight * .45, 40, '#7ef0ff'); }, 900);
     if (next) $('[data-next]', el).onclick = () => this.tryStart(nextIdx);
@@ -483,6 +568,8 @@ const Story = {
       if (ok) { dbl.outerHTML = `<div class="dbl-done">✓ Doubled · ${GEM_SVG}+4 this episode</div>`; Burst.sparks(innerWidth / 2, innerHeight * .42, 40, '#7ef0ff'); }
     };
     $('[data-book]', el).onclick = () => this.bookScreen();
+    $('[data-lib]', el).onclick = () => this.library();
+    const sq = $('[data-sequel]', el); if (sq) sq.onclick = () => { Sfx.select(); this.openBook(sequel.id); };
     this.scheduleReminders();
     if (e.no >= 3 && !s.notifyAsked && !Notify.granted()) setTimeout(() => this.askNotify(false), 2200);
   },
@@ -503,7 +590,7 @@ const Story = {
         this.st.notifyAsked = true; this.save(); closeSheet();
         const ok = await Notify.request();
         if (ok) { toast('🔔 You\'re in. We\'ll ping you.'); this.scheduleReminders(); } else toast('No problem. You can turn them on any time.');
-        if (document.querySelector('.story-book')) this.bookScreen();
+        Content.redraw();
       };
       $('[data-no]', sh).onclick = () => { this.st.notifyAsked = true; this.save(); closeSheet(); };
     });
@@ -516,10 +603,10 @@ const Story = {
     this.refillKeys();
     if (s.keys < KEY_MAX) {
       const due = Math.max(60 * 1000, KEY_MS - (Date.now() - s.keyTs));
-      const nextEp = EPISODES.find(e => !s.done[e.id]);
+      const nextEp = this.eps().find(e => !s.done[e.id]);
       Notify.schedule(Notify.KEY_ID, due, '🔑 Your key is ready', nextEp ? `Episode ${nextEp.no}, "${nextEp.title}", is waiting for you.` : 'Replay an episode and try a different choice.');
     } else Notify.cancel(Notify.KEY_ID);
-    const lastDone = [...EPISODES].reverse().find(e => s.done[e.id]);
+    const lastDone = [...this.eps()].reverse().find(e => s.done[e.id]);
     const cliff = lastDone ? (lastDone.nodes.find(n => n.end) || {}).cliff : null;
     Notify.schedule(Notify.COMEBACK_ID, 22 * 60 * 60 * 1000, 'Gully to Glory', cliff ? this.fill(cliff) : 'Rajgarh is waiting. Your story isn\'t over.');
   },
