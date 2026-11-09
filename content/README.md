@@ -45,7 +45,7 @@ Built-in books, in `js/episodes.js`:
 | id | Book | State in the app |
 |---|---|---|
 | `b1` | Gully to Glory | live, 12 episodes |
-| `bluecap` | The Blue Cap (Book 2) | coming soon; sequel of `b1` |
+| `bluecap` | The Blue Cap (Book 2) | sequel of `b1`; Episodes 1–4 on the server, `live: false` until the art is in |
 | `b2` | The Fixer | coming soon |
 | `b3` | Bollywood Wife | coming soon |
 

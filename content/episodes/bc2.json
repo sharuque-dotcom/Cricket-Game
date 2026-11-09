@@ -1,0 +1,240 @@
+{
+ "id": "bc2",
+ "no": 2,
+ "book": "bluecap",
+ "title": "Probables",
+ "art": "bg_academy_nets",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_academy_nets"
+  },
+  {
+   "n": "National Academy, Bengaluru. 6:58 AM. Thirty players in identical navy kit. Nobody is talking."
+  },
+  {
+   "enter": "kabir",
+   "side": "right"
+  },
+  {
+   "s": "kabir",
+   "t": "My name is Kabir Joshi. Some of you have big contracts. Some of you have big followings. I have a stopwatch."
+  },
+  {
+   "s": "kabir",
+   "t": "Thirty of you. Fifteen seats on the plane. Most of you are tourists. I'm going to find out which ones by lunch."
+  },
+  {
+   "s": "kabir",
+   "t": "{first}. Rajgarh. The PCL boy.",
+   "mood": "shout"
+  },
+  {
+   "s": "kabir",
+   "t": "Your highlights have two million views. There are no cameras in my nets. Pads on. Net three."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "th": "Every head turns. Somebody whispers \"chaiwala\". Somebody laughs."
+  },
+  {
+   "enter": "imran",
+   "side": "right"
+  },
+  {
+   "n": "At the end of net three, a lanky boy with a thin moustache is spinning a red ball in his fingers. He looks like he's about to apologise."
+  },
+  {
+   "s": "imran",
+   "t": "Sorry in advance, bhai. Kabir sir said bowl at your head."
+  },
+  {
+   "moment": {
+    "kind": "nets",
+    "title": "Net Three",
+    "desc": "Imran Shaikh. 145 clicks and no mercy. Kabir Sir is timing your feet, not your shots. Survive four balls.",
+    "bowler": "Imran Shaikh",
+    "balls": 4,
+    "winCall": "STILL STANDING",
+    "winSub": "Kabir clicks the stopwatch. Says nothing.",
+    "loseCall": "BOWLED",
+    "loseSub": "Middle stump is twelve feet away."
+   },
+   "win": "nets_ok",
+   "lose": "nets_bad"
+  },
+  {
+   "label": "nets_ok"
+  },
+  {
+   "enter": "kabir",
+   "side": "left"
+  },
+  {
+   "s": "kabir",
+   "t": "Again. Same four balls. This time without looking scared."
+  },
+  {
+   "th": "I wasn't scared. ...I was a little scared."
+  },
+  {
+   "fx": {
+    "kabir": 1
+   },
+   "set": "netsSurvived"
+  },
+  {
+   "go": "after"
+  },
+  {
+   "label": "nets_bad"
+  },
+  {
+   "enter": "kabir",
+   "side": "left"
+  },
+  {
+   "s": "kabir",
+   "t": "Two million views. One ball.",
+   "mood": "shout"
+  },
+  {
+   "s": "kabir",
+   "t": "Back of the queue. Watch everybody. Learn something."
+  },
+  {
+   "fx": {
+    "kabir": -1
+   }
+  },
+  {
+   "label": "after"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_academy_room"
+  },
+  {
+   "n": "Room 213. Two beds, one ice bath, and a roommate unpacking forty packets of banana chips."
+  },
+  {
+   "enter": "imran",
+   "side": "right"
+  },
+  {
+   "s": "imran",
+   "t": "Amma made them. She thinks Bengaluru has no food."
+  },
+  {
+   "s": "imran",
+   "t": "My father has a fishing boat in Kerala. Half a boat. My uncle has the other half. If I make this squad, I buy the other half."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"I'll buy the chips if you teach me that bouncer.\"",
+     "d": "Make a friend.",
+     "fx": {
+      "imran": 2
+     },
+     "set": "imranFriend"
+    },
+    {
+     "t": "\"You know only one of us can win this, right?\"",
+     "d": "Keep your distance.",
+     "fx": {
+      "imran": -1
+     },
+     "set": "imranRival"
+    },
+    {
+     "t": "Send ₹5,000 to his mother for the trip.",
+     "d": "Quietly. He'll never know it was you.",
+     "cost": 20,
+     "fx": {
+      "imran": 3
+     },
+     "set": "imranFriend"
+    }
+   ]
+  },
+  {
+   "if": "imranRival",
+   "go": "rival"
+  },
+  {
+   "s": "imran",
+   "t": "Deal. But the bouncer costs extra. Chai. Your chai. I heard it's famous."
+  },
+  {
+   "n": "He talks for an hour about the sea. You fall asleep somewhere around the monsoon."
+  },
+  {
+   "go": "late"
+  },
+  {
+   "label": "rival"
+  },
+  {
+   "s": "imran",
+   "t": "...Right. Yes. Of course."
+  },
+  {
+   "n": "He turns off his lamp without another word."
+  },
+  {
+   "label": "late"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "2:40 AM. A sound wakes you. Imran is sitting on the edge of the ice bath, biting a towel so he doesn't make noise."
+  },
+  {
+   "n": "His left shin is swollen like a cricket ball."
+  },
+  {
+   "enter": "imran",
+   "side": "right"
+  },
+  {
+   "s": "imran",
+   "t": "Don't. Please. If Kabir sir knows, I'm on the first train home.",
+   "mood": "soft"
+  },
+  {
+   "s": "imran",
+   "t": "It's nothing. Just a knock. Please, bhai."
+  },
+  {
+   "end": true,
+   "cliff": "A stress fracture can end a fast bowler's career. Telling Kabir Sir will end his week."
+  }
+ ]
+}

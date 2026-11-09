@@ -1,0 +1,354 @@
+{
+ "id": "bc3",
+ "no": 3,
+ "book": "bluecap",
+ "title": "The Captain",
+ "art": "bg_academy_nets",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_academy_room"
+  },
+  {
+   "n": "6 AM. Imran is strapping his shin with three rolls of tape. He won't look at you."
+  },
+  {
+   "choice": [
+    {
+     "t": "Tell Kabir Sir about the shin.",
+     "d": "Save his career. Lose his trust.",
+     "fx": {
+      "imran": -3,
+      "kabir": 2
+     },
+     "set": "toldKabir"
+    },
+    {
+     "t": "Keep his secret.",
+     "d": "It's his body, his choice.",
+     "fx": {
+      "imran": 2
+     },
+     "set": "keptSecret"
+    },
+    {
+     "t": "Pay for a private scan in town tonight.",
+     "d": "Find out the truth without anyone knowing.",
+     "cost": 25,
+     "fx": {
+      "imran": 3
+     },
+     "set": "privateScan"
+    }
+   ]
+  },
+  {
+   "if": "toldKabir",
+   "go": "told"
+  },
+  {
+   "if": "privateScan",
+   "go": "scan"
+  },
+  {
+   "th": "It's his career. I'll keep my mouth shut. And my eyes open."
+  },
+  {
+   "go": "captain"
+  },
+  {
+   "label": "told"
+  },
+  {
+   "enter": "kabir",
+   "side": "right"
+  },
+  {
+   "s": "kabir",
+   "t": "Shaikh. Physio. Now.",
+   "mood": "shout"
+  },
+  {
+   "enter": "imran",
+   "side": "left"
+  },
+  {
+   "s": "imran",
+   "t": "...I trusted you.",
+   "mood": "soft"
+  },
+  {
+   "exit": "imran"
+  },
+  {
+   "s": "kabir",
+   "t": "Hairline fracture. Two more days of bowling and it would have snapped. Six weeks rest. He'll bowl again."
+  },
+  {
+   "s": "kabir",
+   "t": "You did the hard thing. Don't expect him to thank you this year."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "go": "captain"
+  },
+  {
+   "label": "scan"
+  },
+  {
+   "n": "A small clinic above a pharmacy in Indiranagar. 11 PM. Cash. No names."
+  },
+  {
+   "enter": "imran",
+   "side": "right"
+  },
+  {
+   "s": "imran",
+   "t": "Bone bruise. Not a fracture. Two days of ice and I'm fine."
+  },
+  {
+   "s": "imran",
+   "t": "Bhai. I don't... nobody's ever... Amma will pray for you every day for the rest of your life. Sorry in advance.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "set": "imranSafe"
+  },
+  {
+   "label": "captain"
+  },
+  {
+   "bg": "bg_academy_nets"
+  },
+  {
+   "n": "11 AM. A helicopter's worth of noise outside the gates. Phones go up. Even Kabir Sir puts down his stopwatch."
+  },
+  {
+   "enter": "karan",
+   "side": "right"
+  },
+  {
+   "n": "Karan Dhillon. National captain. Eleven years, nine thousand runs, one smile the whole country recognises."
+  },
+  {
+   "s": "karan",
+   "t": "Relax, everyone. I'm only here to watch the intra-squad game. And steal Kabir bhai's lunch."
+  },
+  {
+   "s": "karan",
+   "t": "You. The Rajgarh kid. I watched your PCL final three times.",
+   "mood": "soft"
+  },
+  {
+   "if": "champion",
+   "go": "cap_champ"
+  },
+  {
+   "s": "karan",
+   "t": "Didn't matter that you lost. You walked off like you'd won. That's rarer."
+  },
+  {
+   "go": "cap_after"
+  },
+  {
+   "label": "cap_champ"
+  },
+  {
+   "s": "karan",
+   "t": "That six over midwicket. My son made me rewind it until the remote broke."
+  },
+  {
+   "label": "cap_after"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Can I get a selfie? For my sister.\"",
+     "d": "Pinky will never forgive you otherwise.",
+     "fx": {
+      "karan": 1,
+      "pinky": 2
+     },
+     "set": "pinkySelfie"
+    },
+    {
+     "t": "\"Watch the game. Then tell me.\"",
+     "d": "Confidence.",
+     "fx": {
+      "karan": 2
+     }
+    }
+   ]
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "if": "trustVikrant",
+   "go": "vik_soft"
+  },
+  {
+   "enter": "vikrant",
+   "side": "left"
+  },
+  {
+   "s": "vikrant",
+   "t": "Intra-squad game. They've put me on to bowl the last over at you. Fate, chaiwala.",
+   "ex": "angry"
+  },
+  {
+   "go": "game"
+  },
+  {
+   "label": "vik_soft"
+  },
+  {
+   "enter": "vikrant",
+   "side": "left"
+  },
+  {
+   "s": "vikrant",
+   "t": "Last over, they've given me the ball against you. Nothing personal. I'm still going to try to take your head off."
+  },
+  {
+   "label": "game"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "moment": {
+    "kind": "chase",
+    "title": "9 off 6",
+    "desc": "Intra-squad game. Vikrant Chauhan with the ball. The national captain on the boundary. Nine to win.",
+    "bowler": "Vikrant Chauhan",
+    "balls": 6,
+    "need": 9,
+    "hard": "vikrantRival"
+   },
+   "win": "won",
+   "lose": "lost"
+  },
+  {
+   "label": "won"
+  },
+  {
+   "set": "impressedKaran"
+  },
+  {
+   "enter": "karan",
+   "side": "right"
+  },
+  {
+   "s": "karan",
+   "t": "Kabir bhai. I want him in my nets tomorrow."
+  },
+  {
+   "enter": "kabir",
+   "side": "left"
+  },
+  {
+   "s": "kabir",
+   "t": "He's not on the squad yet, Karan."
+  },
+  {
+   "s": "karan",
+   "t": "That's why I said nets, not dinner."
+  },
+  {
+   "fx": {
+    "karan": 2
+   }
+  },
+  {
+   "go": "night"
+  },
+  {
+   "label": "lost"
+  },
+  {
+   "enter": "kabir",
+   "side": "left"
+  },
+  {
+   "s": "kabir",
+   "t": "Close. Close doesn't get on the plane."
+  },
+  {
+   "enter": "karan",
+   "side": "right"
+  },
+  {
+   "s": "karan",
+   "t": "Hey. Your bat came down straight under pressure. That's the bit you can't teach.",
+   "mood": "soft"
+  },
+  {
+   "fx": {
+    "karan": 1
+   }
+  },
+  {
+   "label": "night"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_stadium_tunnel"
+  },
+  {
+   "n": "Midnight. You left your bat in the dressing room. The stadium tunnel is lit by one flickering tube light."
+  },
+  {
+   "n": "A voice at the far end. Low. Shaking."
+  },
+  {
+   "enter": "karan",
+   "side": "right"
+  },
+  {
+   "s": "karan",
+   "t": "I said I'll pay. All of it. Just keep my family out of this. Please.",
+   "mood": "soft"
+  },
+  {
+   "n": "He turns. He sees you. For a second, the most famous face in the country looks terrified.",
+   "reveal": true
+  },
+  {
+   "s": "karan",
+   "t": "...Go to sleep, champ. You didn't see anything."
+  },
+  {
+   "end": true,
+   "cliff": "The national captain is being blackmailed. And now he knows that you know."
+  }
+ ]
+}

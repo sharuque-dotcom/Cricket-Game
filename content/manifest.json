@@ -1,4 +1,74 @@
 {
   "v": 1,
-  "episodes": []
+  "books": [
+    {
+      "id": "bluecap",
+      "live": false,
+      "rel": {
+        "papa": "Papa",
+        "neha": "Neha",
+        "vikrant": "Vikrant",
+        "kabir": "Kabir Sir",
+        "imran": "Imran",
+        "karan": "Karan"
+      },
+      "teaser": {
+        "no": 5,
+        "title": "Viral",
+        "art": "bg_academy_room",
+        "note": "Coming soon"
+      }
+    }
+  ],
+  "episodes": [
+    {
+      "id": "bc1",
+      "no": 1,
+      "file": "episodes/bc1.json",
+      "rev": 1
+    },
+    {
+      "id": "bc2",
+      "no": 2,
+      "file": "episodes/bc2.json",
+      "rev": 1
+    },
+    {
+      "id": "bc3",
+      "no": 3,
+      "file": "episodes/bc3.json",
+      "rev": 1
+    },
+    {
+      "id": "bc4",
+      "no": 4,
+      "file": "episodes/bc4.json",
+      "rev": 1
+    }
+  ],
+  "fallback": {
+    "ev_the_call": "bg_stall_rebuilt",
+    "bg_academy_nets": "bd_stadium_day",
+    "bg_academy_room": "bg_hostel",
+    "bg_stadium_tunnel": "bg_dressing_room",
+    "bg_rooftop_lounge": "bg_hotel_lobby",
+    "cover_bluecap": "ch6"
+  },
+  "fx": {
+    "ev_the_call": "dust",
+    "bg_academy_nets": "dust",
+    "bg_academy_room": "dust",
+    "bg_stadium_tunnel": "dust",
+    "bg_rooftop_lounge": "bokeh"
+  },
+  "day": [
+    "bg_academy_nets"
+  ],
+  "amb": {
+    "ev_the_call": "stall",
+    "bg_academy_nets": "maidan",
+    "bg_academy_room": "room",
+    "bg_stadium_tunnel": "night",
+    "bg_rooftop_lounge": "night"
+  }
 }

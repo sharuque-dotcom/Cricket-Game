@@ -1,0 +1,330 @@
+{
+ "id": "bc4",
+ "no": 4,
+ "book": "bluecap",
+ "title": "The Offer",
+ "art": "bg_rooftop_lounge",
+ "cast": {
+  "kabir": {
+   "name": "Kabir Sir",
+   "col": "#60a5fa"
+  },
+  "imran": {
+   "name": "Imran",
+   "col": "#34d399"
+  },
+  "karan": {
+   "name": "Karan Dhillon",
+   "col": "#3b82f6"
+  },
+  "ishita": {
+   "name": "Ishita Bedi",
+   "col": "#e879f9"
+  },
+  "selector_call": {
+   "name": "Selection Office",
+   "col": "#94a3b8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_academy_nets"
+  },
+  {
+   "n": "Morning nets. Karan Dhillon is laughing, signing autographs, throwing balls for the kids of the groundstaff. As if last night never happened."
+  },
+  {
+   "enter": "karan",
+   "side": "right"
+  },
+  {
+   "s": "karan",
+   "t": "Morning, champ. Front foot's a bit late today. Sleep well?"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Like a baby. Saw nothing, heard nothing.\"",
+     "d": "Play along. For now.",
+     "fx": {
+      "karan": 1
+     },
+     "set": "playedAlong"
+    },
+    {
+     "t": "\"Who's threatening your family?\"",
+     "d": "Straight out.",
+     "fx": {
+      "karan": -1
+     },
+     "set": "askedKaran"
+    }
+   ]
+  },
+  {
+   "if": "askedKaran",
+   "go": "asked"
+  },
+  {
+   "s": "karan",
+   "t": "Good. Sleep's important at your age."
+  },
+  {
+   "go": "agent"
+  },
+  {
+   "label": "asked"
+  },
+  {
+   "s": "karan",
+   "t": "Not here.",
+   "mood": "soft"
+  },
+  {
+   "s": "karan",
+   "t": "You're twenty-one and you've already been through one of these. Don't go through two. Bat. Eat. Sleep. That's all."
+  },
+  {
+   "label": "agent"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "Saturday. Camp break. A message from a number you don't have."
+  },
+  {
+   "phone": "Ishita Bedi",
+   "msgs": [
+    {
+     "t": "Hi {first}! Ishita Bedi, sports management. 🙂"
+    },
+    {
+     "t": "Car outside the academy gate at 7. Flight to Mumbai at 8. Dinner at 10."
+    },
+    {
+     "t": "Back before curfew. Trust me, you'll want to hear this."
+    }
+   ]
+  },
+  {
+   "bg": "bg_rooftop_lounge"
+  },
+  {
+   "n": "Mumbai. A rooftop thirty floors up. The sea is black and the city is gold. A waiter puts down a mocktail that costs more than Papa makes in a day."
+  },
+  {
+   "enter": "ishita",
+   "side": "right"
+  },
+  {
+   "s": "ishita",
+   "t": "Let me be honest, because nobody else will be. In six weeks you'll either be a nobody from Rajgarh again, or the most marketable cricketer in India."
+  },
+  {
+   "s": "ishita",
+   "t": "If it's the second one, you need me. One crore signing amount. Three brands. A shoe, a phone, a soft drink."
+  },
+  {
+   "s": "ishita",
+   "t": "Your father gets a real shop. Your sister gets a real college. You get to only think about cricket."
+  },
+  {
+   "th": "One crore. Papa used to count coins at night to see if we could afford milk."
+  },
+  {
+   "s": "ishita",
+   "t": "One small thing. Exclusive representation. All your media goes through us. Every interview, every post."
+  },
+  {
+   "if": {
+    "not": {
+     "any": [
+      "taraScandal",
+      {
+       "rel": "neha",
+       "max": 0
+      }
+     ]
+    }
+   },
+   "go": "neha_check"
+  },
+  {
+   "go": "decide"
+  },
+  {
+   "label": "neha_check"
+  },
+  {
+   "th": "Every interview. Neha."
+  },
+  {
+   "label": "decide"
+  },
+  {
+   "choice": [
+    {
+     "t": "Sign tonight.",
+     "d": "One crore. Don't overthink it.",
+     "fx": {
+      "papa": 1
+     },
+     "set": "signedIshita"
+    },
+    {
+     "t": "Send the contract to Neha first.",
+     "d": "She reads fine print for a living.",
+     "show": {
+      "not": {
+       "any": [
+        "taraScandal",
+        {
+         "rel": "neha",
+         "max": 0
+        }
+       ]
+      }
+     },
+     "fx": {
+      "neha": 2
+     },
+     "set": "nehaRead"
+    },
+    {
+     "t": "\"I'll talk to my father first.\"",
+     "d": "Slow down.",
+     "fx": {
+      "papa": 2
+     },
+     "set": "askedPapa"
+    },
+    {
+     "t": "Hire Rocky's lawyer to read it tonight.",
+     "d": "A real lawyer, on a Saturday night.",
+     "cost": 30,
+     "set": "lawyerRead"
+    }
+   ]
+  },
+  {
+   "if": "signedIshita",
+   "go": "signed"
+  },
+  {
+   "if": "nehaRead",
+   "go": "neha"
+  },
+  {
+   "if": "lawyerRead",
+   "go": "lawyer"
+  },
+  {
+   "s": "ishita",
+   "t": "Of course. Family first. The offer's open till Monday. After that, it goes to Vikrant Chauhan."
+  },
+  {
+   "go": "reveal"
+  },
+  {
+   "label": "signed"
+  },
+  {
+   "n": "She slides over a gold pen. Your signature looks different in Mumbai. Bigger."
+  },
+  {
+   "s": "ishita",
+   "t": "Welcome to the family, {first}. Mr. Mehra will be so pleased.",
+   "ex": "cold"
+  },
+  {
+   "th": "...Mehra?"
+  },
+  {
+   "go": "reveal"
+  },
+  {
+   "label": "neha"
+  },
+  {
+   "phone": "Neha",
+   "msgs": [
+    {
+     "t": "Page 14, clause 9(c)."
+    },
+    {
+     "t": "The agency is 51% owned by Mehra Sports Group."
+    },
+    {
+     "t": "Raghav Mehra. The same name that keeps coming up in Sunny's court papers."
+    },
+    {
+     "t": "Don't sign. Don't drink anything. Come home."
+    }
+   ]
+  },
+  {
+   "set": "knowsMehra"
+  },
+  {
+   "go": "reveal"
+  },
+  {
+   "label": "lawyer"
+  },
+  {
+   "n": "At 1 AM the lawyer calls back. \"Clause 9(c). The agency is majority-owned by Mehra Sports Group. And clause 14 lets them sell your image rights to anyone. Including people you've never met.\""
+  },
+  {
+   "set": "knowsMehra"
+  },
+  {
+   "label": "reveal"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_academy_room"
+  },
+  {
+   "n": "3:12 AM. Back in Bengaluru. Your phone won't stop vibrating. It's buzzing so hard it falls off the bed."
+  },
+  {
+   "if": "imranSafe",
+   "go": "imran_wake"
+  },
+  {
+   "go": "video"
+  },
+  {
+   "label": "imran_wake"
+  },
+  {
+   "enter": "imran",
+   "side": "right"
+  },
+  {
+   "s": "imran",
+   "t": "Bhai. Bhai, wake up. You're trending. You're number one.",
+   "mood": "shout"
+  },
+  {
+   "label": "video"
+  },
+  {
+   "n": "A video. 2.4 million views in three hours."
+  },
+  {
+   "n": "It's you, two years ago, in a hotel lobby. Shaking Sunny Bhai's hand. Smiling.",
+   "reveal": true
+  },
+  {
+   "n": "The caption: \"National camp probable caught with jailed bookie.\""
+  },
+  {
+   "end": true,
+   "cliff": "The photo in the envelope was a warning. The video is the price for ignoring it."
+  }
+ ]
+}
