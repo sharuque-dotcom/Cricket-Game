@@ -1,7 +1,7 @@
 # Gully to Glory — Play Store launch kit
 
 Everything to paste into Play Console. Files in this folder:
-`icon-512.png`, `feature-graphic-1024x500.png`, `screenshot-1…7.png`, `privacy-policy.html`.
+`icon-512.png`, `feature-graphic-1024x500.png`, `screenshot-1…8.png (1080×1920, Blue Cap art)`, `privacy-policy.html`.
 
 ## 1. App details
 - **App name** (30 max): `Gully to Glory: Cricket Story`
