@@ -3,7 +3,7 @@
   "books": [
     {
       "id": "bluecap",
-      "live": false,
+      "live": true,
       "rel": {
         "papa": "Papa",
         "neha": "Neha",
@@ -11,7 +11,8 @@
         "kabir": "Kabir Sir",
         "imran": "Imran",
         "karan": "Karan"
-      }
+      },
+      "art": "cover_bluecap"
     }
   ],
   "episodes": [
@@ -203,5 +204,42 @@
     "ev_last_over": "night",
     "bg_awards_gala": "night",
     "bg_rajgarh_festival": "stall"
+  },
+  "art": {
+    "bg_academy_nets": "img/bg_academy_nets.jpg",
+    "bg_academy_room": "img/bg_academy_room.jpg",
+    "bg_airport_gate": "img/bg_airport_gate.jpg",
+    "bg_awards_gala": "img/bg_awards_gala.jpg",
+    "bg_brand_shoot": "img/bg_brand_shoot.jpg",
+    "bg_delhi_night": "img/bg_delhi_night.jpg",
+    "bg_intl_dressing": "img/bg_intl_dressing.jpg",
+    "bg_intl_stadium": "img/bg_intl_stadium.jpg",
+    "bg_overseas_hotel": "img/bg_overseas_hotel.jpg",
+    "bg_physio_room": "img/bg_physio_room.jpg",
+    "bg_press_room": "img/bg_press_room.jpg",
+    "bg_rajgarh_festival": "img/bg_rajgarh_festival.jpg",
+    "bg_rooftop_lounge": "img/bg_rooftop_lounge.jpg",
+    "bg_stadium_tunnel": "img/bg_stadium_tunnel.jpg",
+    "cover_bluecap": "img/cover_bluecap.jpg",
+    "ev_blue_cap": "img/ev_blue_cap.jpg",
+    "ev_last_over": "img/ev_last_over.jpg",
+    "ev_the_call": "img/ev_the_call.jpg",
+    "ev_viral": "img/ev_viral.jpg"
+  },
+  "chars": {
+    "imran": "img/char_imran.webp",
+    "imran_sad": "img/char_imran_sad.webp",
+    "ishita": "img/char_ishita.webp",
+    "ishita_cold": "img/char_ishita_cold.webp",
+    "kabir": "img/char_kabir.webp",
+    "kabir_angry": "img/char_kabir_angry.webp",
+    "karan": "img/char_karan.webp",
+    "karan_worried": "img/char_karan_worried.webp",
+    "neha_delhi": "img/char_neha_delhi.webp",
+    "neha_delhi_tearful": "img/char_neha_delhi_tearful.webp",
+    "physio": "img/char_physio.webp",
+    "raghav": "img/char_raghav.webp",
+    "raghav_angry": "img/char_raghav_angry.webp",
+    "vikrant_blue": "img/char_vikrant_blue.webp"
   }
 }
