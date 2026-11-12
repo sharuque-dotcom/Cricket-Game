@@ -1,0 +1,155 @@
+{
+ "id": "bw7",
+ "no": 7,
+ "book": "b3",
+ "title": "Damage Control",
+ "art": "bg_tv_studio",
+ "cast": {
+  "tara": {
+   "name": "Tara Kapoor",
+   "col": "#f472b6"
+  },
+  "tara_home": {
+   "name": "Tara",
+   "col": "#f472b6"
+  },
+  "nikhil": {
+   "name": "Nikhil Arora",
+   "col": "#94a3b8"
+  },
+  "sushma": {
+   "name": "Sushma Kapoor",
+   "col": "#c084fc"
+  },
+  "vivaan": {
+   "name": "Vivaan Rai",
+   "col": "#f87171"
+  },
+  "dadi": {
+   "name": "Dadi",
+   "col": "#fbbf24"
+  },
+  "sid": {
+   "name": "Sid",
+   "col": "#38bdf8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_seaface_flat"
+  },
+  {
+   "enter": "nikhil",
+   "side": "right"
+  },
+  {
+   "s": "nikhil",
+   "t": "Prime-time interview. Both of you. Tonight, 8 PM. One hour before his video. We go first, we go big."
+  },
+  {
+   "s": "nikhil",
+   "t": "You love each other. You fell for each other at a charity match. Rehearse it."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_tv_studio"
+  },
+  {
+   "n": "Studio 3. Hot lights, a fake living room, and an anchor who has made three ministers cry."
+  },
+  {
+   "n": "\"Captain. How did you know she was the one?\""
+  },
+  {
+   "choice": [
+    {
+     "t": "Tell the made-up charity match story.",
+     "d": "Stick to the script.",
+     "set": "script"
+    },
+    {
+     "t": "Tell the truth about the parathas at 2 AM.",
+     "d": "Not the script. Something real.",
+     "fx": {
+      "tara": 3
+     },
+     "set": "realAnswer"
+    },
+    {
+     "t": "\"She laughed at a pigeon story. Nobody laughs at my pigeon story.\"",
+     "d": "Only if she did.",
+     "show": "pigeon",
+     "fx": {
+      "tara": 3
+     },
+     "set": "realAnswer"
+    }
+   ]
+  },
+  {
+   "if": "realAnswer",
+   "go": "real"
+  },
+  {
+   "go": "q2"
+  },
+  {
+   "label": "real"
+  },
+  {
+   "n": "Tara stops smiling for the camera. She's looking at you instead. The anchor notices. Everyone notices."
+  },
+  {
+   "label": "q2"
+  },
+  {
+   "n": "\"Tara. Is this marriage real?\""
+  },
+  {
+   "enter": "tara",
+   "side": "right"
+  },
+  {
+   "s": "tara",
+   "t": "...He makes parathas at midnight. He talks to my cat. He reads the whole contract before he signs anything. Of course it's real.",
+   "mood": "soft"
+  },
+  {
+   "th": "Contract. She said contract. On live TV."
+  },
+  {
+   "n": "Nobody catches it. Except Nikhil, who has gone pale."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_seaface_flat"
+  },
+  {
+   "n": "9 PM. Vivaan's Part One goes live. A photo of a document. The first page of a contract. Names blacked out. \"Clause seven: no falling in love.\"",
+   "reveal": true
+  },
+  {
+   "n": "The internet splits in half. #FakeShaadi trends against #ParathaLove."
+  },
+  {
+   "enter": "tara_home",
+   "side": "right"
+  },
+  {
+   "s": "tara_home",
+   "t": "He had the first page. Only my mother and Nikhil have that page.",
+   "ex": "tearful"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Someone close to Tara sold the contract to Vivaan. Her mother? Or the man who wrote it?"
+  }
+ ]
+}

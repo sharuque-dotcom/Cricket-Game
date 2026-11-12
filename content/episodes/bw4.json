@@ -1,0 +1,167 @@
+{
+ "id": "bw4",
+ "no": 4,
+ "book": "b3",
+ "title": "Honeymoon",
+ "art": "bg_goa_beach",
+ "cast": {
+  "tara": {
+   "name": "Tara Kapoor",
+   "col": "#f472b6"
+  },
+  "tara_home": {
+   "name": "Tara",
+   "col": "#f472b6"
+  },
+  "nikhil": {
+   "name": "Nikhil Arora",
+   "col": "#94a3b8"
+  },
+  "sushma": {
+   "name": "Sushma Kapoor",
+   "col": "#c084fc"
+  },
+  "vivaan": {
+   "name": "Vivaan Rai",
+   "col": "#f87171"
+  },
+  "dadi": {
+   "name": "Dadi",
+   "col": "#fbbf24"
+  },
+  "sid": {
+   "name": "Sid",
+   "col": "#38bdf8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_seaface_flat"
+  },
+  {
+   "enter": "nikhil",
+   "side": "right"
+  },
+  {
+   "s": "nikhil",
+   "t": "Separate bedrooms. Do you know what that headline costs? Honeymoon. Goa. Tomorrow. Holding hands every forty minutes."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_goa_beach"
+  },
+  {
+   "n": "Goa. A private villa, a private beach, and eleven photographers hiding in the coconut trees."
+  },
+  {
+   "enter": "tara",
+   "side": "right"
+  },
+  {
+   "s": "tara",
+   "t": "Hold my hand. Laugh like I said something funny."
+  },
+  {
+   "s": "tara",
+   "t": "Actually, say something funny. My face can't fake laughing anymore."
+  },
+  {
+   "choice": [
+    {
+     "t": "Do your impression of your old coach.",
+     "d": "Commit fully.",
+     "fx": {
+      "tara": 2
+     }
+    },
+    {
+     "t": "Tell her about the time you got out to a ball that hit a pigeon.",
+     "d": "True story.",
+     "fx": {
+      "tara": 3
+     },
+     "set": "pigeon"
+    },
+    {
+     "t": "Pick her up and run into the sea.",
+     "d": "Chaos.",
+     "cost": 10,
+     "fx": {
+      "tara": 3
+     },
+     "set": "sea"
+    }
+   ]
+  },
+  {
+   "n": "She laughs. A real one. Ugly and loud and nothing like the films. The photographers get nothing usable. It's perfect."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_goa_beach"
+  },
+  {
+   "n": "Sunset. The cameras have gone. She's sitting on the sand with her knees up, no makeup, sunburnt nose."
+  },
+  {
+   "enter": "tara_home",
+   "side": "right"
+  },
+  {
+   "s": "tara_home",
+   "t": "My father had a stroke four years ago. My mother runs everything now. My money, my films, my phone.",
+   "mood": "soft"
+  },
+  {
+   "s": "tara_home",
+   "t": "The flops weren't my fault. She picks the scripts. She picks the men. She picked Vivaan."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Then pick something yourself. Starting now.\"",
+     "d": "Encourage her.",
+     "fx": {
+      "tara": 3
+     },
+     "set": "encouraged"
+    },
+    {
+     "t": "Just sit with her. Say nothing.",
+     "d": "Sometimes that's enough.",
+     "fx": {
+      "tara": 2
+     }
+    }
+   ]
+  },
+  {
+   "n": "She rests her head on your shoulder. It isn't for the cameras. There are no cameras."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "phone": "Unknown",
+   "msgs": [
+    {
+     "t": "Lovely sunset."
+    },
+    {
+     "t": "I'm Tara's mother. I found a document in her safe."
+    },
+    {
+     "t": "Page nine has my name on it. Come to my house. Alone. Tomorrow, 11 AM."
+    }
+   ]
+  },
+  {
+   "end": true,
+   "cliff": "Sushma Kapoor found the contract. And she wants to meet you alone."
+  }
+ ]
+}

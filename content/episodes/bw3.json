@@ -1,0 +1,176 @@
+{
+ "id": "bw3",
+ "no": 3,
+ "book": "b3",
+ "title": "Same Roof",
+ "art": "bg_seaface_flat",
+ "cast": {
+  "tara": {
+   "name": "Tara Kapoor",
+   "col": "#f472b6"
+  },
+  "tara_home": {
+   "name": "Tara",
+   "col": "#f472b6"
+  },
+  "nikhil": {
+   "name": "Nikhil Arora",
+   "col": "#94a3b8"
+  },
+  "sushma": {
+   "name": "Sushma Kapoor",
+   "col": "#c084fc"
+  },
+  "vivaan": {
+   "name": "Vivaan Rai",
+   "col": "#f87171"
+  },
+  "dadi": {
+   "name": "Dadi",
+   "col": "#fbbf24"
+  },
+  "sid": {
+   "name": "Sid",
+   "col": "#38bdf8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_palace_wedding"
+  },
+  {
+   "enter": "vivaan",
+   "side": "right"
+  },
+  {
+   "s": "vivaan",
+   "t": "Captain. Big fan. Well, small fan. She'll get bored of you by Diwali. She gets bored of everyone."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Get out of my wedding.\"",
+     "d": "Calm, cold.",
+     "fx": {
+      "tara": 2
+     }
+    },
+    {
+     "t": "Throw him in the lake.",
+     "d": "Very satisfying. Very public.",
+     "fx": {
+      "tara": 1,
+      "sid": 2
+     },
+     "set": "lake"
+    },
+    {
+     "t": "Ignore him. Take Tara's hand.",
+     "d": "Show, don't tell.",
+     "fx": {
+      "tara": 3
+     }
+    }
+   ]
+  },
+  {
+   "if": "lake",
+   "go": "lake"
+  },
+  {
+   "go": "flat"
+  },
+  {
+   "label": "lake"
+  },
+  {
+   "n": "Splash. Nine hundred guests film it. By morning, \"Captain Yorker\" is the number one trend. Nikhil is furious. Tara laughs for a full minute."
+  },
+  {
+   "label": "flat"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_seaface_flat"
+  },
+  {
+   "n": "Mumbai. Her sea-facing flat. Twenty-second floor. The rules are taped to the fridge in her handwriting."
+  },
+  {
+   "n": "\"1. Your room is the small one. 2. No cricket on the big TV. 3. Don't touch Simba.\" Simba is a cat. Simba hates you."
+  },
+  {
+   "enter": "tara_home",
+   "side": "right"
+  },
+  {
+   "s": "tara_home",
+   "t": "So. Married life. Do you cook? Please say you cook."
+  },
+  {
+   "choice": [
+    {
+     "t": "Make her aloo parathas, Dadi's recipe.",
+     "d": "Home food.",
+     "fx": {
+      "tara": 2
+     },
+     "set": "parathas"
+    },
+    {
+     "t": "Order in from her favourite place.",
+     "d": "Safe.",
+     "fx": {
+      "tara": 1
+     }
+    },
+    {
+     "t": "\"I'm a cricketer. I eat boiled chicken.\"",
+     "d": "Honest.",
+     "fx": {
+      "tara": -1
+     }
+    }
+   ]
+  },
+  {
+   "if": "parathas",
+   "go": "food"
+  },
+  {
+   "go": "night"
+  },
+  {
+   "label": "food"
+  },
+  {
+   "s": "tara_home",
+   "t": "...These are better than my chef's. Don't tell my chef. Don't tell anyone.",
+   "ex": "happy"
+  },
+  {
+   "label": "night"
+  },
+  {
+   "n": "2 AM. You hear her in the kitchen. She's on the phone, whispering."
+  },
+  {
+   "s": "tara_home",
+   "t": "Maa, please. I can't send more. The film didn't... I know. I know. I'm sorry.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "In the morning, a photo is on every gossip site. Taken with a long lens from the next building. Two bedroom lights. Two separate windows.",
+   "reveal": true
+  },
+  {
+   "end": true,
+   "cliff": "One photo. Two bedrooms. And the whole country asking a question you can't answer."
+  }
+ ]
+}

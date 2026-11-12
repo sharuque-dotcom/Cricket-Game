@@ -1,0 +1,151 @@
+{
+ "id": "bw11",
+ "no": 11,
+ "book": "b3",
+ "title": "Clause Twelve",
+ "art": "bg_physio_room",
+ "cast": {
+  "tara": {
+   "name": "Tara Kapoor",
+   "col": "#f472b6"
+  },
+  "tara_home": {
+   "name": "Tara",
+   "col": "#f472b6"
+  },
+  "nikhil": {
+   "name": "Nikhil Arora",
+   "col": "#94a3b8"
+  },
+  "sushma": {
+   "name": "Sushma Kapoor",
+   "col": "#c084fc"
+  },
+  "vivaan": {
+   "name": "Vivaan Rai",
+   "col": "#f87171"
+  },
+  "dadi": {
+   "name": "Dadi",
+   "col": "#fbbf24"
+  },
+  "sid": {
+   "name": "Sid",
+   "col": "#38bdf8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_intl_stadium"
+  },
+  {
+   "n": "Third match of the tour. She's in the stands in a borrowed raincoat. You're fielding at short leg when the ball hits you in the face.",
+   "reveal": true
+  },
+  {
+   "bg": "bg_physio_room"
+  },
+  {
+   "n": "Fractured cheekbone. No surgery. Three weeks out. She sits beside the treatment table for nine hours."
+  },
+  {
+   "enter": "tara_home",
+   "side": "right"
+  },
+  {
+   "s": "tara_home",
+   "t": "You look terrible. Like a villain in a South film. I like it."
+  },
+  {
+   "s": "tara_home",
+   "t": "Can I say something stupid? I didn't come for the cameras. I've never done anything without cameras before.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"I love you. Clause seven can sue me.\"",
+     "d": "Say it first.",
+     "fx": {
+      "tara": 4
+     },
+     "set": "saidLove"
+    },
+    {
+     "t": "\"Stay. Until I can see properly.\"",
+     "d": "Not yet. But almost.",
+     "fx": {
+      "tara": 2
+     }
+    },
+    {
+     "t": "\"You should go home. Your career needs you.\"",
+     "d": "Protect her.",
+     "fx": {
+      "tara": -2
+     },
+     "set": "sentHome"
+    }
+   ]
+  },
+  {
+   "if": "saidLove",
+   "go": "love"
+  },
+  {
+   "if": "sentHome",
+   "go": "home"
+  },
+  {
+   "go": "nik"
+  },
+  {
+   "label": "love"
+  },
+  {
+   "s": "tara_home",
+   "t": "...Clause seven is going to need a very good lawyer.",
+   "ex": "happy"
+  },
+  {
+   "go": "nik"
+  },
+  {
+   "label": "home"
+  },
+  {
+   "s": "tara_home",
+   "t": "Right. Yes. Career. Of course.",
+   "ex": "tearful"
+  },
+  {
+   "label": "nik"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "enter": "nikhil",
+   "side": "right"
+  },
+  {
+   "s": "nikhil",
+   "t": "Good news! The Board has confirmed you as captain for two more years. The public loves the injury story. Sponsors are back."
+  },
+  {
+   "s": "nikhil",
+   "t": "Which means the contract has served its purpose. Early clause twelve. Divorce papers. Quiet, dignified. I brought them.",
+   "mood": "soft"
+  },
+  {
+   "n": "A thick envelope on the physio table. Two signature boxes. One for you. One for her."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Your captaincy is safe. Your marriage just became unnecessary."
+  }
+ ]
+}

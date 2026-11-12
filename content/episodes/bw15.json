@@ -1,0 +1,208 @@
+{
+ "id": "bw15",
+ "no": 15,
+ "book": "b3",
+ "title": "The Final",
+ "art": "bg_intl_stadium",
+ "cast": {
+  "tara": {
+   "name": "Tara Kapoor",
+   "col": "#f472b6"
+  },
+  "tara_home": {
+   "name": "Tara",
+   "col": "#f472b6"
+  },
+  "nikhil": {
+   "name": "Nikhil Arora",
+   "col": "#94a3b8"
+  },
+  "sushma": {
+   "name": "Sushma Kapoor",
+   "col": "#c084fc"
+  },
+  "vivaan": {
+   "name": "Vivaan Rai",
+   "col": "#f87171"
+  },
+  "dadi": {
+   "name": "Dadi",
+   "col": "#fbbf24"
+  },
+  "sid": {
+   "name": "Sid",
+   "col": "#38bdf8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_seaface_flat"
+  },
+  {
+   "n": "Two days before the final. Tara's London flight is the same evening as the final. Nine o'clock."
+  },
+  {
+   "enter": "tara_home",
+   "side": "right"
+  },
+  {
+   "s": "tara_home",
+   "t": "The studio won't move the date. If I miss the flight, I lose the part.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Get on the plane. I'll win it for both of us.\"",
+     "d": "Her dream matters.",
+     "fx": {
+      "tara": 3
+     },
+     "set": "sentLondon"
+    },
+    {
+     "t": "\"Stay. Watch me play. Just once more.\"",
+     "d": "Ask for it.",
+     "fx": {
+      "tara": 1
+     },
+     "set": "askedFinal"
+    },
+    {
+     "t": "Charter her a later plane so she can see the final AND make London.",
+     "d": "Have it both ways.",
+     "cost": 40,
+     "fx": {
+      "tara": 4
+     },
+     "set": "charter"
+    }
+   ]
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_intl_stadium"
+  },
+  {
+   "n": "Final. Kolkata. Seventy thousand. The last over. Twelve to win. You're the captain and you're on strike."
+  },
+  {
+   "if": "sentLondon",
+   "go": "away"
+  },
+  {
+   "n": "In Box 4, a woman in your jersey has stopped pretending she doesn't understand the rules."
+  },
+  {
+   "go": "bat"
+  },
+  {
+   "label": "away"
+  },
+  {
+   "n": "Box 4 is empty. Your phone, in the dressing room, has one message: \"Boarding. Watching on my phone. HIT IT.\""
+  },
+  {
+   "label": "bat"
+  },
+  {
+   "moment": {
+    "kind": "chase",
+    "title": "12 off 6",
+    "desc": "Final. Last over. Captain on strike. Twelve to win, and somewhere a woman watching on a phone or from Box 4.",
+    "bowler": "Dale Hartigan",
+    "balls": 6,
+    "need": 12
+   },
+   "win": "won",
+   "lose": "lost"
+  },
+  {
+   "label": "won"
+  },
+  {
+   "set": "champion"
+  },
+  {
+   "n": "The last ball sails over cover. You don't celebrate with the team. You run to Box 4."
+  },
+  {
+   "go": "box"
+  },
+  {
+   "label": "lost"
+  },
+  {
+   "set": "lostFinal"
+  },
+  {
+   "n": "Two runs short. You sit on the pitch. Sid sits next to you. Then the whole team does."
+  },
+  {
+   "label": "box"
+  },
+  {
+   "if": "sentLondon",
+   "go": "phone"
+  },
+  {
+   "enter": "tara",
+   "side": "right"
+  },
+  {
+   "if": "askedFinal",
+   "go": "missed"
+  },
+  {
+   "s": "tara",
+   "t": "My plane leaves in four hours. I'll make it. Probably. Kiss me first.",
+   "ex": "happy"
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "missed"
+  },
+  {
+   "s": "tara",
+   "t": "I missed the flight. I missed the part. I don't care. I don't care at all.",
+   "mood": "soft"
+  },
+  {
+   "set": "missedLondon"
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "phone"
+  },
+  {
+   "phone": "Tara",
+   "msgs": [
+    {
+     "t": "I watched it in the plane toilet so I could scream."
+    },
+    {
+     "t": "The cabin crew are very worried about me."
+    }
+   ]
+  },
+  {
+   "label": "cliff"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "Midnight. Vivaan's book launches. And one envelope arrives at the stadium hotel, addressed to you, in Sushma Kapoor's handwriting."
+  },
+  {
+   "end": true,
+   "cliff": "Sushma Kapoor wants to make one final deal."
+  }
+ ]
+}

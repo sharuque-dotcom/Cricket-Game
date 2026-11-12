@@ -1,0 +1,179 @@
+{
+ "id": "bw9",
+ "no": 9,
+ "book": "b3",
+ "title": "Red Carpet",
+ "art": "bg_red_carpet",
+ "cast": {
+  "tara": {
+   "name": "Tara Kapoor",
+   "col": "#f472b6"
+  },
+  "tara_home": {
+   "name": "Tara",
+   "col": "#f472b6"
+  },
+  "nikhil": {
+   "name": "Nikhil Arora",
+   "col": "#94a3b8"
+  },
+  "sushma": {
+   "name": "Sushma Kapoor",
+   "col": "#c084fc"
+  },
+  "vivaan": {
+   "name": "Vivaan Rai",
+   "col": "#f87171"
+  },
+  "dadi": {
+   "name": "Dadi",
+   "col": "#fbbf24"
+  },
+  "sid": {
+   "name": "Sid",
+   "col": "#38bdf8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_hospital"
+  },
+  {
+   "n": "A private hospital room by the sea. Rajiv Kapoor, half his face still, eyes completely alive. His speech is slow. Every word costs him."
+  },
+  {
+   "n": "He shows you his nurse's phone. A bank transfer screenshot. Sushma Kapoor to a Vivaan Rai production company. Twenty lakh. The day before Part One."
+  },
+  {
+   "choice": [
+    {
+     "t": "Take the screenshot. Tell Tara tonight.",
+     "d": "She deserves the truth.",
+     "set": "proofMother",
+     "fx": {
+      "tara": 2
+     }
+    },
+    {
+     "t": "Take it. Wait for the right moment.",
+     "d": "The truth can wait a day.",
+     "set": "proofMother",
+     "fx": {
+      "tara": -1
+     }
+    },
+    {
+     "t": "Promise Rajiv you'll get him home to Tara.",
+     "d": "And mean it.",
+     "set": "promisedRajiv",
+     "fx": {
+      "tara": 2
+     }
+    }
+   ]
+  },
+  {
+   "bg": "bg_red_carpet"
+  },
+  {
+   "n": "Silver Screen Awards night. The red carpet. Six hundred photographers. Tara in emerald, holding your arm a little tighter than the photographers need."
+  },
+  {
+   "enter": "vivaan",
+   "side": "left"
+  },
+  {
+   "s": "vivaan",
+   "t": "Lovely. The fraud and the fraud's husband. Part Two drops tomorrow. It's the whole contract. Signatures and all.",
+   "ex": "smug"
+  },
+  {
+   "enter": "tara",
+   "side": "right"
+  },
+  {
+   "choice": [
+    {
+     "t": "Say it loudly, to the cameras: Sushma paid him.",
+     "d": "Burn it all down.",
+     "show": "proofMother",
+     "set": "exposedOnCarpet",
+     "fx": {
+      "tara": -1
+     }
+    },
+    {
+     "t": "Walk past him. Hold her hand.",
+     "d": "Starve him of the moment.",
+     "fx": {
+      "tara": 2
+     }
+    },
+    {
+     "t": "Whisper: \"Release it. I'll release mine.\"",
+     "d": "Bluff.",
+     "fx": {
+      "tara": 1
+     },
+     "set": "bluffed"
+    }
+   ]
+  },
+  {
+   "if": "exposedOnCarpet",
+   "go": "exp"
+  },
+  {
+   "go": "inside"
+  },
+  {
+   "label": "exp"
+  },
+  {
+   "n": "Six hundred cameras hear it. Tara's face goes white. Not at Vivaan. At you. You told the country before you told her.",
+   "reveal": true
+  },
+  {
+   "s": "tara",
+   "t": "My mother? You knew? And you said it HERE?",
+   "mood": "shout",
+   "ex": "angry"
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "inside"
+  },
+  {
+   "n": "Inside, between awards, she pulls you behind a pillar where there are no cameras."
+  },
+  {
+   "s": "tara",
+   "t": "Whatever happens tomorrow. Thank you for tonight.",
+   "mood": "soft"
+  },
+  {
+   "n": "She kisses you. Not for the cameras. There are no cameras. There's only the next award being announced too loudly.",
+   "reveal": true
+  },
+  {
+   "set": "pillarKiss"
+  },
+  {
+   "fx": {
+    "tara": 2
+   }
+  },
+  {
+   "label": "cliff"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Part Two drops tomorrow: the whole contract. And clause seven is already broken."
+  }
+ ]
+}

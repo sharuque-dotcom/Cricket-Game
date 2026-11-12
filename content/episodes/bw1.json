@@ -1,0 +1,183 @@
+{
+ "id": "bw1",
+ "no": 1,
+ "book": "b3",
+ "title": "The Contract",
+ "art": "bg_hotel_suite",
+ "cast": {
+  "tara": {
+   "name": "Tara Kapoor",
+   "col": "#f472b6"
+  },
+  "tara_home": {
+   "name": "Tara",
+   "col": "#f472b6"
+  },
+  "nikhil": {
+   "name": "Nikhil Arora",
+   "col": "#94a3b8"
+  },
+  "sushma": {
+   "name": "Sushma Kapoor",
+   "col": "#c084fc"
+  },
+  "vivaan": {
+   "name": "Vivaan Rai",
+   "col": "#f87171"
+  },
+  "dadi": {
+   "name": "Dadi",
+   "col": "#fbbf24"
+  },
+  "sid": {
+   "name": "Sid",
+   "col": "#38bdf8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_press_room"
+  },
+  {
+   "n": "Three days after the World Cup semi-final. You lost by four runs. Then somebody posted a photo of you at a party at 3 AM the night before."
+  },
+  {
+   "n": "\"CAPTAIN PARTIES, COUNTRY CRIES.\" Every channel. Every hour."
+  },
+  {
+   "th": "I had one drink. I left at midnight. Nobody cares."
+  },
+  {
+   "bg": "bg_hotel_suite"
+  },
+  {
+   "n": "A five-star hotel in Bandra, Suite 1104. Your agent said \"a meeting that will save your captaincy\". He didn't say who with."
+  },
+  {
+   "enter": "nikhil",
+   "side": "right"
+  },
+  {
+   "s": "nikhil",
+   "t": "Nikhil Arora. I fix images. Yours is broken. So is my client's."
+  },
+  {
+   "s": "nikhil",
+   "t": "The Board wants a family man. Sponsors want a love story. And the country wants to forgive you. Let's give them a wedding."
+  },
+  {
+   "n": "The bedroom door opens. Tara Kapoor. Three hundred million followers. Two flops in a row. Barefoot, holding an iced coffee.",
+   "reveal": true
+  },
+  {
+   "enter": "tara",
+   "side": "left"
+  },
+  {
+   "s": "tara",
+   "t": "So you're the cricketer. You're shorter on TV."
+  },
+  {
+   "s": "tara",
+   "t": "Let's be clear. I don't watch cricket. I don't understand cricket. I think a googly is a type of egg."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"A googly is a ball that lies to you. Like this meeting.\"",
+     "d": "Match her.",
+     "fx": {
+      "tara": 2
+     }
+    },
+    {
+     "t": "\"And I don't watch your films. We're even.\"",
+     "d": "Cold.",
+     "fx": {
+      "tara": 1
+     },
+     "set": "coldStart"
+    },
+    {
+     "t": "\"I'll teach you. Over dinner.\"",
+     "d": "Too smooth?",
+     "fx": {
+      "tara": -1
+     }
+    }
+   ]
+  },
+  {
+   "s": "tara",
+   "t": "Hm. Okay. Not completely boring."
+  },
+  {
+   "s": "nikhil",
+   "t": "One year. Married in public, strangers in private. Separate rooms. You attend her premieres, she attends your matches. Clause twelve: a quiet divorce after twelve months."
+  },
+  {
+   "s": "nikhil",
+   "t": "Clause seven: no falling in love. It ruins the timeline."
+  },
+  {
+   "choice": [
+    {
+     "t": "Sign it.",
+     "d": "Save your captaincy.",
+     "set": "signed"
+    },
+    {
+     "t": "\"Clause seven is unnecessary. Trust me.\"",
+     "d": "Sign, with a smile.",
+     "fx": {
+      "tara": 1
+     },
+     "set": "signed"
+    },
+    {
+     "t": "Read every page twice first.",
+     "d": "Captains read the pitch.",
+     "set": "readTwice",
+     "fx": {
+      "tara": 1
+     }
+    }
+   ]
+  },
+  {
+   "if": "readTwice",
+   "go": "read"
+  },
+  {
+   "go": "after"
+  },
+  {
+   "label": "read"
+  },
+  {
+   "n": "Page nine has a handwritten line, in Tara's writing: \"He must never meet my mother alone.\""
+  },
+  {
+   "set": "signed"
+  },
+  {
+   "label": "after"
+  },
+  {
+   "s": "tara",
+   "t": "Wonderful. One more rule. Mine, not his.",
+   "mood": "soft"
+  },
+  {
+   "s": "tara",
+   "t": "My mother can never find out it's fake. Never. Promise me."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "You just married a stranger for one year. And she's more scared of her mother than of the country."
+  }
+ ]
+}

@@ -1,0 +1,206 @@
+{
+ "id": "bw5",
+ "no": 5,
+ "book": "b3",
+ "title": "The Mother",
+ "art": "bg_kapoor_mansion",
+ "cast": {
+  "tara": {
+   "name": "Tara Kapoor",
+   "col": "#f472b6"
+  },
+  "tara_home": {
+   "name": "Tara",
+   "col": "#f472b6"
+  },
+  "nikhil": {
+   "name": "Nikhil Arora",
+   "col": "#94a3b8"
+  },
+  "sushma": {
+   "name": "Sushma Kapoor",
+   "col": "#c084fc"
+  },
+  "vivaan": {
+   "name": "Vivaan Rai",
+   "col": "#f87171"
+  },
+  "dadi": {
+   "name": "Dadi",
+   "col": "#fbbf24"
+  },
+  "sid": {
+   "name": "Sid",
+   "col": "#38bdf8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_kapoor_mansion"
+  },
+  {
+   "n": "Juhu. A white mansion with a gate taller than a bus. A maid leads you past forty framed posters of Tara, all from films she hated."
+  },
+  {
+   "enter": "sushma",
+   "side": "right"
+  },
+  {
+   "s": "sushma",
+   "t": "Sit. Tea? No? Good. Let's not pretend we like each other.",
+   "ex": "cold"
+  },
+  {
+   "s": "sushma",
+   "t": "A fake marriage. How clever. Clause seven. How sweet. Do you know what happens if this leaks? Her career ends. Yours too."
+  },
+  {
+   "s": "sushma",
+   "t": "I won't leak it. On two conditions. You sign my production house as your personal sponsor. And Tara's next three films are mine to choose."
+  },
+  {
+   "th": "Tara's next three films. Her whole life, decided in this room."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"No. Tara chooses her own films.\"",
+     "d": "Stand up for her.",
+     "fx": {
+      "tara": 3,
+      "sushma": -2
+     },
+     "set": "defiedSushma"
+    },
+    {
+     "t": "\"I'll sign the sponsorship. Leave her films alone.\"",
+     "d": "Compromise.",
+     "fx": {
+      "sushma": 1,
+      "tara": 1
+     },
+     "set": "signedSushma"
+    },
+    {
+     "t": "Record this conversation on your phone.",
+     "d": "Insurance.",
+     "set": "recordedSushma"
+    }
+   ]
+  },
+  {
+   "if": "recordedSushma",
+   "go": "rec"
+  },
+  {
+   "if": "defiedSushma",
+   "go": "defy"
+  },
+  {
+   "s": "sushma",
+   "t": "Half a deal. I'll take it. For now."
+  },
+  {
+   "go": "home"
+  },
+  {
+   "label": "rec"
+  },
+  {
+   "n": "Your thumb finds the record button. She keeps talking. Every word."
+  },
+  {
+   "s": "sushma",
+   "t": "Think about it. You're not as clever as my daughter, and she isn't very clever."
+  },
+  {
+   "go": "home"
+  },
+  {
+   "label": "defy"
+  },
+  {
+   "s": "sushma",
+   "t": "Brave. My husband was brave. Look where it got him.",
+   "ex": "cold"
+  },
+  {
+   "label": "home"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_seaface_flat"
+  },
+  {
+   "enter": "tara_home",
+   "side": "right"
+  },
+  {
+   "s": "tara_home",
+   "t": "You met her? ALONE? I made you promise!",
+   "mood": "shout",
+   "ex": "angry"
+  },
+  {
+   "choice": [
+    {
+     "t": "Tell her everything Sushma said.",
+     "d": "No secrets.",
+     "fx": {
+      "tara": 2
+     },
+     "set": "toldTaraMother"
+    },
+    {
+     "t": "\"She just wanted tea.\"",
+     "d": "Protect her from it.",
+     "fx": {
+      "tara": -2
+     }
+    }
+   ]
+  },
+  {
+   "if": "toldTaraMother",
+   "go": "told"
+  },
+  {
+   "go": "cliff"
+  },
+  {
+   "label": "told"
+  },
+  {
+   "s": "tara_home",
+   "t": "...She did that to my father too. Business deals with his name on them. That's why he...",
+   "mood": "soft",
+   "ex": "tearful"
+  },
+  {
+   "label": "cliff"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "phone": "Sid",
+   "msgs": [
+    {
+     "t": "Captain. Series schedule's out."
+    },
+    {
+     "t": "First match Saturday. Mumbai."
+    },
+    {
+     "t": "Board says your wife MUST be in the stands. Kiss-cam and everything. Sorry."
+    }
+   ]
+  },
+  {
+   "end": true,
+   "cliff": "Tara Kapoor has never watched a cricket match. On Saturday she has to watch sixty thousand people watching her."
+  }
+ ]
+}

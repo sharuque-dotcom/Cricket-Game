@@ -13,6 +13,18 @@
         "karan": "Karan"
       },
       "art": "cover_bluecap"
+    },
+    {
+      "id": "b3",
+      "live": false,
+      "genre": "Romance \u00b7 Contract marriage",
+      "blurb": "She's a superstar. You're the national captain. One year, one contract, one rule: don't fall in love.",
+      "rel": {
+        "tara": "Tara",
+        "dadi": "Dadi",
+        "sid": "Sid",
+        "sushma": "Sushma"
+      }
     }
   ],
   "episodes": [
@@ -135,6 +147,102 @@
       "no": 20,
       "file": "episodes/bc20.json",
       "rev": 1
+    },
+    {
+      "id": "bw1",
+      "no": 1,
+      "file": "episodes/bw1.json",
+      "rev": 1
+    },
+    {
+      "id": "bw2",
+      "no": 2,
+      "file": "episodes/bw2.json",
+      "rev": 1
+    },
+    {
+      "id": "bw3",
+      "no": 3,
+      "file": "episodes/bw3.json",
+      "rev": 1
+    },
+    {
+      "id": "bw4",
+      "no": 4,
+      "file": "episodes/bw4.json",
+      "rev": 1
+    },
+    {
+      "id": "bw5",
+      "no": 5,
+      "file": "episodes/bw5.json",
+      "rev": 1
+    },
+    {
+      "id": "bw6",
+      "no": 6,
+      "file": "episodes/bw6.json",
+      "rev": 1
+    },
+    {
+      "id": "bw7",
+      "no": 7,
+      "file": "episodes/bw7.json",
+      "rev": 1
+    },
+    {
+      "id": "bw8",
+      "no": 8,
+      "file": "episodes/bw8.json",
+      "rev": 1
+    },
+    {
+      "id": "bw9",
+      "no": 9,
+      "file": "episodes/bw9.json",
+      "rev": 1
+    },
+    {
+      "id": "bw10",
+      "no": 10,
+      "file": "episodes/bw10.json",
+      "rev": 1
+    },
+    {
+      "id": "bw11",
+      "no": 11,
+      "file": "episodes/bw11.json",
+      "rev": 1
+    },
+    {
+      "id": "bw12",
+      "no": 12,
+      "file": "episodes/bw12.json",
+      "rev": 1
+    },
+    {
+      "id": "bw13",
+      "no": 13,
+      "file": "episodes/bw13.json",
+      "rev": 1
+    },
+    {
+      "id": "bw14",
+      "no": 14,
+      "file": "episodes/bw14.json",
+      "rev": 1
+    },
+    {
+      "id": "bw15",
+      "no": 15,
+      "file": "episodes/bw15.json",
+      "rev": 1
+    },
+    {
+      "id": "bw16",
+      "no": 16,
+      "file": "episodes/bw16.json",
+      "rev": 1
     }
   ],
   "fallback": {
@@ -158,7 +266,19 @@
     "bg_awards_gala": "ev_party",
     "bg_rajgarh_festival": "bg_stall_rebuilt",
     "char_vikrant_blue": "char_vikrant",
-    "char_neha_delhi": "char_neha"
+    "char_neha_delhi": "char_neha",
+    "bg_hotel_suite": "bg_hotel_lobby",
+    "ev_fake_wedding": "ev_party",
+    "bg_palace_wedding": "ev_party",
+    "bg_seaface_flat": "bg_home",
+    "bg_goa_beach": "bg_street_dusk",
+    "bg_kapoor_mansion": "bg_hotel_lobby",
+    "ev_kiss_cam": "bd_stadium_night",
+    "bg_tv_studio": "bg_newsroom",
+    "bg_red_carpet": "ev_party",
+    "bg_film_set": "ev_party",
+    "ev_real_wedding": "ev_party",
+    "char_tara_home": "char_tara"
   },
   "fx": {
     "ev_the_call": "dust",
@@ -178,7 +298,18 @@
     "bg_physio_room": "dust",
     "ev_last_over": "bokeh",
     "bg_awards_gala": "bokeh",
-    "bg_rajgarh_festival": "embers+bokeh"
+    "bg_rajgarh_festival": "embers+bokeh",
+    "bg_hotel_suite": "bokeh",
+    "ev_fake_wedding": "bokeh",
+    "bg_palace_wedding": "bokeh",
+    "bg_seaface_flat": "bokeh",
+    "bg_goa_beach": "bokeh",
+    "bg_kapoor_mansion": "bokeh",
+    "ev_kiss_cam": "bokeh",
+    "bg_tv_studio": "bokeh",
+    "bg_red_carpet": "bokeh",
+    "bg_film_set": "bokeh",
+    "ev_real_wedding": "bokeh"
   },
   "day": [
     "bg_academy_nets",

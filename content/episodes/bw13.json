@@ -1,0 +1,128 @@
+{
+ "id": "bw13",
+ "no": 13,
+ "book": "b3",
+ "title": "Part Three",
+ "art": "bg_press_room",
+ "cast": {
+  "tara": {
+   "name": "Tara Kapoor",
+   "col": "#f472b6"
+  },
+  "tara_home": {
+   "name": "Tara",
+   "col": "#f472b6"
+  },
+  "nikhil": {
+   "name": "Nikhil Arora",
+   "col": "#94a3b8"
+  },
+  "sushma": {
+   "name": "Sushma Kapoor",
+   "col": "#c084fc"
+  },
+  "vivaan": {
+   "name": "Vivaan Rai",
+   "col": "#f87171"
+  },
+  "dadi": {
+   "name": "Dadi",
+   "col": "#fbbf24"
+  },
+  "sid": {
+   "name": "Sid",
+   "col": "#38bdf8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_seaface_flat"
+  },
+  {
+   "n": "Before you can decide, Vivaan releases Part Three. Not a document. A voice note."
+  },
+  {
+   "n": "Your voice. Suite 1104. \"Married in public, strangers in private. Got it.\" Someone recorded the first meeting.",
+   "reveal": true
+  },
+  {
+   "th": "Only three people were in that room. Me. Tara. Nikhil."
+  },
+  {
+   "enter": "nikhil",
+   "side": "right"
+  },
+  {
+   "s": "nikhil",
+   "t": "...Yes. I record every meeting. It's insurance. Sushma bought my archive for forty lakh. I didn't think she'd give it to HIM.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "Fire him on the spot.",
+     "d": "Done.",
+     "set": "firedNikhil",
+     "fx": {
+      "sid": 1
+     }
+    },
+    {
+     "t": "\"You'll fix this. Or I'll tell the press who sold it.\"",
+     "d": "Make him useful.",
+     "set": "nikhilWorks"
+    }
+   ]
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_press_room"
+  },
+  {
+   "n": "Board headquarters. The president, two sponsors on speakerphone, and a lawyer drinking a lot of water."
+  },
+  {
+   "n": "\"Captain. You deceived the public. Resign the captaincy, or we remove you on Monday.\""
+  },
+  {
+   "enter": "sid",
+   "side": "left"
+  },
+  {
+   "s": "sid",
+   "t": "If he goes, I go. And so do nine others. We've signed a letter. It's very badly spelled, but we signed it.",
+   "mood": "shout"
+  },
+  {
+   "fx": {
+    "sid": 2
+   }
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "Your phone. Dadi."
+  },
+  {
+   "phone": "Dadi",
+   "msgs": [
+    {
+     "t": "Puttar. I'm watching TV. They are calling you a liar."
+    },
+    {
+     "t": "You were a liar. For a few weeks. Then you weren't."
+    },
+    {
+     "t": "Go and tell them when it stopped. That part is true."
+    }
+   ]
+  },
+  {
+   "end": true,
+   "cliff": "Monday, you lose the captaincy. Unless you say something on Sunday that nobody expects."
+  }
+ ]
+}

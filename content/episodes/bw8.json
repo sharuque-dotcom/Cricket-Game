@@ -1,0 +1,161 @@
+{
+ "id": "bw8",
+ "no": 8,
+ "book": "b3",
+ "title": "Dadi Moves In",
+ "art": "bg_seaface_flat",
+ "cast": {
+  "tara": {
+   "name": "Tara Kapoor",
+   "col": "#f472b6"
+  },
+  "tara_home": {
+   "name": "Tara",
+   "col": "#f472b6"
+  },
+  "nikhil": {
+   "name": "Nikhil Arora",
+   "col": "#94a3b8"
+  },
+  "sushma": {
+   "name": "Sushma Kapoor",
+   "col": "#c084fc"
+  },
+  "vivaan": {
+   "name": "Vivaan Rai",
+   "col": "#f87171"
+  },
+  "dadi": {
+   "name": "Dadi",
+   "col": "#fbbf24"
+  },
+  "sid": {
+   "name": "Sid",
+   "col": "#38bdf8"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_seaface_flat"
+  },
+  {
+   "n": "The doorbell. 6 AM. Dadi, two suitcases, a pressure cooker and a framed photo of your grandfather."
+  },
+  {
+   "enter": "dadi",
+   "side": "right"
+  },
+  {
+   "s": "dadi",
+   "t": "The TV says your marriage is fake. So I've come to live here for two weeks and find out myself."
+  },
+  {
+   "n": "Tara looks at you. You look at Tara. There are two bedrooms. Dadi gets one."
+  },
+  {
+   "enter": "tara_home",
+   "side": "left"
+  },
+  {
+   "s": "tara_home",
+   "t": "...So we share the other room. It's fine. It's a big bed. There's a wall of pillows. It's fine.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "Night one. A wall of six pillows. Simba the cat sleeps on top of it like a border guard."
+  },
+  {
+   "choice": [
+    {
+     "t": "Talk until 3 AM about everything.",
+     "d": "Like teenagers.",
+     "fx": {
+      "tara": 3
+     },
+     "set": "talkedAllNight"
+    },
+    {
+     "t": "Sleep on the floor.",
+     "d": "Gentleman.",
+     "fx": {
+      "tara": 2
+     }
+    },
+    {
+     "t": "Remove one pillow.",
+     "d": "Just one.",
+     "cost": 15,
+     "fx": {
+      "tara": 4
+     },
+     "set": "pillow"
+    }
+   ]
+  },
+  {
+   "if": "pillow",
+   "go": "pil"
+  },
+  {
+   "go": "morning"
+  },
+  {
+   "label": "pil"
+  },
+  {
+   "n": "She looks at the gap. Then she removes another one. Simba leaves in protest."
+  },
+  {
+   "label": "morning"
+  },
+  {
+   "n": "Morning. Dadi is teaching Tara to make rotis. The first one is shaped like Sri Lanka. Dadi says it's perfect."
+  },
+  {
+   "enter": "dadi",
+   "side": "right"
+  },
+  {
+   "s": "dadi",
+   "t": "Puttar. Come here. Quietly."
+  },
+  {
+   "s": "dadi",
+   "t": "I knew from the first day. A grandmother knows. Your grandfather and I were arranged. We were strangers for two years."
+  },
+  {
+   "s": "dadi",
+   "t": "Fake or real doesn't matter at the start. It matters at the end. And yours isn't fake anymore. Look at her face when you walk in.",
+   "mood": "soft"
+  },
+  {
+   "fx": {
+    "dadi": 2
+   }
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "phone": "Unknown number",
+   "msgs": [
+    {
+     "t": "This is Tara's father. Rajiv Kapoor."
+    },
+    {
+     "t": "Sushma doesn't know I have a phone. My nurse lent me hers."
+    },
+    {
+     "t": "My wife sold the page to Vivaan. I can prove it. Come to the hospital."
+    }
+   ]
+  },
+  {
+   "end": true,
+   "cliff": "Tara's father can barely speak since his stroke. But he knows who betrayed his daughter."
+  }
+ ]
+}
