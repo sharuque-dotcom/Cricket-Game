@@ -39,6 +39,8 @@ public class MainActivity extends Activity {
     private WebView web;
     private RewardedAd rewarded;
     private boolean adLoading = false;
+    // true while a rewarded ad is on screen (see onPause)
+    private boolean adOpen = false;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -117,8 +119,12 @@ public class MainActivity extends Activity {
     protected void onPause() {
         super.onPause();
         web.evaluateJavascript("window.GG && GG.onPause && GG.onPause()", null);
-        web.onPause();
-        web.pauseTimers();
+        // pauseTimers() freezes EVERY WebView in the app, including the one AdMob plays the ad in:
+        // the ad turns black and never reports the reward. Leave timers running while an ad is up.
+        if (!adOpen) {
+            web.onPause();
+            web.pauseTimers();
+        }
     }
 
     @Override
@@ -227,17 +233,21 @@ public class MainActivity extends Activity {
         final boolean[] done = { false };
         RewardedAd ad = rewarded;
         rewarded = null;
+        adOpen = true;
+        web.resumeTimers(); // in case they were paused earlier
         ad.setFullScreenContentCallback(new FullScreenContentCallback() {
             @Override public void onAdShowedFullScreenContent() {
                 callJs("window.GG && GG.adShown && GG.adShown(" + JSONObject.quote(placement) + ")");
             }
             @Override public void onAdDismissedFullScreenContent() {
+                adOpen = false;
                 main.postDelayed(() -> {
                     if (!done[0]) { done[0] = true; sendAdResult(placement, earned[0] ? "rewarded" : "skipped"); }
                 }, 1500);
                 loadRewarded();
             }
             @Override public void onAdFailedToShowFullScreenContent(AdError e) {
+                adOpen = false;
                 if (!done[0]) { done[0] = true; sendAdResult(placement, "unavailable"); }
                 loadRewarded();
             }
