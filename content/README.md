@@ -66,7 +66,7 @@ To launch a book, put its episodes on the server with `"book": "bluecap"` in eac
 ## New pictures (manifest.json)
 
 ```json
-"art":      { "bg_blue_cap": "img/bg_blue_cap.jpg" },
+"art":      { "bg_blue_cap": "img/bg_blue_cap.webp" },
 "chars":    { "kabir": "img/char_kabir.webp" },
 "fallback": { "bg_blue_cap": "ch6" },
 "fx":       { "bg_blue_cap": "dust" },

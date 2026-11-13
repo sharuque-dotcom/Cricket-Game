@@ -11,7 +11,7 @@ Android interactive-story cricket game ("Choices for cricket"). Career Mode was 
   - `js/content.js` live episodes: downloads `content/manifest.json` + episode JSON from the repo's default branch (raw.githubusercontent `HEAD`, jsDelivr fallback), validates, cleans `<>`, caches in localStorage. New episodes = no Play release (see `content/README.md`). Conditions in JSON use `storyCond` strings/objects, not functions.
   - Look: `css/bright.css` (light, vivid theme) loads after `css/style.css` and overrides it. Home = hero card + "All stories" shelf + short chapter list; book page = compact cover + chapter rows. UI says "Chapter", code/data still say episode. Story cricket moments use one-button `simple` batting (HIT glows green in the timing window). First chapter shows the How to play sheet once (`st.seenHowTo`).
   - `js/fx.js` art loader (`ART_NAMES`, character list), particles, `Ads`, `Notify`.
-  - `img/` backgrounds `.jpg`, characters/expressions/sprites `char_*.webp` (green-screen keyed).
+  - `img/` backgrounds `.webp` (converted in 1.5.0; add new ones as WebP too), characters/expressions/sprites `char_*.webp` (green-screen keyed).
 - `docs/ART_PROMPTS*.md` image prompt packs; `store/` Play listing kit, screenshots, privacy policy.
 
 ## Build
@@ -25,4 +25,4 @@ Android interactive-story cricket game ("Choices for cricket"). Career Mode was 
 Playwright + Chromium are preinstalled: load `file://.../assets/game/index.html`, drive via `Story.*`, `GG._dev.{Game,Match,Moments}`. Check every episode's labels/backgrounds still resolve after story edits. For server episodes run `node tools/check-content.js`; test against a local server by setting `localStorage.gg_content_base` (needs `Access-Control-Allow-Origin: *`).
 
 ## Next ideas
-Episode 13+ / Book 2 "The Blue Cap"; convert background JPGs to WebP (~2 MB saving); real gem packs via Play Billing (then lower `AD_CAP`); TV-style replays, swipe-to-aim, Hinglish commentary.
+Episode 13+ / Book 2 "The Blue Cap"; real gem packs via Play Billing (then lower `AD_CAP`); TV-style replays, swipe-to-aim, Hinglish commentary.

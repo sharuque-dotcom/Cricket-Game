@@ -116,7 +116,7 @@ const Burst = (() => {
 })();
 
 // ---------- Optional painted art ----------
-// Drop images into game/img/ with these names (jpg). Missing ones fall back to the procedural look.
+// Drop images into game/img/ with these names (webp). Missing ones fall back to the procedural look.
 const ART_NAMES = ['title', 'intro', 'ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'bd_maidan', 'bd_stadium_day', 'bd_stadium_night',
   'ev_stall', 'ev_pandey', 'ev_rival', 'ev_bribe', 'ev_maa', 'ev_bookie', 'ev_party', 'ev_call', 'end_glory', 'end_stall',
   'bg_home', 'bg_street_dusk', 'bg_club_match', 'bg_clubhouse_wall', 'bg_mandi_night', 'cover_fixer', 'cover_bollywood',
@@ -128,7 +128,7 @@ const Art = {
       const im = new Image();
       im.onload = () => { this.imgs[n] = im; res(); };
       im.onerror = () => res();
-      im.src = 'img/' + n + '.jpg';
+      im.src = 'img/' + n + '.webp';
     })).concat(['papa', 'pinky', 'pandey', 'vikrant', 'neha', 'safari', 'ramesh', 'goon',
       'papa_angry', 'papa_sad', 'neha_happy', 'neha_serious', 'neha_worried', 'vikrant_angry', 'pandey_proud',
       'chauhan', 'selector', 'maa', 'sunny', 'rocky', 'tara', 'rathore',
@@ -137,7 +137,7 @@ const Art = {
     }))));
   },
   has(n) { return !!this.imgs[n]; },
-  url(n) { return this.imgs[n] ? this.imgs[n].getAttribute('src') : 'img/' + n + '.jpg'; },
+  url(n) { return this.imgs[n] ? this.imgs[n].getAttribute('src') : 'img/' + n + '.webp'; },
   // new scenes borrow the closest existing painting until their own art is added
   applyFallbacks() { const F = typeof BG_FALLBACK !== 'undefined' ? BG_FALLBACK : {}; for (const k in F) if (!this.imgs[k] && this.imgs[F[k]]) this.imgs[k] = this.imgs[F[k]]; },
   // full-bleed background layer with slow Ken Burns drift
@@ -221,7 +221,7 @@ const SceneFX = (() => {
     scan(root) {
       $$('.art-bg, .art-photo', root).forEach(bg => {
         if (bg.dataset.fxDone) return; bg.dataset.fxDone = 1;
-        const m = (bg.style.backgroundImage.match(/img\/([a-z0-9_]+)\.jpg/) || [])[1];
+        const m = (bg.style.backgroundImage.match(/img\/([a-z0-9_]+)\.webp/) || [])[1];
         const mode = FX_FOR_ART[m] || 'dust';
         const anchor = bg.nextElementSibling && bg.nextElementSibling.classList.contains('art-shade') ? bg.nextElementSibling : bg;
         anchor.insertAdjacentHTML('afterend', SceneFX.canvas(mode) + SceneFX.rays(m));
