@@ -65,11 +65,13 @@ const Story = {
   fill(t) { return t.replace(/\{first\}/g, esc((this.st.name || 'Beta').split(' ')[0])); },
 
   // ---------- HUD ----------
-  hudHtml(title) {
-    return `<div class="st-hud">
-      <button class="st-iconbtn" data-menu aria-label="Menu"><span></span><span></span><span></span></button>
-      <div class="st-title">${title || ''}</div>
-      <div class="row" style="gap:6px"><button class="cur-pill" data-store data-gems>${GEM_SVG}<b>${this.st.diamonds}</b></button><button class="cur-pill" data-store data-keys>${KEY_SVG}<b>${this.st.keys}</b></button></div>
+  // light: the bar on white pages (home, book). Dark-art scenes use the floating version.
+  hudHtml(title, light) {
+    return `<div class="st-hud ${light ? 'light' : ''}">
+      ${light === 'home' ? `<div class="brand"><span class="brand-ball"></span><b>Gully <i>to</i> Glory</b></div>`
+        : `<button class="st-iconbtn ${light ? 'back' : ''}" data-menu aria-label="${light ? 'Back' : 'Menu'}">${light ? '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '<span></span><span></span><span></span>'}</button>
+      <div class="st-title">${title || ''}</div>`}
+      <div class="row" style="gap:6px"><button class="cur-pill" data-store data-gems>${GEM_SVG}<b>${this.st.diamonds}</b></button><button class="cur-pill" data-store data-keys>${KEY_SVG}<b>${this.st.keys}</b></button>${light === 'home' ? '<button class="st-iconbtn dots" data-settings aria-label="Settings"><i></i><i></i><i></i></button>' : ''}</div>
     </div>`;
   },
   bumpCur() {
@@ -79,74 +81,175 @@ const Story = {
   },
   bindHud(el, where) {
     $$('[data-store]', el).forEach(b => b.onclick = (e) => { e.stopPropagation(); this.store(); });
-    $('[data-menu]', el).onclick = (e) => { e.stopPropagation(); where === true ? this.pauseMenu() : where === 'book' ? (Sfx.select(), this.library()) : titleScreen(); };
+    const m = $('[data-menu]', el);
+    if (m) m.onclick = (e) => { e.stopPropagation(); where === true ? this.pauseMenu() : (Sfx.select(), this.home()); };
+    const st = $('[data-settings]', el);
+    if (st) st.onclick = (e) => { e.stopPropagation(); this.settings(); };
+  },
+  // Android back button. Returns true when it handled the press.
+  back() {
+    const cur = UI.cur;
+    if (!cur || !this.st) return false;
+    if (cur.classList.contains('story-scene')) { this.pauseMenu(); return true; }
+    if (cur.classList.contains('book-page') || cur.classList.contains('ep-end')) { Sfx.select(); this.home(); return true; }
+    return false;
   },
 
-  // ---------- Book / episode list ----------
+  // ---------- Open ----------
   open() {
     this.load();
     Content.refresh().then(Content.announce);
     if (!this.st.name) return this.askName();
-    this.library();
+    this.home();
   },
+  library() { this.home(); }, // old name, still used by the content refresher
 
-  // ---------- Library: every book, pick what interests you ----------
-  library() {
+  // where a book stands: the chapter to play next and whether there's a saved place in it
+  nextOf(b) {
+    const i = this.bookInfo(b), p = this.st.books[b.id] || { done: {} };
+    const cur = p.cur && i.eps.find(e => e.id === p.cur.ep);
+    const nextIdx = i.eps.findIndex(e => !p.done[e.id]);
+    return { info: i, cur, nextIdx, next: cur || i.eps[nextIdx] || null };
+  },
+  badge(b) {
+    const i = this.bookInfo(b);
+    return !i.playable ? '<span class="bdg soon">Coming soon</span>'
+      : i.locked ? '<span class="bdg lock">🔒 Book 2</span>'
+      : i.finished ? '<span class="bdg done">✓ Finished</span>'
+      : i.started ? `<span class="bdg prog">${i.done}/${i.eps.length}</span>`
+      : '<span class="bdg new">New</span>';
+  },
+  coverStyle(art) { return Art.has(art) ? `background-image:url('${Art.url(art)}')` : ''; },
+
+  // ---------- Home: hero, all stories, chapter list ----------
+  home() {
     const s = this.st;
     // forget a saved place in an episode the server has withdrawn
     for (const id in s.books) { const c = s.books[id].cur; if (c && !EPISODES.some(e => e.id === c.ep)) s.books[id].cur = null; }
     this.refillKeys(); this.save();
-    const last = this.bookDef(s.book), lastInfo = last && this.bookInfo(last);
-    const cont = last && lastInfo.playable && !lastInfo.locked && lastInfo.started && !lastInfo.finished ? last : null;
-    const card = (b) => {
-      const i = this.bookInfo(b);
-      const tag = !i.playable ? '<span class="lb-tag soon">Coming soon</span>'
-        : i.locked ? `<span class="lb-tag lock">🔒 Finish ${esc((this.bookDef(b.after) || {}).title || 'the last book')} first</span>`
-        : i.finished ? '<span class="lb-tag done">✓ Completed</span>'
-        : i.started ? `<span class="lb-tag prog">Episode ${Math.min(i.done + 1, i.eps.length)} of ${i.eps.length}</span>`
-        : `<span class="lb-tag new">New · ${i.eps.length} episode${i.eps.length === 1 ? '' : 's'}</span>`;
-      const open = i.playable && !i.locked;
-      return `<button class="lib-book ${open ? '' : 'shut'} ${i.finished ? 'fin' : ''}" data-book-id="${esc(b.id)}">
-        ${Art.has(b.art) ? `<div class="lb-art" style="background-image:url('${Art.url(b.art)}')"></div>` : ''}<div class="lb-shade"></div>
-        <div class="lb-txt">${tag}<div class="tiny lb-genre">${esc(b.genre || '')}</div><div class="display lb-title">${esc(b.title)}</div><div class="small lb-blurb">${esc(b.blurb || '')}</div>
-        ${open && i.eps.length ? `<div class="lb-bar"><i style="width:${Math.round(i.done / i.eps.length * 100)}%"></i></div>` : ''}</div></button>`;
-    };
     const order = BOOKS.slice().sort((a, b) => this.bookRank(a) - this.bookRank(b));
-    const el = UI.show(`<div class="screen story-book library">
-      ${this.hudHtml('Library')}
-      <div class="scroll pad" style="padding-bottom:28px">
-        <div class="display" style="font-size:40px;margin:2px 0 2px">Hi ${esc((s.name || '').split(' ')[0])}, pick a story</div>
-        <div class="small muted" style="margin-bottom:14px">Every choice you make stays with that story.</div>
-        ${cont ? `<button class="btn primary block lib-cont" data-cont>Continue · ${esc(cont.title)}<span class="tiny" style="color:#1a0c00;margin-left:6px">Ep ${Math.min(lastInfo.done + 1, lastInfo.eps.length)}</span></button>` : ''}
-        <div class="lib-grid stagger">${order.map(card).join('')}</div>
+    const open = b => { const i = this.bookInfo(b); return i.playable && !i.locked && !i.finished; };
+    // hero = the book you were reading, else the first one you can open
+    const last = this.bookDef(s.book);
+    const hero = (last && open(last) ? last : order.find(open)) || order[0];
+    const H = this.nextOf(hero), HI = H.info;
+    const pct = HI.eps.length ? Math.round(HI.done / HI.eps.length * 100) : 0;
+    const newbie = !Object.values(s.books).some(p => Object.keys(p.done || {}).length);
+    const heroBtn = !HI.playable || HI.locked ? '' : H.cur ? `▶ Continue Chapter ${H.cur.no}` : H.next ? `▶ ${HI.started ? 'Play' : 'Start'} Chapter ${H.next.no} <span class="cost-tag">${KEY_SVG}1</span>` : '';
+    const shelf = order.map(b => `<button class="shelf-card ${this.bookInfo(b).playable && !this.bookInfo(b).locked ? '' : 'shut'}" data-book-id="${esc(b.id)}">
+        <div class="sc-cover" style="${this.coverStyle(b.art)}">${this.badge(b)}</div>
+        <b>${esc(b.title)}</b><span>${esc((b.genre || '').split('·')[0].trim())}</span></button>`).join('');
+    // a short window of the hero book's chapters, around the next one
+    const E = HI.eps, from = Math.max(0, Math.min((H.nextIdx < 0 ? E.length : H.nextIdx) - 1, E.length - 4));
+    const rows = E.slice(from, from + 4).map((e, k) => this.chapterRow(hero, e, from + k)).join('');
+    const el = UI.show(`<div class="screen story-home home">
+      ${this.hudHtml('', 'home')}
+      <div class="scroll home-body">
+        <div class="hello">Hi ${esc((s.name || '').split(' ')[0])} <span class="wave">👋</span></div>
+        <div class="hello-sub">${newbie ? 'Your story starts here. You make every choice.' : 'Pick up where you left off.'}</div>
+        ${newbie ? `<button class="howto-chip" data-howto><span>?</span> New here? See how to play</button>` : ''}
+        <div class="hero" data-hero="${esc(hero.id)}">
+          <div class="hero-art" style="${this.coverStyle(hero.art)}"><div class="hero-fade"></div>${this.badge(hero)}</div>
+          <div class="hero-body">
+            <div class="hero-genre">${esc(hero.genre || '')}</div>
+            <div class="hero-title">${esc(hero.title)}</div>
+            ${H.next && HI.playable && !HI.locked ? `<div class="hero-next">Chapter ${H.next.no} · ${esc(H.next.title)}</div>` : `<div class="hero-next">${esc(hero.blurb || '')}</div>`}
+            ${HI.playable && HI.started ? `<div class="pbar"><i style="width:${pct}%"></i></div><div class="pbar-l">${HI.done} of ${HI.eps.length} chapters read</div>` : ''}
+            ${heroBtn ? `<button class="btn primary block hero-btn" data-play>${heroBtn}</button>` : ''}
+          </div>
+        </div>
+        <div class="sec-head"><h3>All stories</h3><span>${BOOKS.length} books</span></div>
+        <div class="shelf">${shelf}</div>
+        ${E.length && HI.playable && !HI.locked ? `<div class="sec-head"><h3>Chapters</h3><button data-see>See all ${E.length} ›</button></div>
+        <div class="ch-list">${rows}</div>` : ''}
+        <div class="key-note">${s.keys < KEY_MAX ? `${KEY_SVG} Next free key in ${this.nextKeyIn()}` : `${KEY_SVG} Keys full. Each new chapter uses 1 key.`}</div>
       </div></div>`);
-    this.bindHud(el, 'library');
-    if (cont) $('[data-cont]', el).onclick = () => { Sfx.select(); this.openBook(cont.id); };
-    $$('[data-book-id]', el).forEach(btn => btn.onclick = () => {
-      const b = this.bookDef(btn.dataset.bookId), i = this.bookInfo(b);
-      if (!i.playable) return this.askNotify(true);
-      if (i.locked) { Sfx.fail(); toast(`Finish ${(this.bookDef(b.after) || {}).title || 'the last book'} first. ${b.title} picks up where it ends.`); return; }
-      Sfx.select(); this.openBook(b.id);
-    });
+    this.bindHud(el, 'home');
+    const hb = $('[data-play]', el);
+    if (hb) hb.onclick = (e) => { e.stopPropagation(); Sfx.select(); this.st.book = hero.id; this.bk(); this.save(); H.cur ? this.resume() : this.tryStart(H.nextIdx); };
+    $('[data-hero]', el).onclick = () => this.pickBook(hero.id);
+    const see = $('[data-see]', el); if (see) see.onclick = () => this.pickBook(hero.id);
+    const how = $('[data-howto]', el); if (how) how.onclick = () => this.howTo();
+    $$('[data-book-id]', el).forEach(btn => btn.onclick = () => this.pickBook(btn.dataset.bookId));
+    this.bindRows(el, hero);
+  },
+  pickBook(id) {
+    const b = this.bookDef(id), i = this.bookInfo(b);
+    if (!i.playable) return this.askNotify(true);
+    if (i.locked) { Sfx.fail(); toast(`Finish ${(this.bookDef(b.after) || {}).title || 'the last book'} first. ${b.title} picks up where it ends.`); return; }
+    Sfx.select(); this.openBook(b.id);
   },
   // in progress first, then new, finished, locked sequels, coming soon
   bookRank(b) { const i = this.bookInfo(b); return (!i.playable ? 40 : i.locked ? 30 : i.finished ? 20 : i.started ? 0 : 10) + BOOKS.indexOf(b) / 100; },
   openBook(id) { this.st.book = id; this.bk(); this.save(); this.bookScreen(); },
 
+  // one compact line per chapter
+  chapterRow(b, e, i) {
+    const p = this.st.books[b.id] || { done: {} }, E = this.eps(b.id);
+    const nextIdx = E.findIndex(x => !p.done[x.id]);
+    const done = p.done[e.id], next = i === nextIdx, locked = nextIdx !== -1 && i > nextIdx;
+    const here = p.cur && p.cur.ep === e.id;
+    return `<button class="ch-row ${done ? 'done' : ''} ${next ? 'next' : ''} ${locked ? 'locked' : ''}" data-ep="${i}" data-b="${esc(b.id)}" ${locked ? 'disabled' : ''}>
+      <span class="ch-no" style="${this.coverStyle(e.art)}"><em>${e.no}</em></span>
+      <span class="ch-t"><b>${esc(e.title)}</b><small>${here ? 'In progress' : done ? 'Read · tap to replay' : next ? 'Up next' : `Chapter ${e.no}`}</small></span>
+      <span class="ch-cta">${done ? '<i class="tick">✓</i>' : locked ? '<i class="lk">🔒</i>' : here ? '<span class="go">▶</span>' : `<span class="cost-tag">${KEY_SVG}1</span>`}</span></button>`;
+  },
+  bindRows(el, b) {
+    $$('.ch-row[data-ep]', el).forEach(btn => btn.onclick = () => {
+      this.st.book = btn.dataset.b; this.bk(); this.save();
+      const i = +btn.dataset.ep, c = this.st.cur;
+      if (c && c.ep === this.eps()[i].id) { Sfx.select(); return this.resume(); }
+      this.tryStart(i);
+    });
+  },
+
+  settings() {
+    openSheet(`<div class="pad"><div class="sheet-title">Settings</div>
+      <button class="btn ghost block" style="margin-top:14px" data-howto>❓ How to play</button>
+      <button class="btn ghost block" style="margin-top:8px" data-snd>${Sfx.muted ? '🔇 Sound off' : '🔊 Sound on'}</button>
+      <button class="btn ghost block" style="margin-top:8px" data-bell>${Notify.granted() ? '🔔 Notifications on' : '🔔 Turn on notifications'}</button>
+      <div class="tiny" style="margin-top:14px;text-align:center">Playing as ${esc(this.st.name || '')}</div></div>`, sh => {
+      $('[data-howto]', sh).onclick = () => { closeSheet(); setTimeout(() => this.howTo(), 300); };
+      $('[data-snd]', sh).onclick = (e) => { Sfx.setMuted(!Sfx.muted); try { localStorage.setItem('gg_muted', Sfx.muted ? '1' : ''); } catch (er) {} e.target.textContent = Sfx.muted ? '🔇 Sound off' : '🔊 Sound on'; };
+      $('[data-bell]', sh).onclick = () => { closeSheet(); setTimeout(() => this.askNotify(true), 300); };
+    });
+  },
+
+  // Four plain steps. Shown once before the first chapter and any time from Settings / the pause menu.
+  howTo(done) {
+    const steps = [
+      ['👆', 'Tap to read on', 'Tap anywhere on the screen to see the next line. That\'s it.'],
+      ['🤔', 'Make choices', 'When buttons appear, pick one. Your choices change the story and how people feel about you.'],
+      [GEM_SVG, 'Diamond choices', `Choices with a ${GEM_SVG} cost diamonds. You earn diamonds by finishing chapters. Free choices are always there too.`],
+      ['🏏', 'Cricket moments', 'Sometimes you bat. Tap the big <b>HIT</b> button when it turns green.'],
+      [KEY_SVG, 'Keys', 'Each new chapter uses 1 key. Keys refill for free every 3 hours. Replays are free.'],
+    ];
+    openSheet(`<div class="pad howto">
+      <div class="sheet-title">How to play</div>
+      ${steps.map(([ic, t, d], k) => `<div class="ht-step" style="animation-delay:${.05 + k * .07}s"><div class="ht-ic">${ic}</div><div><b>${t}</b><p>${d}</p></div></div>`).join('')}
+      <button class="btn primary block" style="margin-top:16px" data-ok>Got it</button></div>`, sh => {
+      $('[data-ok]', sh).onclick = () => { closeSheet(); done && setTimeout(done, 350); };
+    });
+    if (!this.st.seenHowTo) { this.st.seenHowTo = true; this.save(); }
+  },
+
   askName() {
-    const el = UI.show(`<div class="screen story-book">${Art.bg('title')}<div class="art-shade" style="background:linear-gradient(180deg,rgba(11,10,18,.3),rgba(11,10,18,.95) 70%)"></div>
-      <div class="scroll pad" style="display:flex;flex-direction:column;justify-content:flex-end">
-        <div class="tiny" style="color:var(--gold)">Story Mode</div>
-        <div class="display" style="font-size:52px;margin:4px 0 6px">What do they<br>call you?</div>
-        <div class="muted small">Your choices write the story. Some of them cost more than others.</div>
-        <input class="field" style="margin-top:18px" maxlength="20" placeholder="Your name" data-name>
-        <button class="btn primary block" style="margin:14px 0 24px" data-go>Begin</button>
+    const el = UI.show(`<div class="screen story-home name-page">
+      <div class="np-art" style="${this.coverStyle('title')}"><div class="hero-fade"></div></div>
+      <div class="scroll pad np-body">
+        <div class="brand big"><span class="brand-ball"></span><b>Gully <i>to</i> Glory</b></div>
+        <div class="np-h">What should we<br>call you?</div>
+        <div class="np-sub">You're the hero. Every choice you make writes the story.</div>
+        <input class="field" maxlength="20" placeholder="Your name" data-name>
+        <button class="btn primary block" style="margin:14px 0 24px" data-go>Let's go</button>
       </div></div>`);
-    $('[data-go]', el).onclick = () => {
+    const go = () => {
       const n = ($('[data-name]', el).value || '').trim();
-      if (n.length < 2) { toast('Every legend needs a name.'); return; }
-      this.st.name = n.replace(/\b\w/g, c => c.toUpperCase()); this.save(); Sfx.select(); this.library();
+      if (n.length < 2) { toast('Type your name first (2 letters or more).'); return; }
+      this.st.name = n.replace(/\b\w/g, c => c.toUpperCase()); this.save(); Sfx.select(); this.home();
     };
+    $('[data-go]', el).onclick = go;
+    $('[data-name]', el).addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
   },
 
   bookScreen() {
@@ -155,37 +258,36 @@ const Story = {
     const b = this.book(), EPS = this.eps(), T = this.teaser(b), RK = this.relKeys();
     if (s.cur && !EPS.some(e => e.id === s.cur.ep)) { s.cur = null; this.save(); } // episode was withdrawn from the server
     const nextIdx = EPS.findIndex(e => !s.done[e.id]);
-    const el = UI.show(`<div class="screen story-book">
-      ${this.hudHtml('Story Mode')}
-      <div class="scroll" style="padding-bottom:24px">
-        <div class="book-cover">${Art.bg(b.art)}<div class="art-shade" style="background:linear-gradient(180deg,rgba(11,10,18,0) 30%,rgba(11,10,18,.96))"></div>
-          <div class="bc-txt"><div class="tiny" style="color:var(--gold)">${esc(b.genre || '')}</div><div class="display" style="font-size:56px">${esc(b.title)}</div><div class="small" style="color:#e4dbe9;margin-top:4px">${esc(b.blurb || '')}</div>
-          <div class="rel-row-wrap">${Object.entries(RK).filter(([k]) => CAST[k]).map(([k, l]) => `<span class="rel-chip" style="--c:${CAST[k].col}">${l} ${relHearts(s.rel[k])}</span>`).join('')}</div></div>
-        </div>
-        <div class="pad" style="padding-top:6px">
-          ${s.cur ? `<button class="btn primary block" data-resume>Resume · Episode ${EPS.find(e => e.id === s.cur.ep).no}</button>` : ''}
-          <div class="ep-list stagger">${EPS.map((e, i) => {
-            const done = s.done[e.id], next = i === nextIdx, locked = i > nextIdx && nextIdx !== -1;
-            return `<button class="ep-row ${done ? 'done' : ''} ${next ? 'next' : ''} ${locked ? 'locked' : ''}" data-ep="${i}" ${locked ? 'disabled' : ''}>
-              <div class="ep-thumb" style="${Art.has(e.art) ? `background-image:url('${Art.url(e.art)}')` : ''}"><span>${e.no}</span></div>
-              <div class="grow" style="text-align:left"><div class="tiny">Episode ${e.no}</div><b class="cond" style="font-size:18px">${e.title}</b></div>
-              <div class="ep-cta">${done ? '<span class="tiny">Replay</span>' : locked ? '🔒' : `<span class="cost-tag">${KEY_SVG}1</span>`}</div></button>`;
-          }).join('')}
-            ${T ? `<div class="ep-row locked soon"><div class="ep-thumb" style="background-image:url('${Art.has(T.art) ? Art.url(T.art) : ''}')"><span>${esc(String(T.no || ''))}</span></div><div class="grow" style="text-align:left"><div class="tiny" style="color:var(--saffron)">${esc(T.note || 'Coming soon')}</div><b class="cond" style="font-size:18px">${esc(T.title || '')}</b></div><div class="ep-cta">${Notify.granted() ? '✅' : '🔔'}</div></div>` : ''}
+    const curEp = s.cur && EPS.find(e => e.id === s.cur.ep);
+    const doneN = EPS.filter(e => s.done[e.id]).length;
+    const main = curEp ? `▶ Continue Chapter ${curEp.no}` : nextIdx >= 0 ? `▶ ${doneN ? 'Play' : 'Start'} Chapter ${EPS[nextIdx].no} <span class="cost-tag">${KEY_SVG}1</span>` : '';
+    const rels = Object.entries(RK).filter(([k]) => CAST[k]);
+    const el = UI.show(`<div class="screen story-home book-page">
+      ${this.hudHtml(esc(b.title), true)}
+      <div class="scroll" style="padding-bottom:28px">
+        <div class="bp-cover" style="${this.coverStyle(b.art)}"><div class="hero-fade"></div></div>
+        <div class="pad bp-body">
+          <div class="hero-genre">${esc(b.genre || '')}</div>
+          <div class="hero-title">${esc(b.title)}</div>
+          <div class="bp-blurb">${esc(b.blurb || '')}</div>
+          ${rels.length && doneN ? `<div class="rel-strip">${rels.map(([k, l]) => `<span class="rel-chip" style="--c:${CAST[k].col}">${l} ${relHearts(s.rel[k])}</span>`).join('')}</div>` : ''}
+          ${main ? `<button class="btn primary block" style="margin-top:14px" data-main>${main}</button>` : `<div class="all-read">✓ You've read every chapter. Tap one to replay it and try other choices.</div>`}
+          <div class="sec-head"><h3>Chapters</h3><span>${doneN} of ${EPS.length} read</span></div>
+          <div class="ch-list">${EPS.map((e, i) => this.chapterRow(b, e, i)).join('')}
+            ${T ? `<button class="ch-row soon" data-soon><span class="ch-no" style="${Art.has(T.art) ? this.coverStyle(T.art) : ''}"><em>${esc(String(T.no || ''))}</em></span><span class="ch-t"><b>${esc(T.title || '')}</b><small>${esc(T.note || 'Coming soon')}</small></span><span class="ch-cta"><i class="lk">${Notify.granted() ? '✅' : '🔔'}</i></span></button>` : ''}
           </div>
-          <div class="tiny" style="margin:16px 2px 8px">${s.keys < KEY_MAX ? `Next key in ${this.nextKeyIn()}` : 'Keys full'}</div>
-          <button class="btn ghost block" style="margin-top:14px" data-lib>All stories</button>
+          <div class="key-note">${s.keys < KEY_MAX ? `${KEY_SVG} Next free key in ${this.nextKeyIn()}` : `${KEY_SVG} Keys full`}</div>
         </div>
       </div></div>`);
     this.bindHud(el, 'book');
-    $$('[data-ep]', el).forEach(btn => btn.onclick = () => this.tryStart(+btn.dataset.ep));
-    if (s.cur) $('[data-resume]', el).onclick = () => { Sfx.select(); this.resume(); };
-    const soon = $('.ep-row.soon', el); if (soon) soon.onclick = () => this.askNotify(true);
-    $('[data-lib]', el).onclick = () => { Sfx.select(); this.library(); };
+    this.bindRows(el, b);
+    const m = $('[data-main]', el);
+    if (m) m.onclick = () => { Sfx.select(); curEp ? this.resume() : this.tryStart(nextIdx); };
+    const soon = $('[data-soon]', el); if (soon) soon.onclick = () => this.askNotify(true);
   },
-
   tryStart(i) {
     const e = this.eps()[i], s = this.st;
+    if (!s.seenHowTo) return this.howTo(() => this.tryStart(i));
     if (s.done[e.id]) { Sfx.select(); return this.startEpisode(i, true); }
     this.refillKeys();
     if (s.keys < 1) return this.noKeys();
@@ -196,7 +298,7 @@ const Story = {
   noKeys() {
     openSheet(`<div class="pad" style="text-align:center">
       <div class="big-ico">${KEY_SVG}</div>
-      <div class="display" style="font-size:36px">Out of keys</div>
+      <div class="sheet-title">Out of keys</div>
       <div class="muted small" style="margin-top:6px">Next free key in <b class="gold">${this.nextKeyIn()}</b></div>
       <button class="btn primary block" style="margin-top:16px" data-ad ${this.adsLeft('key') > 0 ? '' : 'disabled'}>▶ Watch an ad · +1 key</button>
       <div class="tiny" style="margin-top:6px">${this.adsLeft('key') > 0 ? `${this.adsLeft('key')} ad keys left today` : 'Ad keys used up for today'}</div>
@@ -213,11 +315,11 @@ const Story = {
   store() {
     const gemsLeft = Math.max(0, this.adsLeft('gems')), keysLeft = Math.max(0, this.adsLeft('key'));
     openSheet(`<div class="pad">
-      <div class="row between"><div class="display" style="font-size:34px">Free rewards</div><div class="row" style="gap:6px"><span class="cur-pill">${GEM_SVG}<b>${this.st.diamonds}</b></span><span class="cur-pill">${KEY_SVG}<b>${this.st.keys}</b></span></div></div>
+      <div class="row between"><div class="sheet-title">Free rewards</div><div class="row" style="gap:6px"><span class="cur-pill">${GEM_SVG}<b>${this.st.diamonds}</b></span><span class="cur-pill">${KEY_SVG}<b>${this.st.keys}</b></span></div></div>
       <div class="small muted" style="margin-top:4px">Watch a short video to earn rewards. Limits reset every day.</div>
       <button class="btn primary block" style="margin-top:14px" data-ad="gems" ${gemsLeft ? '' : 'disabled'}>▶ +5 diamonds <span class="tiny" style="margin-left:6px;color:#1a0c00">${gemsLeft} left today</span></button>
       <button class="btn ghost block" style="margin-top:8px" data-ad="key" ${keysLeft ? '' : 'disabled'}>▶ +1 key <span class="tiny" style="margin-left:6px">${keysLeft} left today</span></button>
-      <div class="small muted" style="text-align:center;margin-top:14px">Free key every 3 hours · +2 diamonds for every new episode</div></div>`, sh => {
+      <div class="small muted" style="text-align:center;margin-top:14px">Free key every 3 hours · +2 diamonds for every new chapter</div></div>`, sh => {
       $$('[data-ad]', sh).forEach(btn => btn.onclick = async (e) => {
         const kind = btn.dataset.ad;
         const ok = await this.watchAd(kind, e.currentTarget, () => {
@@ -258,10 +360,15 @@ const Story = {
   },
 
   pauseMenu() {
-    openSheet(`<div class="pad"><div class="display" style="font-size:32px">Paused</div>
-      <button class="btn ghost block" style="margin-top:14px" data-book>Back to episodes</button>
-      <button class="btn ghost block" style="margin-top:8px" data-snd>${Sfx.muted ? '🔇 Sound off' : '🔊 Sound on'}</button>
-      <div class="tiny" style="margin-top:12px;text-align:center">Your place in the episode is saved</div></div>`, sh => {
+    openSheet(`<div class="pad"><div class="sheet-title">Paused</div>
+      <button class="btn primary block" style="margin-top:14px" data-go>▶ Keep reading</button>
+      <button class="btn ghost block" style="margin-top:8px" data-book>All chapters</button>
+      <button class="btn ghost block" style="margin-top:8px" data-home>Home</button>
+      <div class="row" style="gap:8px;margin-top:8px"><button class="btn ghost grow" data-how>❓ How to play</button><button class="btn ghost grow" data-snd>${Sfx.muted ? '🔇 Sound off' : '🔊 Sound on'}</button></div>
+      <div class="tiny" style="margin-top:12px;text-align:center">Your place in this chapter is saved</div></div>`, sh => {
+      $('[data-go]', sh).onclick = () => closeSheet();
+      $('[data-how]', sh).onclick = () => { closeSheet(); setTimeout(() => this.howTo(), 300); };
+      $('[data-home]', sh).onclick = () => { closeSheet(); this.abort = true; this.home(); };
       $('[data-book]', sh).onclick = () => { closeSheet(); this.abort = true; this.bookScreen(); };
       $('[data-snd]', sh).onclick = (e) => { Sfx.setMuted(!Sfx.muted); e.target.textContent = Sfx.muted ? '🔇 Sound off' : '🔊 Sound on'; };
     });
@@ -289,11 +396,11 @@ const Story = {
   },
 
   async titleCard(e) {
-    const el = UI.show(`<div class="screen ep-card">${Art.bg(e.art)}<div class="art-shade" style="background:radial-gradient(circle at 50% 45%,rgba(11,10,18,.2),rgba(11,10,18,.92) 75%)"></div>
-      <div class="ep-card-in"><div class="tiny" style="letter-spacing:.5em;color:var(--gold)">Episode ${e.no}</div>
+    const el = UI.show(`<div class="screen ep-card">${Art.bg(e.art)}<div class="art-shade ep-card-shade"></div>
+      <div class="ep-card-in"><div class="ep-card-no">Chapter ${e.no}</div>
       <div class="ep-card-title">${esc(e.title)}</div><div class="ep-card-rule"></div>
-      <div class="small" style="color:#e9dccb">${esc(this.book().title)}</div></div>
-      <div class="cine-tap tiny">Tap to begin</div></div>`);
+      <div class="ep-card-book">${esc(this.book().title)}</div></div>
+      <div class="tap-pill">Tap to start</div></div>`);
     Sfx.stinger(); haptic(30);
     await new Promise(r => setTimeout(() => el.addEventListener('click', r, { once: true }), 700));
   },
@@ -304,7 +411,7 @@ const Story = {
       <div class="st-grad"></div>
       <canvas class="scene-fx" data-fx="dust" data-story-fx></canvas><div class="godrays" data-story-rays></div><div class="st-dark"></div>
       <div class="st-stage"><div class="chr left" data-side="left"></div><div class="chr right" data-side="right"></div></div>
-      ${this.hudHtml(`EP ${this.ep.no} · ${this.ep.title}`)}
+      ${this.hudHtml(`Ch ${this.ep.no} · ${esc(this.ep.title)}`)}
       <div class="st-layer" data-layer></div>
     </div>`, 'fast');
     this.el = el; this.bgFlip = false;
@@ -400,8 +507,10 @@ const Story = {
       if (shout) { shake(); haptic(40); Sfx.edge(); const bw = $('.st-bgwrap', this.el); bw.classList.remove('punch'); void bw.offsetWidth; bw.classList.add('punch'); }
     }
     const tx = $('[data-tx]', layer);
+    const coach = (this.st.taps || 0) < 6;
     await this.typeInto(tx, text, reveal ? 75 : kind === 'n' ? 26 : 20);
     layer.firstElementChild.classList.add('ready');
+    if (coach) { this.st.taps = (this.st.taps || 0) + 1; layer.insertAdjacentHTML('beforeend', '<div class="tap-pill in-scene">👆 Tap anywhere to continue</div>'); }
     await this.waitTap();
   },
 
@@ -427,7 +536,7 @@ const Story = {
     const layer = $('[data-layer]', this.el);
     this.focus(null);
     const list = opts.filter(o => o.show === undefined || storyCond(o.show, this.st));
-    layer.innerHTML = `<div class="choices-box"><div class="ch-head"><span></span>Choose<span></span></div>${list.map((o, i) => {
+    layer.innerHTML = `<div class="choices-box"><div class="ch-head">${(this.st.picks || 0) < 2 ? 'Your choice · tap one' : 'What do you do?'}</div>${list.map((o, i) => {
       const prem = !!o.cost; const can = !prem || this.st.diamonds >= o.cost;
       return `<button class="opt ${prem ? 'prem' : ''} ${can ? '' : 'cant'}" data-i="${i}" style="animation-delay:${.08 + i * .09}s"><div class="opt-main"><b>${this.fill(o.t)}</b>${o.d ? `<span>${o.d}</span>` : ''}</div>${prem ? `<div class="gem-cost">${GEM_SVG}<b>${o.cost}</b></div>` : ''}</button>`;
     }).join('')}</div>`;
@@ -439,6 +548,7 @@ const Story = {
         if (o.cost) { this.st.diamonds -= o.cost; this.bumpCur(); Sfx.coin(); Burst.sparks(b.getBoundingClientRect().right - 40, b.getBoundingClientRect().top + 20, 30, '#7ef0ff'); }
         else Sfx.select();
         haptic(15);
+        this.st.picks = (this.st.picks || 0) + 1;
         b.classList.add('picked'); $$('.opt', layer).forEach(x => { if (x !== b) x.classList.add('gone'); });
         setTimeout(() => res(o), 420);
       });
@@ -497,20 +607,37 @@ const Story = {
   },
 
   // ---------- playable cricket moment ----------
+  async momentIntro(cfg) {
+    Sfx.rise(); haptic(30);
+    const goal = cfg.kind === 'chase' ? `Score <b>${cfg.need}</b> runs in <b>${cfg.balls}</b> balls` : `Don't get out for <b>${cfg.balls}</b> balls`;
+    UI.show(`<div class="screen story-home moment-intro">
+      <div class="mi-card">
+        <div class="mi-tag">🏏 Cricket moment</div>
+        <div class="mi-title">${esc(cfg.title)}</div>
+        <div class="mi-desc">${cfg.desc || ''}</div>
+        <div class="mi-goal">${goal}</div>
+        <div class="mi-how">
+          <div class="mi-demo"><span class="mi-btn">HIT!</span><span class="mi-btn go">HIT!</span></div>
+          <p>Watch the ball. When the <b>HIT</b> button turns <b class="grn">green</b>, tap it. We pick the right shot for you.</p>
+        </div>
+        <button class="btn primary block" data-go>I'm ready</button>
+      </div></div>`);
+    await UI.waitTap('[data-go]');
+  },
   async playMoment(cfg) {
     const s = this.st, f = s.flags;
-    await Match.momentIntro(cfg.title, cfg.desc, 'STORY MOMENT');
+    await this.momentIntro(cfg);
     const el = UI.show(`<div class="screen match-screen"><div class="mroot" style="position:absolute;inset:0"></div>
       <div class="m-hud"><div class="scorebug" style="--c1:#b45309"><div class="tm">RGK</div><div class="sc" data-sc>0</div><div class="ov" data-ov></div><div class="need" data-need></div></div>
       <div class="m-brief"><div class="bt">${esc(cfg.title)}</div><div class="small" data-bd></div></div></div></div>`, 'fast');
     const pressure = cfg.kind === 'chase' ? .6 : .45;
-    Moments.open($('.mroot', el), { view: 'bat', level: 0, whiteBall: false, bowlerType: 'pace', pressure, myKit: '#b45309', batKit: '#f4ede4', bowlKit: cfg.kind === 'duel' ? '#7c3aed' : '#475569' });
+    Moments.open($('.mroot', el), { view: 'bat', simple: true, level: 0, whiteBall: false, bowlerType: 'pace', pressure, myKit: '#b45309', batKit: '#f4ede4', bowlKit: cfg.kind === 'duel' ? '#7c3aed' : '#475569' });
     UI.pressure(pressure > .5);
     const skill = 36 + (f.tyre ? 7 : 0) + (f.wonDuel ? 3 : 0) + (f.goodBat ? 5 : 0) + (f.rockyMentor ? 5 : 0) + (f.campImpress ? 2 : 0) + Math.max(0, s.rel.pandey || 0);
     const steady = f.focused || f.calm;
     const ctx = {
       batSkill: skill, bowlSkill: (cfg.kind === 'duel' ? 40 : 42) + (cfg.hard && f[cfg.hard] ? 7 : 0), ready: f.pinkyBox ? .03 : 0,
-      window: .07 + (f.drill ? .03 : 0), readFrac: f.drill ? .15 : .55, slow: 1.12,
+      window: .095 + (f.drill ? .03 : 0), readFrac: f.drill ? .15 : .55, slow: 1.2,
     };
     ctx.wobble = ctx.window * (steady ? .45 : .8) * (f.drill ? .7 : 1); ctx.wobbleF = steady ? 5 : 8;
     let runs = 0, out = false, legal = 0;
@@ -520,7 +647,7 @@ const Story = {
       $('[data-ov]', el).textContent = `Ball ${legal + 1}/${cfg.balls}`;
       const nd = $('[data-need]', el);
       if (cfg.kind === 'chase') nd.textContent = `NEED ${need - runs} OFF ${cfg.balls - legal}`; else nd.textContent = 'SURVIVE';
-      $('[data-bd]', el).innerHTML = `${esc(cfg.bowler)} · ${f.drill ? '<span class="teal">Watch the wrist: short balls show early</span>' : 'Read the length, pick your shot'}`;
+      $('[data-bd]', el).innerHTML = `${esc(cfg.bowler)} · ${f.drill ? '<span class="teal">Watch the wrist: short balls show early</span>' : 'Tap HIT when it glows green'}`;
       let del;
       for (let k = 0; k < 6; k++) { del = genDelivery('pace', 0, ctx.bowlSkill); if (!f.angry || ['short', 'bouncer'].includes(del.len) || Math.random() < .45) break; }
       const r = await Moments.batBall(del, ctx);
@@ -550,25 +677,26 @@ const Story = {
     const next = E[nextIdx], T = this.teaser();
     // finished the book? point at the sequel if it's out
     const sequel = !next && BOOKS.find(x => x.after === this.st.book && this.bookInfo(x).playable);
-    const el = UI.show(`<div class="screen ep-end">${Art.bg(e.art)}<div class="art-shade" style="background:linear-gradient(180deg,rgba(11,10,18,.55),rgba(11,10,18,.97) 65%)"></div>
-      <div class="scroll pad" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
+    const el = UI.show(`<div class="screen story-home ep-end">
+      <div class="scroll" style="padding-bottom:28px">
+      <div class="end-art" style="${this.coverStyle(e.art)}"><div class="hero-fade"></div><span class="end-badge">Chapter ${e.no} complete</span></div>
+      <div class="pad" style="text-align:center;padding-top:0">
         <div class="tbc">To be continued<span>...</span></div>
         <div class="cliff">${esc(this.fill(n.cliff))}</div>
-        ${first ? `<div class="reward">${GEM_SVG}<b>+2</b><span>Episode complete</span></div><button class="btn block btn-double" data-double>▶ Watch an ad · Double it <span class="dbl-gem">${GEM_SVG}+2</span></button>` : ''}
-        ${next ? `<button class="btn primary block" style="margin-top:18px" data-next>Next: Episode ${next.no} · <span style="display:inline-flex;align-items:center;gap:4px">${KEY_SVG}1</span></button>` : sequel ? `<button class="btn primary block" style="margin-top:18px" data-sequel>Start ${esc(sequel.title)}</button>` : T ? `<div class="card" style="margin-top:18px"><b class="cond gold">${/^\d+$/.test(String(T.no)) ? `Episode ${T.no}: ` : ''}${esc(T.title || '')}, ${esc((T.note || 'coming soon').toLowerCase())}</b><div class="small muted">Turn on notifications so you don't miss it.</div></div>` : ''}
-        <button class="btn ghost block" style="margin-top:8px" data-book>Episodes</button>
-        <button class="btn ghost block" style="margin-top:8px" data-lib>All stories</button>
+        ${first ? `<div class="reward">${GEM_SVG}<b>+2</b><span>Earned</span></div><button class="btn block btn-double" data-double>▶ Watch an ad · Double it <span class="dbl-gem">${GEM_SVG}+2</span></button>` : ''}
+        ${next ? `<button class="btn primary block" style="margin-top:18px" data-next>▶ Next: Chapter ${next.no} <span class="cost-tag">${KEY_SVG}1</span></button>` : sequel ? `<button class="btn primary block" style="margin-top:18px" data-sequel>Start ${esc(sequel.title)}</button>` : T ? `<div class="card" style="margin-top:18px"><b class="cond gold">${/^\d+$/.test(String(T.no)) ? `Chapter ${T.no}: ` : ''}${esc(T.title || '')}, ${esc((T.note || 'coming soon').toLowerCase())}</b><div class="small muted">Turn on notifications so you don't miss it.</div></div>` : ''}
+        <div class="row" style="gap:8px;margin-top:8px"><button class="btn ghost grow" data-book>Chapters</button><button class="btn ghost grow" data-lib>Home</button></div>
         <div class="rel-sum">${Object.entries(this.relKeys()).filter(([k]) => CAST[k]).map(([k, l]) => `<div class="rel-row" style="--c:${CAST[k].col}"><span>${l}</span><span>${relHearts(s.rel[k])}</span></div>`).join('')}</div>
-      </div></div>`);
+      </div></div></div>`);
     Sfx.stinger(); if (first) setTimeout(() => { Sfx.coin(); Burst.sparks(innerWidth / 2, innerHeight * .45, 40, '#7ef0ff'); }, 900);
     if (next) $('[data-next]', el).onclick = () => this.tryStart(nextIdx);
     const dbl = $('[data-double]', el);
     if (dbl) dbl.onclick = async () => {
       const ok = await this.watchAd('double', dbl, () => { this.st.diamonds += 2; toast(`${GEM_SVG} +2 diamonds`); });
-      if (ok) { dbl.outerHTML = `<div class="dbl-done">✓ Doubled · ${GEM_SVG}+4 this episode</div>`; Burst.sparks(innerWidth / 2, innerHeight * .42, 40, '#7ef0ff'); }
+      if (ok) { dbl.outerHTML = `<div class="dbl-done">✓ Doubled · ${GEM_SVG}+4 this chapter</div>`; Burst.sparks(innerWidth / 2, innerHeight * .42, 40, '#7ef0ff'); }
     };
     $('[data-book]', el).onclick = () => this.bookScreen();
-    $('[data-lib]', el).onclick = () => this.library();
+    $('[data-lib]', el).onclick = () => this.home();
     const sq = $('[data-sequel]', el); if (sq) sq.onclick = () => { Sfx.select(); this.openBook(sequel.id); };
     this.scheduleReminders();
     if (e.no >= 3 && !s.notifyAsked && !Notify.granted()) setTimeout(() => this.askNotify(false), 2200);
@@ -581,8 +709,8 @@ const Story = {
     if (st === 'denied' && !fromBell) return;
     openSheet(`<div class="pad" style="text-align:center">
       <div style="font-size:54px;line-height:1;margin:4px 0 6px">🔔</div>
-      <div class="display" style="font-size:36px">Don't miss what happens next</div>
-      <div class="small muted" style="margin:8px auto 0;max-width:300px">We'll tell you when your free key refills and when the next episode is waiting. No spam.</div>
+      <div class="sheet-title">Don't miss what happens next</div>
+      <div class="small muted" style="margin:8px auto 0;max-width:300px">We'll tell you when your free key refills and when the next chapter is waiting. No spam.</div>
       ${st === 'denied' ? '<div class="small" style="margin-top:10px;color:var(--gold)">Notifications are off for this app. Turn them on in Android Settings → Apps → Gully to Glory → Notifications.</div>' : ''}
       <button class="btn primary block" style="margin-top:16px" data-yes ${st === 'denied' ? 'disabled' : ''}>Notify me</button>
       <button class="btn ghost block" style="margin-top:8px" data-no>Not now</button></div>`, sh => {
@@ -604,7 +732,7 @@ const Story = {
     if (s.keys < KEY_MAX) {
       const due = Math.max(60 * 1000, KEY_MS - (Date.now() - s.keyTs));
       const nextEp = this.eps().find(e => !s.done[e.id]);
-      Notify.schedule(Notify.KEY_ID, due, '🔑 Your key is ready', nextEp ? `Episode ${nextEp.no}, "${nextEp.title}", is waiting for you.` : 'Replay an episode and try a different choice.');
+      Notify.schedule(Notify.KEY_ID, due, '🔑 Your key is ready', nextEp ? `Chapter ${nextEp.no}, "${nextEp.title}", is waiting for you.` : 'Replay a chapter and try a different choice.');
     } else Notify.cancel(Notify.KEY_ID);
     const lastDone = [...this.eps()].reverse().find(e => s.done[e.id]);
     const cliff = lastDone ? (lastDone.nodes.find(n => n.end) || {}).cliff : null;

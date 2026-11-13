@@ -25,7 +25,7 @@ function storyCond(c, st) {
 }
 
 const Content = (() => {
-  let bundledIds = null, lastCheck = 0, busy = null;
+  let bundledIds = null, lastCheck = 0, busy = null, lastAnnounced = "";
   const remoteArt = new Set();
   const RE_NAME = /^[a-z0-9_]{1,40}$/, RE_COL = /^#[0-9a-f]{3,8}$/i, RE_PATH = /^[a-z0-9_\-/]+\.(jpg|jpeg|png|webp)$/i;
 
@@ -226,16 +226,23 @@ const Content = (() => {
     // re-draw the library or episode list if it's on screen
     redraw() {
       if (UI.sheet || !Story.st) return;
-      if (document.querySelector('.library')) Story.library();
-      else if (document.querySelector('.story-book .book-cover')) Story.bookScreen();
+      const cur = UI.cur;
+      if (!cur) return;
+      if (cur.classList.contains('home')) Story.home();
+      else if (cur.classList.contains('book-page')) Story.bookScreen();
     },
     // after a refresh, update whatever screen is showing
     announce(added) {
       if (!added || !added.length) return;
+      Content.redraw();
+      // brand-new players: everything is new, so a toast is just noise. Same batch twice: say it once.
+      const key = added.join(',');
+      if (key === lastAnnounced) return; lastAnnounced = key;
+      const st = Story.st, read = st && st.books && Object.values(st.books).some(p => Object.keys(p.done || {}).length);
+      if (!read) return;
       const eps = EPISODES.filter(e => added.includes(e.id));
       const bookOf = (e) => (BOOKS.find(b => b.id === (e.book || 'b1')) || {}).title || '';
-      toast(eps.length === 1 ? `New episode: ${bookOf(eps[0])}, Ep ${eps[0].no}. ${eps[0].title}` : `${eps.length} new episodes are here`);
-      Content.redraw();
+      toast(eps.length === 1 ? `New chapter: ${bookOf(eps[0])}, Chapter ${eps[0].no}. ${eps[0].title}` : `${eps.length} new chapters are here`);
     },
   };
 })();

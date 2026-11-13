@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
         w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         web = new WebView(this);
-        web.setBackgroundColor(Color.parseColor("#0B0A12"));
+        web.setBackgroundColor(Color.parseColor("#FFF4EC"));
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
