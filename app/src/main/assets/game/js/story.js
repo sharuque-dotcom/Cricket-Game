@@ -342,13 +342,21 @@ const Story = {
     const label = btn ? btn.innerHTML : '';
     if (btn) { btn.disabled = true; btn.innerHTML = 'Loading ad…'; }
     Sfx.crowd(false);
-    const r = await Ads.show(kind);
+    const pay = () => {
+      if (kind !== 'double') { this.adsLeft(kind); this.st.adUsed[kind] = (this.st.adUsed[kind] || 0) + 1; }
+      give(); this.save(); this.bumpCur(); Sfx.success();
+    };
+    const r = await Ads.show(kind, pay);
     if (btn) { btn.disabled = false; btn.innerHTML = label; }
-    if (r === 'rewarded') {
-      if (kind !== 'double') this.st.adUsed[kind] = (this.st.adUsed[kind] || 0) + 1;
-      give(); this.save(); this.bumpCur(); Sfx.success(); return true;
+    if (r === 'rewarded') { pay(); return true; }
+    if (r === 'skipped') {
+      openSheet(`<div class="pad" style="text-align:center"><div style="font-size:46px;line-height:1">⏳</div>
+        <div class="sheet-title" style="margin-top:6px">The ad closed early</div>
+        <div class="small muted" style="margin:8px auto 0;max-width:300px">Google only gives the reward when the ad plays to the end. Some are two short ads in a row. Wait for the <b>✕</b> after the last one, then tap it.</div>
+        <button class="btn primary block" style="margin-top:16px" data-ok>OK</button></div>`, sh => { $('[data-ok]', sh).onclick = () => closeSheet(); });
+      return false;
     }
-    toast(r === 'skipped' ? 'Watch the whole ad to get the reward.' : 'No ad available right now. Try again in a minute.');
+    toast('No ad available right now. Try again in a minute.');
     return false;
   },
 

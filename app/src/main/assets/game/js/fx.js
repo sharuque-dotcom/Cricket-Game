@@ -276,16 +276,18 @@ const Parallax = (() => {
 // ---------- Rewarded ads ----------
 // On the phone: real AdMob rewarded video via AndroidBridge. In a desktop browser: a labelled test stand-in.
 const Ads = {
-  pending: {}, timers: {},
+  pending: {}, timers: {}, late: {},
   native() { return !!(window.AndroidBridge && AndroidBridge.showRewardedAd); },
   // resolves to 'rewarded' | 'skipped' | 'unavailable'
-  show(placement) {
+  // onLate: called if the game gave up waiting but the reward still arrives afterwards (it is never lost)
+  show(placement, onLate) {
     return new Promise(resolve => {
       if (this.native()) {
         this.pending[placement] = resolve;
+        delete this.late[placement];
         try { AndroidBridge.showRewardedAd(placement); } catch (e) { this.result(placement, 'unavailable'); return; }
         // only give up if the ad never opened; once it is on screen we wait for its result
-        this.timers[placement] = setTimeout(() => this.result(placement, 'unavailable'), 20000);
+        this.timers[placement] = setTimeout(() => { if (onLate) this.late[placement] = onLate; this.result(placement, 'unavailable'); }, 45000);
         return;
       }
       const ov = document.createElement('div'); ov.className = 'fake-ad';
@@ -298,12 +300,16 @@ const Ads = {
   result(placement, r) {
     this.shown(placement);
     try { if (this.native() && AndroidBridge.takeAdResult) AndroidBridge.takeAdResult(placement); } catch (e) {}
-    const f = this.pending[placement]; if (f) { delete this.pending[placement]; f(r); }
+    const f = this.pending[placement];
+    if (f) { delete this.pending[placement]; f(r); return; }
+    // we had stopped waiting, but the ad finished after all: still pay out
+    const late = this.late[placement];
+    if (late) { delete this.late[placement]; if (r === 'rewarded') late(); }
   },
   // back from the ad screen: pick up any result the app stored while we were paused
   collect() {
     if (!this.native() || !AndroidBridge.takeAdResult) return;
-    Object.keys(this.pending).forEach(p => { let r = ''; try { r = AndroidBridge.takeAdResult(p); } catch (e) {} if (r) this.result(p, r); });
+    Object.keys(this.pending).concat(Object.keys(this.late)).forEach(p => { let r = ''; try { r = AndroidBridge.takeAdResult(p); } catch (e) {} if (r) this.result(p, r); });
   },
 };
 
