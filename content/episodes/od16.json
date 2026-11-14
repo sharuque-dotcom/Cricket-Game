@@ -9,6 +9,10 @@
    "name": "Meera Malhotra",
    "col": "#fb7185"
   },
+  "meera_hood": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
   "stranger": {
    "name": "The girl in the auto",
    "col": "#fb7185"
@@ -77,18 +81,20 @@
    "reveal": true
   },
   {
-   "enter": "meera",
+   "enter": "meera_hood",
    "side": "left"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "I chose. I chose me, for a while. The academy, my father, a life nobody planned for me. I don't want to go from one man's plan straight into another.",
-   "mood": "soft"
+   "mood": "soft",
+   "ex": "happy"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "But I want to keep eating vada pav on this wall with you. Every Sunday. And see what happens. Slowly.",
-   "mood": "soft"
+   "mood": "soft",
+   "ex": "happy"
   },
   {
    "end": true,
@@ -102,16 +108,17 @@
    "reveal": true
   },
   {
-   "enter": "meera",
+   "enter": "meera_hood",
    "side": "left"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "You asked me what I want. I want to build stadiums. Real ones, with girls' teams in them. Two years in London.",
-   "mood": "soft"
+   "mood": "soft",
+   "ex": "happy"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "You'll be playing for India by the time I'm back. Save me a seat in Box 4.",
    "mood": "soft",
    "ex": "happy"
@@ -130,19 +137,20 @@
    "n": "Sunday. The academy ground. Twenty girls in new kits, Jojo on the drums, Nani in a plastic chair like a queen, and Harsh Malhotra, awkward in a tracksuit, carrying the samosas."
   },
   {
-   "enter": "meera",
+   "enter": "meera_hood",
    "side": "left"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "You asked me a question on that pitch. I said I'd answer properly.",
-   "mood": "soft"
+   "mood": "soft",
+   "ex": "happy"
   },
   {
    "n": "She holds out her left palm. The henna has faded. In its place, drawn in eyeliner in the middle of her hand, the same small letter. And a question mark."
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "This time I'm asking. Will you?",
    "mood": "soft",
    "ex": "happy"

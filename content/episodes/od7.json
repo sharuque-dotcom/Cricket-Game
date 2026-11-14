@@ -9,6 +9,10 @@
    "name": "Meera Malhotra",
    "col": "#fb7185"
   },
+  "meera_hood": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
   "stranger": {
    "name": "The girl in the auto",
    "col": "#fb7185"
@@ -80,18 +84,18 @@
    "bg": "bg_gate_four"
   },
   {
-   "enter": "meera",
+   "enter": "meera_hood",
    "side": "left"
   },
   {
    "n": "Gate 4. She's there before you. She doesn't sit. She doesn't take her hood down."
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "My father made me a deal. You stay in Mumbai, your contract stays. If I never see you again."
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "I said yes. So this is the last time. Stay away from me. Please.",
    "mood": "soft",
    "ex": "sad"
@@ -123,7 +127,7 @@
    ]
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "Don't make this harder. I'm doing the only thing I can do.",
    "mood": "soft",
    "ex": "sad"

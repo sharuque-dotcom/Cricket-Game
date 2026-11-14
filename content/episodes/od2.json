@@ -9,6 +9,10 @@
    "name": "Meera Malhotra",
    "col": "#fb7185"
   },
+  "meera_hood": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
   "stranger": {
    "name": "The girl in the auto",
    "col": "#fb7185"
@@ -200,19 +204,19 @@
    "n": "Gate 4. A loading dock, a flickering lamp and a stray dog. She's sitting on a crate in a hoodie, with no earrings and no smile."
   },
   {
-   "enter": "meera",
+   "enter": "meera_hood",
    "side": "left"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "You came. Good. I needed to say thank you, and I needed you to forget that night ever happened."
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "Kunal's father owns half of my father's debts. This engagement is a business deal. If anyone finds out I ran, the deal dies, and my father with it."
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "Here. My old phone. My father reads my real one. If you ever need to tell me something, use this. Then never use it.",
    "mood": "soft"
   },
@@ -243,7 +247,7 @@
    ]
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "Because for one night I wanted to be nobody. You were the only person in Mumbai who let me.",
    "mood": "soft"
   },

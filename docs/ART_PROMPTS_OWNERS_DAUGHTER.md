@@ -160,3 +160,12 @@ Vertical 9:16. A wedding mandap built on the concourse behind a floodlit cricket
 ```
 Vertical 9:16. The same woman as the reference image in a heavy red and gold bridal lehenga, holding her skirts in both fists, running down the steps of a floodlit cricket stadium towards the pitch, dupatta flying behind her, seventy thousand people on their feet, phones raised, camera flashes like stars. Vibrant, luminous digital painting, dramatic game event art, red, gold and floodlight palette, sparkling glow, no film grain, no vignette, no logos, no readable text.
 ```
+
+---
+
+## Added after launch
+
+**B4 · char_meera_hood** (attach `char_meera`). Her calm, everyday look for the hoodie scenes (Gate 4, the balcony). Until it exists, those scenes use the teary hoodie portrait.
+```
+Vertical 9:16. The same woman as the reference image, in the same plain grey hoodie as B1 and B2 with the hood down, jeans, hands in the hoodie pocket, a calm, guarded, slightly tired expression with the hint of a small smile. Same face and hair. Half-body from the knees up. Plain flat solid pure green background (#00FF00), no shadows on the background, no green on her clothes. Vibrant, luminous digital painting, soft bright studio light with a warm rim light, rich saturated colours, clean game character art, no text.
+```

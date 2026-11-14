@@ -9,6 +9,10 @@
    "name": "Meera Malhotra",
    "col": "#fb7185"
   },
+  "meera_hood": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
   "stranger": {
    "name": "The girl in the auto",
    "col": "#fb7185"
@@ -80,16 +84,16 @@
    "n": "You climb. The balcony doors are open. She's sitting on the floor in an old Monarchs T-shirt, eyes red, surrounded by wedding catalogues."
   },
   {
-   "enter": "meera",
+   "enter": "meera_hood",
    "side": "left"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "How... NANI. Of course. Of course it's Nani.",
    "mood": "shout"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "You shouldn't be here. If anyone sees, he'll trade you tomorrow and he'll never let me leave this house again."
   },
   {
@@ -129,7 +133,7 @@
    "go": "run"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "Then why did you climb it?",
    "mood": "soft"
   },
@@ -143,7 +147,7 @@
    "label": "run"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "And go where? He'd find us by morning. And Sethi would take everything my father has. I can't run. I tried once. I ended up in your auto.",
    "mood": "soft"
   },
@@ -157,7 +161,7 @@
    "n": "The city disappears. The catalogues, the debts, the date of the final. For a long moment there's only the sound of the sea."
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "...Okay. So that's a problem.",
    "mood": "soft",
    "ex": "happy"
@@ -166,7 +170,7 @@
    "label": "truth"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "Three hundred crore. My father borrowed it from Sethi Steel to keep the team. The wedding cancels the debt. That's the whole deal."
   },
   {
