@@ -21,6 +21,10 @@
    "name": "Kunal Sethi",
    "col": "#f87171"
   },
+  "kunal_wed": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
   "harsh": {
    "name": "Harsh Malhotra",
    "col": "#a78bfa"
@@ -109,8 +113,7 @@
   {
    "s": "meera",
    "t": "I asked her to hide a different letter.",
-   "mood": "soft",
-   "ex": "happy"
+   "mood": "soft"
   },
   {
    "th": "She turns her left palm towards me. In the middle of a peacock's tail, tiny, a letter that is not K."
@@ -119,14 +122,14 @@
    "exit": "all"
   },
   {
-   "enter": "kunal",
+   "enter": "kunal_wed",
    "side": "right"
   },
   {
    "n": "An hour later. Kunal, a little drunk, takes her hands in front of the photographers to find his initial. He searches. He smiles. He searches again. He stops smiling."
   },
   {
-   "s": "kunal",
+   "s": "kunal_wed",
    "t": "That's not a K."
   },
   {

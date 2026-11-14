@@ -263,7 +263,7 @@
       "id": "od1",
       "no": 1,
       "file": "episodes/od1.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "od2",
@@ -323,7 +323,7 @@
       "id": "od11",
       "no": 11,
       "file": "episodes/od11.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "od12",
@@ -347,7 +347,7 @@
       "id": "od15",
       "no": 15,
       "file": "episodes/od15.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "od16",
@@ -564,7 +564,9 @@
     "stranger": "img/char_meera.webp",
     "meera_hood": "img/char_meera_sad.webp",
     "meera_hood_sad": "img/char_meera_sad.webp",
-    "meera_hood_happy": "img/char_meera_happy.webp"
+    "meera_hood_happy": "img/char_meera_happy.webp",
+    "kunal_wed": "img/char_kunal_angry.webp",
+    "kunal_wed_angry": "img/char_kunal_angry.webp"
   },
   "i18n": {
     "hinglish": [
