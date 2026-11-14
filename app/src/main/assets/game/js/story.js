@@ -567,11 +567,11 @@ const Story = {
     const body = $('[data-pb]', layer);
     for (const m of msgs) {
       body.insertAdjacentHTML('beforeend', '<div class="ph-typing"><i></i><i></i><i></i></div>');
-      await sleep(650);
+      await sleep(420);
       body.lastElementChild.remove();
       body.insertAdjacentHTML('beforeend', `<div class="ph-msg">${esc(this.fill(this.tr(m.t)))}<span class="ph-time">${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, '0')}</span></div>`);
       haptic(12); Sfx.tap();
-      await sleep(350);
+      await sleep(180);
     }
     layer.firstElementChild.classList.add('ready');
     await this.waitTap();
@@ -620,12 +620,12 @@ const Story = {
       this.st.cur.pos = i; this.st.cur.scene = this.scene; this.save();
       if (n.label) continue;
       if (n.weather !== undefined) { this.weather = n.weather; this.setBg(this.scene.bg); continue; }
-      if (n.bg) { this.weather = null; this.setBg(n.bg); await sleep(350); continue; }
+      if (n.bg) { this.weather = null; this.setBg(n.bg); await sleep(220); continue; }
       if (n.enter) {
         const side = n.side || (this.scene.left ? 'right' : 'left');
-        this.placeChar(side, n.enter); Sfx.whoosh(); await sleep(380); continue;
+        this.placeChar(side, n.enter); Sfx.whoosh(); await sleep(240); continue;
       }
-      if (n.exit) { this.removeChar(n.exit); await sleep(300); continue; }
+      if (n.exit) { this.removeChar(n.exit); await sleep(180); continue; }
       if (n.if) { const ok = storyCond(n.if, this.st); if (ok) i = this.labels[n.go] - 1; continue; }
       if (n.go) { i = this.labels[n.go] - 1; continue; }
       if (n.fx || n.set) { this.applyFx(n.fx, n.set); if (!n.s && !n.n) continue; }
