@@ -1,7 +1,11 @@
 // Story Mode engine: episodic, choice-driven chapters with keys, diamonds and playable cricket moments.
 const STORY_KEY = 'gg_story_v1';
 const KEY_MAX = 2, KEY_MS = 3 * 60 * 60 * 1000; // one key every 3 hours
-const AD_CAP = { key: 6, gems: 8 }; // rewarded ads allowed per day (lower these once gem packs are on sale)
+// Rewarded ads allowed per day. Keys: one ad = one chapter, so effectively unlimited; 40 is only a
+// safety net against automated ad farming (which can get the AdMob account flagged). Gems stay capped
+// so diamond choices keep their value (and so future gem packs are worth buying).
+const AD_CAP = { key: 40, gems: 8 };
+const capNote = (n) => n <= 5; // only mention the daily limit when someone is close to it
 const GEM_SVG = `<svg class="ico" viewBox="0 0 24 24"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9fbff"/><stop offset=".5" stop-color="#3fd0e0"/><stop offset="1" stop-color="#1a7f9c"/></linearGradient></defs><path d="M6 3h12l4 6-10 12L2 9z" fill="url(#gg)" stroke="#0b3a47" stroke-width="1.2"/><path d="M2 9h20M8 3l4 18 4-18M6 3l2 6M18 3l-2 6" fill="none" stroke="rgba(255,255,255,.55)" stroke-width=".9"/></svg>`;
 const KEY_SVG = `<svg class="ico" viewBox="0 0 24 24"><defs><linearGradient id="gk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1b8"/><stop offset=".55" stop-color="#ffc83d"/><stop offset="1" stop-color="#b9770e"/></linearGradient></defs><circle cx="7.5" cy="12" r="5" fill="none" stroke="url(#gk)" stroke-width="3"/><path d="M12 12h10M18 12v4M21 12v3" stroke="url(#gk)" stroke-width="3" stroke-linecap="round"/></svg>`;
 
@@ -222,7 +226,7 @@ const Story = {
       ['🤔', 'Make choices', 'When buttons appear, pick one. Your choices change the story and how people feel about you.'],
       [GEM_SVG, 'Diamond choices', `Choices with a ${GEM_SVG} cost diamonds. You earn diamonds by finishing chapters. Free choices are always there too.`],
       ['🏏', 'Cricket moments', 'Sometimes you bat. Tap the big <b>HIT</b> button when it turns green.'],
-      [KEY_SVG, 'Keys', 'Each new chapter uses 1 key. Keys refill for free every 3 hours. Replays are free.'],
+      [KEY_SVG, 'Keys', 'Each new chapter uses 1 key. Keys refill for free every 3 hours, or watch a short ad to get one straight away. Replays are free.'],
     ];
     openSheet(`<div class="pad howto">
       <div class="sheet-title">How to play</div>
@@ -301,7 +305,7 @@ const Story = {
       <div class="sheet-title">Out of keys</div>
       <div class="muted small" style="margin-top:6px">Next free key in <b class="gold">${this.nextKeyIn()}</b></div>
       <button class="btn primary block" style="margin-top:16px" data-ad ${this.adsLeft('key') > 0 ? '' : 'disabled'}>▶ Watch an ad · +1 key</button>
-      <div class="tiny" style="margin-top:6px">${this.adsLeft('key') > 0 ? `${this.adsLeft('key')} ad keys left today` : 'Ad keys used up for today'}</div>
+      ${this.adsLeft('key') <= 0 ? '<div class="tiny" style="margin-top:6px">Ad keys used up for today</div>' : capNote(this.adsLeft('key')) ? `<div class="tiny" style="margin-top:6px">${this.adsLeft('key')} ad keys left today</div>` : ''}
       <button class="btn ghost block" style="margin-top:8px" data-shop>Open store</button></div>`, sh => {
       $('[data-ad]', sh).onclick = async (e) => {
         const ok = await this.watchAd('key', e.currentTarget, () => { this.st.keys++; toast(`${KEY_SVG} +1 key`); });
@@ -318,7 +322,7 @@ const Story = {
       <div class="row between"><div class="sheet-title">Free rewards</div><div class="row" style="gap:6px"><span class="cur-pill">${GEM_SVG}<b>${this.st.diamonds}</b></span><span class="cur-pill">${KEY_SVG}<b>${this.st.keys}</b></span></div></div>
       <div class="small muted" style="margin-top:4px">Watch a short video to earn rewards. Limits reset every day.</div>
       <button class="btn primary block" style="margin-top:14px" data-ad="gems" ${gemsLeft ? '' : 'disabled'}>▶ +5 diamonds <span class="tiny" style="margin-left:6px;color:#1a0c00">${gemsLeft} left today</span></button>
-      <button class="btn ghost block" style="margin-top:8px" data-ad="key" ${keysLeft ? '' : 'disabled'}>▶ +1 key <span class="tiny" style="margin-left:6px">${keysLeft} left today</span></button>
+      <button class="btn ghost block" style="margin-top:8px" data-ad="key" ${keysLeft ? '' : 'disabled'}>▶ +1 key${capNote(keysLeft) ? ` <span class="tiny" style="margin-left:6px">${keysLeft} left today</span>` : ''}</button>
       <div class="small muted" style="text-align:center;margin-top:14px">Free key every 3 hours · +2 diamonds for every new chapter</div></div>`, sh => {
       $$('[data-ad]', sh).forEach(btn => btn.onclick = async (e) => {
         const kind = btn.dataset.ad;
