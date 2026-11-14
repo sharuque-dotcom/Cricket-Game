@@ -462,6 +462,186 @@
         "ep": "ep12",
         "file": "i18n/hinglish/ep12.json",
         "rev": 1
+      },
+      {
+        "ep": "bc1",
+        "file": "i18n/hinglish/bc1.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc2",
+        "file": "i18n/hinglish/bc2.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc3",
+        "file": "i18n/hinglish/bc3.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc4",
+        "file": "i18n/hinglish/bc4.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc5",
+        "file": "i18n/hinglish/bc5.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc6",
+        "file": "i18n/hinglish/bc6.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc7",
+        "file": "i18n/hinglish/bc7.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc8",
+        "file": "i18n/hinglish/bc8.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc9",
+        "file": "i18n/hinglish/bc9.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc10",
+        "file": "i18n/hinglish/bc10.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc11",
+        "file": "i18n/hinglish/bc11.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc12",
+        "file": "i18n/hinglish/bc12.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc13",
+        "file": "i18n/hinglish/bc13.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc14",
+        "file": "i18n/hinglish/bc14.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc15",
+        "file": "i18n/hinglish/bc15.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc16",
+        "file": "i18n/hinglish/bc16.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc17",
+        "file": "i18n/hinglish/bc17.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc18",
+        "file": "i18n/hinglish/bc18.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc19",
+        "file": "i18n/hinglish/bc19.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc20",
+        "file": "i18n/hinglish/bc20.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw1",
+        "file": "i18n/hinglish/bw1.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw2",
+        "file": "i18n/hinglish/bw2.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw3",
+        "file": "i18n/hinglish/bw3.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw4",
+        "file": "i18n/hinglish/bw4.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw5",
+        "file": "i18n/hinglish/bw5.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw6",
+        "file": "i18n/hinglish/bw6.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw7",
+        "file": "i18n/hinglish/bw7.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw8",
+        "file": "i18n/hinglish/bw8.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw9",
+        "file": "i18n/hinglish/bw9.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw10",
+        "file": "i18n/hinglish/bw10.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw11",
+        "file": "i18n/hinglish/bw11.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw12",
+        "file": "i18n/hinglish/bw12.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw13",
+        "file": "i18n/hinglish/bw13.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw14",
+        "file": "i18n/hinglish/bw14.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw15",
+        "file": "i18n/hinglish/bw15.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw16",
+        "file": "i18n/hinglish/bw16.json",
+        "rev": 1
       }
     ],
     "manglish": [
@@ -524,6 +704,186 @@
         "ep": "ep12",
         "file": "i18n/manglish/ep12.json",
         "rev": 1
+      },
+      {
+        "ep": "bc1",
+        "file": "i18n/manglish/bc1.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc2",
+        "file": "i18n/manglish/bc2.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc3",
+        "file": "i18n/manglish/bc3.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc4",
+        "file": "i18n/manglish/bc4.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc5",
+        "file": "i18n/manglish/bc5.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc6",
+        "file": "i18n/manglish/bc6.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc7",
+        "file": "i18n/manglish/bc7.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc8",
+        "file": "i18n/manglish/bc8.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc9",
+        "file": "i18n/manglish/bc9.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc10",
+        "file": "i18n/manglish/bc10.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc11",
+        "file": "i18n/manglish/bc11.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc12",
+        "file": "i18n/manglish/bc12.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc13",
+        "file": "i18n/manglish/bc13.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc14",
+        "file": "i18n/manglish/bc14.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc15",
+        "file": "i18n/manglish/bc15.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc16",
+        "file": "i18n/manglish/bc16.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc17",
+        "file": "i18n/manglish/bc17.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc18",
+        "file": "i18n/manglish/bc18.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc19",
+        "file": "i18n/manglish/bc19.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc20",
+        "file": "i18n/manglish/bc20.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw1",
+        "file": "i18n/manglish/bw1.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw2",
+        "file": "i18n/manglish/bw2.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw3",
+        "file": "i18n/manglish/bw3.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw4",
+        "file": "i18n/manglish/bw4.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw5",
+        "file": "i18n/manglish/bw5.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw6",
+        "file": "i18n/manglish/bw6.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw7",
+        "file": "i18n/manglish/bw7.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw8",
+        "file": "i18n/manglish/bw8.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw9",
+        "file": "i18n/manglish/bw9.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw10",
+        "file": "i18n/manglish/bw10.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw11",
+        "file": "i18n/manglish/bw11.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw12",
+        "file": "i18n/manglish/bw12.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw13",
+        "file": "i18n/manglish/bw13.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw14",
+        "file": "i18n/manglish/bw14.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw15",
+        "file": "i18n/manglish/bw15.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw16",
+        "file": "i18n/manglish/bw16.json",
+        "rev": 1
       }
     ],
     "banglish": [
@@ -585,6 +945,186 @@
       {
         "ep": "ep12",
         "file": "i18n/banglish/ep12.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc1",
+        "file": "i18n/banglish/bc1.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc2",
+        "file": "i18n/banglish/bc2.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc3",
+        "file": "i18n/banglish/bc3.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc4",
+        "file": "i18n/banglish/bc4.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc5",
+        "file": "i18n/banglish/bc5.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc6",
+        "file": "i18n/banglish/bc6.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc7",
+        "file": "i18n/banglish/bc7.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc8",
+        "file": "i18n/banglish/bc8.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc9",
+        "file": "i18n/banglish/bc9.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc10",
+        "file": "i18n/banglish/bc10.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc11",
+        "file": "i18n/banglish/bc11.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc12",
+        "file": "i18n/banglish/bc12.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc13",
+        "file": "i18n/banglish/bc13.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc14",
+        "file": "i18n/banglish/bc14.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc15",
+        "file": "i18n/banglish/bc15.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc16",
+        "file": "i18n/banglish/bc16.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc17",
+        "file": "i18n/banglish/bc17.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc18",
+        "file": "i18n/banglish/bc18.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc19",
+        "file": "i18n/banglish/bc19.json",
+        "rev": 1
+      },
+      {
+        "ep": "bc20",
+        "file": "i18n/banglish/bc20.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw1",
+        "file": "i18n/banglish/bw1.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw2",
+        "file": "i18n/banglish/bw2.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw3",
+        "file": "i18n/banglish/bw3.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw4",
+        "file": "i18n/banglish/bw4.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw5",
+        "file": "i18n/banglish/bw5.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw6",
+        "file": "i18n/banglish/bw6.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw7",
+        "file": "i18n/banglish/bw7.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw8",
+        "file": "i18n/banglish/bw8.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw9",
+        "file": "i18n/banglish/bw9.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw10",
+        "file": "i18n/banglish/bw10.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw11",
+        "file": "i18n/banglish/bw11.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw12",
+        "file": "i18n/banglish/bw12.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw13",
+        "file": "i18n/banglish/bw13.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw14",
+        "file": "i18n/banglish/bw14.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw15",
+        "file": "i18n/banglish/bw15.json",
+        "rev": 1
+      },
+      {
+        "ep": "bw16",
+        "file": "i18n/banglish/bw16.json",
         "rev": 1
       }
     ]
