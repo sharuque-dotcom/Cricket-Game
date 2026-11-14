@@ -201,7 +201,7 @@ const Story = {
     const here = p.cur && p.cur.ep === e.id;
     return `<button class="ch-row ${done ? 'done' : ''} ${next ? 'next' : ''} ${locked ? 'locked' : ''}" data-ep="${i}" data-b="${esc(b.id)}" ${locked ? 'disabled' : ''}>
       <span class="ch-no" style="${this.coverStyle(e.art)}"><em>${e.no}</em></span>
-      <span class="ch-t"><b>${esc(this.et(e))}</b><small>${here ? t('In progress') : done ? t('Read · tap to replay') : next ? t('Up next') : t('Chapter {n}', { n: e.no })}</small></span>
+      <span class="ch-t"><b>${esc(this.et(e))}${I18N.has(e.id) ? '' : ' <i class="en-tag">EN</i>'}</b><small>${here ? t('In progress') : done ? t('Read · tap to replay') : next ? t('Up next') : t('Chapter {n}', { n: e.no })}</small></span>
       <span class="ch-cta">${done ? '<i class="tick">✓</i>' : locked ? '<i class="lk">🔒</i>' : here ? '<span class="go">▶</span>' : `<span class="cost-tag">${KEY_SVG}1</span>`}</span></button>`;
   },
   bindRows(el, b) {
@@ -424,6 +424,7 @@ const Story = {
     this.scene = { bg: null, left: null, right: null, speaking: null };
     this.st.cur = { ep: e.id, pos: 0, scene: this.scene, replay };
     this.save();
+    if (!I18N.has(e.id)) toast(t('This chapter is in English for now. Your language is coming soon.'));
     await this.titleCard(e);
     this.run(0);
   },

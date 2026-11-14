@@ -280,3 +280,5 @@ html.indic .shot.hitbtn { font-family: system-ui, sans-serif; font-size: 24px; }
 html.indic .brand b { font-family: 'Bebas', sans-serif; } /* the logo stays in English */
 html.indic .m-call .big { font-size: 68px; line-height: 1.25; }
 html.indic .ep-card-title { padding: .25em 0 .15em; margin-top: 0; } /* the reveal animation clips to this box; marks above the line need the room */
+.en-tag { font-style: normal; display: inline-block; margin-left: 4px; padding: 0 6px; border-radius: 6px; background: #EEE8F7; color: #7B6F8F; font-size: 10px; font-weight: 800; vertical-align: 2px; font-family: Barlow, sans-serif; }
+html.indic .mi-title, html.indic .ep-card-title, html.indic .hero-title { word-break: normal; overflow-wrap: normal; } html[lang=ml] .mi-title { font-size: 25px; } html[lang=ml] .ep-card-title { font-size: 36px; }
