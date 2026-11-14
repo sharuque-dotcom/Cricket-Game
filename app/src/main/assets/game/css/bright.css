@@ -201,8 +201,18 @@ html, body { background: var(--bg); color: var(--text); }
 .opt:active { transform: scale(.97); box-shadow: 0 4px 10px -6px rgba(200, 20, 80, .8); }
 .opt-main b { font-size: 16.5px; text-shadow: 0 1px 2px rgba(120, 0, 40, .3); }
 .opt-main span { color: rgba(255,255,255,.88); font-size: 12.5px; }
-.opt.prem { background: var(--grad-v); color: #fff; border: 0; box-shadow: 0 10px 26px -10px rgba(122, 60, 240, .9), 0 0 0 2px rgba(255, 220, 120, .9) inset; }
-.opt.prem .opt-main span { color: rgba(255,255,255,.88); }
+/* each option gets its own colour so they don't blur together. The colour says nothing about
+   which choice is right: colour-coding good/bad would give the answer away. */
+.opt.c0 { background: linear-gradient(135deg, #FF3D7F, #FF6A55 55%, #FF9A3D); box-shadow: 0 10px 24px -10px rgba(200, 20, 80, .8); }
+.opt.c1 { background: linear-gradient(135deg, #0FAF9A, #1E9BD8 60%, #3B7BF0); box-shadow: 0 10px 24px -10px rgba(20, 110, 180, .8); }
+.opt.c2 { background: linear-gradient(135deg, #7A3CF0, #B23BE0 60%, #E040B0); box-shadow: 0 10px 24px -10px rgba(122, 60, 240, .8); }
+.opt.c1 .opt-main b { text-shadow: 0 1px 2px rgba(0, 50, 90, .35); }
+.opt.c2 .opt-main b { text-shadow: 0 1px 2px rgba(60, 0, 90, .35); }
+/* diamond choices: dark and gold, clearly "special" and different from every free option */
+.opt.prem { background: linear-gradient(135deg, #2B1650, #4A2378 55%, #2B1650); color: #FFE7A3; border: 0; box-shadow: 0 10px 26px -10px rgba(60, 20, 100, .9), 0 0 0 2.5px #FFC83D inset, 0 0 22px rgba(255, 200, 61, .35); }
+.opt.prem .opt-main b { color: #FFE7A3; text-shadow: 0 1px 6px rgba(255, 200, 61, .35); }
+.opt.prem .opt-main span { color: rgba(255, 238, 200, .85); }
+.opt.prem .gem-cost { background: linear-gradient(180deg, #FFE7A3, #FFC83D); color: #3A1F00; }
 .gem-cost { background: #fff; color: #5b21b6; border: 0; }
 .opt.cant .gem-cost { color: #c81e4a; }
 

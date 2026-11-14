@@ -552,7 +552,7 @@ const Story = {
     const list = opts.filter(o => o.show === undefined || storyCond(o.show, this.st));
     layer.innerHTML = `<div class="choices-box"><div class="ch-head">${(this.st.picks || 0) < 2 ? 'Your choice · tap one' : 'What do you do?'}</div>${list.map((o, i) => {
       const prem = !!o.cost; const can = !prem || this.st.diamonds >= o.cost;
-      return `<button class="opt ${prem ? 'prem' : ''} ${can ? '' : 'cant'}" data-i="${i}" style="animation-delay:${.08 + i * .09}s"><div class="opt-main"><b>${this.fill(o.t)}</b>${o.d ? `<span>${o.d}</span>` : ''}</div>${prem ? `<div class="gem-cost">${GEM_SVG}<b>${o.cost}</b></div>` : ''}</button>`;
+      return `<button class="opt ${prem ? 'prem' : `c${i % 3}`} ${can ? '' : 'cant'}" data-i="${i}" style="animation-delay:${.08 + i * .09}s"><div class="opt-main"><b>${this.fill(o.t)}</b>${o.d ? `<span>${o.d}</span>` : ''}</div>${prem ? `<div class="gem-cost">${GEM_SVG}<b>${o.cost}</b></div>` : ''}</button>`;
     }).join('')}</div>`;
     return new Promise(res => {
       $$('.opt', layer).forEach(b => b.onclick = (e) => {
