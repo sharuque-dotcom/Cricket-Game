@@ -711,7 +711,19 @@ const Story = {
     $('[data-lib]', el).onclick = () => this.home();
     const sq = $('[data-sequel]', el); if (sq) sq.onclick = () => { Sfx.select(); this.openBook(sequel.id); };
     this.scheduleReminders();
-    if (e.no >= 3 && !s.notifyAsked && !Notify.granted()) setTimeout(() => this.askNotify(false), 2200);
+    const askBell = e.no >= 3 && !s.notifyAsked && !Notify.granted();
+    if (askBell) setTimeout(() => this.askNotify(false), 2200);
+    else if (first) this.maybeReview();
+  },
+
+  // Google Play's rating card, after finishing a chapter: at 2, 6 and 12 chapters read (across all books).
+  // No "do you like the game?" question first: Play's rules forbid steering who gets asked.
+  maybeReview() {
+    const s = this.st, read = Object.values(s.books).reduce((n, p) => n + Object.keys(p.done || {}).length, 0);
+    const at = [2, 6, 12].find(m => read >= m && !(s.reviewAt || []).includes(m));
+    if (!at || !(window.AndroidBridge && AndroidBridge.requestReview)) return;
+    s.reviewAt = (s.reviewAt || []).concat(at); this.save();
+    setTimeout(() => { try { AndroidBridge.requestReview(); } catch (e) {} }, 2600);
   },
 
   // Soft pre-prompt first; Android's own dialog only if the player says yes.

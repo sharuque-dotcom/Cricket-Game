@@ -33,6 +33,10 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+
 import org.json.JSONObject;
 
 public class MainActivity extends Activity {
@@ -258,6 +262,20 @@ public class MainActivity extends Activity {
         }));
     }
 
+    // ---------- In-app review ----------
+    // Google decides whether the card actually appears (it has its own quota), and never tells us
+    // whether the player rated, so the game just asks at good moments and moves on.
+    private void requestReview() {
+        try {
+            ReviewManager rm = ReviewManagerFactory.create(this);
+            rm.requestReviewFlow().addOnCompleteListener(task -> {
+                if (!task.isSuccessful() || isFinishing()) return;
+                ReviewInfo info = task.getResult();
+                rm.launchReviewFlow(this, info);
+            });
+        } catch (Exception ignored) {}
+    }
+
     static class Bridge {
         private final MainActivity act;
         Bridge(MainActivity a) { act = a; }
@@ -282,6 +300,9 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void showRewardedAd(String placement) { act.runOnUiThread(() -> act.showRewarded(placement)); }
+
+        @JavascriptInterface
+        public void requestReview() { act.runOnUiThread(act::requestReview); }
 
         @JavascriptInterface
         public void vibrate(int ms) {

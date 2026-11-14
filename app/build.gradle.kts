@@ -18,8 +18,8 @@ android {
         applicationId = "com.gullytoglory.game"
         minSdk = 24
         targetSdk = 36
-        versionCode = 24
-        versionName = "1.5.1"
+        versionCode = 25
+        versionName = "1.5.2"
     }
 
     signingConfigs {
@@ -57,4 +57,6 @@ android {
 dependencies {
     // Google AdMob: rewarded video ads (watch an ad -> key / diamonds)
     implementation("com.google.android.gms:play-services-ads:23.6.0")
+    // Google Play In-App Review: the rating card shown after a satisfying moment
+    implementation("com.google.android.play:review:2.0.2")
 }

@@ -17,7 +17,7 @@ Android interactive-story cricket game ("Choices for cricket"). Career Mode was 
 ## Build
 - Android SDK at `~/android-sdk` (the "Cricket-Game" cloud environment installs it). `local.properties` → `sdk.dir`.
 - `gradle assembleDebug bundleRelease --no-daemon -q --max-workers=1` (single worker avoids Maven 429s).
-- Bump `versionCode`/`versionName` in `app/build.gradle.kts` every Play upload (last: 24 / 1.5.1).
+- Bump `versionCode`/`versionName` in `app/build.gradle.kts` every Play upload (last: 25 / 1.5.2).
 - Release signing needs git-ignored `keystore.properties` + the upload `.jks` (owner keeps it; ask them to upload it). Never commit keys.
 - AdMob IDs are `resValue`s in `app/build.gradle.kts`: release = real ids (app `~5540920416`, rewarded `/5327178322`), debug = Google test ids. Never ship test ids in release or real ids in debug.
 
