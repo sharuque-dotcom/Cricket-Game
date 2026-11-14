@@ -26,6 +26,7 @@ const CAST = {
   meera_hood: { name: 'Meera Malhotra', col: '#fb7185' },   // casual Meera (grey hoodie) for off-duty scenes
   stranger: { name: 'The girl in the auto', col: '#fb7185' },
   kunal: { name: 'Kunal Sethi', col: '#f87171' },
+  kunal_wed: { name: 'Kunal Sethi', col: '#f87171' },     // Kunal in his wedding sherwani (mehendi, the wedding night)
   harsh: { name: 'Harsh Malhotra', col: '#a78bfa' },
   nani: { name: 'Nani', col: '#fbbf24' },
   jojo: { name: 'Jojo', col: '#34d399' },
@@ -671,6 +672,16 @@ const HOOD = { 2: null, 5: 'happy', 7: null, 8: null, 16: 'happy' };   // value:
 for (const no in HOOD) for (const x of EP[no - 1].nodes) {
   if (x.enter === 'meera') x.enter = 'meera_hood';
   if (x.s === 'meera') { x.s = 'meera_hood'; if (HOOD[no] && !x.ex) x.ex = HOOD[no]; }
+}
+
+// Dressed-up chapters (launch, mehendi, the wedding night): Meera stays in her lehenga. Her expression
+// portraits are hoodie pictures, so her lines there drop the expression until a bridal portrait exists.
+for (const no of [1, 11, 15]) for (const x of EP[no - 1].nodes) if (x.s === 'meera' && x.ex) delete x.ex;
+
+// Kunal wears his sherwani at the mehendi and on the wedding night, not his team jacket.
+for (const no of [11, 15]) for (const x of EP[no - 1].nodes) {
+  if (x.enter === 'kunal') x.enter = 'kunal_wed';
+  if (x.s === 'kunal') x.s = 'kunal_wed';
 }
 
 EP.forEach((e, i) => {

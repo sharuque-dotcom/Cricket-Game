@@ -169,3 +169,8 @@ Vertical 9:16. The same woman as the reference image in a heavy red and gold bri
 ```
 Vertical 9:16. The same woman as the reference image, in the same plain grey hoodie as B1 and B2 with the hood down, jeans, hands in the hoodie pocket, a calm, guarded, slightly tired expression with the hint of a small smile. Same face and hair. Half-body from the knees up. Plain flat solid pure green background (#00FF00), no shadows on the background, no green on her clothes. Vibrant, luminous digital painting, soft bright studio light with a warm rim light, rich saturated colours, clean game character art, no text.
 ```
+
+**B5 · char_meera_bride** (attach `char_meera`). For Chapter 15, when she runs from the mandap. Until it exists, she appears in the silver lehenga.
+```
+Vertical 9:16. The same woman as the reference image as a bride in a heavy red and gold bridal lehenga, gold jewellery, a maang tikka, henna on both hands, the dupatta slipping off her hair, breathless and laughing with joy, holding her skirt in one fist. Same face and hair. Half-body from the knees up. Plain flat solid pure green background (#00FF00), no shadows on the background, no green on her clothes. Vibrant, luminous digital painting, soft bright studio light with a warm rim light, rich saturated colours, clean game character art, no text.
+```
