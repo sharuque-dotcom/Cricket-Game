@@ -277,8 +277,7 @@
     "bg_tv_studio": "bg_newsroom",
     "bg_red_carpet": "ev_party",
     "bg_film_set": "ev_party",
-    "ev_real_wedding": "ev_party",
-    "char_tara_home_tearful": "char_tara_home"
+    "ev_real_wedding": "ev_party"
   },
   "fx": {
     "ev_the_call": "dust",
@@ -399,7 +398,8 @@
     "vivaan_smug": "img/char_vivaan_smug.webp",
     "nikhil": "img/char_nikhil.webp",
     "dadi": "img/char_dadi.webp",
-    "sid": "img/char_sid.webp"
+    "sid": "img/char_sid.webp",
+    "tara_home_tearful": "img/char_tara_home_tearful.webp"
   },
   "i18n": {
     "hinglish": [
