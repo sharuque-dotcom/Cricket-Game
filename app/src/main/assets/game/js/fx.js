@@ -273,6 +273,12 @@ const Parallax = (() => {
   }, { passive: true });
 })();
 
+// ---------- Analytics (Firebase, via the Android bridge; does nothing in a browser) ----------
+// Event names: lower_snake_case, max 40 chars. Google Ads optimises for first_chapter_complete.
+const Track = {
+  ev(name, params) { try { if (window.AndroidBridge && AndroidBridge.logEvent) AndroidBridge.logEvent(name, JSON.stringify(params || {})); } catch (e) {} },
+};
+
 // ---------- Rewarded ads ----------
 // On the phone: real AdMob rewarded video via AndroidBridge. In a desktop browser: a labelled test stand-in.
 const Ads = {

@@ -4,6 +4,10 @@ plugins {
     id("com.android.application")
 }
 
+// Firebase Analytics: app/google-services.json is git-ignored (public repo). With it, builds send
+// analytics; without it they still build, and the app simply skips tracking.
+if (file("google-services.json").exists()) apply(plugin = "com.google.gms.google-services")
+
 // Release signing reads ../keystore.properties (git-ignored). Without it, release builds are unsigned.
 val keystoreProps = Properties().apply {
     val f = rootProject.file("keystore.properties")
@@ -59,4 +63,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:23.6.0")
     // Google Play In-App Review: the rating card shown after a satisfying moment
     implementation("com.google.android.play:review:2.0.2")
+    // Firebase Analytics: which players finish chapters (Google Ads optimises for these, not bare installs)
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
 }

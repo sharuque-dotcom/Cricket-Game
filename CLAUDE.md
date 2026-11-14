@@ -19,6 +19,7 @@ Android interactive-story cricket game ("Choices for cricket"). Career Mode was 
 - `gradle assembleDebug bundleRelease --no-daemon -q --max-workers=1` (single worker avoids Maven 429s).
 - Bump `versionCode`/`versionName` in `app/build.gradle.kts` every Play upload (last: 25 / 1.5.2).
 - Release signing needs git-ignored `keystore.properties` + the upload `.jks` (owner keeps it; ask them to upload it). Never commit keys.
+- Firebase Analytics: `app/google-services.json` is git-ignored (public repo); the owner uploads it with the key for releases. Without it the build still works, with no tracking. Debug builds never send analytics. Events (`Track.ev` in `fx.js`): `tutorial_complete`, `chapter_start`, `chapter_complete`, `first_chapter_complete` (Google Ads conversion), `third_chapter_complete`, `moment_end`, `ad_reward`. In-app review: `Story.maybeReview()` after 2, 6, 12 chapters read.
 - AdMob IDs are `resValue`s in `app/build.gradle.kts`: release = real ids (app `~5540920416`, rewarded `/5327178322`), debug = Google test ids. Never ship test ids in release or real ids in debug.
 
 ## Testing

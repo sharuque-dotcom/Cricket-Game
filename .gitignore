@@ -10,6 +10,9 @@ local.properties
 keystore.properties
 *.jks
 
+# Firebase config (not secret, but GitHub flags the API key in a public repo; owner keeps a copy)
+app/google-services.json
+
 # Play upload bundles (build output, sent to the owner directly)
 *.aab
 *-debug.apk

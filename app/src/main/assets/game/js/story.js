@@ -221,6 +221,7 @@ const Story = {
 
   // Four plain steps. Shown once before the first chapter and any time from Settings / the pause menu.
   howTo(done) {
+    const firstTime = !this.st.seenHowTo;
     const steps = [
       ['👆', 'Tap to read on', 'Tap anywhere on the screen to see the next line. That\'s it.'],
       ['🤔', 'Make choices', 'When buttons appear, pick one. Your choices change the story and how people feel about you.'],
@@ -232,7 +233,7 @@ const Story = {
       <div class="sheet-title">How to play</div>
       ${steps.map(([ic, t, d], k) => `<div class="ht-step" style="animation-delay:${.05 + k * .07}s"><div class="ht-ic">${ic}</div><div><b>${t}</b><p>${d}</p></div></div>`).join('')}
       <button class="btn primary block" style="margin-top:16px" data-ok>Got it</button></div>`, sh => {
-      $('[data-ok]', sh).onclick = () => { closeSheet(); done && setTimeout(done, 350); };
+      $('[data-ok]', sh).onclick = () => { closeSheet(); if (firstTime) Track.ev('tutorial_complete'); done && setTimeout(done, 350); };
     });
     if (!this.st.seenHowTo) { this.st.seenHowTo = true; this.save(); }
   },
@@ -349,6 +350,7 @@ const Story = {
     const pay = () => {
       if (kind !== 'double') { this.adsLeft(kind); this.st.adUsed[kind] = (this.st.adUsed[kind] || 0) + 1; }
       give(); this.save(); this.bumpCur(); Sfx.success();
+      Track.ev('ad_reward', { kind });
     };
     const r = await Ads.show(kind, pay);
     if (btn) { btn.disabled = false; btn.innerHTML = label; }
@@ -391,7 +393,7 @@ const Story = {
     const e = this.eps()[i];
     this.ep = e; this.replay = replay; this.abort = false;
     this.labels = {}; e.nodes.forEach((n, k) => { if (n.label) this.labels[n.label] = k; });
-    if (!replay) { this.st.flagsAtStart = { ...this.st.flags }; }
+    if (!replay) { this.st.flagsAtStart = { ...this.st.flags }; Track.ev('chapter_start', { book: this.st.book, chapter: e.no }); }
     this.scene = { bg: null, left: null, right: null, speaking: null };
     this.st.cur = { ep: e.id, pos: 0, scene: this.scene, replay };
     this.save();
@@ -671,6 +673,7 @@ const Story = {
     }
     UI.pressure(false);
     const win = cfg.kind === 'chase' ? runs >= need : !out;
+    Track.ev('moment_end', { win: win ? 1 : 0, kind: cfg.kind || '' });
     await sleep(500);
     Moments.showCall(win ? (cfg.winCall || (cfg.kind === 'chase' ? 'WON IT!' : 'SURVIVED!')) : (cfg.loseCall || (cfg.kind === 'chase' ? 'SO CLOSE' : 'BOWLED')), win ? 'call-six' : 'call-out', win ? (cfg.winSub || 'The maidan erupts.') : (cfg.loseSub || 'Silence.'));
     if (win) { Burst.confetti(180); Sfx.cheer(1.4); haptic(150); } else Sfx.groan();
@@ -683,6 +686,12 @@ const Story = {
     const s = this.st, e = this.ep;
     const first = !s.done[e.id];
     s.done[e.id] = true; s.cur = null;
+    if (first) {
+      const read = Object.values(s.books).reduce((n, p) => n + Object.keys(p.done || {}).length, 0);
+      Track.ev('chapter_complete', { book: s.book, chapter: e.no, read });
+      if (read === 1) Track.ev('first_chapter_complete', { book: s.book });
+      if (read === 3) Track.ev('third_chapter_complete', { book: s.book });
+    }
     if (first) s.diamonds += 2;
     this.save();
     const E = this.eps(), nextIdx = E.findIndex(x => x.id === e.id) + 1;
