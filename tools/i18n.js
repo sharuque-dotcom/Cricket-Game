@@ -76,6 +76,8 @@ if (cmd === 'extract') {
       const T = readLang(l, k); if (!T) { none.push(k); continue; }
       const miss = S[k].filter(s => !T[s]);
       for (const s of S[k]) if (T[s] && tokens(s) !== tokens(T[s])) { bad++; console.log(`  ${l}/${k}: tokens differ\n    EN: ${s}\n    ${l.toUpperCase()}: ${T[s]}`); }
+      // English-letter languages: no stray Devanagari, Bengali, Malayalam or Cyrillic look-alike letters
+      if (/glish$/.test(l)) for (const s of S[k]) if (T[s] && /[\u0400-\u04FF\u0900-\u0DFF]/.test(T[s])) { bad++; console.log(`  ${l}/${k}: non-Latin letter in: ${T[s]}`); }
       (miss.length ? part : done).push(miss.length ? `${k} (${miss.length} missing)` : k);
       if (miss.length && process.env.SHOW) miss.forEach(m => console.log(`    missing ${l}/${k}: ${m}`));
     }
