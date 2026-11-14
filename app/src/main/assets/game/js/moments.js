@@ -563,12 +563,15 @@ const Moments = (() => {
   }
 
   function showCall(text, cls, sub) {
+    const m = /^(\d+) RUNS?$/.exec(text);
+    text = m ? t(m[1] === '1' ? '1 RUN' : '{n} RUNS', { n: m[1] }) : t(text);
+    if (sub) sub = t(sub);
     callEl.innerHTML = `<div class="big go ${cls}">${text}</div>${sub ? `<div class="subcall">${sub}</div>` : ''}`;
   }
   function clearCall() { callEl.innerHTML = ''; }
 
   function showTiming(label, col) {
-    timingEl.textContent = label; timingEl.style.color = col; timingEl.classList.remove('on'); void timingEl.offsetWidth; timingEl.classList.add('on');
+    timingEl.textContent = t(label); timingEl.style.color = col; timingEl.classList.remove('on'); void timingEl.offsetWidth; timingEl.classList.add('on');
     setTimeout(() => timingEl.classList.remove('on'), 900);
   }
 
@@ -806,7 +809,7 @@ const Moments = (() => {
       vb.innerHTML = '<div class="tlbl">TIME</div><div class="ttrack"><div class="tz"></div><div class="tm"></div></div>';
       root.appendChild(vb);
       const spin = o.bowlerType === 'spin';
-      if (o.simple) controls.innerHTML = `<div class="shots simple locked"><button class="shot hitbtn" data-id="auto"><span class="si">🏏</span>HIT!</button></div>`;
+      if (o.simple) controls.innerHTML = `<div class="shots simple locked"><button class="shot hitbtn" data-id="auto"><span class="si">🏏</span>${t('HIT!')}</button></div>`;
       else controls.innerHTML = `
         <div class="shots locked">${SHOT_DEFS.map(s => `<button class="shot" data-id="${s.id}"><span class="si">${s.id === 'pull' && spin ? '🧹' : s.icon}</span>${s.id === 'pull' && spin ? s.spinLabel : s.label}</button>`).join('')}</div>`;
     } else {

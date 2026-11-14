@@ -183,8 +183,33 @@ const Content = (() => {
     return Promise.all(jobs);
   }
 
+  // Translations of downloaded chapters: manifest.i18n = { hi: [{ ep, file, rev }], ... }.
+  // Each file is { "<English line>": "<translated line>" }, cached per language for offline play.
+  async function loadLang(l) {
+    if (!l || l === 'en') return;
+    const KEY = 'gg_i18n_' + l;
+    let cache = {}; try { cache = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+    const add = () => { const story = {}; for (const ep in cache) story[ep] = cache[ep].map; I18N.add(l, { story }); };
+    add();
+    const d = read(), list = d && d.manifest && d.manifest.i18n && d.manifest.i18n[l];
+    if (!Array.isArray(list)) return;
+    let changed = false;
+    for (const x of list) {
+      if (!x || !RE_NAME.test(x.ep || '') || !/^[a-z0-9_\-/]+\.json$/i.test(x.file || '') || x.file.includes('..')) continue;
+      if (cache[x.ep] && cache[x.ep].rev === (x.rev || 0)) continue;
+      try {
+        const { json } = await getJson(x.file, x.rev || 1);
+        const map = {};
+        for (const k in json) if (typeof json[k] === 'string' && typeof k === 'string') map[k] = clean(json[k]);
+        cache[x.ep] = { rev: x.rev || 0, map }; changed = true;
+      } catch (e) {}
+    }
+    if (changed) { try { localStorage.setItem(KEY, JSON.stringify(cache)); } catch (e) {} add(); }
+  }
+
   return {
     validate, clean,
+    lang: loadLang,
     // Apply whatever was saved last time. Synchronous, so the episode list is right even offline.
     init() { const d = read(); if (d) { try { apply(d); } catch (e) { console.warn('content cache', e); } } },
 
@@ -219,6 +244,7 @@ const Content = (() => {
         write(d);
         const added = apply(d);
         await Promise.race([loadArt(cleanMan, b), sleep(3000)]);
+        await Promise.race([loadLang(I18N.lang), sleep(3000)]);
         return added;
       })().catch(e => { console.warn('content refresh', e); return []; }).finally(() => { busy = null; });
       return busy;
@@ -242,7 +268,7 @@ const Content = (() => {
       if (!read) return;
       const eps = EPISODES.filter(e => added.includes(e.id));
       const bookOf = (e) => (BOOKS.find(b => b.id === (e.book || 'b1')) || {}).title || '';
-      toast(eps.length === 1 ? `New chapter: ${bookOf(eps[0])}, Chapter ${eps[0].no}. ${eps[0].title}` : `${eps.length} new chapters are here`);
+      toast(eps.length === 1 ? t('New chapter: {book}, Chapter {n}. {title}', { book: I18N.s('_common', bookOf(eps[0])), n: eps[0].no, title: I18N.s(eps[0].id, eps[0].title) }) : t('{n} new chapters are here', { n: eps.length }));
     },
   };
 })();

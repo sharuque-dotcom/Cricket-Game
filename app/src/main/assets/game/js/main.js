@@ -58,7 +58,7 @@ window.GG = {
     try { if (Story.back()) return 'handled'; } catch (e) {}
     const now = Date.now();
     if (now - UI.backAt < 1800) return 'exit';
-    UI.backAt = now; toast('Press back again to exit. Progress is saved.');
+    UI.backAt = now; toast(t('Press back again to exit. Progress is saved.'));
     return 'handled';
   },
   adResult(placement, result) { Ads.result(placement, result); },
@@ -72,6 +72,8 @@ window.GG = {
 (async function boot() {
   try { if (localStorage.getItem('gg_muted')) Sfx.setMuted(true); } catch (e) {}
   Content.init(); // chapters downloaded on an earlier launch
+  await I18N.init(); // saved language (its file loads before the first screen)
+  Content.lang(I18N.lang);
   let fresh = null; const check = Content.refresh(true).then(a => { fresh = a; });
   try { await Promise.race([Promise.all([document.fonts.ready, Art.load(), Promise.race([check, sleep(2500)])]), sleep(4000)]); } catch (e) {}
   Art.applyFallbacks();
