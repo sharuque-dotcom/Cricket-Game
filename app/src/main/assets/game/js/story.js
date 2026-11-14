@@ -239,7 +239,7 @@ const Story = {
       const el = UI.show(`<div class="screen story-home lang-page"><div class="scroll pad">
         <div class="brand big" style="justify-content:center;margin-top:28px"><span class="brand-ball"></span><b>Gully <i>to</i> Glory</b></div>
         <div class="np-h" style="text-align:center;margin-top:22px">Choose your language</div>
-        <div class="np-sub" style="text-align:center">Bhasha chuno · भाषा चुनें · ভাষা বেছে নিন · ഭാഷ തിരഞ്ഞെടുക്കുക</div>${html}</div></div>`);
+        <div class="np-sub" style="text-align:center">Bhasha chuno · Bhasha thiranjedukkoo · Bhasha bechhe nao</div>${html}</div></div>`);
       $$('[data-l]', el).forEach(b => b.onclick = () => choose(b.dataset.l));
     } else {
       openSheet(`<div class="pad"><div class="sheet-title">${t('Language')}</div>${html}</div>`, sh => $$('[data-l]', sh).forEach(b => b.onclick = () => choose(b.dataset.l)));

@@ -372,5 +372,28 @@
     "raghav": "img/char_raghav.webp",
     "raghav_angry": "img/char_raghav_angry.webp",
     "vikrant_blue": "img/char_vikrant_blue.webp"
+  },
+  "i18n": {
+    "hinglish": [
+      {
+        "ep": "ep1",
+        "file": "i18n/hinglish/ep1.json",
+        "rev": 1
+      }
+    ],
+    "manglish": [
+      {
+        "ep": "ep1",
+        "file": "i18n/manglish/ep1.json",
+        "rev": 1
+      }
+    ],
+    "banglish": [
+      {
+        "ep": "ep1",
+        "file": "i18n/banglish/ep1.json",
+        "rev": 1
+      }
+    ]
   }
 }

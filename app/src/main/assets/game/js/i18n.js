@@ -1,4 +1,4 @@
-// Languages. English is built in; each other language is one file, js/lang/<id>.js, loaded only when chosen.
+// Languages: English, Hinglish, Manglish, Banglish. English is built in; each other language is one file, js/lang/<id>.js, loaded only when chosen.
 // Lookups are keyed by the English text itself, so a line that is later edited in English simply shows in
 // English until it is translated again (never a wrong translation).
 //   t('Chapter {n}', { n: 3 })   -> UI phrase
@@ -6,9 +6,10 @@
 const LANGS = [
   { id: 'en', native: 'English', name: 'English' },
   { id: 'hinglish', native: 'Hinglish', name: 'Hindi in English letters', locale: 'hi-Latn', latin: true },
-  { id: 'hi', native: 'हिन्दी', name: 'Hindi' },
-  { id: 'bn', native: 'বাংলা', name: 'Bengali' },
-  { id: 'ml', native: 'മലയാളം', name: 'Malayalam' },
+  { id: 'manglish', native: 'Manglish', name: 'Malayalam in English letters', locale: 'ml-Latn', latin: true },
+  { id: 'banglish', native: 'Banglish', name: 'Bengali in English letters', locale: 'bn-Latn', latin: true },
+  // Hindi/Bengali/Malayalam in their own scripts are translated (i18n/archive/) but switched off: players
+  // preferred the English-letter versions. To bring one back, add it here and to LANGS in tools/i18n.js.
 ];
 const LANG_KEY = 'gg_lang';
 
