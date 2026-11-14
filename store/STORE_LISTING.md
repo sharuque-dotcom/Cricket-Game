@@ -18,21 +18,15 @@ Live a cricketer's life: from a chai stall to the national team. Your choices.
 ```
 From a chai stall in a small town to the national team. Every choice is yours.
 
-GULLY TO GLORY is a cricket story game where your life off the field decides how you play on it.
+GULLY TO GLORY is an interactive story game about cricket, family, love and the price of a dream. You are the hero, and every choice is yours.
 
-📖 STORY MODE — A CRICKET DRAMA YOU PLAY
-• Episode-by-episode drama with cliffhangers: family debts, a rival with a rich father, a coach who believes in you, and a girl with a red pen.
-• Make choices that people remember. Spend diamonds on special moments.
-• Play the big moments yourself: six balls against your rival, eleven to win off the last over.
+📖 STORIES YOU PLAY
+• Chapter-by-chapter drama with cliffhangers: family debts, a rival with a rich father, a coach who believes in you, and a girl with a red pen.
+• Make choices people remember. Spend diamonds on special moments, or take the free path.
+• More books on the shelf: The Blue Cap, a crime thriller and a Bollywood romance. New chapters arrive without an app update.
 
-🏏 CAREER MODE — FROM GULLY TO GLORY
-• Plan every week: nets, gym, rest, family, nights out, sponsor shoots.
-• 20+ stats that really matter: form, confidence, fatigue, injury, money, family, reputation, integrity.
-• Climb every level: club cricket, Under-19, first-class, one-day, T20, the franchise league auction, and finally your country's cap in T20Is, ODIs and Tests.
-• Face bribes, bookies, agents, trolls and selectors. Some choices end careers.
-
-⚡ KEY MOMENTS
-Read the length, pick your shot, time it on the meter. As a bowler, choose your delivery and hit your spot. Pressure, form and focus change everything.
+🏏 PLAYABLE CRICKET MOMENTS
+Six balls against your rival. Eleven to win off the last over. Tap HIT when it glows green. Easy to learn, hard to forget.
 
 🎨 Hand-painted art, cinematic scenes, living backgrounds and sound.
 

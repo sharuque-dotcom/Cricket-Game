@@ -116,7 +116,7 @@ const Burst = (() => {
 })();
 
 // ---------- Optional painted art ----------
-// Drop images into game/img/ with these names (jpg). Missing ones fall back to the procedural look.
+// Drop images into game/img/ with these names (webp). Missing ones fall back to the procedural look.
 const ART_NAMES = ['title', 'intro', 'ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'bd_maidan', 'bd_stadium_day', 'bd_stadium_night',
   'ev_stall', 'ev_pandey', 'ev_rival', 'ev_bribe', 'ev_maa', 'ev_bookie', 'ev_party', 'ev_call', 'end_glory', 'end_stall',
   'bg_home', 'bg_street_dusk', 'bg_club_match', 'bg_clubhouse_wall', 'bg_mandi_night', 'cover_fixer', 'cover_bollywood',
@@ -128,7 +128,7 @@ const Art = {
       const im = new Image();
       im.onload = () => { this.imgs[n] = im; res(); };
       im.onerror = () => res();
-      im.src = 'img/' + n + '.jpg';
+      im.src = 'img/' + n + '.webp';
     })).concat(['papa', 'pinky', 'pandey', 'vikrant', 'neha', 'safari', 'ramesh', 'goon',
       'papa_angry', 'papa_sad', 'neha_happy', 'neha_serious', 'neha_worried', 'vikrant_angry', 'pandey_proud',
       'chauhan', 'selector', 'maa', 'sunny', 'rocky', 'tara', 'rathore',
@@ -137,7 +137,7 @@ const Art = {
     }))));
   },
   has(n) { return !!this.imgs[n]; },
-  url(n) { return this.imgs[n] ? this.imgs[n].getAttribute('src') : 'img/' + n + '.jpg'; },
+  url(n) { return this.imgs[n] ? this.imgs[n].getAttribute('src') : 'img/' + n + '.webp'; },
   // new scenes borrow the closest existing painting until their own art is added
   applyFallbacks() { const F = typeof BG_FALLBACK !== 'undefined' ? BG_FALLBACK : {}; for (const k in F) if (!this.imgs[k] && this.imgs[F[k]]) this.imgs[k] = this.imgs[F[k]]; },
   // full-bleed background layer with slow Ken Burns drift
@@ -221,7 +221,7 @@ const SceneFX = (() => {
     scan(root) {
       $$('.art-bg, .art-photo', root).forEach(bg => {
         if (bg.dataset.fxDone) return; bg.dataset.fxDone = 1;
-        const m = (bg.style.backgroundImage.match(/img\/([a-z0-9_]+)\.jpg/) || [])[1];
+        const m = (bg.style.backgroundImage.match(/img\/([a-z0-9_]+)\.webp/) || [])[1];
         const mode = FX_FOR_ART[m] || 'dust';
         const anchor = bg.nextElementSibling && bg.nextElementSibling.classList.contains('art-shade') ? bg.nextElementSibling : bg;
         anchor.insertAdjacentHTML('afterend', SceneFX.canvas(mode) + SceneFX.rays(m));
@@ -273,19 +273,27 @@ const Parallax = (() => {
   }, { passive: true });
 })();
 
+// ---------- Analytics (Firebase, via the Android bridge; does nothing in a browser) ----------
+// Event names: lower_snake_case, max 40 chars. Google Ads optimises for first_chapter_complete.
+const Track = {
+  ev(name, params) { try { if (window.AndroidBridge && AndroidBridge.logEvent) AndroidBridge.logEvent(name, JSON.stringify(params || {})); } catch (e) {} },
+};
+
 // ---------- Rewarded ads ----------
 // On the phone: real AdMob rewarded video via AndroidBridge. In a desktop browser: a labelled test stand-in.
 const Ads = {
-  pending: {}, timers: {},
+  pending: {}, timers: {}, late: {},
   native() { return !!(window.AndroidBridge && AndroidBridge.showRewardedAd); },
   // resolves to 'rewarded' | 'skipped' | 'unavailable'
-  show(placement) {
+  // onLate: called if the game gave up waiting but the reward still arrives afterwards (it is never lost)
+  show(placement, onLate) {
     return new Promise(resolve => {
       if (this.native()) {
         this.pending[placement] = resolve;
+        delete this.late[placement];
         try { AndroidBridge.showRewardedAd(placement); } catch (e) { this.result(placement, 'unavailable'); return; }
         // only give up if the ad never opened; once it is on screen we wait for its result
-        this.timers[placement] = setTimeout(() => this.result(placement, 'unavailable'), 20000);
+        this.timers[placement] = setTimeout(() => { if (onLate) this.late[placement] = onLate; this.result(placement, 'unavailable'); }, 45000);
         return;
       }
       const ov = document.createElement('div'); ov.className = 'fake-ad';
@@ -298,12 +306,16 @@ const Ads = {
   result(placement, r) {
     this.shown(placement);
     try { if (this.native() && AndroidBridge.takeAdResult) AndroidBridge.takeAdResult(placement); } catch (e) {}
-    const f = this.pending[placement]; if (f) { delete this.pending[placement]; f(r); }
+    const f = this.pending[placement];
+    if (f) { delete this.pending[placement]; f(r); return; }
+    // we had stopped waiting, but the ad finished after all: still pay out
+    const late = this.late[placement];
+    if (late) { delete this.late[placement]; if (r === 'rewarded') late(); }
   },
   // back from the ad screen: pick up any result the app stored while we were paused
   collect() {
     if (!this.native() || !AndroidBridge.takeAdResult) return;
-    Object.keys(this.pending).forEach(p => { let r = ''; try { r = AndroidBridge.takeAdResult(p); } catch (e) {} if (r) this.result(p, r); });
+    Object.keys(this.pending).concat(Object.keys(this.late)).forEach(p => { let r = ''; try { r = AndroidBridge.takeAdResult(p); } catch (e) {} if (r) this.result(p, r); });
   },
 };
 

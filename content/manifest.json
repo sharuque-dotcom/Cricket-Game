@@ -16,8 +16,8 @@
     },
     {
       "id": "b3",
-      "live": false,
-      "genre": "Romance \u00b7 Contract marriage",
+      "live": true,
+      "genre": "Romance · Contract marriage",
       "blurb": "She's a superstar. You're the national captain. One year, one contract, one rule: don't fall in love.",
       "rel": {
         "tara": "Tara",
@@ -277,8 +277,7 @@
     "bg_tv_studio": "bg_newsroom",
     "bg_red_carpet": "ev_party",
     "bg_film_set": "ev_party",
-    "ev_real_wedding": "ev_party",
-    "char_tara_home": "char_tara"
+    "ev_real_wedding": "ev_party"
   },
   "fx": {
     "ev_the_call": "dust",
@@ -314,7 +313,11 @@
   "day": [
     "bg_academy_nets",
     "ev_blue_cap",
-    "bg_airport_gate"
+    "bg_airport_gate",
+    "bg_hotel_suite",
+    "bg_goa_beach",
+    "bg_kapoor_mansion",
+    "ev_real_wedding"
   ],
   "amb": {
     "ev_the_call": "stall",
@@ -337,25 +340,36 @@
     "bg_rajgarh_festival": "stall"
   },
   "art": {
-    "bg_academy_nets": "img/bg_academy_nets.jpg",
-    "bg_academy_room": "img/bg_academy_room.jpg",
-    "bg_airport_gate": "img/bg_airport_gate.jpg",
-    "bg_awards_gala": "img/bg_awards_gala.jpg",
-    "bg_brand_shoot": "img/bg_brand_shoot.jpg",
-    "bg_delhi_night": "img/bg_delhi_night.jpg",
-    "bg_intl_dressing": "img/bg_intl_dressing.jpg",
-    "bg_intl_stadium": "img/bg_intl_stadium.jpg",
-    "bg_overseas_hotel": "img/bg_overseas_hotel.jpg",
-    "bg_physio_room": "img/bg_physio_room.jpg",
-    "bg_press_room": "img/bg_press_room.jpg",
-    "bg_rajgarh_festival": "img/bg_rajgarh_festival.jpg",
-    "bg_rooftop_lounge": "img/bg_rooftop_lounge.jpg",
-    "bg_stadium_tunnel": "img/bg_stadium_tunnel.jpg",
-    "cover_bluecap": "img/cover_bluecap.jpg",
-    "ev_blue_cap": "img/ev_blue_cap.jpg",
-    "ev_last_over": "img/ev_last_over.jpg",
-    "ev_the_call": "img/ev_the_call.jpg",
-    "ev_viral": "img/ev_viral.jpg"
+    "bg_academy_nets": "img/bg_academy_nets.webp",
+    "bg_academy_room": "img/bg_academy_room.webp",
+    "bg_airport_gate": "img/bg_airport_gate.webp",
+    "bg_awards_gala": "img/bg_awards_gala.webp",
+    "bg_brand_shoot": "img/bg_brand_shoot.webp",
+    "bg_delhi_night": "img/bg_delhi_night.webp",
+    "bg_intl_dressing": "img/bg_intl_dressing.webp",
+    "bg_intl_stadium": "img/bg_intl_stadium.webp",
+    "bg_overseas_hotel": "img/bg_overseas_hotel.webp",
+    "bg_physio_room": "img/bg_physio_room.webp",
+    "bg_press_room": "img/bg_press_room.webp",
+    "bg_rajgarh_festival": "img/bg_rajgarh_festival.webp",
+    "bg_rooftop_lounge": "img/bg_rooftop_lounge.webp",
+    "bg_stadium_tunnel": "img/bg_stadium_tunnel.webp",
+    "cover_bluecap": "img/cover_bluecap.webp",
+    "ev_blue_cap": "img/ev_blue_cap.webp",
+    "ev_last_over": "img/ev_last_over.webp",
+    "ev_the_call": "img/ev_the_call.webp",
+    "ev_viral": "img/ev_viral.webp",
+    "ev_fake_wedding": "img/ev_fake_wedding.webp",
+    "bg_seaface_flat": "img/bg_seaface_flat.webp",
+    "ev_kiss_cam": "img/ev_kiss_cam.webp",
+    "ev_real_wedding": "img/ev_real_wedding.webp",
+    "bg_film_set": "img/bg_film_set.webp",
+    "bg_hotel_suite": "img/bg_hotel_suite.webp",
+    "bg_kapoor_mansion": "img/bg_kapoor_mansion.webp",
+    "bg_goa_beach": "img/bg_goa_beach.webp",
+    "bg_palace_wedding": "img/bg_palace_wedding.webp",
+    "bg_red_carpet": "img/bg_red_carpet.webp",
+    "bg_tv_studio": "img/bg_tv_studio.webp"
   },
   "chars": {
     "imran": "img/char_imran.webp",
@@ -371,6 +385,43 @@
     "physio": "img/char_physio.webp",
     "raghav": "img/char_raghav.webp",
     "raghav_angry": "img/char_raghav_angry.webp",
-    "vikrant_blue": "img/char_vikrant_blue.webp"
+    "vikrant_blue": "img/char_vikrant_blue.webp",
+    "tara_home": "img/char_tara_home.webp",
+    "tara_home_happy": "img/char_tara_home_happy.webp",
+    "tara_home_angry": "img/char_tara_home_angry.webp",
+    "tara_happy": "img/char_tara_happy.webp",
+    "tara_angry": "img/char_tara_angry.webp",
+    "tara_tearful": "img/char_tara_tearful.webp",
+    "sushma": "img/char_sushma.webp",
+    "sushma_cold": "img/char_sushma_cold.webp",
+    "vivaan": "img/char_vivaan.webp",
+    "vivaan_smug": "img/char_vivaan_smug.webp",
+    "nikhil": "img/char_nikhil.webp",
+    "dadi": "img/char_dadi.webp",
+    "sid": "img/char_sid.webp",
+    "tara_home_tearful": "img/char_tara_home_tearful.webp"
+  },
+  "i18n": {
+    "hinglish": [
+      {
+        "ep": "ep1",
+        "file": "i18n/hinglish/ep1.json",
+        "rev": 1
+      }
+    ],
+    "manglish": [
+      {
+        "ep": "ep1",
+        "file": "i18n/manglish/ep1.json",
+        "rev": 1
+      }
+    ],
+    "banglish": [
+      {
+        "ep": "ep1",
+        "file": "i18n/banglish/ep1.json",
+        "rev": 1
+      }
+    ]
   }
 }

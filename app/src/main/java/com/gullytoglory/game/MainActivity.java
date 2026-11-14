@@ -33,12 +33,23 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.json.JSONObject;
+import java.util.Iterator;
 
 public class MainActivity extends Activity {
     private WebView web;
     private RewardedAd rewarded;
     private boolean adLoading = false;
+    // true while a rewarded ad is on screen (see onPause)
+    private boolean adOpen = false;
+    // null when the build has no google-services.json
+    private FirebaseAnalytics analytics;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -48,7 +59,7 @@ public class MainActivity extends Activity {
         w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         web = new WebView(this);
-        web.setBackgroundColor(Color.parseColor("#0B0A12"));
+        web.setBackgroundColor(Color.parseColor("#FFF4EC"));
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
@@ -62,6 +73,7 @@ public class MainActivity extends Activity {
         web.setWebViewClient(new WebViewClient());
         web.setWebChromeClient(new WebChromeClient());
         web.addJavascriptInterface(new Bridge(this), "AndroidBridge");
+        initAnalytics();
         MobileAds.initialize(this, status -> loadRewarded());
         NotifyReceiver.ensureChannel(this);
         setContentView(web);
@@ -117,8 +129,12 @@ public class MainActivity extends Activity {
     protected void onPause() {
         super.onPause();
         web.evaluateJavascript("window.GG && GG.onPause && GG.onPause()", null);
-        web.onPause();
-        web.pauseTimers();
+        // pauseTimers() freezes EVERY WebView in the app, including the one AdMob plays the ad in:
+        // the ad turns black and never reports the reward. Leave timers running while an ad is up.
+        if (!adOpen) {
+            web.onPause();
+            web.pauseTimers();
+        }
     }
 
     @Override
@@ -227,17 +243,21 @@ public class MainActivity extends Activity {
         final boolean[] done = { false };
         RewardedAd ad = rewarded;
         rewarded = null;
+        adOpen = true;
+        web.resumeTimers(); // in case they were paused earlier
         ad.setFullScreenContentCallback(new FullScreenContentCallback() {
             @Override public void onAdShowedFullScreenContent() {
                 callJs("window.GG && GG.adShown && GG.adShown(" + JSONObject.quote(placement) + ")");
             }
             @Override public void onAdDismissedFullScreenContent() {
+                adOpen = false;
                 main.postDelayed(() -> {
                     if (!done[0]) { done[0] = true; sendAdResult(placement, earned[0] ? "rewarded" : "skipped"); }
                 }, 1500);
                 loadRewarded();
             }
             @Override public void onAdFailedToShowFullScreenContent(AdError e) {
+                adOpen = false;
                 if (!done[0]) { done[0] = true; sendAdResult(placement, "unavailable"); }
                 loadRewarded();
             }
@@ -246,6 +266,43 @@ public class MainActivity extends Activity {
             earned[0] = true;
             if (!done[0]) { done[0] = true; sendAdResult(placement, "rewarded"); }
         }));
+    }
+
+    // ---------- In-app review ----------
+    // Google decides whether the card actually appears (it has its own quota), and never tells us
+    // whether the player rated, so the game just asks at good moments and moves on.
+    private void requestReview() {
+        try {
+            ReviewManager rm = ReviewManagerFactory.create(this);
+            rm.requestReviewFlow().addOnCompleteListener(task -> {
+                if (!task.isSuccessful() || isFinishing()) return;
+                ReviewInfo info = task.getResult();
+                rm.launchReviewFlow(this, info);
+            });
+        } catch (Exception ignored) {}
+    }
+
+    // ---------- Analytics ----------
+    private void initAnalytics() {
+        try {
+            analytics = FirebaseAnalytics.getInstance(this);
+            // debug builds (your test phone) must not pollute the real numbers
+            boolean debuggable = (getApplicationInfo().flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+            analytics.setAnalyticsCollectionEnabled(!debuggable);
+        } catch (Exception e) { analytics = null; }
+    }
+
+    void logEvent(String name, String paramsJson) {
+        if (analytics == null || name == null || !name.matches("[a-z][a-z0-9_]{0,39}")) return;
+        Bundle b = new Bundle();
+        try {
+            JSONObject o = new JSONObject(paramsJson == null || paramsJson.isEmpty() ? "{}" : paramsJson);
+            for (Iterator<String> it = o.keys(); it.hasNext(); ) {
+                String k = it.next(); Object v = o.get(k);
+                if (v instanceof Number) b.putLong(k, ((Number) v).longValue()); else b.putString(k, String.valueOf(v));
+            }
+        } catch (Exception ignored) {}
+        analytics.logEvent(name, b);
     }
 
     static class Bridge {
@@ -272,6 +329,12 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void showRewardedAd(String placement) { act.runOnUiThread(() -> act.showRewarded(placement)); }
+
+        @JavascriptInterface
+        public void logEvent(String name, String paramsJson) { act.logEvent(name, paramsJson); }
+
+        @JavascriptInterface
+        public void requestReview() { act.runOnUiThread(act::requestReview); }
 
         @JavascriptInterface
         public void vibrate(int ms) {

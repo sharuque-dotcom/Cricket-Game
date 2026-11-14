@@ -563,12 +563,15 @@ const Moments = (() => {
   }
 
   function showCall(text, cls, sub) {
+    const m = /^(\d+) RUNS?$/.exec(text);
+    text = m ? t(m[1] === '1' ? '1 RUN' : '{n} RUNS', { n: m[1] }) : t(text);
+    if (sub) sub = t(sub);
     callEl.innerHTML = `<div class="big go ${cls}">${text}</div>${sub ? `<div class="subcall">${sub}</div>` : ''}`;
   }
   function clearCall() { callEl.innerHTML = ''; }
 
   function showTiming(label, col) {
-    timingEl.textContent = label; timingEl.style.color = col; timingEl.classList.remove('on'); void timingEl.offsetWidth; timingEl.classList.add('on');
+    timingEl.textContent = t(label); timingEl.style.color = col; timingEl.classList.remove('on'); void timingEl.offsetWidth; timingEl.classList.add('on');
     setTimeout(() => timingEl.classList.remove('on'), 900);
   }
 
@@ -598,7 +601,9 @@ const Moments = (() => {
       placeZone(0);
       mark.style.bottom = '0%';
       const tb = (19 - del.zb) / (19 / del.T);
-      st = { del, phase: 'runup', gt: 0, trail: [], ball: null, tb, hintAt: tb * ctx.readFrac, done: false };
+      st = { del, phase: 'runup', gt: 0, trail: [], ball: null, tb, hintAt: opt.simple ? 0 : tb * ctx.readFrac, done: false };
+      const hitBtn = opt.simple ? shotsEl.querySelector('.hitbtn') : null;
+      if (hitBtn) hitBtn.classList.remove('zone');
       bowler.phase = 'run'; bowler.t = 0; bowler.dur = .95; bowler.z = 31;
       let tapped = null;
       let after = null;
@@ -614,6 +619,9 @@ const Moments = (() => {
 
       function decide(shot, t) {
         let tq;
+        // one-button mode: play whichever shot suits this length best
+        if (shot === 'auto') { const li = LEN_IDX[del.len] ?? 2; shot = ['defend', 'drive', 'pull'].reduce((a, b) => MATCHUP[b][li] > MATCHUP[a][li] ? b : a); }
+        if (hitBtn) hitBtn.classList.remove('zone');
         const dtm = t - zc(t);
         if (shot === 'leave') tq = 0;
         else {
@@ -643,6 +651,7 @@ const Moments = (() => {
           st.gt += dt / scale;
           mark.style.bottom = clamp(st.gt / span * 100, 0, 100) + '%';
           if (!tapped) placeZone(st.gt);
+          if (hitBtn && !tapped) hitBtn.classList.toggle('zone', Math.abs(st.gt - zc(st.gt)) <= w * 1.1);
           if (st.gt >= st.hintAt && zone.style.opacity !== '1') zone.style.opacity = 1;
           const p = ballAt(del, st.gt);
           if (!st.bounced && st.gt >= tb) { st.bounced = true; Sfx.bounce(); }
@@ -800,7 +809,8 @@ const Moments = (() => {
       vb.innerHTML = '<div class="tlbl">TIME</div><div class="ttrack"><div class="tz"></div><div class="tm"></div></div>';
       root.appendChild(vb);
       const spin = o.bowlerType === 'spin';
-      controls.innerHTML = `
+      if (o.simple) controls.innerHTML = `<div class="shots simple locked"><button class="shot hitbtn" data-id="auto"><span class="si">🏏</span>${t('HIT!')}</button></div>`;
+      else controls.innerHTML = `
         <div class="shots locked">${SHOT_DEFS.map(s => `<button class="shot" data-id="${s.id}"><span class="si">${s.id === 'pull' && spin ? '🧹' : s.icon}</span>${s.id === 'pull' && spin ? s.spinLabel : s.label}</button>`).join('')}</div>`;
     } else {
       controls.innerHTML = `<div class="bhint tiny" style="text-align:center;margin-bottom:8px;min-height:16px"></div>
