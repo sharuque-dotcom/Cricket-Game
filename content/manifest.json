@@ -400,7 +400,8 @@
     "bg_owner_office": "bg_hotel_lobby",
     "bg_balcony_night": "bg_street_dusk",
     "bg_mehendi": "ev_party",
-    "bg_mandap": "bd_stadium_night"
+    "bg_mandap": "bd_stadium_night",
+    "ev_runaway_bride": "bd_stadium_night"
   },
   "fx": {
     "ev_the_call": "dust",
@@ -442,7 +443,8 @@
     "bg_owner_office": "bokeh",
     "bg_balcony_night": "bokeh",
     "bg_mehendi": "embers+bokeh",
-    "bg_mandap": "bokeh"
+    "bg_mandap": "bokeh",
+    "ev_runaway_bride": "bokeh"
   },
   "day": [
     "bg_academy_nets",
@@ -778,6 +780,86 @@
         "ep": "bw16",
         "file": "i18n/hinglish/bw16.json",
         "rev": 1
+      },
+      {
+        "ep": "od1",
+        "file": "i18n/hinglish/od1.json",
+        "rev": 1
+      },
+      {
+        "ep": "od2",
+        "file": "i18n/hinglish/od2.json",
+        "rev": 1
+      },
+      {
+        "ep": "od3",
+        "file": "i18n/hinglish/od3.json",
+        "rev": 1
+      },
+      {
+        "ep": "od4",
+        "file": "i18n/hinglish/od4.json",
+        "rev": 1
+      },
+      {
+        "ep": "od5",
+        "file": "i18n/hinglish/od5.json",
+        "rev": 1
+      },
+      {
+        "ep": "od6",
+        "file": "i18n/hinglish/od6.json",
+        "rev": 1
+      },
+      {
+        "ep": "od7",
+        "file": "i18n/hinglish/od7.json",
+        "rev": 1
+      },
+      {
+        "ep": "od8",
+        "file": "i18n/hinglish/od8.json",
+        "rev": 1
+      },
+      {
+        "ep": "od9",
+        "file": "i18n/hinglish/od9.json",
+        "rev": 1
+      },
+      {
+        "ep": "od10",
+        "file": "i18n/hinglish/od10.json",
+        "rev": 1
+      },
+      {
+        "ep": "od11",
+        "file": "i18n/hinglish/od11.json",
+        "rev": 1
+      },
+      {
+        "ep": "od12",
+        "file": "i18n/hinglish/od12.json",
+        "rev": 1
+      },
+      {
+        "ep": "od13",
+        "file": "i18n/hinglish/od13.json",
+        "rev": 1
+      },
+      {
+        "ep": "od14",
+        "file": "i18n/hinglish/od14.json",
+        "rev": 1
+      },
+      {
+        "ep": "od15",
+        "file": "i18n/hinglish/od15.json",
+        "rev": 1
+      },
+      {
+        "ep": "od16",
+        "file": "i18n/hinglish/od16.json",
+        "rev": 1
       }
     ],
     "manglish": [
@@ -1020,6 +1102,86 @@
         "ep": "bw16",
         "file": "i18n/manglish/bw16.json",
         "rev": 1
+      },
+      {
+        "ep": "od1",
+        "file": "i18n/manglish/od1.json",
+        "rev": 1
+      },
+      {
+        "ep": "od2",
+        "file": "i18n/manglish/od2.json",
+        "rev": 1
+      },
+      {
+        "ep": "od3",
+        "file": "i18n/manglish/od3.json",
+        "rev": 1
+      },
+      {
+        "ep": "od4",
+        "file": "i18n/manglish/od4.json",
+        "rev": 1
+      },
+      {
+        "ep": "od5",
+        "file": "i18n/manglish/od5.json",
+        "rev": 1
+      },
+      {
+        "ep": "od6",
+        "file": "i18n/manglish/od6.json",
+        "rev": 1
+      },
+      {
+        "ep": "od7",
+        "file": "i18n/manglish/od7.json",
+        "rev": 1
+      },
+      {
+        "ep": "od8",
+        "file": "i18n/manglish/od8.json",
+        "rev": 1
+      },
+      {
+        "ep": "od9",
+        "file": "i18n/manglish/od9.json",
+        "rev": 1
+      },
+      {
+        "ep": "od10",
+        "file": "i18n/manglish/od10.json",
+        "rev": 1
+      },
+      {
+        "ep": "od11",
+        "file": "i18n/manglish/od11.json",
+        "rev": 1
+      },
+      {
+        "ep": "od12",
+        "file": "i18n/manglish/od12.json",
+        "rev": 1
+      },
+      {
+        "ep": "od13",
+        "file": "i18n/manglish/od13.json",
+        "rev": 1
+      },
+      {
+        "ep": "od14",
+        "file": "i18n/manglish/od14.json",
+        "rev": 1
+      },
+      {
+        "ep": "od15",
+        "file": "i18n/manglish/od15.json",
+        "rev": 1
+      },
+      {
+        "ep": "od16",
+        "file": "i18n/manglish/od16.json",
+        "rev": 1
       }
     ],
     "banglish": [
@@ -1261,6 +1423,86 @@
       {
         "ep": "bw16",
         "file": "i18n/banglish/bw16.json",
+        "rev": 1
+      },
+      {
+        "ep": "od1",
+        "file": "i18n/banglish/od1.json",
+        "rev": 1
+      },
+      {
+        "ep": "od2",
+        "file": "i18n/banglish/od2.json",
+        "rev": 1
+      },
+      {
+        "ep": "od3",
+        "file": "i18n/banglish/od3.json",
+        "rev": 1
+      },
+      {
+        "ep": "od4",
+        "file": "i18n/banglish/od4.json",
+        "rev": 1
+      },
+      {
+        "ep": "od5",
+        "file": "i18n/banglish/od5.json",
+        "rev": 1
+      },
+      {
+        "ep": "od6",
+        "file": "i18n/banglish/od6.json",
+        "rev": 1
+      },
+      {
+        "ep": "od7",
+        "file": "i18n/banglish/od7.json",
+        "rev": 1
+      },
+      {
+        "ep": "od8",
+        "file": "i18n/banglish/od8.json",
+        "rev": 1
+      },
+      {
+        "ep": "od9",
+        "file": "i18n/banglish/od9.json",
+        "rev": 1
+      },
+      {
+        "ep": "od10",
+        "file": "i18n/banglish/od10.json",
+        "rev": 1
+      },
+      {
+        "ep": "od11",
+        "file": "i18n/banglish/od11.json",
+        "rev": 1
+      },
+      {
+        "ep": "od12",
+        "file": "i18n/banglish/od12.json",
+        "rev": 1
+      },
+      {
+        "ep": "od13",
+        "file": "i18n/banglish/od13.json",
+        "rev": 1
+      },
+      {
+        "ep": "od14",
+        "file": "i18n/banglish/od14.json",
+        "rev": 1
+      },
+      {
+        "ep": "od15",
+        "file": "i18n/banglish/od15.json",
+        "rev": 1
+      },
+      {
+        "ep": "od16",
+        "file": "i18n/banglish/od16.json",
         "rev": 1
       }
     ]

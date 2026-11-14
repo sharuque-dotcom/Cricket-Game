@@ -120,7 +120,7 @@
    "moment": {
     "kind": "chase",
     "title": "12 off 6",
-    "desc": "The final. Shaun Mathers. Seventy thousand people. A wedding mandap glowing behind the stands.Twelve to win.",
+    "desc": "The final. Shaun Mathers. Seventy thousand people. A wedding mandap glowing behind the stands. Twelve to win.",
     "bowler": "Shaun Mathers",
     "balls": 6,
     "need": 12
@@ -154,6 +154,9 @@
   },
   {
    "n": "Then the big screen cuts to the mandap camera. The crowd starts to roar again, louder."
+  },
+  {
+   "bg": "ev_runaway_bride"
   },
   {
    "n": "A bride in a red lehenga, holding her skirts in both fists, is running out of the mandap, across the concourse, down the stairs. Towards the pitch."
