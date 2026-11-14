@@ -9,6 +9,10 @@
    "name": "Meera Malhotra",
    "col": "#fb7185"
   },
+  "meera_hood": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
   "stranger": {
    "name": "The girl in the auto",
    "col": "#fb7185"
@@ -54,12 +58,13 @@
    "n": "Sunday, 5 AM. She asked you to come. Marine Drive again, but this time she's in a tracksuit, holding a kit bag twice her size."
   },
   {
-   "enter": "meera",
+   "enter": "meera_hood",
    "side": "left"
   },
   {
-   "s": "meera",
-   "t": "You asked what I do that nobody chose for me. I'll show you. But if you tell anyone, I'll have Nani poison your paneer."
+   "s": "meera_hood",
+   "t": "You asked what I do that nobody chose for me. I'll show you. But if you tell anyone, I'll have Nani poison your paneer.",
+   "ex": "happy"
   },
   {
    "exit": "all"
@@ -79,17 +84,19 @@
    "t": "DIDI! You're late! And who is HE? Is he your boyfriend? He looks like a boyfriend."
   },
   {
-   "enter": "meera",
+   "enter": "meera_hood",
    "side": "left"
   },
   {
-   "s": "meera",
-   "t": "He's a cricketer, Gudiya. A real one. And he's going to let you bowl at him."
+   "s": "meera_hood",
+   "t": "He's a cricketer, Gudiya. A real one. And he's going to let you bowl at him.",
+   "ex": "happy"
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "I coach them every Sunday. Two years. My father thinks I'm at yoga. Kunal thinks I'm asleep. This is the only place I'm me.",
-   "mood": "soft"
+   "mood": "soft",
+   "ex": "happy"
   },
   {
    "choice": [
@@ -183,16 +190,17 @@
    "bg": "bg_girls_ground"
   },
   {
-   "enter": "meera",
+   "enter": "meera_hood",
    "side": "left"
   },
   {
    "n": "Afterwards she sits on the boundary rope next to you, dust on her face, eating a samosa."
   },
   {
-   "s": "meera",
+   "s": "meera_hood",
    "t": "You're very bad at keeping your distance, rookie.",
-   "mood": "soft"
+   "mood": "soft",
+   "ex": "happy"
   },
   {
    "th": "So are you."

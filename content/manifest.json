@@ -269,7 +269,7 @@
       "id": "od2",
       "no": 2,
       "file": "episodes/od2.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "od3",
@@ -287,7 +287,7 @@
       "id": "od5",
       "no": 5,
       "file": "episodes/od5.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "od6",
@@ -299,13 +299,13 @@
       "id": "od7",
       "no": 7,
       "file": "episodes/od7.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "od8",
       "no": 8,
       "file": "episodes/od8.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "od9",
@@ -353,7 +353,7 @@
       "id": "od16",
       "no": 16,
       "file": "episodes/od16.json",
-      "rev": 1
+      "rev": 2
     }
   ],
   "fallback": {
@@ -561,7 +561,10 @@
     "sethi": "img/char_sethi.webp",
     "coach": "img/char_coach.webp",
     "gudiya": "img/char_gudiya.webp",
-    "stranger": "img/char_meera.webp"
+    "stranger": "img/char_meera.webp",
+    "meera_hood": "img/char_meera_sad.webp",
+    "meera_hood_sad": "img/char_meera_sad.webp",
+    "meera_hood_happy": "img/char_meera_happy.webp"
   },
   "i18n": {
     "hinglish": [

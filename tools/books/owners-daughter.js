@@ -23,6 +23,7 @@ const mom = (m, win, lose) => ({ moment: m, win, lose });
 
 const CAST = {
   meera: { name: 'Meera Malhotra', col: '#fb7185' },
+  meera_hood: { name: 'Meera Malhotra', col: '#fb7185' },   // casual Meera (grey hoodie) for off-duty scenes
   stranger: { name: 'The girl in the auto', col: '#fb7185' },
   kunal: { name: 'Kunal Sethi', col: '#f87171' },
   harsh: { name: 'Harsh Malhotra', col: '#a78bfa' },
@@ -663,6 +664,14 @@ ep('Her Choice', 'bg_marine_drive', [
   s('nani', 'Say yes, Sonpur. I\'m eighty-one. I don\'t have time for a second ladder.'),
   end('The Owner\'s Daughter complete: she asked, you said yes, and Gudiya bowled you first ball at the wedding. Thank you for playing.'),
 ]);
+
+// Chapters where Meera is off duty (Gate 4, Sunday nets, the balcony, the ending): she appears in her hoodie,
+// not the silver lehenga. Her hearts still go to 'meera' because fx names that key explicitly.
+const HOOD = { 2: null, 5: 'happy', 7: null, 8: null, 16: 'happy' };   // value: default expression for her lines
+for (const no in HOOD) for (const x of EP[no - 1].nodes) {
+  if (x.enter === 'meera') x.enter = 'meera_hood';
+  if (x.s === 'meera') { x.s = 'meera_hood'; if (HOOD[no] && !x.ex) x.ex = HOOD[no]; }
+}
 
 EP.forEach((e, i) => {
   const id = 'od' + (i + 1);
