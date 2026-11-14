@@ -79,19 +79,12 @@
    "mood": "shout"
   },
   {
-   "enter": "driver",
-   "side": "right"
-  },
-  {
    "s": "driver",
    "t": "Madam, this is HIS auto."
   },
   {
    "s": "stranger",
    "t": "Then he can pay. Drive!"
-  },
-  {
-   "exit": "driver"
   },
   {
    "n": "Behind you, two security guards with earpieces run out of the gate, looking left and right. The auto turns the corner."
@@ -101,23 +94,16 @@
     {
      "t": "\"Hi. I'm {first}. You're welcome.\"",
      "d": "Play along.",
-     "fx": {
-      "meera": 2
-     }
+     "set": "warmStart"
     },
     {
      "t": "\"Are you in trouble? Should I call the police?\"",
      "d": "Worried.",
-     "fx": {
-      "meera": 1
-     }
+     "set": "worried"
     },
     {
      "t": "\"Get out. I don't need trouble.\"",
      "d": "You have a career to protect.",
-     "fx": {
-      "meera": -1
-     },
      "set": "rude"
     }
    ]
@@ -159,25 +145,17 @@
     {
      "t": "\"Left home with forty rupees to play cricket.\"",
      "d": "The truth.",
-     "fx": {
-      "meera": 2
-     },
      "set": "toldSonpur"
     },
     {
      "t": "\"Got in this auto. Turned out to be a mistake.\"",
      "d": "Tease her.",
-     "fx": {
-      "meera": 1
-     }
+     "set": "tease"
     },
     {
      "t": "Buy her a vada pav from the last stall still open.",
      "d": "Answer with food.",
      "cost": 10,
-     "fx": {
-      "meera": 3
-     },
      "set": "vadaPav"
     }
    ]
@@ -250,6 +228,44 @@
   },
   {
    "n": "Across the room her eyes find yours. For half a second they go wide. Then she very slightly shakes her head."
+  },
+  {
+   "if": "rude",
+   "go": "fxRude"
+  },
+  {
+   "fx": {
+    "meera": 3
+   }
+  },
+  {
+   "if": "vadaPav",
+   "go": "fxVada"
+  },
+  {
+   "go": "fxEnd"
+  },
+  {
+   "label": "fxVada"
+  },
+  {
+   "fx": {
+    "meera": 2
+   }
+  },
+  {
+   "go": "fxEnd"
+  },
+  {
+   "label": "fxRude"
+  },
+  {
+   "fx": {
+    "meera": -1
+   }
+  },
+  {
+   "label": "fxEnd"
   },
   {
    "exit": "all"

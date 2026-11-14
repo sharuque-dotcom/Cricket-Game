@@ -28,7 +28,7 @@
     },
     {
       "id": "b2",
-      "live": false,
+      "live": true,
       "title": "The Owner's Daughter",
       "genre": "Romance · Forbidden love",
       "art": "cover_owner",
@@ -389,7 +389,6 @@
     "bg_red_carpet": "ev_party",
     "bg_film_set": "ev_party",
     "ev_real_wedding": "ev_party",
-    "cover_owner": "cover_bollywood",
     "bg_mansion_party": "bg_hotel_lobby",
     "bg_auto_night": "bg_street_dusk",
     "bg_marine_drive": "bg_street_dusk",
@@ -507,7 +506,20 @@
     "bg_goa_beach": "img/bg_goa_beach.webp",
     "bg_palace_wedding": "img/bg_palace_wedding.webp",
     "bg_red_carpet": "img/bg_red_carpet.webp",
-    "bg_tv_studio": "img/bg_tv_studio.webp"
+    "bg_tv_studio": "img/bg_tv_studio.webp",
+    "cover_owner": "img/cover_owner.webp",
+    "bg_mansion_party": "img/bg_mansion_party.webp",
+    "bg_auto_night": "img/bg_auto_night.webp",
+    "bg_marine_drive": "img/bg_marine_drive.webp",
+    "bg_owner_box": "img/bg_owner_box.webp",
+    "bg_gate_four": "img/bg_gate_four.webp",
+    "bg_dining_room": "img/bg_dining_room.webp",
+    "bg_girls_ground": "img/bg_girls_ground.webp",
+    "bg_owner_office": "img/bg_owner_office.webp",
+    "bg_balcony_night": "img/bg_balcony_night.webp",
+    "bg_mehendi": "img/bg_mehendi.webp",
+    "bg_mandap": "img/bg_mandap.webp",
+    "ev_runaway_bride": "img/ev_runaway_bride.webp"
   },
   "chars": {
     "imran": "img/char_imran.webp",
@@ -537,7 +549,19 @@
     "nikhil": "img/char_nikhil.webp",
     "dadi": "img/char_dadi.webp",
     "sid": "img/char_sid.webp",
-    "tara_home_tearful": "img/char_tara_home_tearful.webp"
+    "tara_home_tearful": "img/char_tara_home_tearful.webp",
+    "meera": "img/char_meera.webp",
+    "meera_happy": "img/char_meera_happy.webp",
+    "meera_sad": "img/char_meera_sad.webp",
+    "kunal": "img/char_kunal.webp",
+    "kunal_angry": "img/char_kunal_angry.webp",
+    "harsh": "img/char_harsh.webp",
+    "nani": "img/char_nani.webp",
+    "jojo": "img/char_jojo.webp",
+    "sethi": "img/char_sethi.webp",
+    "coach": "img/char_coach.webp",
+    "gudiya": "img/char_gudiya.webp",
+    "stranger": "img/char_meera.webp"
   },
   "i18n": {
     "hinglish": [
