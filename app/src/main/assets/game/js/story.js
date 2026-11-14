@@ -239,7 +239,7 @@ const Story = {
       const el = UI.show(`<div class="screen story-home lang-page"><div class="scroll pad">
         <div class="brand big" style="justify-content:center;margin-top:28px"><span class="brand-ball"></span><b>Gully <i>to</i> Glory</b></div>
         <div class="np-h" style="text-align:center;margin-top:22px">Choose your language</div>
-        <div class="np-sub" style="text-align:center">भाषा चुनें · ভাষা বেছে নিন · ഭാഷ തിരഞ്ഞെടുക്കുക</div>${html}</div></div>`);
+        <div class="np-sub" style="text-align:center">Bhasha chuno · भाषा चुनें · ভাষা বেছে নিন · ഭാഷ തിരഞ്ഞെടുക്കുക</div>${html}</div></div>`);
       $$('[data-l]', el).forEach(b => b.onclick = () => choose(b.dataset.l));
     } else {
       openSheet(`<div class="pad"><div class="sheet-title">${t('Language')}</div>${html}</div>`, sh => $$('[data-l]', sh).forEach(b => b.onclick = () => choose(b.dataset.l)));
@@ -516,7 +516,7 @@ const Story = {
   async typeInto(node, text, speed = 22) {
     node.textContent = '';
     let done = false, i = 0;
-    const parts = typeof Intl !== 'undefined' && Intl.Segmenter ? Array.from(new Intl.Segmenter(I18N.lang, { granularity: 'grapheme' }).segment(text), x => x.segment) : Array.from(text);
+    const parts = typeof Intl !== 'undefined' && Intl.Segmenter ? Array.from(new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(text), x => x.segment) : Array.from(text);
     return new Promise(res => {
       const finish = () => { if (done) return; done = true; clearInterval(tm); node.textContent = text; res(); };
       const tm = setInterval(() => { i += 1; node.textContent = parts.slice(0, i).join(''); if (i % 3 === 0) Sfx.tick && Sfx.tick(); if (i >= parts.length) finish(); }, speed);

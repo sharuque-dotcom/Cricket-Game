@@ -5,6 +5,7 @@
 //   I18N.s(epId, englishLine)     -> story line of that episode ('_common' = book titles, names, labels)
 const LANGS = [
   { id: 'en', native: 'English', name: 'English' },
+  { id: 'hinglish', native: 'Hinglish', name: 'Hindi in English letters', locale: 'hi-Latn', latin: true },
   { id: 'hi', native: 'हिन्दी', name: 'Hindi' },
   { id: 'bn', native: 'বাংলা', name: 'Bengali' },
   { id: 'ml', native: 'മലയാളം', name: 'Malayalam' },
@@ -28,8 +29,9 @@ const I18N = {
   },
   apply() {
     const h = document.documentElement;
-    h.lang = this.lang;
-    h.classList.toggle('indic', this.lang !== 'en');
+    const L = LANGS.find(x => x.id === this.lang) || LANGS[0];
+    h.lang = L.locale || L.id;
+    h.classList.toggle('indic', !L.latin && L.id !== 'en'); // Indian scripts need the font/spacing fixes; Hinglish is Latin
   },
   // loads js/lang/<l>.js once (a script tag works from file:// inside the app, fetch does not)
   load(l) {

@@ -9,7 +9,7 @@
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const ROOT = path.join(__dirname, '..');
 const G = path.join(ROOT, 'app/src/main/assets/game');
-const LANGS = ['hi', 'bn', 'ml'];
+const LANGS = ['hinglish', 'hi', 'bn', 'ml'];
 const cmd = process.argv[2], only = process.argv[3];
 
 function load() {
