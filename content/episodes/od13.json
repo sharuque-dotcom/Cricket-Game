@@ -1,0 +1,193 @@
+{
+ "id": "od13",
+ "no": 13,
+ "book": "b2",
+ "title": "The Recording",
+ "art": "bg_owner_office",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_hostel"
+  },
+  {
+   "n": "The recording is eleven minutes long. Rajan Sethi's voice, then Kunal's. \"Fifty-one percent.\" \"Out by Diwali.\" \"She'll do what she's told.\""
+  },
+  {
+   "enter": "jojo",
+   "side": "left"
+  },
+  {
+   "s": "jojo",
+   "t": "That's it. That's the whole thing. What do we do with it?"
+  },
+  {
+   "choice": [
+    {
+     "t": "Take it straight to Harsh Malhotra.",
+     "d": "It's his team. And his daughter.",
+     "set": "toHarsh",
+     "fx": {
+      "harsh": 2
+     }
+    },
+    {
+     "t": "Send it to every sports channel tonight.",
+     "d": "Burn it all down.",
+     "set": "toPress",
+     "fx": {
+      "meera": -1
+     }
+    },
+    {
+     "t": "Ask Meera first. Through Nani.",
+     "d": "It's her recording. Her choice.",
+     "set": "askMeera",
+     "fx": {
+      "meera": 2,
+      "nani": 1
+     }
+    }
+   ]
+  },
+  {
+   "if": "toPress",
+   "go": "press"
+  },
+  {
+   "if": "askMeera",
+   "go": "ask"
+  },
+  {
+   "go": "harsh"
+  },
+  {
+   "label": "press"
+  },
+  {
+   "n": "Nani's voice on the phone, sharp as glass: \"If that plays on TV before her father hears it, he loses his team AND his daughter loses her name. Don't you dare.\" You put the phone down. You go to Harsh instead."
+  },
+  {
+   "go": "harsh"
+  },
+  {
+   "label": "ask"
+  },
+  {
+   "phone": "Nani",
+   "msgs": [
+    {
+     "t": "She says: \"Give it to Papa. Tell him I made it. Tell him I'm sorry I didn't trust him sooner.\""
+    }
+   ]
+  },
+  {
+   "label": "harsh"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_owner_office"
+  },
+  {
+   "enter": "harsh",
+   "side": "right"
+  },
+  {
+   "n": "Harsh Malhotra listens to all eleven minutes without moving. When it ends, he takes his glasses off and presses his hand over his eyes."
+  },
+  {
+   "s": "harsh",
+   "t": "Ten years. I gave him my table. I was about to give him my daughter.",
+   "mood": "soft"
+  },
+  {
+   "s": "harsh",
+   "t": "She made this? Meera? Alone, in my house?",
+   "mood": "soft"
+  },
+  {
+   "s": "harsh",
+   "t": "The debt is real, though. Three hundred crore. If I cancel the wedding, Sethi calls it in on Monday, and the team is gone anyway."
+  },
+  {
+   "s": "harsh",
+   "t": "Unless... the final. Prize money, and the title sponsor's bonus if we win. It's not everything. But it's enough to fight him in court."
+  },
+  {
+   "s": "harsh",
+   "t": "Your suspension is lifted. Win me the final, Sonpur. Then my daughter marries whoever she wants. Or nobody. Her choice."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"I'll win it. For her. Not for the team.\"",
+     "d": "Honest.",
+     "fx": {
+      "meera": 1,
+      "harsh": 1
+     }
+    },
+    {
+     "t": "\"And Kunal?\"",
+     "d": "The captain is still in the team.",
+     "fx": {
+      "harsh": 1
+     }
+    }
+   ]
+  },
+  {
+   "s": "harsh",
+   "t": "Kunal plays. If I drop him now, Sethi knows we know. Let him walk into the final thinking he's already won."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "The final and the wedding are on the same night. Win one, and you can stop the other."
+  }
+ ]
+}

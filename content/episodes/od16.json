@@ -1,0 +1,163 @@
+{
+ "id": "od16",
+ "no": 16,
+ "book": "b2",
+ "title": "Her Choice",
+ "art": "bg_marine_drive",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_marine_drive"
+  },
+  {
+   "n": "One month later. The Sethis' takeover is with the courts, and the papers say they will lose. Kunal has been released by the Monarchs. Delhi didn't want him either."
+  },
+  {
+   "n": "Gudiya's team has a real ground now, and a sign at the gate in fresh paint: \"MALHOTRA ACADEMY FOR GIRLS. Head coach: Meera.\""
+  },
+  {
+   "if": "herChoice",
+   "go": "abroad"
+  },
+  {
+   "if": {
+    "all": [
+     "proposed",
+     {
+      "rel": "meera",
+      "min": 10
+     }
+    ]
+   },
+   "go": "together"
+  },
+  {
+   "n": "Marine Drive at 5:50 AM. You haven't seen her since the final. A taxi stops. She gets out with two vada pavs.",
+   "reveal": true
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "s": "meera",
+   "t": "I chose. I chose me, for a while. The academy, my father, a life nobody planned for me. I don't want to go from one man's plan straight into another.",
+   "mood": "soft"
+  },
+  {
+   "s": "meera",
+   "t": "But I want to keep eating vada pav on this wall with you. Every Sunday. And see what happens. Slowly.",
+   "mood": "soft"
+  },
+  {
+   "end": true,
+   "cliff": "The Owner's Daughter complete: no wedding, no contract, and a sea wall every Sunday. Replay to see how else it can end."
+  },
+  {
+   "label": "abroad"
+  },
+  {
+   "n": "Marine Drive at 5:50 AM. She's already on the sea wall, a suitcase beside her and a letter from an architecture school in London in her hand.",
+   "reveal": true
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "s": "meera",
+   "t": "You asked me what I want. I want to build stadiums. Real ones, with girls' teams in them. Two years in London.",
+   "mood": "soft"
+  },
+  {
+   "s": "meera",
+   "t": "You'll be playing for India by the time I'm back. Save me a seat in Box 4.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "end": true,
+   "cliff": "The Owner's Daughter complete: she chose her own dream, and you were the one who asked. Replay to see how else it can end."
+  },
+  {
+   "label": "together"
+  },
+  {
+   "bg": "bg_girls_ground"
+  },
+  {
+   "n": "Sunday. The academy ground. Twenty girls in new kits, Jojo on the drums, Nani in a plastic chair like a queen, and Harsh Malhotra, awkward in a tracksuit, carrying the samosas."
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "s": "meera",
+   "t": "You asked me a question on that pitch. I said I'd answer properly.",
+   "mood": "soft"
+  },
+  {
+   "n": "She holds out her left palm. The henna has faded. In its place, drawn in eyeliner in the middle of her hand, the same small letter. And a question mark."
+  },
+  {
+   "s": "meera",
+   "t": "This time I'm asking. Will you?",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "enter": "nani",
+   "side": "right"
+  },
+  {
+   "s": "nani",
+   "t": "Say yes, Sonpur. I'm eighty-one. I don't have time for a second ladder."
+  },
+  {
+   "end": true,
+   "cliff": "The Owner's Daughter complete: she asked, you said yes, and Gudiya bowled you first ball at the wedding. Thank you for playing."
+  }
+ ]
+}

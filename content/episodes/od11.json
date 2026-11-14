@@ -1,0 +1,139 @@
+{
+ "id": "od11",
+ "no": 11,
+ "book": "b2",
+ "title": "Mehendi",
+ "art": "bg_mehendi",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_mehendi"
+  },
+  {
+   "n": "The week of the final. The mehendi at a palace hotel. Marigolds, dhol, a thousand lamps, and the whole team invited, because the Sethis want photographs."
+  },
+  {
+   "enter": "nani",
+   "side": "left"
+  },
+  {
+   "s": "nani",
+   "t": "Dance, Sonpur. If you stand in a corner looking tragic, everyone will know. Tragic men are very obvious."
+  },
+  {
+   "choice": [
+    {
+     "t": "Dance with Nani. Badly.",
+     "d": "Give the cameras something else.",
+     "fx": {
+      "nani": 2
+     }
+    },
+    {
+     "t": "Drag Jojo onto the dance floor.",
+     "d": "Distraction.",
+     "fx": {
+      "jojo": 1
+     }
+    },
+    {
+     "t": "Find Meera.",
+     "d": "Five minutes. That's all.",
+     "fx": {
+      "meera": 1
+     },
+     "set": "foundMehendi"
+    }
+   ]
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "n": "She's in a yellow lehenga, both hands painted with henna up to the elbows, sitting still while the artist works."
+  },
+  {
+   "s": "meera",
+   "t": "You know the tradition? They hide the groom's initial somewhere in the design. On the wedding night, he has to find it.",
+   "mood": "soft"
+  },
+  {
+   "s": "meera",
+   "t": "I asked her to hide a different letter.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "th": "She turns her left palm towards me. In the middle of a peacock's tail, tiny, a letter that is not K."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "enter": "kunal",
+   "side": "right"
+  },
+  {
+   "n": "An hour later. Kunal, a little drunk, takes her hands in front of the photographers to find his initial. He searches. He smiles. He searches again. He stops smiling."
+  },
+  {
+   "s": "kunal",
+   "t": "That's not a K."
+  },
+  {
+   "n": "He looks up, slowly, across the courtyard. Straight at you."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Kunal found the letter. It wasn't his."
+  }
+ ]
+}

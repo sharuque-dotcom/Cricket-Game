@@ -1,0 +1,173 @@
+{
+ "id": "od12",
+ "no": 12,
+ "book": "b2",
+ "title": "Exposed",
+ "art": "bg_dressing_room",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_dressing_room"
+  },
+  {
+   "n": "Semi-final morning. A team meeting nobody called. Kunal stands at the front with a laptop. Harsh Malhotra sits in the corner. So does Rajan Sethi."
+  },
+  {
+   "enter": "kunal",
+   "side": "right"
+  },
+  {
+   "s": "kunal",
+   "t": "Gentlemen, before we talk tactics, let's talk loyalty."
+  },
+  {
+   "n": "On the screen: the Gate 4 photo. Then the balcony and the ladder, from a security camera. Then a close-up of a henna palm with your initial."
+  },
+  {
+   "s": "kunal",
+   "t": "Our rookie has been sneaking into the owner's house. With the owner's daughter. During the owner's daughter's engagement. To me."
+  },
+  {
+   "enter": "harsh",
+   "side": "left"
+  },
+  {
+   "s": "harsh",
+   "t": "Suspended. Effective now. You don't play the semi-final. You don't play the final. You don't set foot in this stadium.",
+   "mood": "shout"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Ask him what happens to your team after the wedding.\"",
+     "d": "Say it in front of everyone.",
+     "set": "accusedPublic",
+     "fx": {
+      "harsh": -1
+     }
+    },
+    {
+     "t": "Leave without a word.",
+     "d": "Don't give Kunal the scene.",
+     "fx": {
+      "harsh": 1
+     }
+    },
+    {
+     "t": "\"She did nothing wrong. Punish me.\"",
+     "d": "Protect Meera.",
+     "fx": {
+      "meera": 2
+     }
+    }
+   ]
+  },
+  {
+   "if": "accusedPublic",
+   "go": "acc"
+  },
+  {
+   "go": "out"
+  },
+  {
+   "label": "acc"
+  },
+  {
+   "enter": "kunal",
+   "side": "right"
+  },
+  {
+   "s": "kunal",
+   "t": "Wow. Now he's inventing conspiracies. Sir, this is exactly the kind of character we don't need."
+  },
+  {
+   "label": "out"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_street_dusk"
+  },
+  {
+   "n": "You walk out of the stadium carrying your kit bag. Fans who chanted your name two weeks ago take photos of you leaving."
+  },
+  {
+   "phone": "Jojo",
+   "msgs": [
+    {
+     "t": "They took her phone. The real one AND the old one."
+    },
+    {
+     "t": "She's not allowed out of the house till the wedding."
+    },
+    {
+     "t": "Bro. I'm so sorry."
+    }
+   ]
+  },
+  {
+   "n": "Evening. A black car stops beside you on the street. The window rolls down. Gold spectacles."
+  },
+  {
+   "enter": "nani",
+   "side": "left"
+  },
+  {
+   "s": "nani",
+   "t": "Get in, Sonpur. Don't argue. I stole the car."
+  },
+  {
+   "n": "She presses a small silver pen drive into your hand."
+  },
+  {
+   "s": "nani",
+   "t": "My granddaughter recorded the Sethis. In our own dining room, last night. She's braver than both of you put together."
+  },
+  {
+   "end": true,
+   "cliff": "Meera got the proof. Now someone has to get it to her father."
+  }
+ ]
+}

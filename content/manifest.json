@@ -25,6 +25,21 @@
         "sid": "Sid",
         "sushma": "Sushma"
       }
+    },
+    {
+      "id": "b2",
+      "live": false,
+      "title": "The Owner's Daughter",
+      "genre": "Romance · Forbidden love",
+      "art": "cover_owner",
+      "blurb": "She's the owner's daughter, engaged to your captain. One wrong look, and you never play again.",
+      "rel": {
+        "meera": "Meera",
+        "nani": "Nani",
+        "jojo": "Jojo",
+        "harsh": "Harsh",
+        "kunal": "Kunal"
+      }
     }
   ],
   "episodes": [
@@ -243,6 +258,102 @@
       "no": 16,
       "file": "episodes/bw16.json",
       "rev": 1
+    },
+    {
+      "id": "od1",
+      "no": 1,
+      "file": "episodes/od1.json",
+      "rev": 1
+    },
+    {
+      "id": "od2",
+      "no": 2,
+      "file": "episodes/od2.json",
+      "rev": 1
+    },
+    {
+      "id": "od3",
+      "no": 3,
+      "file": "episodes/od3.json",
+      "rev": 1
+    },
+    {
+      "id": "od4",
+      "no": 4,
+      "file": "episodes/od4.json",
+      "rev": 1
+    },
+    {
+      "id": "od5",
+      "no": 5,
+      "file": "episodes/od5.json",
+      "rev": 1
+    },
+    {
+      "id": "od6",
+      "no": 6,
+      "file": "episodes/od6.json",
+      "rev": 1
+    },
+    {
+      "id": "od7",
+      "no": 7,
+      "file": "episodes/od7.json",
+      "rev": 1
+    },
+    {
+      "id": "od8",
+      "no": 8,
+      "file": "episodes/od8.json",
+      "rev": 1
+    },
+    {
+      "id": "od9",
+      "no": 9,
+      "file": "episodes/od9.json",
+      "rev": 1
+    },
+    {
+      "id": "od10",
+      "no": 10,
+      "file": "episodes/od10.json",
+      "rev": 1
+    },
+    {
+      "id": "od11",
+      "no": 11,
+      "file": "episodes/od11.json",
+      "rev": 1
+    },
+    {
+      "id": "od12",
+      "no": 12,
+      "file": "episodes/od12.json",
+      "rev": 1
+    },
+    {
+      "id": "od13",
+      "no": 13,
+      "file": "episodes/od13.json",
+      "rev": 1
+    },
+    {
+      "id": "od14",
+      "no": 14,
+      "file": "episodes/od14.json",
+      "rev": 1
+    },
+    {
+      "id": "od15",
+      "no": 15,
+      "file": "episodes/od15.json",
+      "rev": 1
+    },
+    {
+      "id": "od16",
+      "no": 16,
+      "file": "episodes/od16.json",
+      "rev": 1
     }
   ],
   "fallback": {
@@ -277,7 +388,19 @@
     "bg_tv_studio": "bg_newsroom",
     "bg_red_carpet": "ev_party",
     "bg_film_set": "ev_party",
-    "ev_real_wedding": "ev_party"
+    "ev_real_wedding": "ev_party",
+    "cover_owner": "cover_bollywood",
+    "bg_mansion_party": "bg_hotel_lobby",
+    "bg_auto_night": "bg_street_dusk",
+    "bg_marine_drive": "bg_street_dusk",
+    "bg_owner_box": "bd_stadium_night",
+    "bg_gate_four": "bg_mandi_night",
+    "bg_dining_room": "bg_hotel_lobby",
+    "bg_girls_ground": "bd_maidan",
+    "bg_owner_office": "bg_hotel_lobby",
+    "bg_balcony_night": "bg_street_dusk",
+    "bg_mehendi": "ev_party",
+    "bg_mandap": "bd_stadium_night"
   },
   "fx": {
     "ev_the_call": "dust",
@@ -308,7 +431,18 @@
     "bg_tv_studio": "bokeh",
     "bg_red_carpet": "bokeh",
     "bg_film_set": "bokeh",
-    "ev_real_wedding": "bokeh"
+    "ev_real_wedding": "bokeh",
+    "bg_mansion_party": "bokeh",
+    "bg_auto_night": "bokeh",
+    "bg_marine_drive": "dust",
+    "bg_owner_box": "bokeh",
+    "bg_gate_four": "dust",
+    "bg_dining_room": "bokeh",
+    "bg_girls_ground": "dust",
+    "bg_owner_office": "bokeh",
+    "bg_balcony_night": "bokeh",
+    "bg_mehendi": "embers+bokeh",
+    "bg_mandap": "bokeh"
   },
   "day": [
     "bg_academy_nets",
@@ -317,7 +451,9 @@
     "bg_hotel_suite",
     "bg_goa_beach",
     "bg_kapoor_mansion",
-    "ev_real_wedding"
+    "ev_real_wedding",
+    "bg_girls_ground",
+    "bg_marine_drive"
   ],
   "amb": {
     "ev_the_call": "stall",

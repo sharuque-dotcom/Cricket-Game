@@ -1,0 +1,189 @@
+{
+ "id": "od6",
+ "no": 6,
+ "book": "b2",
+ "title": "Viral",
+ "art": "bg_owner_office",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_owner_office"
+  },
+  {
+   "n": "Harsh Malhotra's office. Glass walls, the whole city below, and a TV on mute playing the video on a loop."
+  },
+  {
+   "enter": "harsh",
+   "side": "right"
+  },
+  {
+   "s": "harsh",
+   "t": "My daughter. In a slum. With a team of... street girls. And my twelfth man."
+  },
+  {
+   "s": "harsh",
+   "t": "Explain this to me in a way that doesn't end your contract."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"It's her academy, sir. She built it herself. You should be proud.\"",
+     "d": "Defend her.",
+     "fx": {
+      "meera": 2,
+      "harsh": -1
+     },
+     "set": "defended"
+    },
+    {
+     "t": "\"I just batted. I didn't know who she was.\"",
+     "d": "Lie to protect her.",
+     "fx": {
+      "harsh": 1
+     },
+     "set": "lied"
+    },
+    {
+     "t": "\"Ask her yourself.\"",
+     "d": "It's her story.",
+     "fx": {
+      "meera": 1
+     }
+    }
+   ]
+  },
+  {
+   "enter": "kunal",
+   "side": "left"
+  },
+  {
+   "n": "The door opens. Kunal walks in, all smiles, phone in hand."
+  },
+  {
+   "s": "kunal",
+   "t": "Sir, I can explain. It was MY idea. I sent the rookie. Charity cricket, good optics for the wedding. I didn't want to tell Meera it was my surprise."
+  },
+  {
+   "th": "He's lying. And it's working."
+  },
+  {
+   "s": "harsh",
+   "t": "...Charity. Good. Very good. Then we'll put out a statement. The captain's charity initiative.",
+   "mood": "soft"
+  },
+  {
+   "exit": "harsh"
+  },
+  {
+   "n": "In the corridor Kunal stops you with one hand on your chest."
+  },
+  {
+   "s": "kunal",
+   "t": "I just saved your career, small town. Now you owe me. And I collect."
+  },
+  {
+   "s": "kunal",
+   "t": "Your contract has a trade clause. The Falcons asked about you last week. One word from me and you're in Delhi by Friday."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_hostel"
+  },
+  {
+   "phone": "M",
+   "msgs": [
+    {
+     "t": "He took my academy."
+    },
+    {
+     "t": "Now it's HIS charity. His face on the posters."
+    },
+    {
+     "t": "And he's going to have you traded. I heard him on the phone."
+    },
+    {
+     "t": "I'm sorry. This is my fault."
+    }
+   ]
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Let him trade me. I'm not walking away from you.\"",
+     "d": "Reckless. True.",
+     "fx": {
+      "meera": 2
+     },
+     "set": "stayReckless"
+    },
+    {
+     "t": "\"Then we stop. Before he hurts you too.\"",
+     "d": "Protect her.",
+     "fx": {
+      "meera": -1
+     },
+     "set": "offeredStop"
+    }
+   ]
+  },
+  {
+   "enter": "jojo",
+   "side": "left"
+  },
+  {
+   "s": "jojo",
+   "t": "Team sheet's up for Sunday. Rookie... you're not on it. Not even twelfth man. There's a note next to your name: \"Trade window.\"",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "The trade window closes Friday. Kunal holds the pen."
+  }
+ ]
+}

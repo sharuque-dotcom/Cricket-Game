@@ -1,0 +1,161 @@
+{
+ "id": "od7",
+ "no": 7,
+ "book": "b2",
+ "title": "Stay Away",
+ "art": "bg_academy_nets",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_academy_nets"
+  },
+  {
+   "n": "Three days left. You train alone at 6 AM because nobody else will stand in the net next to a man who's about to be traded."
+  },
+  {
+   "enter": "coach",
+   "side": "right"
+  },
+  {
+   "s": "coach",
+   "t": "Off the record, rookie. The trade isn't done until the owner signs it. Kunal can't sign anything. Not yet."
+  },
+  {
+   "s": "coach",
+   "t": "Whatever you did to make the captain this scared, keep doing it. Just... do it with your bat."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "phone": "M",
+   "msgs": [
+    {
+     "t": "Gate 4. Tonight. Last time."
+    }
+   ]
+  },
+  {
+   "bg": "bg_gate_four"
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "n": "Gate 4. She's there before you. She doesn't sit. She doesn't take her hood down."
+  },
+  {
+   "s": "meera",
+   "t": "My father made me a deal. You stay in Mumbai, your contract stays. If I never see you again."
+  },
+  {
+   "s": "meera",
+   "t": "I said yes. So this is the last time. Stay away from me. Please.",
+   "mood": "soft",
+   "ex": "sad"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Okay.\" Let her go.",
+     "d": "If it keeps her safe.",
+     "fx": {
+      "meera": -1
+     },
+     "set": "letGo"
+    },
+    {
+     "t": "\"You don't get to decide that for both of us.\"",
+     "d": "Fight for it.",
+     "fx": {
+      "meera": 2
+     }
+    },
+    {
+     "t": "Take her hand. Say nothing.",
+     "d": "One last time.",
+     "fx": {
+      "meera": 1
+     }
+    }
+   ]
+  },
+  {
+   "s": "meera",
+   "t": "Don't make this harder. I'm doing the only thing I can do.",
+   "mood": "soft",
+   "ex": "sad"
+  },
+  {
+   "n": "She walks away fast. She doesn't look back. At the end of the road, her shoulders start shaking."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_hostel"
+  },
+  {
+   "n": "Midnight. The old phone rings. An actual call. A voice like a rusty gate."
+  },
+  {
+   "s": "nani",
+   "t": "Listen to me, Sonpur. She doesn't mean a word of it. She's saving your contract by breaking her own heart. Very stupid. Very Malhotra.",
+   "mood": "soft"
+  },
+  {
+   "s": "nani",
+   "t": "Tomorrow night her father is in Delhi. Come to the house at ten. The garden side. Bring a ladder."
+  },
+  {
+   "s": "nani",
+   "t": "And wear something nice. If I'm going to break the law at my age, I want it to look good."
+  },
+  {
+   "end": true,
+   "cliff": "Nani is planning a break-in. And you're the ladder."
+  }
+ ]
+}
