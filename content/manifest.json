@@ -278,7 +278,7 @@
     "bg_red_carpet": "ev_party",
     "bg_film_set": "ev_party",
     "ev_real_wedding": "ev_party",
-    "char_tara_home": "char_tara"
+    "char_tara_home_tearful": "char_tara_home"
   },
   "fx": {
     "ev_the_call": "dust",
@@ -314,7 +314,11 @@
   "day": [
     "bg_academy_nets",
     "ev_blue_cap",
-    "bg_airport_gate"
+    "bg_airport_gate",
+    "bg_hotel_suite",
+    "bg_goa_beach",
+    "bg_kapoor_mansion",
+    "ev_real_wedding"
   ],
   "amb": {
     "ev_the_call": "stall",
@@ -355,7 +359,18 @@
     "ev_blue_cap": "img/ev_blue_cap.webp",
     "ev_last_over": "img/ev_last_over.webp",
     "ev_the_call": "img/ev_the_call.webp",
-    "ev_viral": "img/ev_viral.webp"
+    "ev_viral": "img/ev_viral.webp",
+    "ev_fake_wedding": "img/ev_fake_wedding.webp",
+    "bg_seaface_flat": "img/bg_seaface_flat.webp",
+    "ev_kiss_cam": "img/ev_kiss_cam.webp",
+    "ev_real_wedding": "img/ev_real_wedding.webp",
+    "bg_film_set": "img/bg_film_set.webp",
+    "bg_hotel_suite": "img/bg_hotel_suite.webp",
+    "bg_kapoor_mansion": "img/bg_kapoor_mansion.webp",
+    "bg_goa_beach": "img/bg_goa_beach.webp",
+    "bg_palace_wedding": "img/bg_palace_wedding.webp",
+    "bg_red_carpet": "img/bg_red_carpet.webp",
+    "bg_tv_studio": "img/bg_tv_studio.webp"
   },
   "chars": {
     "imran": "img/char_imran.webp",
@@ -371,7 +386,20 @@
     "physio": "img/char_physio.webp",
     "raghav": "img/char_raghav.webp",
     "raghav_angry": "img/char_raghav_angry.webp",
-    "vikrant_blue": "img/char_vikrant_blue.webp"
+    "vikrant_blue": "img/char_vikrant_blue.webp",
+    "tara_home": "img/char_tara_home.webp",
+    "tara_home_happy": "img/char_tara_home_happy.webp",
+    "tara_home_angry": "img/char_tara_home_angry.webp",
+    "tara_happy": "img/char_tara_happy.webp",
+    "tara_angry": "img/char_tara_angry.webp",
+    "tara_tearful": "img/char_tara_tearful.webp",
+    "sushma": "img/char_sushma.webp",
+    "sushma_cold": "img/char_sushma_cold.webp",
+    "vivaan": "img/char_vivaan.webp",
+    "vivaan_smug": "img/char_vivaan_smug.webp",
+    "nikhil": "img/char_nikhil.webp",
+    "dadi": "img/char_dadi.webp",
+    "sid": "img/char_sid.webp"
   },
   "i18n": {
     "hinglish": [
