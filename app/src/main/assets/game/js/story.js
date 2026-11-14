@@ -551,7 +551,9 @@ const Story = {
     }
     const tx = $('[data-tx]', layer);
     const coach = (this.st.taps || 0) < 6;
-    await this.typeInto(tx, text, reveal ? 75 : kind === 'n' ? 26 : 20);
+    // typing effect, but never long: a whole line takes at most ~1 s (reveals ~2 s); short lines keep their pace
+    const base = reveal ? 75 : kind === 'n' ? 26 : 20, len = Array.from(text).length || 1;
+    await this.typeInto(tx, text, Math.max(6, Math.min(base, (reveal ? 2000 : 1000) / len)));
     layer.firstElementChild.classList.add('ready');
     if (coach) { this.st.taps = (this.st.taps || 0) + 1; layer.insertAdjacentHTML('beforeend', `<div class="tap-pill in-scene">👆 ${t('Tap anywhere to continue')}</div>`); }
     await this.waitTap();
