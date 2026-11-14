@@ -1,0 +1,211 @@
+{
+ "id": "od5",
+ "no": 5,
+ "book": "b2",
+ "title": "Sunday Nets",
+ "art": "bg_girls_ground",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_marine_drive"
+  },
+  {
+   "n": "Sunday, 5 AM. She asked you to come. Marine Drive again, but this time she's in a tracksuit, holding a kit bag twice her size."
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "s": "meera",
+   "t": "You asked what I do that nobody chose for me. I'll show you. But if you tell anyone, I'll have Nani poison your paneer."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_girls_ground"
+  },
+  {
+   "n": "A dusty ground between railway tracks and tin roofs. Twenty girls in mismatched kits are already warming up. They scream when they see her."
+  },
+  {
+   "enter": "gudiya",
+   "side": "right"
+  },
+  {
+   "s": "gudiya",
+   "t": "DIDI! You're late! And who is HE? Is he your boyfriend? He looks like a boyfriend."
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "s": "meera",
+   "t": "He's a cricketer, Gudiya. A real one. And he's going to let you bowl at him."
+  },
+  {
+   "s": "meera",
+   "t": "I coach them every Sunday. Two years. My father thinks I'm at yoga. Kunal thinks I'm asleep. This is the only place I'm me.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Then let's make them the best team in Mumbai.\"",
+     "d": "All in.",
+     "fx": {
+      "meera": 2
+     },
+     "set": "coachGirls"
+    },
+    {
+     "t": "\"Your father would destroy this if he knew.\"",
+     "d": "Worried for her.",
+     "fx": {
+      "meera": 1
+     }
+    },
+    {
+     "t": "Pay for proper kits for every girl.",
+     "d": "Quietly.",
+     "cost": 15,
+     "fx": {
+      "meera": 3
+     },
+     "set": "kits"
+    }
+   ]
+  },
+  {
+   "if": "kits",
+   "go": "kits"
+  },
+  {
+   "go": "nets"
+  },
+  {
+   "label": "kits"
+  },
+  {
+   "n": "You make one call to a sports shop in Dadar. By 9 AM there are twenty new kits. Meera looks at you for a long time and says nothing. Her eyes say plenty."
+  },
+  {
+   "label": "nets"
+  },
+  {
+   "exit": "meera"
+  },
+  {
+   "s": "gudiya",
+   "t": "Okay, real cricketer. Three balls. If I get you out, you buy samosas for EVERYONE."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "moment": {
+    "kind": "nets",
+    "title": "Gudiya's Nets",
+    "desc": "Gudiya, age twelve, bowls leg-spin with a taped tennis ball and zero respect. Twenty girls are screaming. Survive three balls.",
+    "bowler": "Gudiya, age 12",
+    "balls": 3,
+    "goal": "survive",
+    "winCall": "STILL IN",
+    "winSub": "Gudiya demands a rematch. Forever.",
+    "loseCall": "BOWLED!",
+    "loseSub": "Twenty girls chant SA-MO-SA."
+   },
+   "win": "gWin",
+   "lose": "gLose"
+  },
+  {
+   "label": "gWin"
+  },
+  {
+   "n": "You survive. Barely. Gudiya calls you a cheat and then asks for your autograph."
+  },
+  {
+   "go": "after"
+  },
+  {
+   "label": "gLose"
+  },
+  {
+   "n": "Middle stump. Gudiya runs a lap of the ground with her arms out like an aeroplane. You buy forty samosas."
+  },
+  {
+   "label": "after"
+  },
+  {
+   "bg": "bg_girls_ground"
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "n": "Afterwards she sits on the boundary rope next to you, dust on her face, eating a samosa."
+  },
+  {
+   "s": "meera",
+   "t": "You're very bad at keeping your distance, rookie.",
+   "mood": "soft"
+  },
+  {
+   "th": "So are you."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "That night, a girl's video of the nets session hits a million views. You, batting. In the background, laughing, unmistakable: Meera Malhotra."
+  },
+  {
+   "end": true,
+   "cliff": "A million people have seen the owner's daughter with you. Including the owner."
+  }
+ ]
+}

@@ -1,0 +1,208 @@
+{
+ "id": "od4",
+ "no": 4,
+ "book": "b2",
+ "title": "Engagement Dinner",
+ "art": "bg_dining_room",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_dining_room"
+  },
+  {
+   "n": "Friday. A dining table longer than a cricket pitch. Twelve chairs, three butlers, and a chandelier that probably costs more than Sonpur."
+  },
+  {
+   "n": "At the head: Harsh Malhotra. On his right: Rajan Sethi, Kunal's father, steel baron. Between them: Meera, in pale blue, perfect and silent."
+  },
+  {
+   "enter": "sethi",
+   "side": "right"
+  },
+  {
+   "s": "sethi",
+   "t": "So this is the boy from the debut. Kunal tells me you carry drinks very well."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"I carried them till Kunal pulled his hamstring.\"",
+     "d": "Bite back.",
+     "fx": {
+      "kunal": -1,
+      "meera": 1
+     }
+    },
+    {
+     "t": "\"Thank you for having me, sir.\"",
+     "d": "Polite. Safe.",
+     "fx": {
+      "harsh": 1
+     }
+    },
+    {
+     "t": "Say nothing. Smile at your plate.",
+     "d": "Let them talk."
+    }
+   ]
+  },
+  {
+   "exit": "sethi"
+  },
+  {
+   "enter": "nani",
+   "side": "left"
+  },
+  {
+   "n": "A tiny old woman in a white saree is wheeled in. She looks at you over gold spectacles like she's reading your bank statement.",
+   "reveal": true
+  },
+  {
+   "s": "nani",
+   "t": "Move, Kunal. I want to sit next to the one who looks hungry."
+  },
+  {
+   "s": "nani",
+   "t": "I'm Meera's Nani. Her mother's mother. I'm eighty-one and I say whatever I want. Eat."
+  },
+  {
+   "n": "Under the table, the old phone in your pocket buzzes."
+  },
+  {
+   "phone": "M",
+   "msgs": [
+    {
+     "t": "Don't look at me."
+    },
+    {
+     "t": "You're looking at me."
+    },
+    {
+     "t": "STOP looking at me. Eat the paneer. It's the only good thing here."
+    }
+   ]
+  },
+  {
+   "choice": [
+    {
+     "t": "Text back: \"The paneer is the second best thing here.\"",
+     "d": "Flirt under the table.",
+     "fx": {
+      "meera": 2
+     },
+     "set": "tableFlirt"
+    },
+    {
+     "t": "Text back: \"This is dangerous. I'm stopping.\"",
+     "d": "Be careful.",
+     "fx": {
+      "meera": -1
+     }
+    },
+    {
+     "t": "Put the phone away and talk to Nani.",
+     "d": "Win the grandmother.",
+     "fx": {
+      "nani": 2
+     }
+    }
+   ]
+  },
+  {
+   "if": "tableFlirt",
+   "go": "flirt"
+  },
+  {
+   "go": "nani"
+  },
+  {
+   "label": "flirt"
+  },
+  {
+   "n": "Across the table Meera chokes on her water. Kunal pats her back. Nani looks from her face to yours, very slowly."
+  },
+  {
+   "label": "nani"
+  },
+  {
+   "s": "nani",
+   "t": "Do you know why they're all smiling, beta? Because my son-in-law owes Sethi three hundred crore, and my granddaughter is the repayment plan.",
+   "mood": "soft"
+  },
+  {
+   "s": "nani",
+   "t": "Her mother would have burned this house down. I'm too old to find the matches.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "enter": "harsh",
+   "side": "right"
+  },
+  {
+   "s": "harsh",
+   "t": "A toast. To the Monarchs, to the season, and to a date. My daughter will marry Kunal on the evening of the final. At the stadium. In front of everyone."
+  },
+  {
+   "n": "Applause. Glasses ring. Meera smiles at her father. Under the table, the old phone buzzes once."
+  },
+  {
+   "phone": "M",
+   "msgs": [
+    {
+     "t": "Help."
+    }
+   ]
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "One word. And the wedding is on the night of the final."
+  }
+ ]
+}

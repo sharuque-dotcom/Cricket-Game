@@ -1,0 +1,157 @@
+{
+ "id": "od9",
+ "no": 9,
+ "book": "b2",
+ "title": "Proof",
+ "art": "bd_stadium_night",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_hostel"
+  },
+  {
+   "enter": "jojo",
+   "side": "left"
+  },
+  {
+   "s": "jojo",
+   "t": "So let me get this right. The captain plans to steal the team using his own wedding, and our only witness is you, hiding behind a curtain, illegally."
+  },
+  {
+   "s": "jojo",
+   "t": "Nobody will believe you. You're the rookie who wants his fiancée. You need proof."
+  },
+  {
+   "phone": "M",
+   "msgs": [
+    {
+     "t": "I heard it too. Through the floor."
+    },
+    {
+     "t": "I'm going to get it on record. Don't try to stop me."
+    },
+    {
+     "t": "Just win your match tonight. Please. Give my father one reason to keep you."
+    }
+   ]
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bd_stadium_night"
+  },
+  {
+   "n": "Saturday. You're back in the eleven because two players have food poisoning. Monarchs against the Falcons again. Kunal is batting with you."
+  },
+  {
+   "enter": "kunal",
+   "side": "right"
+  },
+  {
+   "s": "kunal",
+   "t": "Relax, small town. I'll run you out before Delhi gets you. Saves everyone the paperwork."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "Last over. Fourteen to win. Kunal calls you for a single that isn't there. You dive. You make it by a hair. He shrugs at the camera."
+  },
+  {
+   "moment": {
+    "kind": "chase",
+    "title": "14 off 5",
+    "desc": "Your own captain just tried to run you out. Five balls left. Tanveer Ali again. Fourteen to win.",
+    "bowler": "Tanveer Ali",
+    "balls": 5,
+    "need": 14
+   },
+   "win": "won",
+   "lose": "lost"
+  },
+  {
+   "label": "won"
+  },
+  {
+   "set": "proofWon"
+  },
+  {
+   "n": "A six off the last ball. The stadium explodes. Kunal hugs you for the cameras and whispers: \"Lucky.\""
+  },
+  {
+   "go": "after"
+  },
+  {
+   "label": "lost"
+  },
+  {
+   "n": "Three short. In the dug-out Kunal tells the reporters you panicked. Somebody in the owner's box throws a glass against the wall."
+  },
+  {
+   "label": "after"
+  },
+  {
+   "bg": "bg_dressing_room"
+  },
+  {
+   "phone": "M",
+   "msgs": [
+    {
+     "t": "My father is back from Delhi."
+    },
+    {
+     "t": "He knows about the balcony. A guard saw the ladder."
+    },
+    {
+     "t": "He wants to see you. Alone. Now."
+    }
+   ]
+  },
+  {
+   "end": true,
+   "cliff": "Harsh Malhotra knows. And he wants you alone."
+  }
+ ]
+}

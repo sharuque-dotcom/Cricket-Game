@@ -1,0 +1,227 @@
+{
+ "id": "od15",
+ "no": 15,
+ "book": "b2",
+ "title": "The Run",
+ "art": "bd_stadium_night",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bd_stadium_night"
+  },
+  {
+   "n": "She vaults the advertising boards in a twenty-kilo lehenga. Security lets her through because nobody is sure who's in charge anymore."
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "if": "lostFinal",
+   "go": "lostTalk"
+  },
+  {
+   "s": "meera",
+   "t": "You won. You actually won. I was going to come anyway, but you won.",
+   "mood": "shout",
+   "ex": "happy"
+  },
+  {
+   "go": "kunal"
+  },
+  {
+   "label": "lostTalk"
+  },
+  {
+   "s": "meera",
+   "t": "I don't care that you lost. I don't care about the money. I'd rather be poor and choose than be rich and sold.",
+   "mood": "shout"
+  },
+  {
+   "label": "kunal"
+  },
+  {
+   "enter": "kunal",
+   "side": "right"
+  },
+  {
+   "n": "Kunal storms onto the pitch in his sherwani, his father behind him."
+  },
+  {
+   "s": "kunal",
+   "t": "Meera. Get back in the mandap. Now. You're making a fool of me.",
+   "mood": "shout"
+  },
+  {
+   "s": "meera",
+   "t": "You did that yourself, Kunal. Eleven minutes of it. Recorded. My father has a copy. So does our lawyer."
+  },
+  {
+   "exit": "kunal"
+  },
+  {
+   "enter": "harsh",
+   "side": "right"
+  },
+  {
+   "n": "Harsh Malhotra walks onto the pitch. Every camera in the stadium follows him."
+  },
+  {
+   "if": "wonFinal",
+   "go": "harshWon"
+  },
+  {
+   "s": "harsh",
+   "t": "Sethi, call in your debt. I'll sell the house, the cars, my own watch. I've still got the recording, and my lawyers have it too. We'll see who owns what in court."
+  },
+  {
+   "go": "harshEnd"
+  },
+  {
+   "label": "harshWon"
+  },
+  {
+   "s": "harsh",
+   "t": "Sethi. The prize money and the sponsor's bonus go to my lawyers tomorrow. Along with a recording. I'd start calling yours."
+  },
+  {
+   "label": "harshEnd"
+  },
+  {
+   "s": "harsh",
+   "t": "The wedding is off. My daughter chooses. As her mother did.",
+   "mood": "soft"
+  },
+  {
+   "exit": "harsh"
+  },
+  {
+   "n": "Seventy thousand people are silent. Meera is standing in front of you on the pitch, henna on her hands, a letter hidden in a peacock's tail."
+  },
+  {
+   "s": "meera",
+   "t": "So. Rookie. Last time you didn't ask any questions. Ask one now.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "Go down on one knee on the pitch.",
+     "d": "Ask the big question. In front of everyone.",
+     "cost": 25,
+     "fx": {
+      "meera": 3
+     },
+     "set": "proposed"
+    },
+    {
+     "t": "\"Can I buy you a vada pav?\"",
+     "d": "Start again. Slowly.",
+     "fx": {
+      "meera": 2
+     },
+     "set": "slow"
+    },
+    {
+     "t": "\"What do YOU want, Meera?\"",
+     "d": "Let her choose. For once.",
+     "fx": {
+      "meera": 2
+     },
+     "set": "herChoice"
+    }
+   ]
+  },
+  {
+   "if": "proposed",
+   "go": "prop"
+  },
+  {
+   "if": "slow",
+   "go": "slow"
+  },
+  {
+   "s": "meera",
+   "t": "Nobody has ever asked me that. Give me one day. I want to choose properly.",
+   "mood": "soft"
+  },
+  {
+   "go": "end"
+  },
+  {
+   "label": "prop"
+  },
+  {
+   "n": "Seventy thousand people gasp at once. Somewhere in the stands, an eighty-one-year-old woman shouts \"FINALLY!\""
+  },
+  {
+   "s": "meera",
+   "t": "Ask me tomorrow. When I'm not wearing someone else's wedding. I want to say yes properly.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "go": "end"
+  },
+  {
+   "label": "slow"
+  },
+  {
+   "s": "meera",
+   "t": "With extra chilli. On this lehenga. Yes.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "label": "end"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "The wedding is off. Tomorrow, she chooses."
+  }
+ ]
+}

@@ -1,0 +1,178 @@
+{
+ "id": "od10",
+ "no": 10,
+ "book": "b2",
+ "title": "The Father",
+ "art": "bg_owner_office",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_owner_office"
+  },
+  {
+   "n": "Midnight. The office is dark except for one desk lamp. Harsh Malhotra is sitting where his late wife's photo stands, holding a glass he isn't drinking."
+  },
+  {
+   "enter": "harsh",
+   "side": "right"
+  },
+  {
+   "s": "harsh",
+   "t": "A ladder. In my own house. My mother-in-law holding the torch. Do you know how that feels, Sonpur?"
+  },
+  {
+   "s": "harsh",
+   "t": "Sit. I'm not going to shout. I'm too tired.",
+   "mood": "soft"
+  },
+  {
+   "s": "harsh",
+   "t": "I started this team with my wife. She painted the first logo herself. When she died, the team was all I had left of her. So I borrowed. And borrowed.",
+   "mood": "soft"
+  },
+  {
+   "s": "harsh",
+   "t": "Here is my offer. A three-year contract, double money, a house for your mother in Sonpur. And you never speak to my daughter again."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Kunal plans to take your team after the wedding. I heard him.\"",
+     "d": "Tell him the truth.",
+     "show": "overheard",
+     "set": "warnedHarsh",
+     "fx": {
+      "harsh": 1
+     }
+    },
+    {
+     "t": "\"I don't want your money. I want her to choose.\"",
+     "d": "Refuse.",
+     "fx": {
+      "meera": 2,
+      "harsh": -1
+     },
+     "set": "refused"
+    },
+    {
+     "t": "\"Can I think about it?\"",
+     "d": "Buy time.",
+     "set": "thinking"
+    }
+   ]
+  },
+  {
+   "if": "warnedHarsh",
+   "go": "warned"
+  },
+  {
+   "if": "refused",
+   "go": "refused"
+  },
+  {
+   "s": "harsh",
+   "t": "Think fast. You have until the semi-final."
+  },
+  {
+   "go": "end"
+  },
+  {
+   "label": "warned"
+  },
+  {
+   "s": "harsh",
+   "t": "Kunal? Kunal has been at my table for ten years. You've been in my city for ten weeks.",
+   "mood": "shout"
+  },
+  {
+   "s": "harsh",
+   "t": "Bring me proof, or never say that name in this office again."
+  },
+  {
+   "go": "end"
+  },
+  {
+   "label": "refused"
+  },
+  {
+   "s": "harsh",
+   "t": "...My wife said that to her father. Word for word. He didn't speak to her for six years.",
+   "mood": "soft"
+  },
+  {
+   "s": "harsh",
+   "t": "Get out. Before I start to like you."
+  },
+  {
+   "label": "end"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_hostel"
+  },
+  {
+   "n": "3 AM. You can't sleep. Your real phone rings. Maa, from Sonpur. She never calls this late."
+  },
+  {
+   "phone": "Maa",
+   "msgs": [
+    {
+     "t": "Beta, two men came to the shop today."
+    },
+    {
+     "t": "They said the bank loan on our house is paid. All of it."
+    },
+    {
+     "t": "They left a card. Sethi Steel. Who are these people? What did you do?"
+    }
+   ]
+  },
+  {
+   "end": true,
+   "cliff": "Sethi just bought your mother's house. And everyone has a price."
+  }
+ ]
+}

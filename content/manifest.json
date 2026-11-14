@@ -25,6 +25,21 @@
         "sid": "Sid",
         "sushma": "Sushma"
       }
+    },
+    {
+      "id": "b2",
+      "live": true,
+      "title": "The Owner's Daughter",
+      "genre": "Romance · Forbidden love",
+      "art": "cover_owner",
+      "blurb": "She's the owner's daughter, engaged to your captain. One wrong look, and you never play again.",
+      "rel": {
+        "meera": "Meera",
+        "nani": "Nani",
+        "jojo": "Jojo",
+        "harsh": "Harsh",
+        "kunal": "Kunal"
+      }
     }
   ],
   "episodes": [
@@ -243,6 +258,102 @@
       "no": 16,
       "file": "episodes/bw16.json",
       "rev": 1
+    },
+    {
+      "id": "od1",
+      "no": 1,
+      "file": "episodes/od1.json",
+      "rev": 1
+    },
+    {
+      "id": "od2",
+      "no": 2,
+      "file": "episodes/od2.json",
+      "rev": 1
+    },
+    {
+      "id": "od3",
+      "no": 3,
+      "file": "episodes/od3.json",
+      "rev": 1
+    },
+    {
+      "id": "od4",
+      "no": 4,
+      "file": "episodes/od4.json",
+      "rev": 1
+    },
+    {
+      "id": "od5",
+      "no": 5,
+      "file": "episodes/od5.json",
+      "rev": 1
+    },
+    {
+      "id": "od6",
+      "no": 6,
+      "file": "episodes/od6.json",
+      "rev": 1
+    },
+    {
+      "id": "od7",
+      "no": 7,
+      "file": "episodes/od7.json",
+      "rev": 1
+    },
+    {
+      "id": "od8",
+      "no": 8,
+      "file": "episodes/od8.json",
+      "rev": 1
+    },
+    {
+      "id": "od9",
+      "no": 9,
+      "file": "episodes/od9.json",
+      "rev": 1
+    },
+    {
+      "id": "od10",
+      "no": 10,
+      "file": "episodes/od10.json",
+      "rev": 1
+    },
+    {
+      "id": "od11",
+      "no": 11,
+      "file": "episodes/od11.json",
+      "rev": 1
+    },
+    {
+      "id": "od12",
+      "no": 12,
+      "file": "episodes/od12.json",
+      "rev": 1
+    },
+    {
+      "id": "od13",
+      "no": 13,
+      "file": "episodes/od13.json",
+      "rev": 1
+    },
+    {
+      "id": "od14",
+      "no": 14,
+      "file": "episodes/od14.json",
+      "rev": 1
+    },
+    {
+      "id": "od15",
+      "no": 15,
+      "file": "episodes/od15.json",
+      "rev": 1
+    },
+    {
+      "id": "od16",
+      "no": 16,
+      "file": "episodes/od16.json",
+      "rev": 1
     }
   ],
   "fallback": {
@@ -277,7 +388,19 @@
     "bg_tv_studio": "bg_newsroom",
     "bg_red_carpet": "ev_party",
     "bg_film_set": "ev_party",
-    "ev_real_wedding": "ev_party"
+    "ev_real_wedding": "ev_party",
+    "bg_mansion_party": "bg_hotel_lobby",
+    "bg_auto_night": "bg_street_dusk",
+    "bg_marine_drive": "bg_street_dusk",
+    "bg_owner_box": "bd_stadium_night",
+    "bg_gate_four": "bg_mandi_night",
+    "bg_dining_room": "bg_hotel_lobby",
+    "bg_girls_ground": "bd_maidan",
+    "bg_owner_office": "bg_hotel_lobby",
+    "bg_balcony_night": "bg_street_dusk",
+    "bg_mehendi": "ev_party",
+    "bg_mandap": "bd_stadium_night",
+    "ev_runaway_bride": "bd_stadium_night"
   },
   "fx": {
     "ev_the_call": "dust",
@@ -308,7 +431,19 @@
     "bg_tv_studio": "bokeh",
     "bg_red_carpet": "bokeh",
     "bg_film_set": "bokeh",
-    "ev_real_wedding": "bokeh"
+    "ev_real_wedding": "bokeh",
+    "bg_mansion_party": "bokeh",
+    "bg_auto_night": "bokeh",
+    "bg_marine_drive": "dust",
+    "bg_owner_box": "bokeh",
+    "bg_gate_four": "dust",
+    "bg_dining_room": "bokeh",
+    "bg_girls_ground": "dust",
+    "bg_owner_office": "bokeh",
+    "bg_balcony_night": "bokeh",
+    "bg_mehendi": "embers+bokeh",
+    "bg_mandap": "bokeh",
+    "ev_runaway_bride": "bokeh"
   },
   "day": [
     "bg_academy_nets",
@@ -317,7 +452,9 @@
     "bg_hotel_suite",
     "bg_goa_beach",
     "bg_kapoor_mansion",
-    "ev_real_wedding"
+    "ev_real_wedding",
+    "bg_girls_ground",
+    "bg_marine_drive"
   ],
   "amb": {
     "ev_the_call": "stall",
@@ -369,7 +506,20 @@
     "bg_goa_beach": "img/bg_goa_beach.webp",
     "bg_palace_wedding": "img/bg_palace_wedding.webp",
     "bg_red_carpet": "img/bg_red_carpet.webp",
-    "bg_tv_studio": "img/bg_tv_studio.webp"
+    "bg_tv_studio": "img/bg_tv_studio.webp",
+    "cover_owner": "img/cover_owner.webp",
+    "bg_mansion_party": "img/bg_mansion_party.webp",
+    "bg_auto_night": "img/bg_auto_night.webp",
+    "bg_marine_drive": "img/bg_marine_drive.webp",
+    "bg_owner_box": "img/bg_owner_box.webp",
+    "bg_gate_four": "img/bg_gate_four.webp",
+    "bg_dining_room": "img/bg_dining_room.webp",
+    "bg_girls_ground": "img/bg_girls_ground.webp",
+    "bg_owner_office": "img/bg_owner_office.webp",
+    "bg_balcony_night": "img/bg_balcony_night.webp",
+    "bg_mehendi": "img/bg_mehendi.webp",
+    "bg_mandap": "img/bg_mandap.webp",
+    "ev_runaway_bride": "img/ev_runaway_bride.webp"
   },
   "chars": {
     "imran": "img/char_imran.webp",
@@ -399,7 +549,19 @@
     "nikhil": "img/char_nikhil.webp",
     "dadi": "img/char_dadi.webp",
     "sid": "img/char_sid.webp",
-    "tara_home_tearful": "img/char_tara_home_tearful.webp"
+    "tara_home_tearful": "img/char_tara_home_tearful.webp",
+    "meera": "img/char_meera.webp",
+    "meera_happy": "img/char_meera_happy.webp",
+    "meera_sad": "img/char_meera_sad.webp",
+    "kunal": "img/char_kunal.webp",
+    "kunal_angry": "img/char_kunal_angry.webp",
+    "harsh": "img/char_harsh.webp",
+    "nani": "img/char_nani.webp",
+    "jojo": "img/char_jojo.webp",
+    "sethi": "img/char_sethi.webp",
+    "coach": "img/char_coach.webp",
+    "gudiya": "img/char_gudiya.webp",
+    "stranger": "img/char_meera.webp"
   },
   "i18n": {
     "hinglish": [
@@ -641,6 +803,86 @@
       {
         "ep": "bw16",
         "file": "i18n/hinglish/bw16.json",
+        "rev": 1
+      },
+      {
+        "ep": "od1",
+        "file": "i18n/hinglish/od1.json",
+        "rev": 1
+      },
+      {
+        "ep": "od2",
+        "file": "i18n/hinglish/od2.json",
+        "rev": 1
+      },
+      {
+        "ep": "od3",
+        "file": "i18n/hinglish/od3.json",
+        "rev": 1
+      },
+      {
+        "ep": "od4",
+        "file": "i18n/hinglish/od4.json",
+        "rev": 1
+      },
+      {
+        "ep": "od5",
+        "file": "i18n/hinglish/od5.json",
+        "rev": 1
+      },
+      {
+        "ep": "od6",
+        "file": "i18n/hinglish/od6.json",
+        "rev": 1
+      },
+      {
+        "ep": "od7",
+        "file": "i18n/hinglish/od7.json",
+        "rev": 1
+      },
+      {
+        "ep": "od8",
+        "file": "i18n/hinglish/od8.json",
+        "rev": 1
+      },
+      {
+        "ep": "od9",
+        "file": "i18n/hinglish/od9.json",
+        "rev": 1
+      },
+      {
+        "ep": "od10",
+        "file": "i18n/hinglish/od10.json",
+        "rev": 1
+      },
+      {
+        "ep": "od11",
+        "file": "i18n/hinglish/od11.json",
+        "rev": 1
+      },
+      {
+        "ep": "od12",
+        "file": "i18n/hinglish/od12.json",
+        "rev": 1
+      },
+      {
+        "ep": "od13",
+        "file": "i18n/hinglish/od13.json",
+        "rev": 1
+      },
+      {
+        "ep": "od14",
+        "file": "i18n/hinglish/od14.json",
+        "rev": 1
+      },
+      {
+        "ep": "od15",
+        "file": "i18n/hinglish/od15.json",
+        "rev": 1
+      },
+      {
+        "ep": "od16",
+        "file": "i18n/hinglish/od16.json",
         "rev": 1
       }
     ],
@@ -884,6 +1126,86 @@
         "ep": "bw16",
         "file": "i18n/manglish/bw16.json",
         "rev": 1
+      },
+      {
+        "ep": "od1",
+        "file": "i18n/manglish/od1.json",
+        "rev": 1
+      },
+      {
+        "ep": "od2",
+        "file": "i18n/manglish/od2.json",
+        "rev": 1
+      },
+      {
+        "ep": "od3",
+        "file": "i18n/manglish/od3.json",
+        "rev": 1
+      },
+      {
+        "ep": "od4",
+        "file": "i18n/manglish/od4.json",
+        "rev": 1
+      },
+      {
+        "ep": "od5",
+        "file": "i18n/manglish/od5.json",
+        "rev": 1
+      },
+      {
+        "ep": "od6",
+        "file": "i18n/manglish/od6.json",
+        "rev": 1
+      },
+      {
+        "ep": "od7",
+        "file": "i18n/manglish/od7.json",
+        "rev": 1
+      },
+      {
+        "ep": "od8",
+        "file": "i18n/manglish/od8.json",
+        "rev": 1
+      },
+      {
+        "ep": "od9",
+        "file": "i18n/manglish/od9.json",
+        "rev": 1
+      },
+      {
+        "ep": "od10",
+        "file": "i18n/manglish/od10.json",
+        "rev": 1
+      },
+      {
+        "ep": "od11",
+        "file": "i18n/manglish/od11.json",
+        "rev": 1
+      },
+      {
+        "ep": "od12",
+        "file": "i18n/manglish/od12.json",
+        "rev": 1
+      },
+      {
+        "ep": "od13",
+        "file": "i18n/manglish/od13.json",
+        "rev": 1
+      },
+      {
+        "ep": "od14",
+        "file": "i18n/manglish/od14.json",
+        "rev": 1
+      },
+      {
+        "ep": "od15",
+        "file": "i18n/manglish/od15.json",
+        "rev": 1
+      },
+      {
+        "ep": "od16",
+        "file": "i18n/manglish/od16.json",
+        "rev": 1
       }
     ],
     "banglish": [
@@ -1125,6 +1447,86 @@
       {
         "ep": "bw16",
         "file": "i18n/banglish/bw16.json",
+        "rev": 1
+      },
+      {
+        "ep": "od1",
+        "file": "i18n/banglish/od1.json",
+        "rev": 1
+      },
+      {
+        "ep": "od2",
+        "file": "i18n/banglish/od2.json",
+        "rev": 1
+      },
+      {
+        "ep": "od3",
+        "file": "i18n/banglish/od3.json",
+        "rev": 1
+      },
+      {
+        "ep": "od4",
+        "file": "i18n/banglish/od4.json",
+        "rev": 1
+      },
+      {
+        "ep": "od5",
+        "file": "i18n/banglish/od5.json",
+        "rev": 1
+      },
+      {
+        "ep": "od6",
+        "file": "i18n/banglish/od6.json",
+        "rev": 1
+      },
+      {
+        "ep": "od7",
+        "file": "i18n/banglish/od7.json",
+        "rev": 1
+      },
+      {
+        "ep": "od8",
+        "file": "i18n/banglish/od8.json",
+        "rev": 1
+      },
+      {
+        "ep": "od9",
+        "file": "i18n/banglish/od9.json",
+        "rev": 1
+      },
+      {
+        "ep": "od10",
+        "file": "i18n/banglish/od10.json",
+        "rev": 1
+      },
+      {
+        "ep": "od11",
+        "file": "i18n/banglish/od11.json",
+        "rev": 1
+      },
+      {
+        "ep": "od12",
+        "file": "i18n/banglish/od12.json",
+        "rev": 1
+      },
+      {
+        "ep": "od13",
+        "file": "i18n/banglish/od13.json",
+        "rev": 1
+      },
+      {
+        "ep": "od14",
+        "file": "i18n/banglish/od14.json",
+        "rev": 1
+      },
+      {
+        "ep": "od15",
+        "file": "i18n/banglish/od15.json",
+        "rev": 1
+      },
+      {
+        "ep": "od16",
+        "file": "i18n/banglish/od16.json",
         "rev": 1
       }
     ]

@@ -1,0 +1,278 @@
+{
+ "id": "od1",
+ "no": 1,
+ "book": "b2",
+ "title": "Drive. Don't Ask.",
+ "art": "bg_mansion_party",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_mansion_party"
+  },
+  {
+   "n": "Mumbai. A sea-facing mansion on Malabar Hill. Four hundred guests, a string quartet, and a cake shaped like a cricket trophy."
+  },
+  {
+   "n": "It's the engagement party of the Mumbai Monarchs' captain. Every player has to attend. Even the rookie from Sonpur who has been in the squad for six days."
+  },
+  {
+   "th": "My suit is borrowed. My shoes are borrowed. Nobody here knows my name. Time to leave."
+  },
+  {
+   "bg": "bg_auto_night"
+  },
+  {
+   "n": "11:40 PM. You slip out through the service gate and wave down an auto-rickshaw. As it pulls away, the other door flies open."
+  },
+  {
+   "n": "A girl in a silver lehenga throws herself onto the seat beside you, kicks off her heels and pulls a dupatta over her hair.",
+   "reveal": true
+  },
+  {
+   "enter": "stranger",
+   "side": "left"
+  },
+  {
+   "s": "stranger",
+   "t": "Drive. Don't ask.",
+   "mood": "shout"
+  },
+  {
+   "s": "driver",
+   "t": "Madam, this is HIS auto."
+  },
+  {
+   "s": "stranger",
+   "t": "Then he can pay. Drive!"
+  },
+  {
+   "n": "Behind you, two security guards with earpieces run out of the gate, looking left and right. The auto turns the corner."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Hi. I'm {first}. You're welcome.\"",
+     "d": "Play along.",
+     "set": "warmStart"
+    },
+    {
+     "t": "\"Are you in trouble? Should I call the police?\"",
+     "d": "Worried.",
+     "set": "worried"
+    },
+    {
+     "t": "\"Get out. I don't need trouble.\"",
+     "d": "You have a career to protect.",
+     "set": "rude"
+    }
+   ]
+  },
+  {
+   "if": "rude",
+   "go": "rude"
+  },
+  {
+   "s": "stranger",
+   "t": "I'm not in trouble. I'm escaping trouble. There's a difference.",
+   "mood": "soft"
+  },
+  {
+   "go": "drive"
+  },
+  {
+   "label": "rude"
+  },
+  {
+   "s": "stranger",
+   "t": "Charming. Five minutes. Then I'm gone, and you can go back to having no trouble at all."
+  },
+  {
+   "label": "drive"
+  },
+  {
+   "bg": "bg_marine_drive"
+  },
+  {
+   "n": "Marine Drive. The sea is black and the streetlights curve around the bay like a necklace. She hasn't told you her name."
+  },
+  {
+   "s": "stranger",
+   "t": "Can I ask you something? Have you ever done one thing in your life that nobody chose for you?"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Left home with forty rupees to play cricket.\"",
+     "d": "The truth.",
+     "set": "toldSonpur"
+    },
+    {
+     "t": "\"Got in this auto. Turned out to be a mistake.\"",
+     "d": "Tease her.",
+     "set": "tease"
+    },
+    {
+     "t": "Buy her a vada pav from the last stall still open.",
+     "d": "Answer with food.",
+     "cost": 10,
+     "set": "vadaPav"
+    }
+   ]
+  },
+  {
+   "if": "vadaPav",
+   "go": "vada"
+  },
+  {
+   "s": "stranger",
+   "t": "Forty rupees. I've spent more than that on a straw.",
+   "mood": "soft"
+  },
+  {
+   "s": "stranger",
+   "t": "You're the first person tonight who didn't want something from me."
+  },
+  {
+   "go": "dawn"
+  },
+  {
+   "label": "vada"
+  },
+  {
+   "n": "She eats it in four bites, chilli on her silver lehenga, laughing at herself. A real laugh. It changes her whole face."
+  },
+  {
+   "s": "stranger",
+   "t": "Best thing I've eaten all year. Don't tell my nutritionist. Don't tell anyone.",
+   "mood": "soft"
+  },
+  {
+   "label": "dawn"
+  },
+  {
+   "n": "You sit on the sea wall until the sky turns pink. At 5:50 AM she stands, picks up her heels, and stops a passing taxi."
+  },
+  {
+   "s": "stranger",
+   "t": "Thank you, rookie. Whoever you are. Don't look for me.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "th": "Rookie. I never told her I play cricket."
+  },
+  {
+   "bg": "bg_brand_shoot"
+  },
+  {
+   "n": "11 AM. Team photo shoot at the stadium. The owner walks in with his family for the season launch. The players straighten up."
+  },
+  {
+   "enter": "harsh",
+   "side": "right"
+  },
+  {
+   "s": "harsh",
+   "t": "Gentlemen. Meet my daughter, Meera. And as you all know, as of last night, our captain's fiancée."
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "n": "Silver earrings. Same face. Captain Kunal Sethi puts his arm around her waist for the cameras. She smiles like a statue.",
+   "reveal": true
+  },
+  {
+   "n": "Across the room her eyes find yours. For half a second they go wide. Then she very slightly shakes her head."
+  },
+  {
+   "if": "rude",
+   "go": "fxRude"
+  },
+  {
+   "fx": {
+    "meera": 3
+   }
+  },
+  {
+   "if": "vadaPav",
+   "go": "fxVada"
+  },
+  {
+   "go": "fxEnd"
+  },
+  {
+   "label": "fxVada"
+  },
+  {
+   "fx": {
+    "meera": 2
+   }
+  },
+  {
+   "go": "fxEnd"
+  },
+  {
+   "label": "fxRude"
+  },
+  {
+   "fx": {
+    "meera": -1
+   }
+  },
+  {
+   "label": "fxEnd"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "She's engaged to your captain. And her father signs your contract."
+  }
+ ]
+}

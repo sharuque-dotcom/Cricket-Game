@@ -1,0 +1,261 @@
+{
+ "id": "od2",
+ "no": 2,
+ "book": "b2",
+ "title": "Twelfth Man",
+ "art": "bg_academy_nets",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_academy_nets"
+  },
+  {
+   "n": "First week of the season. You're not in the eleven. You're the twelfth man: drinks, towels, and Captain Kunal Sethi's spare gloves."
+  },
+  {
+   "enter": "kunal",
+   "side": "right"
+  },
+  {
+   "s": "kunal",
+   "t": "Small town. Two bananas, cut lengthways, not across. And my bat grip, the blue one, not the black one. Run."
+  },
+  {
+   "enter": "jojo",
+   "side": "left"
+  },
+  {
+   "s": "jojo",
+   "t": "Don't mind him. He talks to everyone like that. Except the mirror."
+  },
+  {
+   "s": "jojo",
+   "t": "Jojo Fernandes. Leg-spin, Goa, your roommate. I snore in Konkani. Sorry in advance."
+  },
+  {
+   "exit": "kunal"
+  },
+  {
+   "enter": "coach",
+   "side": "right"
+  },
+  {
+   "s": "coach",
+   "t": "Rookie. Kunal wants you in the nets against Rawat. He wants to see you get hurt. I want to see you not get hurt. Pads on."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "moment": {
+    "kind": "nets",
+    "title": "The Rookie Test",
+    "desc": "Deepak Rawat, 148 clicks. The whole squad watching. The captain wants you embarrassed. Survive three balls.",
+    "bowler": "Deepak Rawat",
+    "balls": 3,
+    "goal": "survive",
+    "winCall": "STILL STANDING",
+    "winSub": "Coach D'Souza writes something down.",
+    "loseCall": "BOWLED",
+    "loseSub": "Kunal starts a slow clap."
+   },
+   "win": "netsWon",
+   "lose": "netsLost"
+  },
+  {
+   "label": "netsWon"
+  },
+  {
+   "set": "netsWon"
+  },
+  {
+   "enter": "coach",
+   "side": "right"
+  },
+  {
+   "s": "coach",
+   "t": "Hm. Kunal, your rookie can bat. Bad luck."
+  },
+  {
+   "fx": {
+    "kunal": -1
+   }
+  },
+  {
+   "go": "afterNets"
+  },
+  {
+   "label": "netsLost"
+  },
+  {
+   "enter": "kunal",
+   "side": "right"
+  },
+  {
+   "s": "kunal",
+   "t": "Sonpur's finest. Bananas, small town. Lengthways."
+  },
+  {
+   "label": "afterNets"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_owner_box"
+  },
+  {
+   "n": "Evening. The owner's box glows above the stands. Meera sits beside her father in white, not looking down. Not once."
+  },
+  {
+   "th": "Six days ago she sat on a sea wall with me until sunrise. Now she's a painting behind glass."
+  },
+  {
+   "bg": "bg_dressing_room"
+  },
+  {
+   "n": "After training, at the bottom of your kit bag, a crumpled paper napkin. In eyeliner: \"Gate 4. 11 PM. Come alone. M.\""
+  },
+  {
+   "choice": [
+    {
+     "t": "Go to Gate 4.",
+     "d": "You know you're going.",
+     "fx": {
+      "meera": 1
+     },
+     "set": "gate4"
+    },
+    {
+     "t": "Throw the note away.",
+     "d": "She's the captain's fiancée. Your career is six days old.",
+     "set": "skipGate"
+    }
+   ]
+  },
+  {
+   "if": "skipGate",
+   "go": "skip"
+  },
+  {
+   "go": "gate"
+  },
+  {
+   "label": "skip"
+  },
+  {
+   "n": "You lie on your bed staring at the ceiling. At 11:20 you're running down the stadium service road in flip-flops."
+  },
+  {
+   "set": "gate4"
+  },
+  {
+   "label": "gate"
+  },
+  {
+   "bg": "bg_gate_four"
+  },
+  {
+   "n": "Gate 4. A loading dock, a flickering lamp and a stray dog. She's sitting on a crate in a hoodie, with no earrings and no smile."
+  },
+  {
+   "enter": "meera",
+   "side": "left"
+  },
+  {
+   "s": "meera",
+   "t": "You came. Good. I needed to say thank you, and I needed you to forget that night ever happened."
+  },
+  {
+   "s": "meera",
+   "t": "Kunal's father owns half of my father's debts. This engagement is a business deal. If anyone finds out I ran, the deal dies, and my father with it."
+  },
+  {
+   "s": "meera",
+   "t": "Here. My old phone. My father reads my real one. If you ever need to tell me something, use this. Then never use it.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Then why did you run that night?\"",
+     "d": "Ask the real question.",
+     "fx": {
+      "meera": 2
+     }
+    },
+    {
+     "t": "\"I'll forget. I promise.\"",
+     "d": "Protect her.",
+     "fx": {
+      "meera": 1
+     }
+    },
+    {
+     "t": "\"I'm not good at forgetting.\"",
+     "d": "Honest. Dangerous.",
+     "fx": {
+      "meera": 2
+     },
+     "set": "honestGate"
+    }
+   ]
+  },
+  {
+   "s": "meera",
+   "t": "Because for one night I wanted to be nobody. You were the only person in Mumbai who let me.",
+   "mood": "soft"
+  },
+  {
+   "n": "She pulls the hood up and walks into the dark. As the dog barks after her, a camera flash goes off somewhere in the stands above you."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Someone saw you. Someone has a photo."
+  }
+ ]
+}

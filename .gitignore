@@ -16,3 +16,4 @@ app/google-services.json
 # Play upload bundles (build output, sent to the owner directly)
 *.aab
 *-debug.apk
+store/ads/drama/*.zip

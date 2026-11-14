@@ -1,0 +1,214 @@
+{
+ "id": "od3",
+ "no": 3,
+ "book": "b2",
+ "title": "Debut",
+ "art": "bd_stadium_night",
+ "cast": {
+  "meera": {
+   "name": "Meera Malhotra",
+   "col": "#fb7185"
+  },
+  "stranger": {
+   "name": "The girl in the auto",
+   "col": "#fb7185"
+  },
+  "kunal": {
+   "name": "Kunal Sethi",
+   "col": "#f87171"
+  },
+  "harsh": {
+   "name": "Harsh Malhotra",
+   "col": "#a78bfa"
+  },
+  "nani": {
+   "name": "Nani",
+   "col": "#fbbf24"
+  },
+  "jojo": {
+   "name": "Jojo",
+   "col": "#34d399"
+  },
+  "sethi": {
+   "name": "Rajan Sethi",
+   "col": "#94a3b8"
+  },
+  "coach": {
+   "name": "Coach D'Souza",
+   "col": "#60a5fa"
+  },
+  "gudiya": {
+   "name": "Gudiya",
+   "col": "#f9a8d4"
+  },
+  "driver": {
+   "name": "Auto driver",
+   "col": "#d6d3d1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_hostel"
+  },
+  {
+   "n": "6:10 AM. A message from an unknown number. A blurry photo: you at Gate 4, a girl in a hoodie walking away. Her face is a smudge."
+  },
+  {
+   "phone": "Unknown",
+   "msgs": [
+    {
+     "t": "Nice night for a walk, small town."
+    },
+    {
+     "t": "Stay away from what's mine."
+    },
+    {
+     "t": "Or the next photo goes to her father."
+    }
+   ]
+  },
+  {
+   "enter": "jojo",
+   "side": "left"
+  },
+  {
+   "s": "jojo",
+   "t": "Why do you look like someone stole your bat? ...Wait. Is that Gate 4? Bro. BRO. Who is she?"
+  },
+  {
+   "choice": [
+    {
+     "t": "Tell Jojo everything.",
+     "d": "You need one friend in this city.",
+     "fx": {
+      "jojo": 2
+     },
+     "set": "jojoKnows"
+    },
+    {
+     "t": "\"Nobody. A fan.\"",
+     "d": "Keep her safe.",
+     "fx": {
+      "jojo": -1
+     }
+    }
+   ]
+  },
+  {
+   "if": "jojoKnows",
+   "go": "told"
+  },
+  {
+   "s": "jojo",
+   "t": "A fan. At 11 PM. At the loading dock. Okay, rookie. When you want to tell me the truth, I'll be here eating your breakfast."
+  },
+  {
+   "go": "match"
+  },
+  {
+   "label": "told"
+  },
+  {
+   "s": "jojo",
+   "t": "The OWNER'S DAUGHTER? The CAPTAIN'S FIANCÉE? ...I need to sit down. I am sitting down. I need to lie down.",
+   "mood": "shout"
+  },
+  {
+   "s": "jojo",
+   "t": "Okay. Okay. I'm in. Nobody hears it from me. I am a vault. A Goan vault.",
+   "mood": "soft"
+  },
+  {
+   "label": "match"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bd_stadium_night"
+  },
+  {
+   "n": "That night. Monarchs against the Delhi Falcons. Fifty thousand people. In the eighteenth over, Kunal pulls a hamstring and limps off. The coach points at you."
+  },
+  {
+   "enter": "coach",
+   "side": "right"
+  },
+  {
+   "s": "coach",
+   "t": "Your debut, rookie. Last over. Ten to win. Don't think. Watch the ball."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "moment": {
+    "kind": "chase",
+    "title": "10 off 6",
+    "desc": "Debut. Tanveer Ali, the Falcons' death bowler. Fifty thousand people. The owner's box is watching. Ten to win.",
+    "bowler": "Tanveer Ali",
+    "balls": 6,
+    "need": 10
+   },
+   "win": "debutWon",
+   "lose": "debutLost"
+  },
+  {
+   "label": "debutWon"
+  },
+  {
+   "set": "debutWon"
+  },
+  {
+   "n": "The last ball disappears into the second tier. The crowd chants a name it learned two minutes ago: yours."
+  },
+  {
+   "n": "In the owner's box, through the glass, Meera is on her feet. She catches herself and sits back down. Too late. Her father noticed."
+  },
+  {
+   "go": "after"
+  },
+  {
+   "label": "debutLost"
+  },
+  {
+   "n": "Two runs short. You walk off with your head down. In the owner's box, through the glass, one person is still clapping: Meera. Her father noticed."
+  },
+  {
+   "label": "after"
+  },
+  {
+   "bg": "bg_dressing_room"
+  },
+  {
+   "enter": "harsh",
+   "side": "right"
+  },
+  {
+   "n": "The dressing room goes quiet. Harsh Malhotra himself walks in, shakes every hand, and stops at yours."
+  },
+  {
+   "s": "harsh",
+   "t": "Sonpur, is it? I like boys from small places. They know the value of what they're given."
+  },
+  {
+   "s": "harsh",
+   "t": "Friday. My home. A family dinner for the engagement. You'll come. My daughter... wants to meet the team's new hero."
+  },
+  {
+   "enter": "kunal",
+   "side": "left"
+  },
+  {
+   "s": "kunal",
+   "t": "What a lovely idea, sir. I'll make sure he wears shoes."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Dinner at the owner's house. Across the table from his daughter. And her fiancé."
+  }
+ ]
+}
