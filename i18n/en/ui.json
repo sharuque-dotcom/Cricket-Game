@@ -196,5 +196,11 @@
  "{n} ad keys left today",
  "{n} books",
  "{n} left today",
- "{n} new chapters are here"
+ "{n} new chapters are here",
+ "Free",
+ "{n} min",
+ "1 hour",
+ "{n} hours",
+ "Free key every {time} · +2 diamonds for every new chapter",
+ "The first {n} chapters of every story are free. After that each new chapter uses 1 key. Keys refill for free every {time}, or watch a short ad to get one straight away. Replays are free."
 ]
