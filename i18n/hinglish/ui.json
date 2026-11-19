@@ -196,5 +196,11 @@
  "{n} ad keys left today": "Aaj {n} ad chaabiyan baaki",
  "{n} books": "{n} books",
  "{n} left today": "Aaj {n} baaki",
- "{n} new chapters are here": "{n} naye chapters aa gaye"
+ "{n} new chapters are here": "{n} naye chapters aa gaye",
+ "Free": "Free",
+ "{n} min": "{n} min",
+ "1 hour": "1 ghanta",
+ "{n} hours": "{n} ghante",
+ "Free key every {time} · +2 diamonds for every new chapter": "Har {time} mein free key · har naye chapter pe +2 diamonds",
+ "The first {n} chapters of every story are free. After that each new chapter uses 1 key. Keys refill for free every {time}, or watch a short ad to get one straight away. Replays are free.": "Har story ke pehle {n} chapter free hain. Uske baad har naya chapter 1 key leta hai. Keys har {time} mein free mein bharti hain, ya ek chhota ad dekhke turant ek key lo. Replay free hain."
 }

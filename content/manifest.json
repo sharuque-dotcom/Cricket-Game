@@ -1535,5 +1535,10 @@
         "rev": 1
       }
     ]
+  },
+  "economy": {
+    "keyMax": 3,
+    "keyMins": 90,
+    "free": 3
   }
 }

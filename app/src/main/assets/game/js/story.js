@@ -1,6 +1,9 @@
 // Story Mode engine: episodic, choice-driven chapters with keys, diamonds and playable cricket moments.
 const STORY_KEY = 'gg_story_v1';
-const KEY_MAX = 2, KEY_MS = 3 * 60 * 60 * 1000; // one key every 3 hours
+// Key economy. These are the defaults; content/manifest.json "economy" can change them from the server
+// (keyMax, keyMins, free) so the gate can be tuned without a Play update.
+const ECON = { keyMax: 3, keyMins: 90, free: 3 };
+const keyEvery = () => ECON.keyMins % 60 ? t('{n} min', { n: ECON.keyMins }) : ECON.keyMins === 60 ? t('1 hour') : t('{n} hours', { n: ECON.keyMins / 60 });
 // Rewarded ads allowed per day. Keys: one ad = one chapter, so effectively unlimited; 40 is only a
 // safety net against automated ad farming (which can get the AdMob account flagged). Gems stay capped
 // so diamond choices keep their value (and so future gem packs are worth buying).
@@ -15,7 +18,7 @@ const Story = {
   // ---------- persistence ----------
   load() {
     try { this.st = JSON.parse(localStorage.getItem(STORY_KEY)); } catch (e) { this.st = null; }
-    if (!this.st) this.st = { name: '', diamonds: 22, keys: KEY_MAX, keyTs: Date.now() };
+    if (!this.st) this.st = { name: '', diamonds: 22, keys: ECON.keyMax, keyTs: Date.now() };
     const s = this.st;
     if (!s.keyTs) s.keyTs = Date.now();
     if (!s.books) { // saves from v1.3 kept one story: it becomes Book 1
@@ -61,11 +64,11 @@ const Story = {
   save() { try { localStorage.setItem(STORY_KEY, JSON.stringify(this.st)); } catch (e) {} },
   refillKeys() {
     const s = this.st, now = Date.now();
-    if (s.keys >= KEY_MAX) { s.keyTs = now; return; }
-    const gained = Math.floor((now - s.keyTs) / KEY_MS);
-    if (gained > 0) { s.keys = Math.min(KEY_MAX, s.keys + gained); s.keyTs += gained * KEY_MS; if (s.keys >= KEY_MAX) s.keyTs = now; }
+    if (s.keys >= ECON.keyMax) { s.keyTs = now; return; }
+    const gained = Math.floor((now - s.keyTs) / (ECON.keyMins * 60000));
+    if (gained > 0) { s.keys = Math.min(ECON.keyMax, s.keys + gained); s.keyTs += gained * (ECON.keyMins * 60000); if (s.keys >= ECON.keyMax) s.keyTs = now; }
   },
-  nextKeyIn() { const ms = KEY_MS - (Date.now() - this.st.keyTs); const h = Math.floor(ms / 3600000), m = Math.floor(ms % 3600000 / 60000); return t('{h}h {m}m', { h, m: String(m).padStart(2, '0') }); },
+  nextKeyIn() { const ms = (ECON.keyMins * 60000) - (Date.now() - this.st.keyTs); const h = Math.floor(ms / 3600000), m = Math.floor(ms % 3600000 / 60000); return t('{h}h {m}m', { h, m: String(m).padStart(2, '0') }); },
   fill(t) { return String(t).replace(/\{first\}/g, esc((this.st.name || 'Beta').split(' ')[0])); },
   // translated story text: tr(line) for the episode being played, et(e) for an episode's title,
   // bt(s) for book titles / blurbs / names / relationship labels (I18N '_common')
@@ -145,7 +148,7 @@ const Story = {
     const H = this.nextOf(hero), HI = H.info;
     const pct = HI.eps.length ? Math.round(HI.done / HI.eps.length * 100) : 0;
     const newbie = !Object.values(s.books).some(p => Object.keys(p.done || {}).length);
-    const heroBtn = !HI.playable || HI.locked ? '' : H.cur ? `▶ ${t('Continue Chapter {n}', { n: H.cur.no })}` : H.next ? `▶ ${t(HI.started ? 'Play Chapter {n}' : 'Start Chapter {n}', { n: H.next.no })} <span class="cost-tag">${KEY_SVG}1</span>` : '';
+    const heroBtn = !HI.playable || HI.locked ? '' : H.cur ? `▶ ${t('Continue Chapter {n}', { n: H.cur.no })}` : H.next ? `▶ ${t(HI.started ? 'Play Chapter {n}' : 'Start Chapter {n}', { n: H.next.no })} ${this.costTag(H.next.no - 1)}` : '';
     const shelf = order.map(b => `<button class="shelf-card ${this.bookInfo(b).playable && !this.bookInfo(b).locked ? '' : 'shut'}" data-book-id="${esc(b.id)}">
         <div class="sc-cover" style="${this.coverStyle(b.art)}">${this.badge(b)}</div>
         <b>${esc(this.bt(b.title))}</b><span>${esc(this.bt((b.genre || '').split('·')[0].trim()))}</span></button>`).join('');
@@ -172,7 +175,7 @@ const Story = {
         <div class="shelf">${shelf}</div>
         ${E.length && HI.playable && !HI.locked ? `<div class="sec-head"><h3>${t('Chapters')}</h3><button data-see>${t('See all {n}', { n: E.length })} ›</button></div>
         <div class="ch-list">${rows}</div>` : ''}
-        <div class="key-note">${s.keys < KEY_MAX ? `${KEY_SVG} ${t('Next free key in {time}', { time: this.nextKeyIn() })}` : `${KEY_SVG} ${t('Keys full. Each new chapter uses 1 key.')}`}</div>
+        <div class="key-note">${s.keys < ECON.keyMax ? `${KEY_SVG} ${t('Next free key in {time}', { time: this.nextKeyIn() })}` : `${KEY_SVG} ${t('Keys full. Each new chapter uses 1 key.')}`}</div>
       </div></div>`);
     this.bindHud(el, 'home');
     const hb = $('[data-play]', el);
@@ -202,7 +205,9 @@ const Story = {
     return `<button class="ch-row ${done ? 'done' : ''} ${next ? 'next' : ''} ${locked ? 'locked' : ''}" data-ep="${i}" data-b="${esc(b.id)}" ${locked ? 'disabled' : ''}>
       <span class="ch-no" style="${this.coverStyle(e.art)}"><em>${e.no}</em></span>
       <span class="ch-t"><b>${esc(this.et(e))}${I18N.has(e.id) ? '' : ' <i class="en-tag">EN</i>'}</b><small>${here ? t('In progress') : done ? t('Read · tap to replay') : next ? t('Up next') : t('Chapter {n}', { n: e.no })}</small></span>
-      <span class="ch-cta">${done ? '<i class="tick">✓</i>' : locked ? '<i class="lk">🔒</i>' : here ? '<span class="go">▶</span>' : `<span class="cost-tag">${KEY_SVG}1</span>`}</span></button>`;
+      <span class="ch-cta">${done ? '<i class="tick">✓</i>' : locked ? '<i class="lk">🔒</i>' : here ? '<span class="go">▶</span>' : this.costTag(i)}</span></button>`;
+  },
+  costTag(i) { return i < ECON.free ? `<span class="cost-tag free">${t('Free')}</span>` : `<span class="cost-tag">${KEY_SVG}1</span>`; 
   },
   bindRows(el, b) {
     $$('.ch-row[data-ep]', el).forEach(btn => btn.onclick = () => {
@@ -254,7 +259,7 @@ const Story = {
       ['🤔', t('Make choices'), t('When buttons appear, pick one. Your choices change the story and how people feel about you.')],
       [GEM_SVG, t('Diamond choices'), t('Choices with a {gem} cost diamonds. You earn diamonds by finishing chapters. Free choices are always there too.', { gem: GEM_SVG })],
       ['🏏', t('Cricket moments'), t('Sometimes you bat. Tap the big <b>HIT</b> button when it turns green.')],
-      [KEY_SVG, t('Keys'), t('Each new chapter uses 1 key. Keys refill for free every 3 hours, or watch a short ad to get one straight away. Replays are free.')],
+      [KEY_SVG, t('Keys'), t('The first {n} chapters of every story are free. After that each new chapter uses 1 key. Keys refill for free every {time}, or watch a short ad to get one straight away. Replays are free.', { n: ECON.free, time: keyEvery() })],
     ];
     openSheet(`<div class="pad howto">
       <div class="sheet-title">${t('How to play')}</div>
@@ -292,7 +297,7 @@ const Story = {
     const nextIdx = EPS.findIndex(e => !s.done[e.id]);
     const curEp = s.cur && EPS.find(e => e.id === s.cur.ep);
     const doneN = EPS.filter(e => s.done[e.id]).length;
-    const main = curEp ? `▶ ${t('Continue Chapter {n}', { n: curEp.no })}` : nextIdx >= 0 ? `▶ ${t(doneN ? 'Play Chapter {n}' : 'Start Chapter {n}', { n: EPS[nextIdx].no })} <span class="cost-tag">${KEY_SVG}1</span>` : '';
+    const main = curEp ? `▶ ${t('Continue Chapter {n}', { n: curEp.no })}` : nextIdx >= 0 ? `▶ ${t(doneN ? 'Play Chapter {n}' : 'Start Chapter {n}', { n: EPS[nextIdx].no })} ${this.costTag(nextIdx)}` : '';
     const rels = Object.entries(RK).filter(([k]) => CAST[k]);
     const el = UI.show(`<div class="screen story-home book-page">
       ${this.hudHtml(esc(this.bt(b.title)), true)}
@@ -308,7 +313,7 @@ const Story = {
           <div class="ch-list">${EPS.map((e, i) => this.chapterRow(b, e, i)).join('')}
             ${T ? `<button class="ch-row soon" data-soon><span class="ch-no" style="${Art.has(T.art) ? this.coverStyle(T.art) : ''}"><em>${esc(String(T.no || ''))}</em></span><span class="ch-t"><b>${esc(this.bt(T.title || ''))}</b><small>${esc(T.note ? this.bt(T.note) : t('Coming soon'))}</small></span><span class="ch-cta"><i class="lk">${Notify.granted() ? '✅' : '🔔'}</i></span></button>` : ''}
           </div>
-          <div class="key-note">${s.keys < KEY_MAX ? `${KEY_SVG} ${t('Next free key in {time}', { time: this.nextKeyIn() })}` : `${KEY_SVG} ${t('Keys full')}`}</div>
+          <div class="key-note">${s.keys < ECON.keyMax ? `${KEY_SVG} ${t('Next free key in {time}', { time: this.nextKeyIn() })}` : `${KEY_SVG} ${t('Keys full')}`}</div>
         </div>
       </div></div>`);
     this.bindHud(el, 'book');
@@ -322,8 +327,9 @@ const Story = {
     if (!s.seenHowTo) return this.howTo(() => this.tryStart(i));
     if (s.done[e.id]) { Sfx.select(); return this.startEpisode(i, true); }
     this.refillKeys();
+    if (i < ECON.free) { this.save(); Sfx.coin(); return this.startEpisode(i, false); }   // the first chapters of every story are free
     if (s.keys < 1) return this.noKeys();
-    s.keys--; if (s.keys === KEY_MAX - 1) s.keyTs = Date.now();
+    s.keys--; if (s.keys === ECON.keyMax - 1) s.keyTs = Date.now();
     this.save(); this.scheduleReminders(); Sfx.coin(); this.startEpisode(i, false);
   },
 
@@ -351,7 +357,7 @@ const Story = {
       <div class="small muted" style="margin-top:4px">${t('Watch a short video to earn rewards. Limits reset every day.')}</div>
       <button class="btn primary block" style="margin-top:14px" data-ad="gems" ${gemsLeft ? '' : 'disabled'}>▶ ${t('+5 diamonds')} <span class="tiny" style="margin-left:6px;color:#1a0c00">${t('{n} left today', { n: gemsLeft })}</span></button>
       <button class="btn ghost block" style="margin-top:8px" data-ad="key" ${keysLeft ? '' : 'disabled'}>▶ ${t('+1 key')}${capNote(keysLeft) ? ` <span class="tiny" style="margin-left:6px">${t('{n} left today', { n: keysLeft })}</span>` : ''}</button>
-      <div class="small muted" style="text-align:center;margin-top:14px">${t('Free key every 3 hours · +2 diamonds for every new chapter')}</div></div>`, sh => {
+      <div class="small muted" style="text-align:center;margin-top:14px">${t('Free key every {time} · +2 diamonds for every new chapter', { time: keyEvery() })}</div></div>`, sh => {
       $$('[data-ad]', sh).forEach(btn => btn.onclick = async (e) => {
         const kind = btn.dataset.ad;
         const ok = await this.watchAd(kind, e.currentTarget, () => {
@@ -793,8 +799,8 @@ const Story = {
     if (!this.st || !Notify.granted()) return;
     const s = this.st;
     this.refillKeys();
-    if (s.keys < KEY_MAX) {
-      const due = Math.max(60 * 1000, KEY_MS - (Date.now() - s.keyTs));
+    if (s.keys < ECON.keyMax) {
+      const due = Math.max(60 * 1000, (ECON.keyMins * 60000) - (Date.now() - s.keyTs));
       const nextEp = this.eps().find(e => !s.done[e.id]);
       Notify.schedule(Notify.KEY_ID, due, '🔑 ' + t('Your key is ready'), nextEp ? t('Chapter {n}, "{title}", is waiting for you.', { n: nextEp.no, title: this.et(nextEp) }) : t('Replay a chapter and try a different choice.'));
     } else Notify.cancel(Notify.KEY_ID);

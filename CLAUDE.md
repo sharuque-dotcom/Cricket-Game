@@ -5,7 +5,7 @@ Android interactive-story cricket game ("Choices for cricket"). Career Mode was 
 ## Layout
 - `app/src/main/java/.../MainActivity.java` — WebView shell; JS bridge `AndroidBridge` (vibrate, AdMob rewarded ads, local notifications); `NotifyReceiver.java` posts reminders.
 - `app/src/main/assets/game/` — the whole game (plain HTML/CSS/JS, no build step).
-  - `js/story.js` Story Mode engine (keys, diamonds, choices, ads caps `AD_CAP`, notifications, end card). Name → **library** of `BOOKS` (`episodes.js`) → book's episode list. Progress is per book in `st.books[id]`; `st.done/rel/flags/cur` are accessors for the current book (`st.book`). Sequels: `after` (locked until finished) + `carry` (copies flags/rel). Episodes join a book via `book` (default `b1`).
+  - `js/story.js` Story Mode engine (keys: `ECON` = 3 keys, 1 per 90 min, first 3 chapters of every book free; `manifest.economy {keyMax,keyMins,free}` overrides it from the server; diamonds, choices, ads caps `AD_CAP`, notifications, end card). Name → **library** of `BOOKS` (`episodes.js`) → book's episode list. Progress is per book in `st.books[id]`; `st.done/rel/flags/cur` are accessors for the current book (`st.book`). Sequels: `after` (locked until finished) + `carry` (copies flags/rel). Episodes join a book via `book` (default `b1`).
   - `js/episodes.js` (Ep 1–3), `episodes2.js` (4–6), `episodes3.js` (7–12, `BG_FALLBACK`). Node format documented at top of `episodes.js`.
   - `js/moments.js` canvas cricket key moments (painted sprites `char_sp_*`); `js/match.js` / `js/state.js` / `js/data.js` are the old career code, kept only because the moment engine uses them; `data.js` (all names fictional — keep it that way, no real players/teams/brands).
   - Server books (content/, no Play update): The Blue Cap (`bc*`), Bollywood Wife (`b3`, `bw*`), The Owner's Daughter (`b2`, `od*`, replaced The Fixer via the manifest). The Owner's Daughter is written in `tools/books/owners-daughter.js` (run it to regenerate the JSON); `tools/books/zip-tr.js` turns a translation list (English order) into `i18n/<lang>/<ep>.json`. Pick new stories by short-drama tropes: Cinderella, love against the odds, rivalry.
@@ -19,7 +19,7 @@ Android interactive-story cricket game ("Choices for cricket"). Career Mode was 
 ## Build
 - Android SDK at `~/android-sdk` (the "Cricket-Game" cloud environment installs it). `local.properties` → `sdk.dir`.
 - `gradle assembleDebug bundleRelease --no-daemon -q --max-workers=1` (single worker avoids Maven 429s).
-- Bump `versionCode`/`versionName` in `app/build.gradle.kts` every Play upload (last: 26 / 1.5.3).
+- Bump `versionCode`/`versionName` in `app/build.gradle.kts` every Play upload (last: 27 / 1.5.4).
 - Release signing needs git-ignored `keystore.properties` + the upload `.jks` (owner keeps it; ask them to upload it). Never commit keys.
 - Firebase Analytics: `app/google-services.json` is git-ignored (public repo); the owner uploads it with the key for releases. Without it the build still works, with no tracking. Debug builds never send analytics. Events (`Track.ev` in `fx.js`): `tutorial_complete`, `chapter_start`, `chapter_complete`, `first_chapter_complete` (Google Ads conversion), `third_chapter_complete`, `moment_end`, `ad_reward`. In-app review: `Story.maybeReview()` after 2, 6, 12 chapters read.
 - AdMob IDs are `resValue`s in `app/build.gradle.kts`: release = real ids (app `~5540920416`, rewarded `/5327178322`), debug = Google test ids. Never ship test ids in release or real ids in debug.

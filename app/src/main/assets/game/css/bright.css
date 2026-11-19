@@ -124,6 +124,7 @@ html, body { background: var(--bg); color: var(--text); }
 .ch-row.next .ch-t small { color: var(--pink); }
 .ch-cta { flex: none; }
 .ch-cta .cost-tag { background: #FFF3D6; }
+.cost-tag.free, .ch-cta .cost-tag.free { background: #DCFCE7; color: #15803d; padding: 2px 9px; letter-spacing: .02em; }
 .ch-cta .tick { font-style: normal; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--mint); color: #fff; font-weight: 800; font-size: 14px; }
 .ch-cta .lk { font-style: normal; font-size: 15px; opacity: .8; }
 .ch-cta .go { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--grad); color: #fff; font-size: 12px; }

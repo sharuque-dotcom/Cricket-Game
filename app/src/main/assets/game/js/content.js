@@ -132,6 +132,14 @@ const Content = (() => {
       if (have) Object.assign(have, keep); else if (keep.title) BOOKS.push(Object.assign({ id: b.id, live: true }, keep));
     }
   }
+  // key rules from the server: { keyMax, keyMins, free }; anything missing or out of range keeps the app's default
+  function applyEconomy(e) {
+    if (!e || typeof e !== 'object' || typeof ECON === 'undefined') return;
+    const ok = (v, lo, hi) => typeof v === 'number' && v >= lo && v <= hi;
+    if (ok(e.keyMax, 1, 10)) ECON.keyMax = Math.round(e.keyMax);
+    if (ok(e.keyMins, 15, 720)) ECON.keyMins = Math.round(e.keyMins);
+    if (ok(e.free, 0, 10)) ECON.free = Math.round(e.free);
+  }
   // the relationship list an episode's `rel` should add to (a sequel shares its first book's list)
   function relMap(id, seen) {
     const b = BOOKS.find(x => x.id === id);
@@ -146,6 +154,7 @@ const Content = (() => {
     if (!bundledIds) bundledIds = new Set(EPISODES.map(e => e.id));
     const m = d.manifest, added = [];
     applyBooks(m.books);
+    applyEconomy(m.economy);
     for (let i = EPISODES.length - 1; i >= 0; i--) if (EPISODES[i]._remote && !(d.episodes || {})[EPISODES[i].id]) EPISODES.splice(i, 1);
     const list = (m.episodes || []).filter(x => x && d.episodes && d.episodes[x.id]).sort((a, b) => a.no - b.no);
     for (const entry of list) {
