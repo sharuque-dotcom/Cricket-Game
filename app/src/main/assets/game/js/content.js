@@ -3,14 +3,14 @@
 // Downloaded episodes are saved on the phone, so they still play offline.
 // Downloads are data only (JSON + images), never code.
 
-const CONTENT_ENGINE = 1; // bump when the episode format gains features older apps can't play
+const CONTENT_ENGINE = 2; // bump when the episode format gains features older apps can't play (2 = app 1.5.6: bowling moments, standalone music nodes)
 const CONTENT_KEY = 'gg_content_v1';
 const CONTENT_BASES = [
   'https://raw.githubusercontent.com/sharuque-dotcom/Cricket-Game/HEAD/content/',
   'https://cdn.jsdelivr.net/gh/sharuque-dotcom/Cricket-Game/content/',
 ];
 const CONTENT_REFRESH_MS = 30 * 60 * 1000;
-const NODE_KEYS = ['bg', 'weather', 'n', 'enter', 'exit', 's', 'th', 'phone', 'choice', 'label', 'go', 'if', 'fx', 'set', 'moment', 'end'];
+const NODE_KEYS = ['bg', 'music', 'weather', 'n', 'enter', 'exit', 's', 'th', 'phone', 'choice', 'label', 'go', 'if', 'fx', 'set', 'moment', 'end'];
 
 // Story conditions that can live in JSON: "flag", "!flag", {any:[...]}, {all:[...]}, {not:c}, {rel:'papa', min:2, max:5}
 function storyCond(c, st) {

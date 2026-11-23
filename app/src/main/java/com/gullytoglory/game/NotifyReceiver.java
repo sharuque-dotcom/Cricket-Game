@@ -30,7 +30,7 @@ public class NotifyReceiver extends BroadcastReceiver {
         }
         ensureChannel(ctx);
         int id = intent.getIntExtra("id", 1);
-        Intent open = new Intent(ctx, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent open = new Intent(ctx, MainActivity.class).putExtra("notif", id).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent tap = PendingIntent.getActivity(ctx, id, open, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(ctx, CHANNEL) : new Notification.Builder(ctx);
         b.setSmallIcon(R.drawable.ic_stat_bat)

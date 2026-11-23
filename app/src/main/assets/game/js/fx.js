@@ -277,6 +277,8 @@ const Parallax = (() => {
 // Event names: lower_snake_case, max 40 chars. Google Ads optimises for first_chapter_complete.
 const Track = {
   ev(name, params) { try { if (window.AndroidBridge && AndroidBridge.logEvent) AndroidBridge.logEvent(name, JSON.stringify(params || {})); } catch (e) {} },
+  // user property (app 1.5.6+): lets every report be split by it, e.g. game_lang
+  prop(name, value) { try { if (window.AndroidBridge && AndroidBridge.setUserProp) AndroidBridge.setUserProp(name, String(value)); } catch (e) {} },
 };
 
 // ---------- Rewarded ads ----------

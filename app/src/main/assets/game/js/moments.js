@@ -14,6 +14,7 @@ const SHOT_DEFS = [
   { id: 'loft', label: 'Loft', icon: '🚀' },
   { id: 'leave', label: 'Leave', icon: '✋' },
 ];
+const SIMPLE_BOWL = ['yorker', 'good', 'bouncer'];
 const DELIVERY_DEFS = [
   { id: 'yorker', label: 'Yorker', icon: '🎯', z: 0.75, x: 0.02 },
   { id: 'good', label: 'Good Length', icon: '📏', z: 5.8, x: 0.18 },
@@ -721,7 +722,9 @@ const Moments = (() => {
       const dEl = controls.querySelector('.deliveries');
       const hint = controls.querySelector('.bhint');
       dEl.classList.remove('locked');
-      hint.textContent = 'Choose your delivery';
+      const simple = !!opt.simple, bowlRow = controls.querySelector('.bowlrow'), bowlBtn = bowlRow && bowlRow.querySelector('.hitbtn');
+      hint.innerHTML = simple ? t('Pick your ball') : 'Choose your delivery';
+      if (bowlRow) { bowlRow.hidden = true; dEl.hidden = false; bowlBtn.classList.toggle('zone', false); }
       let plan = null;
       st = { phase: 'choose', ball: null, trail: [] };
 
@@ -736,20 +739,38 @@ const Moments = (() => {
 
       function startAim() {
         st.phase = 'aim';
-        hint.innerHTML = '<b class="gold">TAP THE PITCH</b> when the red marker is on target';
         target = { x: plan.x, z: plan.z };
         const acc = ctx.accuracy, f = ctx.fatigue, pr = ctx.pressure;
         const ax = clamp(.08 + (1 - acc / 100) * .55 + f / 500 + pr * .1, .07, .8);
         reticle = { x: plan.x, z: plan.z, ph: Math.random() * 6, ax, az: ax * 3.4, speed: 1.1 + (1 - acc / 100) * 1.6 + pr * .5, active: true };
+        if (simple) {
+          // one-button mode: BOWL glows green while the marker is on the target
+          hint.innerHTML = t('Tap <b>BOWL</b> when it turns <b class="grn">green</b>');
+          dEl.hidden = true; bowlRow.hidden = false;
+          const tolZ = plan.id === 'yorker' ? .45 : .9;
+          st.update = () => {
+            if (st.phase !== 'aim' || !reticle) return;
+            const on = Math.abs(reticle.x - target.x) < .14 && Math.abs(reticle.z - target.z) < tolZ;
+            if (on) st.zoneAt = performance.now();
+            bowlBtn.classList.toggle('zone', on);
+          };
+          const t0 = performance.now();
+          bowlBtn.onpointerdown = () => { if (st.phase !== 'aim' || performance.now() - t0 < 60) return; bowlBtn.onpointerdown = null; bowlBtn.classList.toggle('zone', false); release(); };
+          return;
+        }
+        hint.innerHTML = '<b class="gold">TAP THE PITCH</b> when the red marker is on target';
         setTimeout(() => cv.addEventListener('pointerdown', release, { once: true }), 120);
       }
 
       function release() {
         if (st.phase !== 'aim') return;
         reticle.active = false;
-        const lz = clamp(reticle.z, -0.5, 14), lx = reticle.x;
+        let lz = clamp(reticle.z, -0.5, 14), lx = reticle.x;
+        // one-button mode: a tap while green (or just after, for reaction time) lands on target
+        if (simple && st.zoneAt && performance.now() - st.zoneAt < 200) { lz = target.z + rand(-.3, .3) * (plan.id === 'yorker' ? .5 : 1); lx = target.x + rand(-.08, .08); }
         st.phase = 'flight'; dEl.classList.add('locked'); hint.textContent = '';
         haptic(20); Sfx.whoosh();
+        if (ctx.lastPlan !== undefined) ctx.repeat = ctx.lastPlan === plan.id;
         const res = resolveBowl(plan.id, lz, lx, ctx);
         const del = {
           type: 'pace', zb: Math.max(.05, lz), xb: lx, x0: .45, y0: 2.25, swing: plan.id === 'full' ? -.25 * (ctx.variation / 100) : 0, dev: rand(-.05, .05),
@@ -785,6 +806,7 @@ const Moments = (() => {
             if (st.at > st.hold) {
               st.phase = 'done'; dEl.removeEventListener('pointerdown', onPick);
               $$('.shot', dEl).forEach(x => x.classList.remove('sel'));
+              if (bowlRow) { bowlRow.hidden = true; dEl.hidden = false; }
               res.plan = plan.id;
               st = { ball: null };
               setTimeout(() => resolve(res), 350);
@@ -812,6 +834,10 @@ const Moments = (() => {
       if (o.simple) controls.innerHTML = `<div class="shots simple locked"><button class="shot hitbtn" data-id="auto"><span class="si">🏏</span>${t('HIT!')}</button></div>`;
       else controls.innerHTML = `
         <div class="shots locked">${SHOT_DEFS.map(s => `<button class="shot" data-id="${s.id}"><span class="si">${s.id === 'pull' && spin ? '🧹' : s.icon}</span>${s.id === 'pull' && spin ? s.spinLabel : s.label}</button>`).join('')}</div>`;
+    } else if (o.simple) {
+      controls.innerHTML = `<div class="bhint tiny" style="text-align:center;margin-bottom:8px;min-height:16px"></div>
+        <div class="shots deliveries simple3">${SIMPLE_BOWL.map(id => { const d = DELIVERY_DEFS.find(x => x.id === id); return `<button class="shot" data-id="${id}"><span class="si">${d.icon}</span>${t(d.label)}</button>`; }).join('')}</div>
+        <div class="shots simple bowlrow" hidden><button class="shot hitbtn" data-id="bowl"><span class="si">🔴</span>${t('BOWL!')}</button></div>`;
     } else {
       controls.innerHTML = `<div class="bhint tiny" style="text-align:center;margin-bottom:8px;min-height:16px"></div>
         <div class="shots deliveries">${DELIVERY_DEFS.map(d => `<button class="shot" data-id="${d.id}"><span class="si">${d.icon}</span>${d.label}</button>`).join('')}</div>`;

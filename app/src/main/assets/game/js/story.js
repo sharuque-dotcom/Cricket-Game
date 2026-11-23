@@ -405,6 +405,8 @@ const Story = {
   },
 
   noKeys() {
+    const wall = { book: this.st.book, chapter: (this.eps(this.st.book).find(e => !this.st.done[e.id]) || {}).no || 0, ads_left: Math.max(0, this.adsLeft('key')) };
+    Track.ev('out_of_keys', wall);
     openSheet(`<div class="pad" style="text-align:center">
       <div class="big-ico">${KEY_SVG}</div>
       <div class="sheet-title">${t('Out of keys')}</div>
@@ -414,9 +416,10 @@ const Story = {
       <button class="btn ghost block" style="margin-top:8px" data-shop>${t('Open store')}</button></div>`, sh => {
       $('[data-ad]', sh).onclick = async (e) => {
         const ok = await this.watchAd('key', e.currentTarget, () => { this.st.keys++; toast(`${KEY_SVG} ${t('+1 key')}`); });
+        Track.ev('key_wall', Object.assign({ choice: ok ? 'ad' : 'ad_failed' }, wall));
         if (ok) closeSheet();
       };
-      $('[data-shop]', sh).onclick = () => { closeSheet(); setTimeout(() => this.store(), 300); };
+      $('[data-shop]', sh).onclick = () => { Track.ev('key_wall', Object.assign({ choice: 'store' }, wall)); closeSheet(); setTimeout(() => this.store(), 300); };
     });
   },
 
@@ -744,22 +747,29 @@ const Story = {
   // ---------- playable cricket moment ----------
   async momentIntro(cfg) {
     Sfx.rise(); haptic(30);
-    const goal = cfg.kind === 'chase' ? t('Score <b>{runs}</b> runs in <b>{balls}</b> balls', { runs: cfg.need, balls: cfg.balls }) : t('Don\'t get out for <b>{balls}</b> balls', { balls: cfg.balls });
+    const bowl = isBowl(cfg);
+    const goal = cfg.kind === 'chase' ? t('Score <b>{runs}</b> runs in <b>{balls}</b> balls', { runs: cfg.need, balls: cfg.balls })
+      : cfg.kind === 'defend' ? t('They need <b>{runs}</b> off <b>{balls}</b> balls. Stop them.', { runs: cfg.need, balls: cfg.balls })
+      : cfg.kind === 'wickets' ? ((cfg.wickets || 1) > 1 ? t('Take <b>{w}</b> wickets in <b>{balls}</b> balls', { w: cfg.wickets, balls: cfg.balls }) : t('Take a wicket in <b>{balls}</b> balls', { balls: cfg.balls }))
+      : t('Don\'t get out for <b>{balls}</b> balls', { balls: cfg.balls });
     UI.show(`<div class="screen story-home moment-intro">
       <div class="mi-card">
-        <div class="mi-tag">🏏 ${t('Cricket moment')}</div>
+        <div class="mi-tag">${bowl ? '🔴' : '🏏'} ${t('Cricket moment')}</div>
         <div class="mi-title">${esc(this.tr(cfg.title))}</div>
         <div class="mi-desc">${this.tr(cfg.desc || '')}</div>
         <div class="mi-goal">${goal}</div>
         <div class="mi-how">
-          <div class="mi-demo"><span class="mi-btn">${t('HIT!')}</span><span class="mi-btn go">${t('HIT!')}</span></div>
-          <p>${t('Watch the ball. When the <b>HIT</b> button turns <b class="grn">green</b>, tap it. We pick the right shot for you.')}</p>
+          ${bowl ? `<div class="mi-demo"><span class="mi-btn">${t('BOWL!')}</span><span class="mi-btn go">${t('BOWL!')}</span></div>
+          <p>${t('Pick your ball: yorker, good length or bouncer. Then tap <b>BOWL</b> when it turns <b class="grn">green</b>. Mix it up, batters read a repeat.')}</p>`
+      : `<div class="mi-demo"><span class="mi-btn">${t('HIT!')}</span><span class="mi-btn go">${t('HIT!')}</span></div>
+          <p>${t('Watch the ball. When the <b>HIT</b> button turns <b class="grn">green</b>, tap it. We pick the right shot for you.')}</p>`}
         </div>
         <button class="btn primary block" data-go>${t('I\'m ready')}</button>
       </div></div>`);
     await UI.waitTap('[data-go]');
   },
   async playMoment(cfg) {
+    if (isBowl(cfg)) return this.playBowl(cfg);
     const s = this.st, f = s.flags;
     await this.momentIntro(cfg);
     const el = UI.show(`<div class="screen match-screen"><div class="mroot" style="position:absolute;inset:0"></div>
@@ -797,6 +807,51 @@ const Story = {
     Track.ev('moment_end', { win: win ? 1 : 0, kind: cfg.kind || '' });
     await sleep(500);
     Moments.showCall(win ? (cfg.winCall ? this.tr(cfg.winCall) : t(cfg.kind === 'chase' ? 'WON IT!' : 'SURVIVED!')) : (cfg.loseCall ? this.tr(cfg.loseCall) : t(cfg.kind === 'chase' ? 'SO CLOSE' : 'BOWLED')), win ? 'call-six' : 'call-out', win ? (cfg.winSub ? this.tr(cfg.winSub) : t('The maidan erupts.')) : (cfg.loseSub ? this.tr(cfg.loseSub) : t('Silence.')));
+    if (win) { Burst.confetti(180); Sfx.cheer(1.4); haptic(150); } else Sfx.groan();
+    await sleep(2200);
+    Moments.close();
+    return win;
+  },
+
+  // Bowling moment. kind 'defend': they need cfg.need off cfg.balls, win if they fall short (or are bowled out of wickets: cfg.wickets).
+  // kind 'wickets': take cfg.wickets (default 1) in cfg.balls. Optional: cfg.weak ('yorker'|'short'|'slower') the batter's weakness,
+  // cfg.boost a flag that sharpens your bowling, cfg.batter the batter's name for the HUD.
+  async playBowl(cfg) {
+    const s = this.st, f = s.flags;
+    await this.momentIntro(cfg);
+    const el = UI.show(`<div class="screen match-screen"><div class="mroot" style="position:absolute;inset:0"></div>
+      <div class="m-hud"><div class="scorebug" style="--c1:#7c3aed"><div class="tm">${t('BAT')}</div><div class="sc" data-sc>0</div><div class="ov" data-ov></div><div class="need" data-need></div></div>
+      <div class="m-brief"><div class="bt">${esc(this.tr(cfg.title))}</div><div class="small" data-bd></div></div></div></div>`, 'fast');
+    const pressure = cfg.kind === 'defend' ? .55 : .4;
+    Moments.open($('.mroot', el), { view: 'bowl', simple: true, level: 0, whiteBall: false, pressure, myKit: '#b45309', batKit: '#f4ede4', bowlKit: '#b45309', kit: '#b45309' });
+    UI.pressure(pressure > .5);
+    const boost = cfg.boost && f[cfg.boost] ? 1 : 0;
+    const wantW = cfg.wickets || 1, need = cfg.need || 0;
+    let runs = 0, wk = 0, legal = 0, last = null;
+    while (legal < cfg.balls) {
+      $('[data-sc]', el).textContent = `${runs}/${wk}`;
+      $('[data-ov]', el).textContent = t('Ball {n}/{of}', { n: legal + 1, of: cfg.balls });
+      $('[data-need]', el).textContent = cfg.kind === 'defend' ? t('THEY NEED {runs} OFF {balls}', { runs: need - runs, balls: cfg.balls - legal }) : t('WICKETS {w}/{of}', { w: wk, of: wantW });
+      $('[data-bd]', el).innerHTML = `${cfg.batter ? esc(this.bt(cfg.batter)) + ' · ' : ''}${cfg.weak && boost ? `<span class="teal">${t('Weak against the {ball}', { ball: t({ yorker: 'Yorker', short: 'Bouncer', slower: 'Slower Ball' }[cfg.weak] || cfg.weak) })}</span>` : t('Tap BOWL when it glows green')}`;
+      const ctx = {
+        accuracy: 62 + boost * 14, pace: 58, variation: 50, fatigue: 0, pressure,
+        bowlSkill: 46 + boost * 6, batSkill: cfg.kind === 'defend' ? 80 : 66, ready: 0,
+        weak: cfg.weak || null, strong: null, aggressive: cfg.kind === 'defend', lastPlan: last,
+      };
+      const res = await Moments.bowlBall(ctx);
+      last = res.plan;
+      runs += res.runs;
+      if (!res.extra) legal++;
+      if (res.wicket) wk++;
+      if (cfg.kind === 'defend' && (runs >= need || wk >= wantW && cfg.wickets)) break;
+      if (cfg.kind === 'wickets' && wk >= wantW) break;
+      await sleep(250);
+    }
+    UI.pressure(false);
+    const win = cfg.kind === 'defend' ? runs < need : wk >= wantW;
+    Track.ev('moment_end', { win: win ? 1 : 0, kind: cfg.kind || '' });
+    await sleep(500);
+    Moments.showCall(win ? (cfg.winCall ? this.tr(cfg.winCall) : t(cfg.kind === 'defend' ? 'DEFENDED!' : 'GOT HIM!')) : (cfg.loseCall ? this.tr(cfg.loseCall) : t(cfg.kind === 'defend' ? 'THEY WON IT' : 'NOT OUT')), win ? 'call-six' : 'call-out', win ? (cfg.winSub ? this.tr(cfg.winSub) : t('The maidan erupts.')) : (cfg.loseSub ? this.tr(cfg.loseSub) : t('Silence.')));
     if (win) { Burst.confetti(180); Sfx.cheer(1.4); haptic(150); } else Sfx.groan();
     await sleep(2200);
     Moments.close();
@@ -868,13 +923,16 @@ const Story = {
       ${st === 'denied' ? `<div class="small" style="margin-top:10px;color:var(--gold)">${t('Notifications are off for this app. Turn them on in Android Settings → Apps → Gully to Glory → Notifications.')}</div>` : ''}
       <button class="btn primary block" style="margin-top:16px" data-yes ${st === 'denied' ? 'disabled' : ''}>${t('Notify me')}</button>
       <button class="btn ghost block" style="margin-top:8px" data-no>${t('Not now')}</button></div>`, sh => {
+      const from = fromBell ? 'bell' : 'auto';
+      Track.ev('notify_ask', { from, state: st });
       $('[data-yes]', sh).onclick = async () => {
         this.st.notifyAsked = true; this.save(); closeSheet();
         const ok = await Notify.request();
+        Track.ev('notify_answer', { from, answer: ok ? 'allowed' : 'blocked' });
         if (ok) { toast('🔔 ' + t('You\'re in. We\'ll ping you.')); this.scheduleReminders(); } else toast(t('No problem. You can turn them on any time.'));
         Content.redraw();
       };
-      $('[data-no]', sh).onclick = () => { this.st.notifyAsked = true; this.save(); closeSheet(); };
+      $('[data-no]', sh).onclick = () => { Track.ev('notify_answer', { from, answer: 'not_now' }); this.st.notifyAsked = true; this.save(); closeSheet(); };
     });
   },
 
@@ -923,3 +981,4 @@ function toggleMusic(btn) { Sfx.setMusic(!Sfx.musicOn); try { localStorage.setIt
 
 // home screen categories: [tag, icon, label]; a book joins one through its "tags"
 const HOME_CATS = [['cricket', '🏏', 'Cricket'], ['romance', '💕', 'Romance'], ['revenge', '🔥', 'Revenge'], ['underdog', '⭐', 'Underdog'], ['rivalry', '⚔️', 'Rivalry'], ['family', '👪', 'Family']];
+function isBowl(cfg) { return cfg && (cfg.kind === 'defend' || cfg.kind === 'wickets'); }

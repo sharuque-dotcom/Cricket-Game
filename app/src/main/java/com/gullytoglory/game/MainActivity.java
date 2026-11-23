@@ -74,6 +74,7 @@ public class MainActivity extends Activity {
         web.setWebChromeClient(new WebChromeClient());
         web.addJavascriptInterface(new Bridge(this), "AndroidBridge");
         initAnalytics();
+        trackNotifOpen(getIntent());
         MobileAds.initialize(this, status -> loadRewarded());
         NotifyReceiver.ensureChannel(this);
         setContentView(web);
@@ -292,6 +293,30 @@ public class MainActivity extends Activity {
         } catch (Exception e) { analytics = null; }
     }
 
+    // the app is singleTask, so a tap on a notification while it's running arrives here
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        trackNotifOpen(intent);
+    }
+
+    // notification_open {type: key|comeback}: which reminders bring players back
+    private void trackNotifOpen(Intent intent) {
+        if (intent == null || analytics == null) return;
+        int id = intent.getIntExtra("notif", 0);
+        if (id == 0) return;
+        intent.removeExtra("notif");
+        Bundle b = new Bundle();
+        b.putString("type", id == 101 ? "key" : id == 102 ? "comeback" : String.valueOf(id));
+        analytics.logEvent("notification_open", b);
+    }
+
+    void setUserProp(String name, String value) {
+        if (analytics == null || name == null || !name.matches("[a-z][a-z0-9_]{0,23}") || name.startsWith("ga_")) return;
+        analytics.setUserProperty(name, value == null ? null : value.length() > 36 ? value.substring(0, 36) : value);
+    }
+
     void logEvent(String name, String paramsJson) {
         if (analytics == null || name == null || !name.matches("[a-z][a-z0-9_]{0,39}")) return;
         Bundle b = new Bundle();
@@ -332,6 +357,9 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void logEvent(String name, String paramsJson) { act.logEvent(name, paramsJson); }
+
+        @JavascriptInterface
+        public void setUserProp(String name, String value) { act.setUserProp(name, value); }
 
         @JavascriptInterface
         public void requestReview() { act.runOnUiThread(act::requestReview); }

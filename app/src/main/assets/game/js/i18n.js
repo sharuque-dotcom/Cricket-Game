@@ -21,11 +21,13 @@ const I18N = {
     try { l = localStorage.getItem(LANG_KEY) || 'en'; } catch (e) {}
     if (!LANGS.some(x => x.id === l)) l = 'en';
     this.lang = l; this.apply();
+    if (typeof Track !== 'undefined') Track.prop('game_lang', l);
     return this.load(l);
   },
   set(l) {
     this.lang = l; try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
     this.apply();
+    if (typeof Track !== 'undefined') { Track.prop('game_lang', l); Track.ev('lang_set', { lang: l }); }
     return this.load(l);
   },
   apply() {

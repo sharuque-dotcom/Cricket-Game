@@ -20,6 +20,9 @@ function checkEpisode(file, entry, man) {
   try { ep = Content.clean(JSON.parse(fs.readFileSync(file, 'utf8'))); } catch (e) { return fail(`${file}: ${e.message}`); }
   const errs = Content.validate(ep, CAST, builtIn);
   if (entry && ep.id !== entry.id) errs.push(`id "${ep.id}" does not match manifest id "${entry.id}"`);
+  // features that need a newer app: the manifest entry must say so, or old apps would get a chapter they can't play
+  const needs = (ep.nodes || []).some(n => n && n.moment && ['defend', 'wickets'].includes(n.moment.kind)) || (ep.nodes || []).some(n => n && n.music !== undefined && Object.keys(n).length === 1) ? 2 : 1;
+  if (entry && needs > (entry.engine || 1)) errs.push(`uses a bowling moment or a music-only node: set "engine": ${needs} on its manifest entry (app 1.5.6+)`);
   errs.forEach(e => fail(`${ep.id}: ${e}`));
   // art that is neither bundled, nor on the server, nor given a fallback shows as a plain dark screen
   const art = new Set(Object.keys((man && man.art) || {})), fb = Object.assign({}, vm.runInContext('BG_FALLBACK', ctx), (man && man.fallback) || {});

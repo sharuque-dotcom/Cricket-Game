@@ -32,6 +32,11 @@ To withdraw an episode, delete its line from `manifest.json`.
   - `"recorded"` means the flag is set; `"!silent"` means it isn't.
   - `{ "any": ["recorded", "photos"] }`, `{ "all": [...] }`, `{ "not": "x" }`
   - `{ "rel": "papa", "min": 2 }` checks a relationship score.
+- **Cricket moments** (`moment`, then `win`/`lose` labels):
+  - Batting: `kind` `"chase"` (`need` runs off `balls`) or `"duel"` (survive `balls`). Works on every app.
+  - Bowling (app 1.5.6+, set `"engine": 2` on the manifest entry): `kind` `"defend"` (they need `need` off `balls`; win if they fall short) or `"wickets"` (take `wickets`, default 1, in `balls`). Optional: `batter` (name on the HUD), `weak` (`"yorker"`, `"short"` or `"slower"`), `boost` (a flag that sharpens your bowling and reveals the weakness). The player picks yorker, good length or bouncer, then taps BOWL when it glows green.
+  - All kinds: `title`, `desc`, `winCall`, `winSub`, `loseCall`, `loseSub`.
+- **Music cue**: `{ "music": "tense" }` on its own node (app 1.5.6+, `"engine": 2`) changes the mood until the next background.
 - **New characters**: `"cast": { "kabir": { "name": "Kabir Sir", "col": "#60a5fa" } }` in the episode. Add `"rel": { "kabir": "Kabir" }` to track hearts for them.
 - **No HTML.** `<` and `>` are removed from all text.
 - Every `choice` needs at least one free option that always shows.
