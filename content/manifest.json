@@ -12,7 +12,11 @@
         "imran": "Imran",
         "karan": "Karan"
       },
-      "art": "cover_bluecap"
+      "art": "cover_bluecap",
+      "tags": [
+        "cricket",
+        "rivalry"
+      ]
     },
     {
       "id": "b3",
@@ -24,7 +28,11 @@
         "dadi": "Dadi",
         "sid": "Sid",
         "sushma": "Sushma"
-      }
+      },
+      "tags": [
+        "romance",
+        "family"
+      ]
     },
     {
       "id": "b2",
@@ -39,7 +47,47 @@
         "jojo": "Jojo",
         "harsh": "Harsh",
         "kunal": "Kunal"
-      }
+      },
+      "tags": [
+        "romance",
+        "cricket"
+      ]
+    },
+    {
+      "id": "banned",
+      "title": "Banned",
+      "genre": "Revenge",
+      "blurb": "Banned for a fix he never did. Five years later, a masked bowler is coming for them.",
+      "tags": [
+        "cricket",
+        "revenge"
+      ],
+      "art": "cover_banned",
+      "live": false
+    },
+    {
+      "id": "groundsman",
+      "title": "The Groundsman's Daughter",
+      "genre": "Underdog",
+      "blurb": "She waters the pitch by day. At midnight she bowls at 130.",
+      "tags": [
+        "cricket",
+        "underdog"
+      ],
+      "art": "cover_groundsman",
+      "live": false
+    },
+    {
+      "id": "trade",
+      "title": "The Trade",
+      "genre": "Rivalry",
+      "blurb": "Traded back as captain over a legend. Every stadium boos.",
+      "tags": [
+        "cricket",
+        "rivalry"
+      ],
+      "art": "cover_trade",
+      "live": false
     }
   ],
   "episodes": [
@@ -542,7 +590,10 @@
     "bg_balcony_night": "img/bg_balcony_night.webp",
     "bg_mehendi": "img/bg_mehendi.webp",
     "bg_mandap": "img/bg_mandap.webp",
-    "ev_runaway_bride": "img/ev_runaway_bride.webp"
+    "ev_runaway_bride": "img/ev_runaway_bride.webp",
+    "cover_banned": "img/cover_banned.webp",
+    "cover_groundsman": "img/cover_groundsman.webp",
+    "cover_trade": "img/cover_trade.webp"
   },
   "chars": {
     "imran": "img/char_imran.webp",
