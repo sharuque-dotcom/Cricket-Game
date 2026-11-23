@@ -202,5 +202,7 @@
  "1 hour": "1 ghonta",
  "{n} hours": "{n} ghonta",
  "Free key every {time} · +2 diamonds for every new chapter": "Proti {time}-e free key · protita notun chapter-e +2 diamonds",
- "The first {n} chapters of every story are free. After that each new chapter uses 1 key. Keys refill for free every {time}, or watch a short ad to get one straight away. Replays are free.": "Protita golper prothom {n}-ti chapter free. Tarpor protita notun chapter-e 1-ta key lage. Key proti {time}-e free-te bhore jay, othoba ekta chhoto ad dekhe shoge shoge ekta key nao. Replay free."
+ "The first {n} chapters of every story are free. After that each new chapter uses 1 key. Keys refill for free every {time}, or watch a short ad to get one straight away. Replays are free.": "Protita golper prothom {n}-ti chapter free. Tarpor protita notun chapter-e 1-ta key lage. Key proti {time}-e free-te bhore jay, othoba ekta chhoto ad dekhe shoge shoge ekta key nao. Replay free.",
+ "Music on": "Music on",
+ "Music off": "Music off"
 }

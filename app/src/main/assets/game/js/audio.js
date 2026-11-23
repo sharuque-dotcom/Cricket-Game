@@ -9,9 +9,11 @@ const Sfx = (() => {
     try {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
       master = ctx.createGain(); master.gain.value = muted ? 0 : 0.8; master.connect(ctx.destination);
+      musicGain = ctx.createGain(); musicGain.gain.value = 1.6; musicGain.connect(master);
       noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
       const d = noiseBuf.getChannelData(0);
       for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      if (musicWant) setTimeout(() => setMood(musicWant), 0);
     } catch (e) { ctx = null; }
   }
 
@@ -38,6 +40,86 @@ const Sfx = (() => {
     o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .05);
   }
 
+  // ---------- procedural music ----------
+  // Indian-flavoured mood loops over a tanpura-style drone. Everything sits above ~200 Hz so phone
+  // speakers can play it. Moods: calm | romance | tense | festive | stadium | off.
+  // Pattern letters: lead x = note; drums k = dhol, s = slap, h = shaker, c = clap.
+  const MOODS = {
+    calm:    { bpm: 70,  root: 220.0, scale: [0, 2, 4, 6, 7, 9, 11], prog: [0, 4, 5, 3], lead: 'pluck', rhythm: 'x...x...x.x.x...', alt: 'x...x.x.x...x...', drums: '................', shake: 'h.......h.......' },
+    romance: { bpm: 76,  root: 196.0, scale: [0, 2, 4, 5, 7, 9, 11], prog: [0, 5, 3, 4], lead: 'flute', rhythm: 'x.....x.x.....x.', alt: 'x...x.....x.x...', drums: 'k.......k...s...', shake: '....h.......h...' },
+    tense:   { bpm: 92,  root: 164.8, scale: [0, 1, 3, 5, 7, 8, 10], prog: [0, 0, 5, 6], lead: 'pluck', rhythm: 'x.x.x.x.x.x.x.x.', alt: 'x.x.x.x.xx.x.x..', drums: 'k...k.....k.k...', shake: '................', low: true },
+    festive: { bpm: 112, root: 196.0, scale: [0, 2, 4, 5, 7, 9, 11], prog: [0, 3, 4, 0], lead: 'pluck', rhythm: 'x.xxx.x.x.xxx.x.', alt: 'xx.x.xx.x.x.xx..', drums: 'k..sk.s.k..sk.ss', shake: 'h.h.h.h.h.h.h.h.' },
+    stadium: { bpm: 104, root: 164.8, scale: [0, 2, 3, 5, 7, 8, 10], prog: [0, 5, 6, 4], lead: 'pluck', rhythm: 'x.x.x...x.x.x...', alt: 'x.x.x.x.x...x.x.', drums: 'k...c...k.k.c...', shake: 'h.h.h.h.h.h.h.h.' },
+  };
+  let musicGain = null, musicOn = true, mus = { mood: null, timer: null, next: 0, step: 0, drone: [] }, musicWant = null;
+  const semi = (f, n) => f * Math.pow(2, n / 12);
+  const degree = (m, d) => { const n = m.scale.length, o = Math.floor(d / n); return m.scale[((d % n) + n) % n] + 12 * o; };
+  const rnd = (seed) => { let x = Math.sin(seed * 9301 + 49297) * 233280; return x - Math.floor(x); };
+  function mvoice(type, freq, t, dur, gain, { attack = .01, filter = 0, q = .8, vib = 0 } = {}) {
+    const o = ctx.createOscillator(); o.type = type; o.frequency.setValueAtTime(freq, t);
+    const g = ctx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain, t + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    let last = o;
+    if (filter) { const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.setValueAtTime(filter * 3, t); f.frequency.exponentialRampToValueAtTime(filter, t + Math.min(dur, .25)); f.Q.value = q; o.connect(f); last = f; }
+    if (vib) { const l = ctx.createOscillator(), lg = ctx.createGain(); l.frequency.value = 5.2; lg.gain.value = freq * vib; l.connect(lg); lg.connect(o.frequency); l.start(t); l.stop(t + dur + .05); }
+    last.connect(g); g.connect(musicGain); o.start(t); o.stop(t + dur + .05);
+  }
+  function mnoise(t, dur, type, freq, gain, q = 1) {
+    const s = ctx.createBufferSource(); s.buffer = noiseBuf;
+    const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+    const g = ctx.createGain(); g.gain.setValueAtTime(gain, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f); f.connect(g); g.connect(musicGain); s.start(t, Math.random()); s.stop(t + dur + .05);
+  }
+  function droneStart(m) {
+    const t = ctx.currentTime;
+    for (const [n, lvl] of [[0, .022], [7, .016], [12, .012]]) {
+      const o = ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = semi(m.root, n); o.detune.value = (Math.random() - .5) * 8;
+      const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = m.low ? 700 : 1100;
+      const g = ctx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(lvl, t + 2);
+      o.connect(f); f.connect(g); g.connect(musicGain); o.start(t); mus.drone.push({ o, g });
+    }
+  }
+  function droneStop() {
+    const t = ctx.currentTime;
+    mus.drone.forEach(({ o, g }) => { try { g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value, t); g.gain.linearRampToValueAtTime(0, t + 1.2); o.stop(t + 1.3); } catch (e) {} });
+    mus.drone = [];
+  }
+  function mstep(m, i, t) {
+    const s16 = i % 16, bar = Math.floor(i / 16) % 4, phrase = Math.floor(i / 64) % 2, sp = 60 / m.bpm / 4;
+    const root = m.prog[bar];
+    if (s16 === 0) { // pad: the bar's chord, soft and wide
+      [0, 2, 4].forEach((k, j) => mvoice('triangle', semi(m.root, degree(m, root + k) + 12), t, sp * 16, .026 - j * .004, { attack: .5 }));
+    }
+    const pat = phrase ? m.alt : m.rhythm;
+    if (pat[s16] === 'x') { // lead: a note from the chord or scale, the same every 4 bars, varied every 8
+      const r = rnd(bar * 31 + s16 * 7 + phrase * 101 + m.bpm);
+      const d = root + [0, 2, 4, 1, 4, 2, 7, 5][Math.floor(r * 8)];
+      const f = semi(m.root, degree(m, d) + (m.low ? 12 : 24));
+      if (m.lead === 'flute') mvoice('sine', f, t, sp * 5, .06, { attack: .06, vib: .006 });
+      else mvoice('sawtooth', f, t, sp * 3, .045, { filter: 1400, q: 2 });
+    }
+    const dr = m.drums[s16];
+    if (dr === 'k') { mvoice('sine', 220, t, .22, .16); mnoise(t, .09, 'bandpass', 400, .06, 1.2); } // dhol bass, pitched for phone speakers
+    else if (dr === 's') mnoise(t, .08, 'bandpass', 1900, .07, 1.5);
+    else if (dr === 'c') { mnoise(t, .1, 'bandpass', 1500, .09, .8); mnoise(t + .012, .08, 'bandpass', 2200, .05, .8); }
+    if (m.shake[s16] === 'h') mnoise(t, .04, 'highpass', 6000, .025);
+  }
+  function mtick() {
+    const m = MOODS[mus.mood]; if (!m || !ctx) return;
+    const sp = 60 / m.bpm / 4;
+    while (mus.next < ctx.currentTime + .35) { mstep(m, mus.step, mus.next); mus.next += sp; mus.step++; }
+  }
+  function setMood(mood) {
+    musicWant = mood;
+    if (!ctx || !musicGain) return;
+    const want = musicOn && MOODS[mood] ? mood : null;
+    if (want === mus.mood) return;
+    droneStop(); clearInterval(mus.timer); mus.timer = null;
+    mus.mood = want; mus.step = 0; mus.next = ctx.currentTime + .15;
+    if (!want) return;
+    droneStart(MOODS[want]); mtick(); mus.timer = setInterval(mtick, 100);
+  }
+
   const api = {
     init,
     setMuted(m) { muted = m; if (master) master.gain.value = m ? 0 : 0.8; },
@@ -45,6 +127,14 @@ const Sfx = (() => {
     suspend() { try { if (ctx && ctx.state === 'running') ctx.suspend(); } catch (e) {} },
     resume() { try { if (ctx && ctx.state === 'suspended' && !document.hidden) ctx.resume(); } catch (e) {} },
     get muted() { return muted; },
+    // background music by mood; remembered until the audio context starts on the first tap
+    music(mood) { setMood(mood || 'off'); },
+    setMusic(on) { musicOn = !!on; const want = musicWant; setMood(on ? want : 'off'); musicWant = want; },
+    get musicOn() { return musicOn; },
+    get mood() { return mus.mood; },
+    // for tests: schedule the current mood up to `sec` seconds ahead (offline rendering has no clock)
+    _fill(sec) { const m = MOODS[mus.mood]; if (!m) return; const sp = 60 / m.bpm / 4; while (mus.next < sec) { mstep(m, mus.step, mus.next); mus.next += sp; mus.step++; } },
+    get _ctx() { return ctx; },
     tap() { tone(520, .07, { type: 'triangle', gain: .12, slide: 180 }); },
     select() { tone(660, .09, { type: 'triangle', gain: .14 }); tone(990, .12, { type: 'triangle', gain: .1, delay: .05 }); },
     whoosh() { noise(.45, { type: 'bandpass', freq: 900, q: .7, gain: .25, attack: .15, decay: .45 }); },
@@ -109,22 +199,22 @@ const Sfx = (() => {
       };
       const every = (ms, fn, chance = 1) => amb.timers.push(setInterval(() => { if (Math.random() < chance && !muted) fn(); }, ms));
       if (kind === 'stall') {
-        bed('lowpass', 380, .7, .07); bed('bandpass', 2600, 2, .012);
+        bed('bandpass', 750, .6, .09); bed('bandpass', 2600, 2, .03);
         every(5200, () => noise(1.8, { type: 'bandpass', freq: 3200, q: 1.5, gain: .05, attack: .4, decay: 1.8 }), .5); // kettle hiss
         every(9000, () => { tone(392, .5, { type: 'sawtooth', gain: .035 }); tone(494, .5, { type: 'sawtooth', gain: .03 }); tone(392, .35, { type: 'sawtooth', gain: .03, delay: .6 }); }, .45); // bus horn
         every(3700, () => tone(1300 + Math.random() * 500, .06, { type: 'triangle', gain: .02 }), .4); // glasses clink
       } else if (kind === 'maidan') {
-        bed('bandpass', 500, .4, .05); bed('highpass', 4000, .5, .008);
+        bed('bandpass', 900, .5, .08); bed('highpass', 4000, .5, .02);
         every(2300, () => { const f = 2600 + Math.random() * 1600; [0, .09, .18].forEach(d => tone(f + Math.random() * 300, .07, { type: 'sine', gain: .03, delay: d, slide: 400 })); }, .55); // birds
         every(6000, () => noise(1.2, { type: 'bandpass', freq: 1100, q: .6, gain: .05, attack: .3, decay: 1.2 }), .4); // distant kids shout
       } else if (kind === 'room') {
-        bed('lowpass', 160, 1, .09); bed('bandpass', 4200, 6, .006);
-        every(900, () => { tone(4400, .03, { type: 'sine', gain: .018 }); tone(4400, .03, { type: 'sine', gain: .018, delay: .06 }); }, .6); // crickets
+        bed('bandpass', 650, .6, .055); bed('bandpass', 4200, 6, .015);
+        every(900, () => { tone(4400, .03, { type: 'sine', gain: .05 }); tone(4400, .03, { type: 'sine', gain: .05, delay: .06 }); }, .6); // crickets
       } else if (kind === 'night') {
-        bed('lowpass', 260, .7, .05);
-        every(1100, () => { tone(4100, .03, { type: 'sine', gain: .016 }); tone(4100, .03, { type: 'sine', gain: .016, delay: .07 }); }, .5);
+        bed('bandpass', 700, .6, .065);
+        every(1100, () => { tone(4100, .03, { type: 'sine', gain: .05 }); tone(4100, .03, { type: 'sine', gain: .05, delay: .07 }); }, .5);
       } else if (kind === 'rain') {
-        bed('highpass', 1200, .3, .12); bed('lowpass', 500, .5, .06);
+        bed('highpass', 1200, .3, .12); bed('bandpass', 600, .5, .05);
         every(700, () => noise(.04, { type: 'highpass', freq: 3000, gain: .05, decay: .04 }), .7); // drips on tin
         every(11000, () => { noise(3.2, { type: 'lowpass', freq: 140, gain: .5, attack: .2, decay: 3.2 }); }, .45); // thunder
       }
@@ -142,3 +232,6 @@ function haptic(ms) {
 
 // Screen off / app switched / tab hidden: silence everything
 document.addEventListener('visibilitychange', () => { if (document.hidden) Sfx.suspend(); else Sfx.resume(); });
+// Browsers only allow sound after the player touches the screen: start (or resume) audio on any tap.
+// The old title screen did this; it was lost when the app started opening straight on the story home (1.5.0).
+['pointerdown', 'touchstart', 'keydown'].forEach(ev => document.addEventListener(ev, () => Sfx.init(), { capture: true, passive: true }));

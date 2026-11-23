@@ -144,7 +144,9 @@ const Story = {
     const open = b => { const i = this.bookInfo(b); return i.playable && !i.locked && !i.finished; };
     // hero = the book you were reading, else the first one you can open
     const last = this.bookDef(s.book);
-    const hero = (last && open(last) ? last : order.find(open)) || order[0];
+    // returning readers keep their book; brand-new players start on the server's chosen story, if any
+    const anyRead = Object.values(s.books).some(p => Object.keys(p.done || {}).length), pinned = this.shelf().hero && this.bookDef(this.shelf().hero);
+    const hero = (!anyRead && pinned && open(pinned) ? pinned : last && open(last) ? last : order.find(open)) || order[0];
     const H = this.nextOf(hero), HI = H.info;
     const pct = HI.eps.length ? Math.round(HI.done / HI.eps.length * 100) : 0;
     const newbie = !Object.values(s.books).some(p => Object.keys(p.done || {}).length);
@@ -180,20 +182,32 @@ const Story = {
     this.bindHud(el, 'home');
     const hb = $('[data-play]', el);
     if (hb) hb.onclick = (e) => { e.stopPropagation(); Sfx.select(); this.st.book = hero.id; this.bk(); this.save(); H.cur ? this.resume() : this.tryStart(H.nextIdx); };
-    $('[data-hero]', el).onclick = () => this.pickBook(hero.id);
-    const see = $('[data-see]', el); if (see) see.onclick = () => this.pickBook(hero.id);
+    $('[data-hero]', el).onclick = () => this.pickBook(hero.id, 'hero', 0);
+    const see = $('[data-see]', el); if (see) see.onclick = () => this.pickBook(hero.id, 'see', 0);
     const how = $('[data-howto]', el); if (how) how.onclick = () => this.howTo();
-    $$('[data-book-id]', el).forEach(btn => btn.onclick = () => this.pickBook(btn.dataset.bookId));
+    $$('[data-book-id]', el).forEach((btn, k) => btn.onclick = () => this.pickBook(btn.dataset.bookId, 'shelf', k + 1));
     this.bindRows(el, hero);
   },
-  pickBook(id) {
+  pickBook(id, from, pos) {
     const b = this.bookDef(id), i = this.bookInfo(b);
+    if (from) Track.ev('book_open', { book: id, from, pos: pos || 0, shelf: this.shelf().name });
     if (!i.playable) return this.askNotify(true);
     if (i.locked) { Sfx.fail(); toast(t('Finish {prev} first. {book} picks up where it ends.', { prev: this.bt((this.bookDef(b.after) || {}).title || 'the last book'), book: this.bt(b.title) })); return; }
     Sfx.select(); this.openBook(b.id);
   },
   // in progress first, then new, finished, locked sequels, coming soon
-  bookRank(b) { const i = this.bookInfo(b); return (!i.playable ? 40 : i.locked ? 30 : i.finished ? 20 : i.started ? 0 : 10) + BOOKS.indexOf(b) / 100; },
+  bookRank(b) {
+    const i = this.bookInfo(b), ord = this.shelf().order, k = ord ? ord.indexOf(b.id) : -1;
+    return (!i.playable ? 40 : i.locked ? 30 : i.finished ? 20 : i.started ? 0 : 10) + (k >= 0 ? k : 50 + BOOKS.indexOf(b)) / 100;
+  },
+  // shelf order and the first story new players see, from the server (manifest "shelf"); with "variants"
+  // each player is put in one group for good (st.ab), so two orders can be compared in Firebase
+  shelf() {
+    const c = CONTENT_SHELF, v = c.variants && c.variants.length ? c.variants : null;
+    if (v && this.st.ab === undefined) { this.st.ab = Math.floor(Math.random() * 1000); this.save(); }
+    const pick = v ? v[this.st.ab % v.length] : {};
+    return { name: pick.name || c.name || 'default', order: pick.order || c.order || null, hero: pick.hero || c.hero || null };
+  },
   openBook(id) { this.st.book = id; this.bk(); this.save(); this.bookScreen(); },
 
   // one compact line per chapter
@@ -224,12 +238,14 @@ const Story = {
       <button class="btn ghost block" style="margin-top:14px" data-lang>🌐 ${t('Language')}: ${cur.native}</button>
       <button class="btn ghost block" style="margin-top:8px" data-howto>❓ ${t('How to play')}</button>
       <button class="btn ghost block" style="margin-top:8px" data-snd>${Sfx.muted ? '🔇 ' + t('Sound off') : '🔊 ' + t('Sound on')}</button>
+      <button class="btn ghost block" style="margin-top:8px" data-mus>${musicLabel()}</button>
       <button class="btn ghost block" style="margin-top:8px" data-bell>${Notify.granted() ? '🔔 ' + t('Notifications on') : '🔔 ' + t('Turn on notifications')}</button>
       <div class="tiny" style="margin-top:14px;text-align:center">${t('Playing as {name}', { name: esc(this.st.name || '') })}</div></div>`, sh => {
       $('[data-lang]', sh).onclick = () => { closeSheet(); setTimeout(() => this.pickLang(() => this.home()), 300); };
       $('[data-howto]', sh).onclick = () => { closeSheet(); setTimeout(() => this.howTo(), 300); };
       $('[data-snd]', sh).onclick = (e) => { Sfx.setMuted(!Sfx.muted); try { localStorage.setItem('gg_muted', Sfx.muted ? '1' : ''); } catch (er) {} e.target.textContent = Sfx.muted ? '🔇 ' + t('Sound off') : '🔊 ' + t('Sound on'); };
       $('[data-bell]', sh).onclick = () => { closeSheet(); setTimeout(() => this.askNotify(true), 300); };
+      $('[data-mus]', sh).onclick = (e) => toggleMusic(e.target);
     });
   },
 
@@ -412,7 +428,9 @@ const Story = {
       <button class="btn ghost block" style="margin-top:8px" data-book>${t('All chapters')}</button>
       <button class="btn ghost block" style="margin-top:8px" data-home>${t('Home')}</button>
       <div class="row" style="gap:8px;margin-top:8px"><button class="btn ghost grow" data-how>❓ ${t('How to play')}</button><button class="btn ghost grow" data-snd>${Sfx.muted ? '🔇 ' + t('Sound off') : '🔊 ' + t('Sound on')}</button></div>
+      <button class="btn ghost block" style="margin-top:8px" data-mus>${musicLabel()}</button>
       <div class="tiny" style="margin-top:12px;text-align:center">${t('Your place in this chapter is saved')}</div></div>`, sh => {
+      $('[data-mus]', sh).onclick = (e) => toggleMusic(e.target);
       $('[data-go]', sh).onclick = () => closeSheet();
       $('[data-how]', sh).onclick = () => { closeSheet(); setTimeout(() => this.howTo(), 300); };
       $('[data-home]', sh).onclick = () => { closeSheet(); this.abort = true; this.home(); };
@@ -426,7 +444,7 @@ const Story = {
     const e = this.eps()[i];
     this.ep = e; this.replay = replay; this.abort = false;
     this.labels = {}; e.nodes.forEach((n, k) => { if (n.label) this.labels[n.label] = k; });
-    if (!replay) { this.st.flagsAtStart = { ...this.st.flags }; Track.ev('chapter_start', { book: this.st.book, chapter: e.no }); }
+    if (!replay) { this.st.flagsAtStart = { ...this.st.flags }; Track.ev('chapter_start', { book: this.st.book, chapter: e.no, shelf: this.shelf().name }); }
     this.scene = { bg: null, left: null, right: null, speaking: null };
     this.st.cur = { ep: e.id, pos: 0, scene: this.scene, replay };
     this.save();
@@ -482,6 +500,16 @@ const Story = {
     const c = $('[data-story-fx]', this.el); if (c) SceneFX.set(c, mode);
     const r = $('[data-story-rays]', this.el); if (r) r.style.display = DAY_ART.has(name) && !this.weather ? '' : 'none';
     Sfx.ambience(this.weather === 'rain' ? 'rain' : CONTENT_AMB[name] || ({ intro: 'stall', ch1: 'maidan', ch2: 'maidan', ch3: 'maidan', bd_maidan: 'night', ev_call: 'room', bg_home: 'room', bg_street_dusk: 'night', bg_club_match: 'maidan', bg_clubhouse_wall: 'maidan', bg_mandi_night: 'rain', bg_burnt_stall: 'stall', bg_hospital: 'room', bg_tennis_night: 'night', bg_hostel: 'room', bg_dressing_room: 'room', bg_hotel_lobby: 'room', bg_newsroom: 'room', bg_hearing_room: 'room', bg_stall_rebuilt: 'stall', ev_party: 'night', ch4: 'room', ch5: 'night', bd_stadium_night: 'night' }[name] || 'night'));
+    this.cue = null; Sfx.music(this.moodFor(name));
+  },
+  // music mood for a background: server map (manifest "music"), then the bundled scenes, then calm
+  moodFor(name) {
+    if (this.cue) return this.cue;
+    if (CONTENT_MUSIC[name]) return CONTENT_MUSIC[name];
+    const M = { ev_bookie: 'tense', ev_bribe: 'tense', ev_call: 'tense', bg_mandi_night: 'tense', bg_hearing_room: 'tense', bg_burnt_stall: 'tense', bg_tennis_night: 'tense',
+      ev_party: 'festive', bg_stall_rebuilt: 'festive', end_glory: 'festive', bg_street_dusk: 'romance', ev_maa: 'romance', bg_home: 'calm',
+      bd_stadium_day: 'stadium', bd_stadium_night: 'stadium', bg_club_match: 'stadium', ch6: 'stadium', bg_dressing_room: 'stadium', ev_rival: 'stadium', ch5: 'stadium' };
+    return M[name] || 'calm';
   },
 
   portraitHtml(id) {
@@ -625,6 +653,7 @@ const Story = {
       const n = nodes[i];
       this.st.cur.pos = i; this.st.cur.scene = this.scene; this.save();
       if (n.label) continue;
+      if (n.music !== undefined) { this.cue = n.music || null; Sfx.music(this.cue || this.moodFor(this.scene.bg)); continue; }
       if (n.weather !== undefined) { this.weather = n.weather; this.setBg(this.scene.bg); continue; }
       if (n.bg) { this.weather = null; this.setBg(n.bg); await sleep(220); continue; }
       if (n.enter) {
@@ -725,7 +754,7 @@ const Story = {
     s.done[e.id] = true; s.cur = null;
     if (first) {
       const read = Object.values(s.books).reduce((n, p) => n + Object.keys(p.done || {}).length, 0);
-      Track.ev('chapter_complete', { book: s.book, chapter: e.no, read });
+      Track.ev('chapter_complete', { book: s.book, chapter: e.no, read, shelf: this.shelf().name });
       if (read === 1) Track.ev('first_chapter_complete', { book: s.book });
       if (read === 3) Track.ev('third_chapter_complete', { book: s.book });
     }
@@ -832,3 +861,7 @@ function burstSvg() {
   }
   return `<svg class="burst" viewBox="-8 -8 116 116" preserveAspectRatio="none"><polygon points="${pts.map(p => p.map(x => x.toFixed(1)).join(',')).join(' ')}"/></svg>`;
 }
+
+// Music on/off (separate from sound), remembered on the phone
+function musicLabel() { return Sfx.musicOn ? '🎵 ' + t('Music on') : '🎵 ' + t('Music off'); }
+function toggleMusic(btn) { Sfx.setMusic(!Sfx.musicOn); try { localStorage.setItem('gg_music', Sfx.musicOn ? '' : 'off'); } catch (e) {} if (btn) btn.textContent = musicLabel(); }

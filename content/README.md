@@ -83,3 +83,16 @@ To launch a book, put its episodes on the server with `"book": "bluecap"` in eac
 ## When you DO need a Play release
 
 Only when the engine changes: a new node type, a new kind of cricket moment, new screens. Then bump `CONTENT_ENGINE` in `js/content.js` and set `"engine": 2` on the episodes that need it. Older apps skip those episodes until they update.
+
+## Music, key rules and the shelf (app 1.5.5+; older apps ignore these)
+
+```json
+"music":   { "bg_marine_drive": "romance", "bg_owner_office": "tense" },
+"economy": { "keyMax": 3, "keyMins": 90, "free": 3 },
+"shelf":   { "variants": [ { "name": "A", "order": ["b2", "b1", "b3", "bluecap"], "hero": "b2" },
+                           { "name": "B", "order": ["b1", "b2", "b3", "bluecap"], "hero": "b1" } ] }
+```
+
+- **music**: mood per background: `calm`, `romance`, `tense`, `festive`, `stadium` or `off`. Inside an episode, a node `{ "music": "tense" }` switches the mood until the next background change.
+- **economy**: keys held, minutes per free key, free chapters at the start of every story.
+- **shelf**: shelf order and the story brand-new players start on. With `variants`, each player is placed in one group for good, and `book_open` / `chapter_*` events carry `shelf` (the group name) so Firebase can compare them. Without `shelf`, in-progress books come first in the built-in order.

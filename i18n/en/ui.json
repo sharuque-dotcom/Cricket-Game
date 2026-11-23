@@ -202,5 +202,7 @@
  "1 hour",
  "{n} hours",
  "Free key every {time} · +2 diamonds for every new chapter",
- "The first {n} chapters of every story are free. After that each new chapter uses 1 key. Keys refill for free every {time}, or watch a short ad to get one straight away. Replays are free."
+ "The first {n} chapters of every story are free. After that each new chapter uses 1 key. Keys refill for free every {time}, or watch a short ad to get one straight away. Replays are free.",
+ "Music on",
+ "Music off"
 ]
