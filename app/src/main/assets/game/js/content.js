@@ -132,6 +132,15 @@ const Content = (() => {
       if (have) Object.assign(have, keep); else if (keep.title) BOOKS.push(Object.assign({ id: b.id, live: true }, keep));
     }
   }
+  // shelf experiment from the server: { name, order: [book ids], hero: book id, variants: [{ name, order, hero }] }
+  function applyShelf(c) {
+    Object.keys(CONTENT_SHELF).forEach(k => { CONTENT_SHELF[k] = undefined; });
+    if (!c || typeof c !== 'object') return;
+    const ids = a => Array.isArray(a) ? a.filter(x => RE_NAME.test(x || '')).slice(0, 20) : undefined;
+    const one = o => ({ name: typeof o.name === 'string' ? o.name.slice(0, 30) : undefined, order: ids(o.order), hero: RE_NAME.test(o.hero || '') ? o.hero : undefined });
+    Object.assign(CONTENT_SHELF, one(c));
+    if (Array.isArray(c.variants)) CONTENT_SHELF.variants = c.variants.filter(v => v && typeof v === 'object').slice(0, 4).map(one);
+  }
   // key rules from the server: { keyMax, keyMins, free }; anything missing or out of range keeps the app's default
   function applyEconomy(e) {
     if (!e || typeof e !== 'object' || typeof ECON === 'undefined') return;
@@ -172,6 +181,9 @@ const Content = (() => {
     if (m.fx) Object.assign(FX_FOR_ART, m.fx);
     if (Array.isArray(m.day)) m.day.forEach(n => DAY_ART.add(n));
     if (m.amb) Object.assign(CONTENT_AMB, m.amb);
+    const MOODS = ['calm', 'romance', 'tense', 'festive', 'stadium', 'off'];
+    if (m.music && typeof m.music === 'object') for (const k in m.music) if (RE_NAME.test(k) && MOODS.includes(m.music[k])) CONTENT_MUSIC[k] = m.music[k];
+    applyShelf(m.shelf);
     Art.applyFallbacks();
     return added;
   }
@@ -283,3 +295,5 @@ const Content = (() => {
 })();
 
 const CONTENT_AMB = {};
+const CONTENT_MUSIC = {};
+const CONTENT_SHELF = {};

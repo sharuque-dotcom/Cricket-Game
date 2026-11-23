@@ -14,7 +14,7 @@ const UI = {
     if (old) { old.classList.add('exit'); setTimeout(() => old.remove(), 360); }
     this.cur = el;
     try { SceneFX.scan(el); } catch (e) {}
-    if (!el.classList.contains('story-scene')) Sfx.ambience('off');
+    if (!el.classList.contains('story-scene')) { Sfx.ambience('off'); Sfx.music(el.classList.contains('match-screen') ? 'off' : 'calm'); }
     return el;
   },
   waitTap(sel, root) {
@@ -70,7 +70,7 @@ window.GG = {
 
 // ---------- Boot ----------
 (async function boot() {
-  try { if (localStorage.getItem('gg_muted')) Sfx.setMuted(true); } catch (e) {}
+  try { if (localStorage.getItem('gg_muted')) Sfx.setMuted(true); if (localStorage.getItem('gg_music') === 'off') Sfx.setMusic(false); } catch (e) {}
   Content.init(); // chapters downloaded on an earlier launch
   await I18N.init(); // saved language (its file loads before the first screen)
   Content.lang(I18N.lang);
