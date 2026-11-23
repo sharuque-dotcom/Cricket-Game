@@ -126,6 +126,7 @@ const Content = (() => {
       ['title', 'genre', 'blurb'].forEach(k => { if (typeof b[k] === 'string') keep[k] = b[k]; });
       ['art', 'after', 'carry'].forEach(k => { if (b[k] !== undefined) keep[k] = b[k]; });
       if (typeof b.live === 'boolean') keep.live = b.live;
+      if (Array.isArray(b.tags)) keep.tags = b.tags.filter(x => RE_NAME.test(x || '')).slice(0, 6);
       if (b.teaser && typeof b.teaser === 'object' && ok(b.teaser.art)) keep.teaser = { no: b.teaser.no, title: String(b.teaser.title || ''), art: b.teaser.art, note: String(b.teaser.note || 'Coming soon') };
       if (b.rel && typeof b.rel === 'object') { keep.rel = {}; for (const k in b.rel) if (RE_NAME.test(k)) keep.rel[k] = String(b.rel[k]); }
       const have = BOOKS.find(x => x.id === b.id);
@@ -184,6 +185,13 @@ const Content = (() => {
     const MOODS = ['calm', 'romance', 'tense', 'festive', 'stadium', 'off'];
     if (m.music && typeof m.music === 'object') for (const k in m.music) if (RE_NAME.test(k) && MOODS.includes(m.music[k])) CONTENT_MUSIC[k] = m.music[k];
     applyShelf(m.shelf);
+    // home layout: { featured: [book ids], top: [book ids], rows: [{ title, tag }] }
+    Object.keys(CONTENT_HOME).forEach(k => { CONTENT_HOME[k] = undefined; });
+    if (m.home && typeof m.home === 'object') {
+      const ids = x => Array.isArray(x) ? x.filter(v => RE_NAME.test(v || '')).slice(0, 10) : undefined;
+      CONTENT_HOME.featured = ids(m.home.featured); CONTENT_HOME.top = ids(m.home.top);
+      if (Array.isArray(m.home.rows)) CONTENT_HOME.rows = m.home.rows.filter(r => r && typeof r.title === 'string' && RE_NAME.test(r.tag || '')).slice(0, 8).map(r => ({ title: r.title.slice(0, 40), tag: r.tag }));
+    }
     Art.applyFallbacks();
     return added;
   }
@@ -297,3 +305,4 @@ const Content = (() => {
 const CONTENT_AMB = {};
 const CONTENT_MUSIC = {};
 const CONTENT_SHELF = {};
+const CONTENT_HOME = {};

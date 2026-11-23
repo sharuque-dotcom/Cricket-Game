@@ -103,7 +103,8 @@ const Story = {
     const cur = UI.cur;
     if (!cur || !this.st) return false;
     if (cur.classList.contains('story-scene')) { this.pauseMenu(); return true; }
-    if (cur.classList.contains('book-page') || cur.classList.contains('ep-end')) { Sfx.select(); this.home(); return true; }
+    if (cur.classList.contains('book-page') || cur.classList.contains('ep-end') || cur.classList.contains('my-stories')) { Sfx.select(); this.home(); return true; }
+    if (cur.classList.contains('home') && this.homeCat) { this.homeCat = null; this.home(); return true; }
     return false;
   },
 
@@ -135,58 +136,112 @@ const Story = {
   coverStyle(art) { return Art.has(art) ? `background-image:url('${Art.url(art)}')` : ''; },
 
   // ---------- Home: hero, all stories, chapter list ----------
+  // ---------- Home: featured banner, continue reading, categories, rows, bottom tabs ----------
+  // The server can set what shows where (manifest "home"): { featured: [ids], top: [ids], rows: [{ title, tag }] }.
   home() {
     const s = this.st;
     // forget a saved place in an episode the server has withdrawn
     for (const id in s.books) { const c = s.books[id].cur; if (c && !EPISODES.some(e => e.id === c.ep)) s.books[id].cur = null; }
     this.refillKeys(); this.save();
-    const order = BOOKS.slice().sort((a, b) => this.bookRank(a) - this.bookRank(b));
-    const open = b => { const i = this.bookInfo(b); return i.playable && !i.locked && !i.finished; };
-    // hero = the book you were reading, else the first one you can open
-    const last = this.bookDef(s.book);
-    // returning readers keep their book; brand-new players start on the server's chosen story, if any
-    const anyRead = Object.values(s.books).some(p => Object.keys(p.done || {}).length), pinned = this.shelf().hero && this.bookDef(this.shelf().hero);
-    const hero = (!anyRead && pinned && open(pinned) ? pinned : last && open(last) ? last : order.find(open)) || order[0];
-    const H = this.nextOf(hero), HI = H.info;
-    const pct = HI.eps.length ? Math.round(HI.done / HI.eps.length * 100) : 0;
-    const newbie = !Object.values(s.books).some(p => Object.keys(p.done || {}).length);
-    const heroBtn = !HI.playable || HI.locked ? '' : H.cur ? `▶ ${t('Continue Chapter {n}', { n: H.cur.no })}` : H.next ? `▶ ${t(HI.started ? 'Play Chapter {n}' : 'Start Chapter {n}', { n: H.next.no })} ${this.costTag(H.next.no - 1)}` : '';
-    const shelf = order.map(b => `<button class="shelf-card ${this.bookInfo(b).playable && !this.bookInfo(b).locked ? '' : 'shut'}" data-book-id="${esc(b.id)}">
-        <div class="sc-cover" style="${this.coverStyle(b.art)}">${this.badge(b)}</div>
-        <b>${esc(this.bt(b.title))}</b><span>${esc(this.bt((b.genre || '').split('·')[0].trim()))}</span></button>`).join('');
-    // a short window of the hero book's chapters, around the next one
-    const E = HI.eps, from = Math.max(0, Math.min((H.nextIdx < 0 ? E.length : H.nextIdx) - 1, E.length - 4));
-    const rows = E.slice(from, from + 4).map((e, k) => this.chapterRow(hero, e, from + k)).join('');
+    const I = b => this.bookInfo(b), H = CONTENT_HOME;
+    const order = BOOKS.slice().sort((x, y) => this.bookRank(x) - this.bookRank(y));
+    const ok = b => { const i = I(b); return i.playable && !i.locked; };
+    const anyRead = Object.values(s.books).some(p => Object.keys(p.done || {}).length);
+    const byId = ids => (ids || []).map(id => this.bookDef(id)).filter(Boolean);
+    const uniq = list => list.filter((b, k) => b && list.indexOf(b) === k);
+    const reading = order.filter(b => ok(b) && I(b).started && !I(b).finished);
+    const pinned = this.shelf().hero && this.bookDef(this.shelf().hero);
+    // banner: the server's picks, else the story you're reading (or the story new players should start), then the rest
+    const slides = uniq([...byId(H.featured).filter(ok), ...(anyRead ? reading : pinned && ok(pinned) ? [pinned] : []), ...order.filter(b => ok(b) && !I(b).finished)]).slice(0, 4);
+    const live = order.filter(b => I(b).playable), soon = BOOKS.filter(b => !I(b).playable);
+    const top = uniq([...byId(H.top).filter(b => I(b).playable), ...live]).slice(0, 5);
+    const rows = Array.isArray(H.rows) && H.rows.length ? H.rows : [{ title: 'Cricket dramas', tag: 'cricket' }, { title: 'Romance', tag: 'romance' }];
+    const cats = HOME_CATS.filter(([tag]) => BOOKS.some(b => (b.tags || []).includes(tag)));
+    const cat = this.homeCat && cats.some(c => c[0] === this.homeCat) ? this.homeCat : null;
+    const sub = b => esc(this.bt((b.genre || '').split('·')[0].trim()));
+    const cover = (b, extra) => `<div class="hc-cover" style="${this.coverStyle(b.art)}">${Art.has(b.art) ? '' : `<span class="hc-name">${esc(this.bt(b.title))}</span>`}${extra || ''}</div>`;
+    const card = (b, from, k) => `<button class="hc-card ${I(b).playable ? '' : 'soon'}" data-open="${esc(b.id)}" data-from="${from}" data-pos="${k + 1}">${cover(b, this.badge(b))}<b>${esc(this.bt(b.title))}</b><span>${sub(b)}</span></button>`;
+    const sec = (title, inner, more) => `<div class="sec-head"><h3>${title}</h3>${more || ''}</div>${inner}`;
+
+    const banner = slides.length ? `<div class="hb-track" data-track>${slides.map((b, k) => `<div class="hb-slide" data-open="${esc(b.id)}" data-from="banner" data-pos="${k + 1}">
+        <div class="hb-art" style="${this.coverStyle(b.art)}"></div><div class="hb-fade"></div>
+        <div class="hb-body">${this.badge(b)} <span class="hb-genre">${esc(this.bt(b.genre || ''))}</span>
+          <div class="hb-title">${esc(this.bt(b.title))}</div><div class="hb-blurb">${esc(this.bt(b.blurb || ''))}</div></div>
+        ${this.nextOf(b).next ? `<button class="btn primary hb-play" data-play="${esc(b.id)}">${this.nextOf(b).cur ? `▶ ${t('Continue')}` : `▶ ${t('Play')} ${this.costTag(this.nextOf(b).nextIdx)}`}</button>` : ''}</div>`).join('')}</div>
+      ${slides.length > 1 ? `<div class="hb-dots">${slides.map((_, k) => `<i class="${k ? '' : 'on'}"></i>`).join('')}</div>` : ''}` : '';
+
+    const cont = reading.length ? sec(t('Continue reading'), `<div class="h-row">${reading.map(b => { const i = I(b), n = this.nextOf(b), e = n.cur || n.next;
+        return `<button class="hc-cont" data-play="${esc(b.id)}"><span class="hcc-cover" style="${this.coverStyle(b.art)}"></span>
+          <span class="hcc-t"><b>${esc(this.bt(b.title))}</b><small>${e ? `${t('Chapter {n}', { n: e.no })} · ${esc(this.et(e))}` : ''}</small><span class="pbar"><i style="width:${Math.round(i.done / i.eps.length * 100)}%"></i></span></span><span class="go">▶</span></button>`; }).join('')}</div>`) : '';
+
+    const chips = cats.length ? `<div class="h-chips">${[['', '', 'All'], ...cats].map(([tag, ico, label]) => `<button class="h-chip ${(cat || '') === tag ? 'on' : ''}" data-cat="${tag}">${ico ? ico + ' ' : ''}${t(label)}</button>`).join('')}</div>` : '';
+
+    const filtered = cat ? `<div class="h-grid">${order.filter(b => (b.tags || []).includes(cat)).map((b, k) => card(b, 'cat_' + cat, k)).join('')}</div>` : '';
+    const sections = cat ? filtered : [
+      top.length > 1 ? sec(`🔥 ${t('Popular now')}`, `<div class="h-row top">${top.map((b, k) => `<button class="hc-top" data-open="${esc(b.id)}" data-from="top" data-pos="${k + 1}"><span class="num">${k + 1}</span>${cover(b)}</button>`).join('')}</div>`) : '',
+      soon.length ? sec(`🗳️ ${t('Coming soon · you decide')}`, `<div class="h-row">${soon.map((b, k) => `<div class="hc-card soon"><button class="hc-card-in" data-open="${esc(b.id)}" data-from="soon" data-pos="${k + 1}">${cover(b)}<b>${esc(this.bt(b.title))}</b><span>${sub(b)}</span></button><button class="want" data-open="${esc(b.id)}" data-from="want" data-pos="${k + 1}">🔔 ${t('Want this')}</button></div>`).join('')}</div><div class="h-note">${t('The story with the most taps gets written first.')}</div>`) : '',
+      ...rows.map(r => { const list = live.filter(b => (b.tags || []).includes(r.tag)); return list.length ? sec(esc(this.bt(t(r.title))), `<div class="h-row">${list.map((b, k) => card(b, 'row_' + r.tag, k)).join('')}</div>`) : ''; }),
+    ].join('');
+
     const el = UI.show(`<div class="screen story-home home">
       ${this.hudHtml('', 'home')}
       <div class="scroll home-body">
         <div class="hello">${t('Hi {name}', { name: esc((s.name || '').split(' ')[0]) })} <span class="wave">👋</span></div>
-        <div class="hello-sub">${newbie ? t('Your story starts here. You make every choice.') : t('Pick up where you left off.')}</div>
-        ${newbie ? `<button class="howto-chip" data-howto><span>?</span> ${t('New here? See how to play')}</button>` : ''}
-        <div class="hero" data-hero="${esc(hero.id)}">
-          <div class="hero-art" style="${this.coverStyle(hero.art)}"><div class="hero-fade"></div>${this.badge(hero)}</div>
-          <div class="hero-body">
-            <div class="hero-genre">${esc(this.bt(hero.genre || ''))}</div>
-            <div class="hero-title">${esc(this.bt(hero.title))}</div>
-            ${H.next && HI.playable && !HI.locked ? `<div class="hero-next">${t('Chapter {n}', { n: H.next.no })} · ${esc(this.et(H.next))}</div>` : `<div class="hero-next">${esc(this.bt(hero.blurb || ''))}</div>`}
-            ${HI.playable && HI.started ? `<div class="pbar"><i style="width:${pct}%"></i></div><div class="pbar-l">${t('{done} of {total} chapters read', { done: HI.done, total: HI.eps.length })}</div>` : ''}
-            ${heroBtn ? `<button class="btn primary block hero-btn" data-play>${heroBtn}</button>` : ''}
-          </div>
-        </div>
-        <div class="sec-head"><h3>${t('All stories')}</h3><span>${t('{n} books', { n: BOOKS.length })}</span></div>
-        <div class="shelf">${shelf}</div>
-        ${E.length && HI.playable && !HI.locked ? `<div class="sec-head"><h3>${t('Chapters')}</h3><button data-see>${t('See all {n}', { n: E.length })} ›</button></div>
-        <div class="ch-list">${rows}</div>` : ''}
+        <div class="hello-sub">${anyRead ? t('Pick up where you left off.') : t('Your story starts here. You make every choice.')}</div>
+        ${anyRead ? '' : `<button class="howto-chip" data-howto><span>?</span> ${t('New here? See how to play')}</button>`}
+        ${banner}${cont}${chips}${sections}
         <div class="key-note">${s.keys < ECON.keyMax ? `${KEY_SVG} ${t('Next free key in {time}', { time: this.nextKeyIn() })}` : `${KEY_SVG} ${t('Keys full. Each new chapter uses 1 key.')}`}</div>
-      </div></div>`);
-    this.bindHud(el, 'home');
-    const hb = $('[data-play]', el);
-    if (hb) hb.onclick = (e) => { e.stopPropagation(); Sfx.select(); this.st.book = hero.id; this.bk(); this.save(); H.cur ? this.resume() : this.tryStart(H.nextIdx); };
-    $('[data-hero]', el).onclick = () => this.pickBook(hero.id, 'hero', 0);
-    const see = $('[data-see]', el); if (see) see.onclick = () => this.pickBook(hero.id, 'see', 0);
+      </div>
+      ${this.tabsHtml('home')}</div>`);
+    this.bindHud(el, 'home'); this.bindTabs(el);
     const how = $('[data-howto]', el); if (how) how.onclick = () => this.howTo();
-    $$('[data-book-id]', el).forEach((btn, k) => btn.onclick = () => this.pickBook(btn.dataset.bookId, 'shelf', k + 1));
-    this.bindRows(el, hero);
+    $$('[data-open]', el).forEach(n => n.onclick = (e) => { e.stopPropagation(); this.pickBook(n.dataset.open, n.dataset.from, +n.dataset.pos); });
+    $$('[data-play]', el).forEach(n => n.onclick = (e) => {
+      e.stopPropagation(); Sfx.select();
+      const b = this.bookDef(n.dataset.play), nx = this.nextOf(b);
+      Track.ev('book_open', { book: b.id, from: n.classList.contains('hc-cont') ? 'continue' : 'banner_play', pos: 0, shelf: this.shelf().name });
+      this.st.book = b.id; this.bk(); this.save();
+      nx.cur ? this.resume() : nx.nextIdx >= 0 ? this.tryStart(nx.nextIdx) : this.openBook(b.id);
+    });
+    $$('[data-cat]', el).forEach(n => n.onclick = () => { Sfx.select(); this.homeCat = n.dataset.cat || null; if (this.homeCat) Track.ev('category_open', { tag: this.homeCat }); this.home(); });
+    // banner: swipe with the finger, dots follow, and it moves on by itself every few seconds until touched
+    const tr = $('[data-track]', el), dots = $$('.hb-dots i', el);
+    if (tr && dots.length) {
+      const at = () => Math.round(tr.scrollLeft / tr.clientWidth);
+      tr.addEventListener('scroll', () => dots.forEach((d, k) => d.classList.toggle('on', k === at())), { passive: true });
+      let auto = setInterval(() => { if (!document.body.contains(tr)) return clearInterval(auto); tr.scrollTo({ left: ((at() + 1) % dots.length) * tr.clientWidth, behavior: 'smooth' }); }, 5000);
+      tr.addEventListener('pointerdown', () => clearInterval(auto), { once: true });
+    }
+  },
+  // bottom tabs: Home · My stories · Rewards · Me
+  tabsHtml(on) {
+    const tab = (id, ico, label) => `<button class="tab ${on === id ? 'on' : ''}" data-tab="${id}"><b>${ico}</b>${t(label)}</button>`;
+    return `<nav class="tabs">${tab('home', '🏠', 'Home')}${tab('mine', '📚', 'My stories')}${tab('rewards', '🎁', 'Rewards')}${tab('me', '👤', 'Me')}</nav>`;
+  },
+  bindTabs(el) {
+    $$('[data-tab]', el).forEach(n => n.onclick = () => {
+      const id = n.dataset.tab; Sfx.select();
+      if (id === 'home') { this.homeCat = null; this.home(); }
+      else if (id === 'mine') this.myStories();
+      else if (id === 'rewards') this.store();
+      else this.settings();
+    });
+  },
+  // My stories: everything started or finished, with progress
+  myStories() {
+    const I = b => this.bookInfo(b);
+    const list = BOOKS.filter(b => I(b).playable && I(b).started).sort((x, y) => this.bookRank(x) - this.bookRank(y));
+    const el = UI.show(`<div class="screen story-home home my-stories">
+      ${this.hudHtml('', 'home')}
+      <div class="scroll home-body">
+        <div class="hello">${t('My stories')}</div>
+        ${list.length ? `<div class="ms-list">${list.map(b => { const i = I(b); return `<button class="hc-cont wide" data-open="${esc(b.id)}" data-from="mine" data-pos="0"><span class="hcc-cover" style="${this.coverStyle(b.art)}"></span>
+          <span class="hcc-t"><b>${esc(this.bt(b.title))}</b><small>${i.finished ? '✓ ' + t('Finished') : t('{done} of {total} chapters read', { done: i.done, total: i.eps.length })}</small><span class="pbar"><i style="width:${Math.round(i.done / i.eps.length * 100)}%"></i></span></span><span class="go">›</span></button>`; }).join('')}</div>`
+          : `<div class="hello-sub" style="margin-top:10px">${t('Stories you start will appear here.')}</div>`}
+      </div>
+      ${this.tabsHtml('mine')}</div>`);
+    this.bindHud(el, 'home'); this.bindTabs(el);
+    $$('[data-open]', el).forEach(n => n.onclick = () => this.pickBook(n.dataset.open, 'mine', 0));
   },
   pickBook(id, from, pos) {
     const b = this.bookDef(id), i = this.bookInfo(b);
@@ -865,3 +920,6 @@ function burstSvg() {
 // Music on/off (separate from sound), remembered on the phone
 function musicLabel() { return Sfx.musicOn ? '🎵 ' + t('Music on') : '🎵 ' + t('Music off'); }
 function toggleMusic(btn) { Sfx.setMusic(!Sfx.musicOn); try { localStorage.setItem('gg_music', Sfx.musicOn ? '' : 'off'); } catch (e) {} if (btn) btn.textContent = musicLabel(); }
+
+// home screen categories: [tag, icon, label]; a book joins one through its "tags"
+const HOME_CATS = [['cricket', '🏏', 'Cricket'], ['romance', '💕', 'Romance'], ['revenge', '🔥', 'Revenge'], ['underdog', '⭐', 'Underdog'], ['rivalry', '⚔️', 'Rivalry'], ['family', '👪', 'Family']];
