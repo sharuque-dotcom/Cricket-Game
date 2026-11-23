@@ -78,6 +78,18 @@
       "live": false
     },
     {
+      "id": "dropped",
+      "title": "Dropped",
+      "genre": "Underdog",
+      "blurb": "Dropped nine times. Then a World Cup call at midnight.",
+      "tags": [
+        "cricket",
+        "underdog"
+      ],
+      "art": "cover_dropped",
+      "live": false
+    },
+    {
       "id": "trade",
       "title": "The Trade",
       "genre": "Rivalry",
@@ -593,7 +605,8 @@
     "ev_runaway_bride": "img/ev_runaway_bride.webp",
     "cover_banned": "img/cover_banned.webp",
     "cover_groundsman": "img/cover_groundsman.webp",
-    "cover_trade": "img/cover_trade.webp"
+    "cover_trade": "img/cover_trade.webp",
+    "cover_dropped": "img/cover_dropped.webp"
   },
   "chars": {
     "imran": "img/char_imran.webp",
