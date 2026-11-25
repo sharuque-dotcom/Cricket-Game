@@ -295,7 +295,7 @@ const Story = {
       <button class="btn ghost block" style="margin-top:8px" data-snd>${Sfx.muted ? '🔇 ' + t('Sound off') : '🔊 ' + t('Sound on')}</button>
       <button class="btn ghost block" style="margin-top:8px" data-mus>${musicLabel()}</button>
       <button class="btn ghost block" style="margin-top:8px" data-bell>${Notify.granted() ? '🔔 ' + t('Notifications on') : '🔔 ' + t('Turn on notifications')}</button>
-      <div class="tiny" style="margin-top:14px;text-align:center">${t('Playing as {name}', { name: esc(this.st.name || '') })}</div></div>`, sh => {
+      <div class="tiny" style="margin-top:14px;text-align:center">${t('Playing as {name}', { name: esc(this.st.name || '') })}${appVersion() ? ` · v${esc(appVersion())}` : ''}</div></div>`, sh => {
       $('[data-lang]', sh).onclick = () => { closeSheet(); setTimeout(() => this.pickLang(() => this.home()), 300); };
       $('[data-howto]', sh).onclick = () => { closeSheet(); setTimeout(() => this.howTo(), 300); };
       $('[data-snd]', sh).onclick = (e) => { Sfx.setMuted(!Sfx.muted); try { localStorage.setItem('gg_muted', Sfx.muted ? '1' : ''); } catch (er) {} e.target.textContent = Sfx.muted ? '🔇 ' + t('Sound off') : '🔊 ' + t('Sound on'); };
@@ -911,6 +911,20 @@ const Story = {
     setTimeout(() => { try { AndroidBridge.requestReview(); } catch (e) {} }, 2600);
   },
 
+  // Google Play downloaded the new version in the background (flexible update): one tap restarts into it.
+  updateReady() {
+    if (this.updateShown) return; this.updateShown = true;
+    openSheet(`<div class="pad" style="text-align:center">
+      <div style="font-size:54px;line-height:1;margin:4px 0 6px">✨</div>
+      <div class="sheet-title">${t('New version ready')}</div>
+      <div class="small muted" style="margin:8px auto 0;max-width:300px">${t('It downloaded while you were reading. Restart to get the new features. Your progress is saved.')}</div>
+      <button class="btn primary block" style="margin-top:16px" data-yes>${t('Restart now')}</button>
+      <button class="btn ghost block" style="margin-top:8px" data-no>${t('Later')}</button></div>`, sh => {
+      $('[data-yes]', sh).onclick = () => { this.save(); closeSheet(); try { AndroidBridge.completeUpdate(); } catch (e) {} };
+      $('[data-no]', sh).onclick = () => closeSheet();
+    });
+  },
+
   // Soft pre-prompt first; Android's own dialog only if the player says yes.
   askNotify(fromBell) {
     const st = Notify.state();
@@ -982,3 +996,4 @@ function toggleMusic(btn) { Sfx.setMusic(!Sfx.musicOn); try { localStorage.setIt
 // home screen categories: [tag, icon, label]; a book joins one through its "tags"
 const HOME_CATS = [['cricket', '🏏', 'Cricket'], ['romance', '💕', 'Romance'], ['revenge', '🔥', 'Revenge'], ['underdog', '⭐', 'Underdog'], ['rivalry', '⚔️', 'Rivalry'], ['family', '👪', 'Family']];
 function isBowl(cfg) { return cfg && (cfg.kind === 'defend' || cfg.kind === 'wickets'); }
+function appVersion() { try { return window.AndroidBridge && AndroidBridge.appVersion ? AndroidBridge.appVersion() : ''; } catch (e) { return ''; } }

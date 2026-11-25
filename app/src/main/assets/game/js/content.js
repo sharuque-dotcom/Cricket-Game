@@ -3,6 +3,7 @@
 // Downloaded episodes are saved on the phone, so they still play offline.
 // Downloads are data only (JSON + images), never code.
 
+const CONTENT_UPDATE = { min: 0 }; // manifest.update.min: versionCode below which the update is required (Google's full-screen flow)
 const CONTENT_ENGINE = 2; // bump when the episode format gains features older apps can't play (2 = app 1.5.6: bowling moments, standalone music nodes)
 const CONTENT_KEY = 'gg_content_v1';
 const CONTENT_BASES = [
@@ -187,6 +188,7 @@ const Content = (() => {
     applyShelf(m.shelf);
     // home layout: { featured: [book ids], top: [book ids], rows: [{ title, tag }] }
     Object.keys(CONTENT_HOME).forEach(k => { CONTENT_HOME[k] = undefined; });
+    if (m.update && typeof m.update === 'object') CONTENT_UPDATE.min = Math.max(0, Math.floor(+m.update.min || 0));
     if (m.home && typeof m.home === 'object') {
       const ids = x => Array.isArray(x) ? x.filter(v => RE_NAME.test(v || '')).slice(0, 10) : undefined;
       CONTENT_HOME.featured = ids(m.home.featured); CONTENT_HOME.top = ids(m.home.top);

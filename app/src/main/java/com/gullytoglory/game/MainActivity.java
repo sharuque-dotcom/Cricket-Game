@@ -33,6 +33,14 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.appupdate.AppUpdateOptions;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
@@ -144,6 +152,96 @@ public class MainActivity extends Activity {
         web.resumeTimers();
         web.onResume();
         web.evaluateJavascript("window.GG && GG.onResume && GG.onResume()", null);
+        resumeUpdate();
+    }
+
+    // ---------- In-app updates (Google Play) ----------
+    // The game calls checkUpdate(min) once the server manifest is loaded. Below `min` (a versionCode) the update is
+    // required: Google's full-screen flow. Otherwise a flexible prompt, at most once every 3 days: the download runs
+    // in the background and the game shows a "Restart to update" card when it's ready.
+    private static final int REQ_UPDATE = 11;
+    private static final long UPDATE_NAG_MS = 3L * 24 * 60 * 60 * 1000;
+    private AppUpdateManager updates;
+    private int updateType = -1;
+    private final InstallStateUpdatedListener installListener = state -> {
+        if (state.installStatus() == InstallStatus.DOWNLOADED) updateReady();
+    };
+
+    @SuppressWarnings("deprecation")
+    int appVersionCode() {
+        try { android.content.pm.PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0); return Build.VERSION.SDK_INT >= 28 ? (int) pi.getLongVersionCode() : pi.versionCode; } catch (Exception e) { return 0; }
+    }
+
+    String appVersionName() {
+        try { return getPackageManager().getPackageInfo(getPackageName(), 0).versionName; } catch (Exception e) { return ""; }
+    }
+
+    void checkUpdate(int minCode) {
+        try {
+            if (updates == null) { updates = AppUpdateManagerFactory.create(this); updates.registerListener(installListener); }
+            updates.getAppUpdateInfo().addOnSuccessListener(info -> {
+                if (isFinishing()) return;
+                if (info.installStatus() == InstallStatus.DOWNLOADED) { updateReady(); return; }
+                if (info.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) return;
+                boolean required = minCode > 0 && appVersionCode() < minCode && info.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE);
+                android.content.SharedPreferences sp = getSharedPreferences("gg", MODE_PRIVATE);
+                long last = sp.getLong("updateAsked", 0);
+                if (!required && (System.currentTimeMillis() - last < UPDATE_NAG_MS || !info.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))) return;
+                sp.edit().putLong("updateAsked", System.currentTimeMillis()).apply();
+                startUpdate(info, required ? AppUpdateType.IMMEDIATE : AppUpdateType.FLEXIBLE);
+            });
+        } catch (Exception ignored) {}
+    }
+
+    private void startUpdate(AppUpdateInfo info, int type) {
+        try {
+            updateType = type;
+            logUpdate("update_prompt", type == AppUpdateType.IMMEDIATE ? "required" : "flexible", info.availableVersionCode());
+            updates.startUpdateFlowForResult(info, this, AppUpdateOptions.newBuilder(type).build(), REQ_UPDATE);
+        } catch (Exception ignored) {}
+    }
+
+    // back from the background: finish a required update that was interrupted, or offer the restart again
+    private void resumeUpdate() {
+        if (updates == null) return;
+        updates.getAppUpdateInfo().addOnSuccessListener(info -> {
+            if (info.installStatus() == InstallStatus.DOWNLOADED) updateReady();
+            else if (updateType == AppUpdateType.IMMEDIATE && info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) startUpdate(info, AppUpdateType.IMMEDIATE);
+        });
+    }
+
+    private void updateReady() {
+        web.post(() -> web.evaluateJavascript("window.GG && GG.updateReady && GG.updateReady()", null));
+    }
+
+    void completeUpdate() {
+        if (updates != null) { logUpdate("update_restart", "", 0); updates.completeUpdate(); }
+    }
+
+    private void logUpdate(String name, String mode, int toVersion) {
+        if (analytics == null) return;
+        Bundle b = new Bundle();
+        if (!mode.isEmpty()) b.putString("mode", mode);
+        if (toVersion > 0) b.putLong("to", toVersion);
+        b.putLong("from", appVersionCode());
+        analytics.logEvent(name, b);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    protected void onActivityResult(int code, int result, Intent data) {
+        super.onActivityResult(code, result, data);
+        if (code != REQ_UPDATE) return;
+        logUpdate("update_answer", result == RESULT_OK ? "accepted" : result == RESULT_CANCELED ? "declined" : "failed", 0);
+        // a required update the player backed out of: ask again (Google's screen has no other way out)
+        if (result != RESULT_OK && updateType == AppUpdateType.IMMEDIATE && updates != null)
+            updates.getAppUpdateInfo().addOnSuccessListener(info -> { if (info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) startUpdate(info, AppUpdateType.IMMEDIATE); });
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (updates != null) updates.unregisterListener(installListener);
+        super.onDestroy();
     }
 
     // Let the game decide what back does: close a sheet, or exit on a second press.
@@ -360,6 +458,15 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void setUserProp(String name, String value) { act.setUserProp(name, value); }
+
+        @JavascriptInterface
+        public void checkUpdate(int minCode) { act.runOnUiThread(() -> act.checkUpdate(minCode)); }
+
+        @JavascriptInterface
+        public void completeUpdate() { act.runOnUiThread(act::completeUpdate); }
+
+        @JavascriptInterface
+        public String appVersion() { return act.appVersionName() + " (" + act.appVersionCode() + ")"; }
 
         @JavascriptInterface
         public void requestReview() { act.runOnUiThread(act::requestReview); }

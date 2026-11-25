@@ -64,6 +64,8 @@ window.GG = {
   adResult(placement, result) { Ads.result(placement, result); },
   adShown(placement) { Ads.shown(placement); },
   notifyResult(granted) { Notify.result(granted); },
+  // a flexible update finished downloading: offer the restart
+  updateReady() { Story.updateReady(); },
   // test hook
   _dev: { Game, Match, Moments, Content },
 };
@@ -78,5 +80,7 @@ window.GG = {
   try { await Promise.race([Promise.all([document.fonts.ready, Art.load(), Promise.race([check, sleep(2500)])]), sleep(4000)]); } catch (e) {}
   Art.applyFallbacks();
   titleScreen();
+  // Google Play update prompt (app 1.5.7+), after the first screen so it never blocks the start
+  setTimeout(() => { try { if (window.AndroidBridge && AndroidBridge.checkUpdate) AndroidBridge.checkUpdate(CONTENT_UPDATE.min || 0); } catch (e) {} }, 2500);
   check.then(() => Content.announce(fresh)); // slow network: new chapters appear once they arrive
 })();

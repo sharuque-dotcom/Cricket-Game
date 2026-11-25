@@ -22,8 +22,8 @@ android {
         applicationId = "com.gullytoglory.game"
         minSdk = 24
         targetSdk = 36
-        versionCode = 29
-        versionName = "1.5.6"
+        versionCode = 30
+        versionName = "1.5.7"
     }
 
     signingConfigs {
@@ -63,6 +63,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:23.6.0")
     // Google Play In-App Review: the rating card shown after a satisfying moment
     implementation("com.google.android.play:review:2.0.2")
+    // Google Play In-App Updates: "Update available" prompt (flexible) or a must-update screen (immediate)
+    implementation("com.google.android.play:app-update:2.1.0")
     // The review library pulls in androidx.fragment 1.1.0, which Play Console flags as outdated; pin a current one
     implementation("androidx.fragment:fragment:1.8.5")
     // Firebase Analytics: which players finish chapters (Google Ads optimises for these, not bare installs)

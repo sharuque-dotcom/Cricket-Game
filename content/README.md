@@ -41,6 +41,10 @@ To withdraw an episode, delete its line from `manifest.json`.
 - **No HTML.** `<` and `>` are removed from all text.
 - Every `choice` needs at least one free option that always shows.
 
+## Forcing an app update (app 1.5.7+)
+
+`"update": { "min": 30 }` in `manifest.json`: players on a lower versionCode get Google Play's full-screen update and can't skip it. Use it only when old apps would break or miss something essential. Without it, players still get Google's optional "Update available" prompt at most once every 3 days, the download runs in the background, and the game offers "Restart now" when it's ready.
+
 ## Books (the library)
 
 Players pick a story from the library after entering their name. Each book keeps its own progress, choices and relationship hearts. Diamonds and keys are shared across books.
