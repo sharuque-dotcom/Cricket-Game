@@ -1,7 +1,7 @@
 # Gully to Glory — Play Store launch kit
 
 Everything to paste into Play Console. Files in this folder:
-`icon-512.png`, `feature-graphic-1024x500.png`, `screenshot-1…8.png (1080×1920, Blue Cap art)`, `privacy-policy.html`.
+`icon-512.png`, `feature-graphic-1024x500.png`, `screenshot-1…8.png (1080×1920, 1.5.6 bright UI)`, `privacy-policy.html`.
 
 ## 1. App details
 - **App name** (30 max): `Gully to Glory: Cricket Story`
@@ -11,26 +11,33 @@ Everything to paste into Play Console. Files in this folder:
 
 **Short description** (80 max)
 ```
-Live a cricketer's life: from a chai stall to the national team. Your choices.
+Cricket love stories you control. Play in Hinglish, Manglish or Banglish.
 ```
 
 **Full description**
 ```
-From a chai stall in a small town to the national team. Every choice is yours.
+Cricket. Love. Drama. And every choice is yours.
 
-GULLY TO GLORY is an interactive story game about cricket, family, love and the price of a dream. You are the hero, and every choice is yours.
+GULLY TO GLORY is an interactive story game made for cricket lovers. Read, choose and play your way through dramas full of romance, rivalry and family secrets.
 
-📖 STORIES YOU PLAY
-• Chapter-by-chapter drama with cliffhangers: family debts, a rival with a rich father, a coach who believes in you, and a girl with a red pen.
-• Make choices people remember. Spend diamonds on special moments, or take the free path.
-• More books on the shelf: The Blue Cap, a crime thriller and a Bollywood romance. New chapters arrive without an app update.
+💕 STORIES YOU CAN'T PUT DOWN
+• The Owner's Daughter: she ran from her engagement to your captain. Straight into your auto.
+• Bollywood Wife: a fake marriage with a superstar, for the cameras. Then the feelings get real.
+• Gully to Glory: a chai-stall kid, a rival with a rich father, and a loan shark at the door.
+• The Blue Cap: thirty probables, fifteen seats, one cap.
 
-🏏 PLAYABLE CRICKET MOMENTS
-Six balls against your rival. Eleven to win off the last over. Tap HIT when it glows green. Easy to learn, hard to forget.
+🏏 PLAY THE BIG MOMENTS
+Hit the winning shot in the last over. Bowl the yorker that wins the match. One tap, real pressure.
 
-🎨 Hand-painted art, cinematic scenes, living backgrounds and sound.
+🗣️ PLAY IN YOUR LANGUAGE
+English, Hinglish, Manglish or Banglish. Switch any time.
 
-Free to play. Optional ads give you extra keys and diamonds.
+🗳️ YOU DECIDE WHAT'S NEXT
+New chapters arrive without an app update, and you vote for the next story in Coming soon.
+
+✨ Hand-painted art, music and cliffhangers at the end of every chapter.
+
+Free to play. Optional ads give extra keys and diamonds.
 All characters, teams and leagues are fictional.
 ```
 
@@ -39,7 +46,9 @@ All characters, teams and leagues are fictional.
 |---|---|
 | App icon (512×512) | `icon-512.png` |
 | Feature graphic (1024×500) | `feature-graphic-1024x500.png` |
-| Phone screenshots (1080×1920) | `screenshot-1-title.png` … `screenshot-7-episodes.png` |
+| Phone screenshots (1080×1920), in this order | `screenshot-1-stories` · `2-owners-daughter` · `3-bollywood-wife` · `4-hit` · `5-choices` · `6-bowl` · `7-languages` · `8-new-chapters` |
+
+The first three screenshots are the ones most people see in search, so they carry the hook: the stories, then the two romance books. Regenerate with `node tools/store-screens.js <outdir> <capturedir>`. The previous set is in `old/`.
 
 ## 3. Privacy policy
 Host `privacy-policy.html` at a public URL (Google Sites, GitHub Pages, or any website), replace
