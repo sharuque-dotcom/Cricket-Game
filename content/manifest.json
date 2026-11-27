@@ -80,14 +80,26 @@
     {
       "id": "dropped",
       "title": "Dropped",
-      "genre": "Underdog",
+      "genre": "Sports drama · Underdog",
       "blurb": "Dropped nine times. Then a World Cup call at midnight.",
       "tags": [
         "cricket",
         "underdog"
       ],
       "art": "cover_dropped",
-      "live": false
+      "live": true,
+      "rel": {
+        "amma": "Amma",
+        "shibu": "Shibu",
+        "diya": "Diya",
+        "aryan": "Aryan"
+      },
+      "teaser": {
+        "no": 5,
+        "title": "The Tenth Time",
+        "art": "bg_intl_dressing",
+        "note": "Coming soon"
+      }
     },
     {
       "id": "trade",
@@ -414,6 +426,30 @@
       "no": 16,
       "file": "episodes/od16.json",
       "rev": 2
+    },
+    {
+      "id": "dr1",
+      "no": 1,
+      "file": "episodes/dr1.json",
+      "rev": 1
+    },
+    {
+      "id": "dr2",
+      "no": 2,
+      "file": "episodes/dr2.json",
+      "rev": 1
+    },
+    {
+      "id": "dr3",
+      "no": 3,
+      "file": "episodes/dr3.json",
+      "rev": 1
+    },
+    {
+      "id": "dr4",
+      "no": 4,
+      "file": "episodes/dr4.json",
+      "rev": 1
     }
   ],
   "fallback": {
@@ -460,7 +496,9 @@
     "bg_balcony_night": "bg_street_dusk",
     "bg_mehendi": "ev_party",
     "bg_mandap": "bd_stadium_night",
-    "ev_runaway_bride": "bd_stadium_night"
+    "ev_runaway_bride": "bd_stadium_night",
+    "bg_houseboat": "bg_home",
+    "bg_backwater_night": "bg_street_dusk"
   },
   "fx": {
     "ev_the_call": "dust",
@@ -503,7 +541,9 @@
     "bg_balcony_night": "bokeh",
     "bg_mehendi": "embers+bokeh",
     "bg_mandap": "bokeh",
-    "ev_runaway_bride": "bokeh"
+    "ev_runaway_bride": "bokeh",
+    "bg_houseboat": "bokeh",
+    "bg_backwater_night": "bokeh"
   },
   "day": [
     "bg_academy_nets",
@@ -557,7 +597,9 @@
     "bg_balcony_night": "night",
     "bg_mehendi": "night",
     "bg_mandap": "night",
-    "ev_runaway_bride": "night"
+    "ev_runaway_bride": "night",
+    "bg_houseboat": "night",
+    "bg_backwater_night": "night"
   },
   "art": {
     "bg_academy_nets": "img/bg_academy_nets.webp",
@@ -976,6 +1018,26 @@
         "ep": "od16",
         "file": "i18n/hinglish/od16.json",
         "rev": 1
+      },
+      {
+        "ep": "dr1",
+        "file": "i18n/hinglish/dr1.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr2",
+        "file": "i18n/hinglish/dr2.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr3",
+        "file": "i18n/hinglish/dr3.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr4",
+        "file": "i18n/hinglish/dr4.json",
+        "rev": 1
       }
     ],
     "manglish": [
@@ -1297,6 +1359,26 @@
       {
         "ep": "od16",
         "file": "i18n/manglish/od16.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr1",
+        "file": "i18n/manglish/dr1.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr2",
+        "file": "i18n/manglish/dr2.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr3",
+        "file": "i18n/manglish/dr3.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr4",
+        "file": "i18n/manglish/dr4.json",
         "rev": 1
       }
     ],
@@ -1620,6 +1702,26 @@
         "ep": "od16",
         "file": "i18n/banglish/od16.json",
         "rev": 1
+      },
+      {
+        "ep": "dr1",
+        "file": "i18n/banglish/dr1.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr2",
+        "file": "i18n/banglish/dr2.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr3",
+        "file": "i18n/banglish/dr3.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr4",
+        "file": "i18n/banglish/dr4.json",
+        "rev": 1
       }
     ]
   },
@@ -1669,6 +1771,8 @@
     "bg_balcony_night": "romance",
     "bg_mehendi": "festive",
     "bg_mandap": "tense",
-    "ev_runaway_bride": "stadium"
+    "ev_runaway_bride": "stadium",
+    "bg_houseboat": "calm",
+    "bg_backwater_night": "tense"
   }
 }

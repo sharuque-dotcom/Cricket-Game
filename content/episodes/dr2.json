@@ -1,0 +1,409 @@
+{
+ "id": "dr2",
+ "no": 2,
+ "book": "dropped",
+ "title": "The 6:10 Flight",
+ "art": "bg_airport_gate",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_houseboat"
+  },
+  {
+   "n": "3:15 AM. Every light on the Lakshmi is on. Half the village is on the jetty in their nightclothes, because news travels faster than the ferry."
+  },
+  {
+   "enter": "amma",
+   "side": "left"
+  },
+  {
+   "s": "amma",
+   "t": "Three jars of mango pickle. One jar of fish pickle. Two thorthu towels. Don't tell me England has towels. I've seen hotel towels. They're thin."
+  },
+  {
+   "n": "She presses something into your palm. A brass oar-blade, no bigger than a thumb, on a black thread. Achan wore it in every snake-boat race."
+  },
+  {
+   "s": "amma",
+   "t": "Row together or sink together. That was his rule. Find out who rows with you.",
+   "mood": "soft",
+   "ex": "tearful"
+  },
+  {
+   "choice": [
+    {
+     "t": "Put it on and hug her.",
+     "d": "Say nothing. She knows.",
+     "fx": {
+      "amma": 2
+     },
+     "set": "oar"
+    },
+    {
+     "t": "\"I'll fix the boat, Amma. I promise.\"",
+     "d": "You know about the letter.",
+     "fx": {
+      "amma": 1
+     },
+     "set": "promised"
+    }
+   ]
+  },
+  {
+   "if": "promised",
+   "go": "promise"
+  },
+  {
+   "n": "She smells of coconut oil and woodsmoke. She doesn't let go for a long time."
+  },
+  {
+   "go": "auto"
+  },
+  {
+   "label": "promise"
+  },
+  {
+   "s": "amma",
+   "t": "Shibu told you. That boy cannot keep a secret in a locked box.",
+   "mood": "soft"
+  },
+  {
+   "s": "amma",
+   "t": "The boat is my job. You do yours."
+  },
+  {
+   "label": "auto"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_auto_night"
+  },
+  {
+   "n": "Shibu drives you to Kochi in his auto, Achan's old cricket bag strapped to the roof with a fishing net."
+  },
+  {
+   "enter": "shibu",
+   "side": "right"
+  },
+  {
+   "s": "shibu",
+   "t": "Two hours to the airport. I'll do it in ninety. If we die, we die famous."
+  },
+  {
+   "s": "shibu",
+   "t": "Listen. When you're on TV, do one thing for me. Touch your collar. Like this. So I know you're thinking of the auto."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Collar. Every boundary. Deal.\"",
+     "d": "A secret signal.",
+     "fx": {
+      "shibu": 2
+     },
+     "set": "collar"
+    },
+    {
+     "t": "\"Just drive, Shibu.\"",
+     "d": "Your stomach is upside down."
+    }
+   ]
+  },
+  {
+   "if": "signed",
+   "go": "faisalCall"
+  },
+  {
+   "go": "airport"
+  },
+  {
+   "label": "faisalCall"
+  },
+  {
+   "phone": "Faisal Kutty",
+   "msgs": [
+    {
+     "t": "Saw the news. Congratulations."
+    },
+    {
+     "t": "Your letter is still in my pocket. On Monday it goes to the league, and a copy goes to your Board."
+    },
+    {
+     "t": "Unless you want to buy it back. Ten lakh. Think about it on the plane."
+    }
+   ]
+  },
+  {
+   "th": "Ten lakh to undo one signature. That's more than the boat."
+  },
+  {
+   "label": "airport"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_airport_gate"
+  },
+  {
+   "n": "Kochi airport. 5:40 AM. Gate 4. A woman in a denim jacket with a laptop bag and a press lanyard looks up from her coffee, and her eyebrows go all the way up."
+  },
+  {
+   "enter": "diya",
+   "side": "right"
+  },
+  {
+   "if": "diyaTalk",
+   "go": "diyaWarm"
+  },
+  {
+   "s": "diya",
+   "t": "Diya Nair. The column you probably hate. You told me \"no comment\"."
+  },
+  {
+   "s": "diya",
+   "t": "I'm on this flight. I cover the World Cup. Which means, for the next six weeks, you can't escape me."
+  },
+  {
+   "go": "diyaCol"
+  },
+  {
+   "label": "diyaWarm"
+  },
+  {
+   "s": "diya",
+   "t": "You never answered my question. Now you don't have to.",
+   "mood": "soft"
+  },
+  {
+   "s": "diya",
+   "t": "Same flight. Funny. I was going to ask the Board for your number, and you already gave it to me."
+  },
+  {
+   "fx": {
+    "diya": 1
+   }
+  },
+  {
+   "label": "diyaCol"
+  },
+  {
+   "n": "She turns her laptop around. Her column from last week. The headline: \"THE NINTH MAN: Who Keeps Dropping Kerala's Best Batter, and Why?\""
+  },
+  {
+   "th": "I never read it. I stopped reading about myself after the fourth time."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Why do you care?\"",
+     "d": "Ask her straight.",
+     "set": "askWhy"
+    },
+    {
+     "t": "\"You spelt Kuttanad wrong.\"",
+     "d": "Tease her.",
+     "fx": {
+      "diya": 1
+     },
+     "set": "teased"
+    },
+    {
+     "t": "Pay for the seat next to hers.",
+     "d": "Six hours is a long time.",
+     "cost": 15,
+     "fx": {
+      "diya": 2
+     },
+     "set": "seatNext"
+    }
+   ]
+  },
+  {
+   "if": "seatNext",
+   "go": "seat"
+  },
+  {
+   "if": "teased",
+   "go": "tease"
+  },
+  {
+   "s": "diya",
+   "t": "My brother bowled left-arm for Kozhikode. Dropped four times. He sells insurance now. He says he's happy. He's a good liar.",
+   "mood": "soft"
+  },
+  {
+   "s": "diya",
+   "t": "He was the first one I watched it happen to. You're the second. I want to know who's doing it."
+  },
+  {
+   "go": "england"
+  },
+  {
+   "label": "tease"
+  },
+  {
+   "s": "diya",
+   "t": "I did not. I spelt it with two Ts. Because I was angry. That's called style."
+  },
+  {
+   "n": "She laughs. Then she checks the article. Then she very quietly closes the laptop."
+  },
+  {
+   "go": "england"
+  },
+  {
+   "label": "seat"
+  },
+  {
+   "n": "Seat 14B. She sleeps for the first hour with her head against the window. Then she wakes up and talks for five straight hours: her brother, the press box, the night she watched your hundred in the rain and nobody else stayed."
+  },
+  {
+   "s": "diya",
+   "t": "You're a terrible person to sit next to. You make me talk.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "label": "england"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "England. Raining sideways. The team hotel smells of carpet and coffee. Fourteen players in the lobby, and not one of them looks up when you walk in."
+  },
+  {
+   "enter": "bhandari",
+   "side": "right"
+  },
+  {
+   "n": "Except one man. Silver hair, blazer, a Board pin on his lapel. Prakash Bhandari, chairman of selectors. Aryan Khurana's uncle.",
+   "reveal": true
+  },
+  {
+   "s": "bhandari",
+   "t": "Let me be clear, so nobody is confused later. You are cover. Aryan has a scan on Thursday."
+  },
+  {
+   "s": "bhandari",
+   "t": "If he's fit, you fly home on Friday. Don't unpack."
+  },
+  {
+   "enter": "sameer",
+   "side": "left"
+  },
+  {
+   "s": "sameer",
+   "t": "Sameer Pradhan. Captain. Ignore him. He says \"don't unpack\" to everybody. He said it to me in 2019."
+  },
+  {
+   "s": "sameer",
+   "t": "Nets at nine. I watched your hundred on my phone. Bring that."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_physio_room"
+  },
+  {
+   "n": "Midnight. You can't sleep. Walking the corridor, you hear something through the physio room door. A man crying through his teeth."
+  },
+  {
+   "enter": "aryan",
+   "side": "right"
+  },
+  {
+   "n": "Aryan Khurana, alone, an ice pack strapped to the back of his thigh, a syringe box on the table next to him. Painkiller injections.",
+   "reveal": true
+  },
+  {
+   "s": "aryan",
+   "t": "Get out.",
+   "mood": "shout"
+  },
+  {
+   "s": "aryan",
+   "t": "...No. Wait. Shut the door."
+  },
+  {
+   "s": "aryan",
+   "t": "It's a tear. Grade two. I can walk. I can't sprint. Thursday I take two of these, I pass the test, and I play."
+  },
+  {
+   "s": "aryan",
+   "t": "My uncle has spent six years telling everyone I'm better than you. If I fail on Thursday, he's finished. So am I.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"You'll tear it right through.\"",
+     "d": "Warn him.",
+     "fx": {
+      "aryan": 1
+     },
+     "set": "warned"
+    },
+    {
+     "t": "\"Not my problem.\"",
+     "d": "Six years of being his problem.",
+     "fx": {
+      "aryan": -1
+     },
+     "set": "notMine"
+    }
+   ]
+  },
+  {
+   "s": "aryan",
+   "t": "You heard nothing tonight. Understand?"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Tell the team doctor, and you play the World Cup. Stay quiet, and a man plays on a torn hamstring. Thursday is in two days."
+  }
+ ]
+}

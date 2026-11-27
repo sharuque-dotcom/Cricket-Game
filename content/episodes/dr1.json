@@ -1,0 +1,445 @@
+{
+ "id": "dr1",
+ "no": 1,
+ "book": "dropped",
+ "title": "The Ninth Time",
+ "art": "bg_houseboat",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bd_stadium_day"
+  },
+  {
+   "n": "Thiruvananthapuram. National one-day trophy, semi-final. Last over."
+  },
+  {
+   "n": "Kerala need nine off six. You're on 94. Twelve thousand people in the stands, and every one of them is filming on a phone."
+  },
+  {
+   "th": "The World Cup squad is announced at 2 PM. It's 1:51. Somewhere in Delhi, fifteen names are already typed."
+  },
+  {
+   "moment": {
+    "kind": "chase",
+    "title": "9 off 6",
+    "desc": "Semi-final. Last over. You're on 94, and fifteen names are being typed in Delhi. Nine to win.",
+    "bowler": "Varun Tiwari",
+    "balls": 6,
+    "need": 9,
+    "winCall": "HUNDRED!",
+    "winSub": "And Kerala are in the final.",
+    "loseCall": "SO CLOSE",
+    "loseSub": "Twelve thousand people stand up anyway."
+   },
+   "win": "semiWon",
+   "lose": "semiLost"
+  },
+  {
+   "label": "semiWon"
+  },
+  {
+   "set": "semiWon"
+  },
+  {
+   "n": "The ball lands in the stands. A hundred, and a final. Out of habit you raise your bat to the press box. Nobody up there ever writes it down."
+  },
+  {
+   "go": "home"
+  },
+  {
+   "label": "semiLost"
+  },
+  {
+   "n": "Not enough. Kerala lose by a whisker. The crowd stands for you anyway. They always do. It never seems to reach Delhi."
+  },
+  {
+   "label": "home"
+  },
+  {
+   "bg": "bg_houseboat"
+  },
+  {
+   "n": "Evening. Kuttanad, Alappuzha. Amma's houseboat, the Lakshmi, is tied up where it has always been, its roof patched with blue tarpaulin."
+  },
+  {
+   "n": "By day it's a floating restaurant for tourists. Karimeen fry, ₹350 a plate. By night it's home."
+  },
+  {
+   "enter": "shibu",
+   "side": "right"
+  },
+  {
+   "s": "shibu",
+   "t": "Signal is coming! Signal is coming! Nobody breathe!",
+   "mood": "shout"
+  },
+  {
+   "n": "Shibu, auto driver, net bowler and your best friend since the under-14s, is standing on the roof holding the TV antenna over his head like a trophy."
+  },
+  {
+   "enter": "amma",
+   "side": "left"
+  },
+  {
+   "s": "amma",
+   "t": "I made payasam. If they pick you, we eat it. If they don't pick you, we still eat it. I'm not wasting milk."
+  },
+  {
+   "n": "The TV crackles. A man in a grey suit reads fifteen names, slowly, like he's paid by the second."
+  },
+  {
+   "n": "Number fifteen. \"Aryan Khurana.\"",
+   "reveal": true
+  },
+  {
+   "n": "Your name isn't there. Nine times now. Nine times in three years, a probable, a maybe, a next-time."
+  },
+  {
+   "s": "shibu",
+   "t": "Aryan Khurana. Average thirty-one. His uncle is the chief selector. Even his uncle's driver's dog has a Board ID card."
+  },
+  {
+   "s": "amma",
+   "t": "Mone...",
+   "mood": "soft",
+   "ex": "tearful"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Pass the payasam, Amma.\"",
+     "d": "Smile for her.",
+     "fx": {
+      "amma": 2
+     },
+     "set": "smiled"
+    },
+    {
+     "t": "Switch off the TV and walk out to the canal.",
+     "d": "You need the quiet.",
+     "set": "walked"
+    },
+    {
+     "t": "Throw the remote into the backwater.",
+     "d": "Nine is enough.",
+     "fx": {
+      "shibu": 1
+     },
+     "set": "remote"
+    }
+   ]
+  },
+  {
+   "if": "remote",
+   "go": "remote"
+  },
+  {
+   "if": "walked",
+   "go": "walked"
+  },
+  {
+   "n": "You eat two bowls. Amma pretends not to watch you. You pretend not to notice her pretending."
+  },
+  {
+   "s": "amma",
+   "t": "Your Achan rowed the snake boat for twelve years and never won. He said the losing years make the oarsmen.",
+   "mood": "soft"
+  },
+  {
+   "go": "afterTv"
+  },
+  {
+   "label": "remote"
+  },
+  {
+   "n": "It flies beautifully. It sinks immediately. Shibu dives in after it in his shirt and comes up with a water lily on his head."
+  },
+  {
+   "s": "shibu",
+   "t": "Good throw! Wrong team, but good throw."
+  },
+  {
+   "s": "amma",
+   "t": "That remote was ₹180. You can pay me when you're famous."
+  },
+  {
+   "go": "afterTv"
+  },
+  {
+   "label": "walked"
+  },
+  {
+   "n": "The canal is black glass. A fisherman's lamp drifts past. Behind you, Amma turns the TV back on, very quietly, to watch the highlights of your hundred one more time."
+  },
+  {
+   "label": "afterTv"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "phone": "Unknown",
+   "msgs": [
+    {
+     "t": "Diya Nair. I write the column you probably hate."
+    },
+    {
+     "t": "Nine times. I counted."
+    },
+    {
+     "t": "I want to ask you why you never complain. Off the record. Or on. Your choice."
+    }
+   ]
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Off the record. Ask.\"",
+     "d": "Talk to her.",
+     "fx": {
+      "diya": 1
+     },
+     "set": "diyaTalk"
+    },
+    {
+     "t": "\"No comment.\"",
+     "d": "You don't talk to press.",
+     "set": "noComment"
+    }
+   ]
+  },
+  {
+   "if": "noComment",
+   "go": "noCom"
+  },
+  {
+   "phone": "Diya Nair",
+   "msgs": [
+    {
+     "t": "Thank you."
+    },
+    {
+     "t": "Here's my first question. If they never pick you, will you still turn up for Kerala?"
+    },
+    {
+     "t": "Don't answer now. Answer when you know."
+    }
+   ]
+  },
+  {
+   "go": "agent"
+  },
+  {
+   "label": "noCom"
+  },
+  {
+   "phone": "Diya Nair",
+   "msgs": [
+    {
+     "t": "Fair. I'll keep counting anyway."
+    }
+   ]
+  },
+  {
+   "label": "agent"
+  },
+  {
+   "bg": "bg_backwater_night"
+  },
+  {
+   "n": "9 PM. A white SUV stops on the bund road. A man in a linen shirt and a very large gold watch picks his way along the jetty, holding his shoes."
+  },
+  {
+   "enter": "faisal",
+   "side": "right"
+  },
+  {
+   "s": "faisal",
+   "t": "Faisal Kutty. I find cricketers for the Gulf T20 League. Three years. Two point four crore."
+  },
+  {
+   "s": "faisal",
+   "t": "One small condition. You retire from Indian cricket. You can't play for India and for us."
+  },
+  {
+   "s": "faisal",
+   "t": "But India doesn't want you. We do. Sign a letter of intent tonight, and I file it on Monday."
+  },
+  {
+   "enter": "shibu",
+   "side": "left"
+  },
+  {
+   "s": "shibu",
+   "t": "Da. Before you say anything. The boat failed its survey last month. The hull is rotten. Six lakh to fix, or the Lakshmi can't take tourists after March.",
+   "mood": "soft"
+  },
+  {
+   "s": "shibu",
+   "t": "Amma hid the letter in the rice tin. She didn't want you to know before the selection."
+  },
+  {
+   "th": "Six lakh. Amma has fed every boat crew in this backwater for twenty years and never asked anyone for a rupee."
+  },
+  {
+   "choice": [
+    {
+     "t": "Sign the letter.",
+     "d": "Amma's boat comes first.",
+     "set": "signed"
+    },
+    {
+     "t": "\"Give me a week.\"",
+     "d": "Don't close any door yet.",
+     "set": "week"
+    },
+    {
+     "t": "Tear the letter in half.",
+     "d": "You were born to wear one cap.",
+     "fx": {
+      "shibu": 1
+     },
+     "set": "tore"
+    }
+   ]
+  },
+  {
+   "if": "signed",
+   "go": "sign"
+  },
+  {
+   "if": "tore",
+   "go": "tear"
+  },
+  {
+   "s": "faisal",
+   "t": "A week. Clever boy. The offer gets smaller every day you wait."
+  },
+  {
+   "go": "call"
+  },
+  {
+   "label": "sign"
+  },
+  {
+   "n": "Your signature looks smaller than usual. Faisal folds the paper into his pocket like a winning lottery ticket."
+  },
+  {
+   "s": "faisal",
+   "t": "Welcome to the Gulf. On Monday it's official."
+  },
+  {
+   "s": "shibu",
+   "t": "...Okay. Okay. The boat gets fixed. That's good. That's good, no?",
+   "mood": "soft"
+  },
+  {
+   "go": "call"
+  },
+  {
+   "label": "tear"
+  },
+  {
+   "s": "faisal",
+   "t": "Romantic. Romance doesn't fix hulls."
+  },
+  {
+   "n": "He leaves his card on the jetty, weighed down with a coconut shell."
+  },
+  {
+   "label": "call"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_houseboat"
+  },
+  {
+   "n": "11:58 PM. You're lying on the houseboat roof counting stars. You lose count at nine, which feels personal."
+  },
+  {
+   "n": "Your phone rings. A Delhi number. +91 11.",
+   "reveal": true
+  },
+  {
+   "enter": "caller",
+   "side": "right"
+  },
+  {
+   "s": "caller",
+   "t": "Is this {first}? Selection Office. Sorry for the hour."
+  },
+  {
+   "s": "caller",
+   "t": "Aryan Khurana tore his hamstring in training two hours ago. You're the replacement. There's a flight from Kochi at 6:10 AM."
+  },
+  {
+   "s": "caller",
+   "t": "Are you available for the World Cup?"
+  },
+  {
+   "if": "signed",
+   "go": "endSigned"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Dropped nine times. One call at midnight. The flight leaves at 6:10."
+  },
+  {
+   "label": "endSigned"
+  },
+  {
+   "th": "Somewhere on the bund road, a letter with my name on it is riding to Kochi in a white SUV."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Dropped nine times. One call at midnight. And Faisal has your signature."
+  }
+ ],
+ "rel": {
+  "amma": "Amma",
+  "shibu": "Shibu",
+  "diya": "Diya",
+  "aryan": "Aryan"
+ }
+}
