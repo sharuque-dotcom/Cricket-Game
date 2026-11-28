@@ -93,12 +93,6 @@
         "shibu": "Shibu",
         "diya": "Diya",
         "aryan": "Aryan"
-      },
-      "teaser": {
-        "no": 5,
-        "title": "The Tenth Time",
-        "art": "bg_intl_dressing",
-        "note": "Coming soon"
       }
     },
     {
@@ -431,24 +425,96 @@
       "id": "dr1",
       "no": 1,
       "file": "episodes/dr1.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "dr2",
       "no": 2,
       "file": "episodes/dr2.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "dr3",
       "no": 3,
       "file": "episodes/dr3.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "dr4",
       "no": 4,
       "file": "episodes/dr4.json",
+      "rev": 2
+    },
+    {
+      "id": "dr5",
+      "no": 5,
+      "file": "episodes/dr5.json",
+      "rev": 1
+    },
+    {
+      "id": "dr6",
+      "no": 6,
+      "file": "episodes/dr6.json",
+      "rev": 1
+    },
+    {
+      "id": "dr7",
+      "no": 7,
+      "file": "episodes/dr7.json",
+      "rev": 1
+    },
+    {
+      "id": "dr8",
+      "no": 8,
+      "file": "episodes/dr8.json",
+      "rev": 1
+    },
+    {
+      "id": "dr9",
+      "no": 9,
+      "file": "episodes/dr9.json",
+      "rev": 1
+    },
+    {
+      "id": "dr10",
+      "no": 10,
+      "file": "episodes/dr10.json",
+      "rev": 1
+    },
+    {
+      "id": "dr11",
+      "no": 11,
+      "file": "episodes/dr11.json",
+      "rev": 1
+    },
+    {
+      "id": "dr12",
+      "no": 12,
+      "file": "episodes/dr12.json",
+      "rev": 1
+    },
+    {
+      "id": "dr13",
+      "no": 13,
+      "file": "episodes/dr13.json",
+      "rev": 1
+    },
+    {
+      "id": "dr14",
+      "no": 14,
+      "file": "episodes/dr14.json",
+      "rev": 1
+    },
+    {
+      "id": "dr15",
+      "no": 15,
+      "file": "episodes/dr15.json",
+      "rev": 1
+    },
+    {
+      "id": "dr16",
+      "no": 16,
+      "file": "episodes/dr16.json",
       "rev": 1
     }
   ],
@@ -498,7 +564,14 @@
     "bg_mandap": "bd_stadium_night",
     "ev_runaway_bride": "bd_stadium_night",
     "bg_houseboat": "bg_home",
-    "bg_backwater_night": "bg_street_dusk"
+    "bg_backwater_night": "bg_street_dusk",
+    "bg_board_room": "bg_hotel_lobby",
+    "bg_bund_screening": "bg_street_dusk",
+    "bg_london_rain": "bg_street_dusk",
+    "ev_collar_six": "bd_stadium_night",
+    "bg_kuttanad_storm": "bg_street_dusk",
+    "ev_snake_boat_race": "bd_maidan",
+    "bg_lakshmi_new": "bg_home"
   },
   "fx": {
     "ev_the_call": "dust",
@@ -543,7 +616,14 @@
     "bg_mandap": "bokeh",
     "ev_runaway_bride": "bokeh",
     "bg_houseboat": "bokeh",
-    "bg_backwater_night": "bokeh"
+    "bg_backwater_night": "bokeh",
+    "bg_board_room": "dust",
+    "bg_bund_screening": "bokeh",
+    "bg_london_rain": "rain",
+    "ev_collar_six": "bokeh",
+    "bg_kuttanad_storm": "rain",
+    "ev_snake_boat_race": "dust",
+    "bg_lakshmi_new": "bokeh"
   },
   "day": [
     "bg_academy_nets",
@@ -554,7 +634,9 @@
     "bg_kapoor_mansion",
     "ev_real_wedding",
     "bg_girls_ground",
-    "bg_marine_drive"
+    "bg_marine_drive",
+    "ev_snake_boat_race",
+    "bg_lakshmi_new"
   ],
   "amb": {
     "ev_the_call": "stall",
@@ -599,7 +681,14 @@
     "bg_mandap": "night",
     "ev_runaway_bride": "night",
     "bg_houseboat": "night",
-    "bg_backwater_night": "night"
+    "bg_backwater_night": "night",
+    "bg_board_room": "room",
+    "bg_bund_screening": "night",
+    "bg_london_rain": "rain",
+    "ev_collar_six": "night",
+    "bg_kuttanad_storm": "rain",
+    "ev_snake_boat_race": "maidan",
+    "bg_lakshmi_new": "maidan"
   },
   "art": {
     "bg_academy_nets": "img/bg_academy_nets.webp",
@@ -1785,6 +1874,13 @@
     "bg_mandap": "tense",
     "ev_runaway_bride": "stadium",
     "bg_houseboat": "calm",
-    "bg_backwater_night": "tense"
+    "bg_backwater_night": "tense",
+    "bg_board_room": "tense",
+    "bg_bund_screening": "festive",
+    "bg_london_rain": "romance",
+    "ev_collar_six": "stadium",
+    "bg_kuttanad_storm": "tense",
+    "ev_snake_boat_race": "festive",
+    "bg_lakshmi_new": "festive"
   }
 }

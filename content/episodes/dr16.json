@@ -1,0 +1,373 @@
+{
+ "id": "dr16",
+ "no": 16,
+ "book": "dropped",
+ "title": "Row Together, Home",
+ "art": "ev_snake_boat_race",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_airport_gate"
+  },
+  {
+   "n": "Kochi airport. Four days later. The terminal has stopped working, because four thousand people have come to meet one flight."
+  },
+  {
+   "n": "There's a brass band. There's a temple elephant, which nobody can explain. There's a banner the size of a house: \"DROPPED NINE TIMES. OURS FOREVER.\""
+  },
+  {
+   "enter": "shibu",
+   "side": "right"
+  },
+  {
+   "s": "shibu",
+   "t": "Auto's outside. I put flowers on it. And lights. And a speaker. The police said take off the speaker. I said this man is a World Cup hero. They let me keep the speaker.",
+   "mood": "shout",
+   "ex": "happy"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_lakshmi_new"
+  },
+  {
+   "n": "Kuttanad. The jetty. And there she is. The Lakshmi. New golden thatch on the roof. New wood, polished till it shines. No blue tarpaulin anywhere. Marigold garlands on every pole.",
+   "reveal": true
+  },
+  {
+   "enter": "amma",
+   "side": "left"
+  },
+  {
+   "s": "amma",
+   "t": "A hundred and twelve people fixed her. Every one of them is coming to lunch. I've been cooking for three days."
+  },
+  {
+   "s": "amma",
+   "t": "She'll take tourists again in March. The fish fry is now four hundred rupees. Because my son is famous.",
+   "mood": "soft",
+   "ex": "tearful"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "if": "gulfYes",
+   "go": "gulfEnd"
+  },
+  {
+   "phone": "Selection Office",
+   "msgs": [
+    {
+     "t": "Congratulations again."
+    },
+    {
+     "t": "The new selection panel has met."
+    },
+    {
+     "t": "You're in the squad for the next two series. Welcome to the team. Permanently."
+    }
+   ]
+  },
+  {
+   "th": "A Delhi number. For once, I'm not scared of it."
+  },
+  {
+   "go": "race"
+  },
+  {
+   "label": "gulfEnd"
+  },
+  {
+   "enter": "faisal",
+   "side": "right"
+  },
+  {
+   "n": "At the end of the jetty, holding his shoes again, is Faisal Kutty, with a contract and a pen."
+  },
+  {
+   "s": "faisal",
+   "t": "Five crore, as promised. Sign here, and here. The Gulf awaits our champion."
+  },
+  {
+   "choice": [
+    {
+     "t": "Sign it. Amma never worries about money again.",
+     "d": "A promise is a promise.",
+     "set": "gulfSigned"
+    },
+    {
+     "t": "Hand back the pen. \"I've changed my mind. I want to be dropped a tenth time. By nobody.\"",
+     "d": "Stay for India.",
+     "set": "gulfRefused"
+    }
+   ]
+  },
+  {
+   "if": "gulfRefused",
+   "go": "refuse"
+  },
+  {
+   "n": "You sign. Faisal shakes your hand for a very long time. Amma watches from the deck and says nothing, and then she makes him lunch anyway, because that's who she is."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "go": "race"
+  },
+  {
+   "label": "refuse"
+  },
+  {
+   "s": "faisal",
+   "t": "...You know, every time I come to this jetty, I lose money."
+  },
+  {
+   "n": "He walks away holding his shoes. Then he stops, turns, and touches his collar. Even Faisal, it turns out, watched on a bedsheet."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "label": "race"
+  },
+  {
+   "bg": "ev_snake_boat_race"
+  },
+  {
+   "n": "Race day. The backwater is lined with people on both banks, umbrellas, flags, drums. The long black snake boats line up, each with a hundred rowers in white."
+  },
+  {
+   "n": "Your village boat has one empty seat in the middle. Your father's seat. They kept it for twelve years.",
+   "reveal": true
+  },
+  {
+   "if": {
+    "rel": "aryan",
+    "min": 3
+   },
+   "go": "aryanRows"
+  },
+  {
+   "go": "rowers"
+  },
+  {
+   "label": "aryanRows"
+  },
+  {
+   "n": "In the seat behind yours is a man from Delhi in a white headcloth, who has never rowed in his life, holding an oar like it's a bat. Aryan. His leg has healed. His timing hasn't."
+  },
+  {
+   "s": "aryan",
+   "t": "I googled it. You pull, then you push. How hard can it be?"
+  },
+  {
+   "label": "rowers"
+  },
+  {
+   "n": "The horn. A hundred oars hit the water at once. The rowing song starts at the front and runs down the boat like a wave. You pull. You don't count. You just row."
+  },
+  {
+   "choice": [
+    {
+     "t": "Match the drummer, stroke for stroke.",
+     "d": "Find the rhythm.",
+     "set": "rowRhythm"
+    },
+    {
+     "t": "Sing the rowing song louder than anyone.",
+     "d": "Your father's song.",
+     "fx": {
+      "amma": 1
+     },
+     "set": "rowSong"
+    }
+   ]
+  },
+  {
+   "set": "raceWon"
+  },
+  {
+   "n": "Your village boat crosses the line first by half a length, for the first time in thirty-one years. Two thousand people go into the water with their clothes on."
+  },
+  {
+   "label": "ending"
+  },
+  {
+   "bg": "bg_lakshmi_new"
+  },
+  {
+   "n": "Evening. The Lakshmi glows with fairy lights. Two hundred people eat off banana leaves on the jetty. Shibu is giving a speech nobody asked for."
+  },
+  {
+   "if": {
+    "any": [
+     "kissed",
+     "publicDate"
+    ]
+   },
+   "go": "diyaLove"
+  },
+  {
+   "if": {
+    "rel": "diya",
+    "min": 9
+   },
+   "go": "diyaMaybe"
+  },
+  {
+   "phone": "Diya Nair",
+   "msgs": [
+    {
+     "t": "Filed my last column of the tournament."
+    },
+    {
+     "t": "\"The First Man.\" You'll hate it. It's about a boy who stopped counting."
+    },
+    {
+     "t": "Look after yourself, Kuttanad. I'll be watching."
+    }
+   ]
+  },
+  {
+   "go": "final"
+  },
+  {
+   "label": "diyaMaybe"
+  },
+  {
+   "enter": "diya",
+   "side": "right"
+  },
+  {
+   "n": "A taxi stops on the embankment road. Diya climbs out with a laptop bag and no plan, exactly the way she stood under that café awning in the rain."
+  },
+  {
+   "s": "diya",
+   "t": "You said ask you in Kuttanad. I'm in Kuttanad. I took three planes and an auto with a speaker on it.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "s": "diya",
+   "t": "So. Coffee? Is the coffee here terrible too?",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "go": "final"
+  },
+  {
+   "label": "diyaLove"
+  },
+  {
+   "enter": "diya",
+   "side": "right"
+  },
+  {
+   "n": "Diya is sitting on the roof of the Lakshmi, where you used to count stars. She pats the space next to her."
+  },
+  {
+   "s": "diya",
+   "t": "My editor asked me to write about you and stay neutral. I said I can't. He asked why. I said I'm going to marry him one day, probably, if his mother approves.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "enter": "amma",
+   "side": "left"
+  },
+  {
+   "s": "amma",
+   "t": "She can stay. She ate three helpings. That's approval."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "label": "final"
+  },
+  {
+   "bg": "bg_lakshmi_new"
+  },
+  {
+   "n": "Late. Everyone's gone. You lie on the roof of the Lakshmi and look up. For once, there's no cloud at all."
+  },
+  {
+   "n": "You start counting. One. Two. Three. You get to nine. You keep going.",
+   "reveal": true
+  },
+  {
+   "if": "gulfSigned",
+   "go": "endGulf"
+  },
+  {
+   "if": "finalWon",
+   "go": "endChamp"
+  },
+  {
+   "end": true,
+   "cliff": "Dropped complete: runners-up by one run, never dropped again, and a boat that floats. Replay to change who rows with you."
+  },
+  {
+   "label": "endChamp"
+  },
+  {
+   "end": true,
+   "cliff": "Dropped complete: World Champion, never dropped again, and a boat that floats. Replay to change who rows with you."
+  },
+  {
+   "label": "endGulf"
+  },
+  {
+   "end": true,
+   "cliff": "Dropped complete: a World Cup run, a Gulf contract, and a mother who never worries again. Replay to stay for India."
+  }
+ ]
+}
