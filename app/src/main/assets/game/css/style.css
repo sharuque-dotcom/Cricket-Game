@@ -540,6 +540,9 @@ input { font: inherit; }
 @keyframes revealIn { from { opacity: 0; transform: scale(1.25); filter: blur(10px); } to { opacity: 1; transform: none; filter: none; } }
 .cap.reveal .cap-in { background: none; font-family: 'Bebas'; font-weight: 400; font-size: 46px; line-height: .98; letter-spacing: .03em; color: #fff3ea; text-shadow: 0 0 28px rgba(230,57,70,.75), 0 4px 0 rgba(0,0,0,.6); padding: 0 24px; }
 .cap.reveal .cap-in::before { display: none; }
+.cap.reveal.r-mid .cap-in { font-size: 38px; }
+.cap.reveal.r-long { top: 30%; } .cap.reveal.r-long .cap-in { font-size: 31px; line-height: 1.02; }
+.cap.reveal.r-xl { top: 22%; } .cap.reveal.r-xl .cap-in { font-size: 25px; line-height: 1.06; }
 .cap.reveal .cap-in::after { left: 30%; right: 30%; bottom: -16px; height: 3px; background: linear-gradient(90deg, transparent, #e63946, transparent); }
 
 .fmt-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-family: 'Barlow'; font-weight: 600; font-size: 13px; font-variant-numeric: tabular-nums; }

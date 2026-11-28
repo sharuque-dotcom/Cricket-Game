@@ -44,6 +44,10 @@
   "amma_coat": {
    "name": "Amma",
    "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
   }
  },
  "nodes": [
@@ -51,10 +55,10 @@
    "bg": "bg_airport_gate"
   },
   {
-   "n": "Arrivals, Heathrow. 6:40 AM. You've been told nothing except \"be at Gate C at 6:30 and bring a coat.\""
+   "n": "Arrivals, Heathrow. 6:40 AM. You've been told nothing except \"be at Gate C at 6:30 and bring a coat.\" Then Shibu walks through the sliding doors in a borrowed blazer."
   },
   {
-   "n": "Then Shibu walks through the sliding doors in a borrowed blazer, and behind him, in a navy winter coat three sizes too big over her cream saree, is Amma.",
+   "n": "And behind him, in a navy coat three sizes too big, is Amma.",
    "reveal": true
   },
   {

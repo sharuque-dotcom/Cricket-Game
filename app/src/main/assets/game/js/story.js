@@ -645,7 +645,9 @@ const Story = {
     this.el.classList.toggle('reveal-on', reveal);
     if (kind === 'n') {
       this.focus(null);
-      layer.innerHTML = `<div class="cap ${reveal ? 'reveal' : ''}"><div class="cap-in"><span data-tx></span></div></div>`;
+      // big reveal text shrinks for long lines so it always fits on a phone (Dropped Ch 10/16 ran off the screen)
+      const rlen = Array.from(text).length, rsize = !reveal ? '' : rlen > 140 ? ' r-xl' : rlen > 90 ? ' r-long' : rlen > 55 ? ' r-mid' : '';
+      layer.innerHTML = `<div class="cap ${reveal ? 'reveal' : ''}${rsize}"><div class="cap-in"><span data-tx></span></div></div>`;
       if (reveal) { Sfx.boom(); haptic(220); setTimeout(() => Sfx.heartbeat(), 700); setTimeout(() => Sfx.heartbeat(), 1800); }
     } else if (kind === 'th') {
       this.focus(null);
