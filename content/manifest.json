@@ -803,7 +803,15 @@
     "aryan_angry": "img/char_aryan_angry.webp",
     "bhandari": "img/char_bhandari.webp",
     "sameer": "img/char_sameer.webp",
-    "faisal": "img/char_faisal.webp"
+    "faisal": "img/char_faisal.webp",
+    "rekha": "img/char_rekha.webp",
+    "amma_coat": "img/char_amma_coat.webp",
+    "bhandari_angry": "img/char_bhandari_angry.webp",
+    "shibu_happy": "img/char_shibu_happy.webp",
+    "diya_sad": "img/char_diya_sad.webp",
+    "aryan_sad": "img/char_aryan_sad.webp",
+    "shibu_sad": "img/char_shibu_sad.webp",
+    "faisal_angry": "img/char_faisal_angry.webp"
   },
   "i18n": {
     "hinglish": [
