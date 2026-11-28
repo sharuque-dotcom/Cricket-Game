@@ -22,8 +22,8 @@ android {
         applicationId = "com.gullytoglory.game"
         minSdk = 24
         targetSdk = 36
-        versionCode = 30
-        versionName = "1.5.7"
+        versionCode = 32
+        versionName = "1.5.9"
     }
 
     signingConfigs {
