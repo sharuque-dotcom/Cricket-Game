@@ -44,6 +44,10 @@
   "amma_coat": {
    "name": "Amma",
    "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
   }
  },
  "nodes": [
@@ -317,14 +321,14 @@
    "bg": "bg_overseas_hotel"
   },
   {
-   "n": "England. Raining sideways. The team hotel smells of carpet and coffee. Fourteen players in the lobby, and not one of them looks up when you walk in."
+   "n": "England. Raining sideways. The team hotel smells of carpet and coffee. Fourteen players in the lobby, and not one of them looks up when you walk in. Except one man. Silver hair, blazer, a Board pin on his lapel."
   },
   {
    "enter": "bhandari",
    "side": "right"
   },
   {
-   "n": "Except one man. Silver hair, blazer, a Board pin on his lapel. Prakash Bhandari, chairman of selectors. Aryan Khurana's uncle.",
+   "n": "Prakash Bhandari. Chairman of selectors. Aryan Khurana's uncle.",
    "reveal": true
   },
   {
@@ -354,14 +358,14 @@
    "bg": "bg_physio_room"
   },
   {
-   "n": "Midnight. You can't sleep. Walking the corridor, you hear something through the physio room door. A man crying through his teeth."
+   "n": "Midnight. You can't sleep. Walking the corridor, you hear something through the physio room door. A man crying through his teeth. Inside, alone: Aryan Khurana, an ice pack strapped to the back of his thigh."
   },
   {
    "enter": "aryan",
    "side": "right"
   },
   {
-   "n": "Aryan Khurana, alone, an ice pack strapped to the back of his thigh, a syringe box on the table next to him. Painkiller injections.",
+   "n": "A syringe box on the table. Painkiller injections.",
    "reveal": true
   },
   {

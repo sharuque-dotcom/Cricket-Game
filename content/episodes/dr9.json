@@ -44,6 +44,10 @@
   "amma_coat": {
    "name": "Amma",
    "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
   }
  },
  "nodes": [
@@ -51,24 +55,24 @@
    "bg": "bg_overseas_hotel"
   },
   {
-   "n": "11:40 PM. Video call. Aryan is in his bedroom in Delhi, a crutch leaning on the wall, a grey hoodie, no gel in his hair. He looks five years younger and ten years older."
+   "n": "11:40 PM. Video call. Aryan is in his bedroom in Delhi, leaning on a crutch, in a grey hoodie, no gel in his hair. He looks five years younger and ten years older."
   },
   {
-   "enter": "aryan",
+   "enter": "aryan_hood",
    "side": "right"
   },
   {
-   "s": "aryan",
+   "s": "aryan_hood",
    "t": "I gave Diya's source the minutes. Both times. I photographed them off my uncle's laptop the night after you found me in the physio room.",
    "mood": "soft",
    "ex": "sad"
   },
   {
-   "s": "aryan",
+   "s": "aryan_hood",
    "t": "I kept thinking about what you said. That I'd tear it right through. You were the only person who said something true to me that whole tour."
   },
   {
-   "s": "aryan",
+   "s": "aryan_hood",
    "t": "Now they're going to destroy her for something I did. And my uncle is my uncle. He pays my mother's hospital bills.",
    "mood": "soft",
    "ex": "sad"
@@ -106,7 +110,7 @@
    "go": "expose"
   },
   {
-   "s": "aryan",
+   "s": "aryan_hood",
    "t": "...Okay. Give me two days. I have to tell my mother first.",
    "mood": "soft"
   },
@@ -117,7 +121,7 @@
    "label": "expose"
   },
   {
-   "s": "aryan",
+   "s": "aryan_hood",
    "t": "Then do it. I'd do the same. That's the problem with us. We'd both do the same.",
    "mood": "shout"
   },
@@ -153,7 +157,7 @@
    "ex": "sad"
   },
   {
-   "n": "He turns the phone. In the lightning, you see her. Your father's houseboat, the one Amma kept afloat for twenty years, tilted in the water like a tired animal.",
+   "n": "In the lightning: your father's houseboat, tilted like a tired animal.",
    "reveal": true
   },
   {

@@ -44,6 +44,10 @@
   "amma_coat": {
    "name": "Amma",
    "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
   }
  },
  "nodes": [
@@ -73,7 +77,7 @@
    "bg": "bg_lakshmi_new"
   },
   {
-   "n": "Kuttanad. The jetty. And there she is. The Lakshmi. New golden thatch on the roof. New wood, polished till it shines. No blue tarpaulin anywhere. Marigold garlands on every pole.",
+   "n": "There she is. The Lakshmi. Golden thatch. No blue tarpaulin.",
    "reveal": true
   },
   {
@@ -178,10 +182,10 @@
    "bg": "ev_snake_boat_race"
   },
   {
-   "n": "Race day. The backwater is lined with people on both banks, umbrellas, flags, drums. The long black snake boats line up, each with a hundred rowers in white."
+   "n": "Race day. The backwater is lined with people on both banks, umbrellas, flags, drums. The long black snake boats line up, each with a hundred rowers in white. Your village boat has one empty seat in the middle."
   },
   {
-   "n": "Your village boat has one empty seat in the middle. Your father's seat. They kept it for twelve years.",
+   "n": "Your father's seat. They kept it for twelve years.",
    "reveal": true
   },
   {

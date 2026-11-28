@@ -44,6 +44,10 @@
   "amma_coat": {
    "name": "Amma",
    "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
   }
  },
  "nodes": [

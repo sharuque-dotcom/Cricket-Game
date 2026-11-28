@@ -44,6 +44,10 @@
   "amma_coat": {
    "name": "Amma",
    "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
   }
  },
  "nodes": [
@@ -119,13 +123,14 @@
    "label": "won"
   },
   {
-   "set": "debutWon"
-  },
-  {
    "bg": "ev_collar_six"
   },
   {
-   "n": "The last ball goes high over long-on and lands in a sea of teal and orange flags. Before you even think about it, your left hand goes to your collar.",
+   "n": "The last ball goes high over long-on and lands in a sea of teal and orange flags.",
+   "set": "debutWon"
+  },
+  {
+   "n": "Before you even think about it, your hand goes to your collar.",
    "reveal": true
   },
   {
@@ -138,13 +143,13 @@
    "label": "lost"
   },
   {
-   "n": "Two short. Brennan's last ball is a perfect yorker. You dig it out and run, and it isn't enough. Seventy-one runs, on debut, in a losing team."
+   "n": "Two short. Brennan's last ball is a perfect yorker. You dig it out and run, and it isn't enough. Seventy-one runs, on debut, in a losing team. And yet, when you walk off, the whole stadium stands."
   },
   {
    "bg": "ev_collar_six"
   },
   {
-   "n": "And yet, when you walk off, the whole stadium stands. And somewhere on the way, your hand goes to your collar. A camera catches it.",
+   "n": "On the way, your hand goes to your collar. A camera catches it.",
    "reveal": true
   },
   {
@@ -214,7 +219,7 @@
    "go": "recNews"
   },
   {
-   "n": "\"BOARD INQUIRY: Leaked selection papers 'stolen by journalist', claims former chairman. Reporter Diya Nair named.\"",
+   "n": "\"BOARD INQUIRY: Reporter Diya Nair named in leak.\"",
    "reveal": true
   },
   {
@@ -224,7 +229,7 @@
    "label": "recNews"
   },
   {
-   "n": "\"BOARD INQUIRY: Former chairman says debutant and reporter Diya Nair 'conspired' to steal Board papers.\"",
+   "n": "\"BOARD INQUIRY: Debutant and Diya Nair 'conspired'.\"",
    "reveal": true
   },
   {

@@ -44,6 +44,10 @@
   "amma_coat": {
    "name": "Amma",
    "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
   }
  },
  "nodes": [
@@ -155,18 +159,7 @@
    "n": "Two hundred and nine for five. Seventy-three needed from nine overs. The tail is coming. Harpreet is putting his helmet on upside down."
   },
   {
-   "phone": "Shibu",
-   "msgs": [
-    {
-     "t": "I can see Amma on the TV."
-    },
-    {
-     "t": "She's praying with her eyes OPEN."
-    },
-    {
-     "t": "Collar. Now."
-    }
-   ]
+   "n": "Between balls, the big screen cuts to the stands. Amma, in her big coat, praying with her eyes wide open. And in your head, loud as a horn on the backwater, Shibu's voice: \"Collar. Now.\""
   },
   {
    "choice": [
