@@ -1138,21 +1138,81 @@
       {
         "ep": "dr1",
         "file": "i18n/hinglish/dr1.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr2",
         "file": "i18n/hinglish/dr2.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr3",
         "file": "i18n/hinglish/dr3.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr4",
         "file": "i18n/hinglish/dr4.json",
+        "rev": 2
+      },
+      {
+        "ep": "dr5",
+        "file": "i18n/hinglish/dr5.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr6",
+        "file": "i18n/hinglish/dr6.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr7",
+        "file": "i18n/hinglish/dr7.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr8",
+        "file": "i18n/hinglish/dr8.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr9",
+        "file": "i18n/hinglish/dr9.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr10",
+        "file": "i18n/hinglish/dr10.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr11",
+        "file": "i18n/hinglish/dr11.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr12",
+        "file": "i18n/hinglish/dr12.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr13",
+        "file": "i18n/hinglish/dr13.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr14",
+        "file": "i18n/hinglish/dr14.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr15",
+        "file": "i18n/hinglish/dr15.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr16",
+        "file": "i18n/hinglish/dr16.json",
         "rev": 1
       }
     ],
@@ -1480,21 +1540,81 @@
       {
         "ep": "dr1",
         "file": "i18n/manglish/dr1.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr2",
         "file": "i18n/manglish/dr2.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr3",
         "file": "i18n/manglish/dr3.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr4",
         "file": "i18n/manglish/dr4.json",
+        "rev": 2
+      },
+      {
+        "ep": "dr5",
+        "file": "i18n/manglish/dr5.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr6",
+        "file": "i18n/manglish/dr6.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr7",
+        "file": "i18n/manglish/dr7.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr8",
+        "file": "i18n/manglish/dr8.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr9",
+        "file": "i18n/manglish/dr9.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr10",
+        "file": "i18n/manglish/dr10.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr11",
+        "file": "i18n/manglish/dr11.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr12",
+        "file": "i18n/manglish/dr12.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr13",
+        "file": "i18n/manglish/dr13.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr14",
+        "file": "i18n/manglish/dr14.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr15",
+        "file": "i18n/manglish/dr15.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr16",
+        "file": "i18n/manglish/dr16.json",
         "rev": 1
       }
     ],
@@ -1822,21 +1942,81 @@
       {
         "ep": "dr1",
         "file": "i18n/banglish/dr1.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr2",
         "file": "i18n/banglish/dr2.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr3",
         "file": "i18n/banglish/dr3.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr4",
         "file": "i18n/banglish/dr4.json",
+        "rev": 2
+      },
+      {
+        "ep": "dr5",
+        "file": "i18n/banglish/dr5.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr6",
+        "file": "i18n/banglish/dr6.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr7",
+        "file": "i18n/banglish/dr7.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr8",
+        "file": "i18n/banglish/dr8.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr9",
+        "file": "i18n/banglish/dr9.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr10",
+        "file": "i18n/banglish/dr10.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr11",
+        "file": "i18n/banglish/dr11.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr12",
+        "file": "i18n/banglish/dr12.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr13",
+        "file": "i18n/banglish/dr13.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr14",
+        "file": "i18n/banglish/dr14.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr15",
+        "file": "i18n/banglish/dr15.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr16",
+        "file": "i18n/banglish/dr16.json",
         "rev": 1
       }
     ]
