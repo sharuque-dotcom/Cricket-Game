@@ -41,10 +41,12 @@ input { font: inherit; }
 @keyframes heartbeat { 0%,100%{opacity:.15} 12%{opacity:.6} 24%{opacity:.2} 36%{opacity:.5} 60%{opacity:.15} }
 
 .screen { position: absolute; inset: 0; display: flex; flex-direction: column; overflow: hidden; }
-.screen.enter { animation: screenIn .6s var(--ease-out) both; }
-.screen.exit { animation: screenOut .35s ease-in both; pointer-events: none; }
-@keyframes screenIn { from { opacity: 0; transform: translateY(24px) scale(.98); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
-@keyframes screenOut { to { opacity: 0; transform: translateY(-16px) scale(1.02); filter: blur(6px); } }
+/* New screens fade/slide in on top; the old one stays put underneath (no fade, no blur), so nothing
+   flashes between them. Full-screen blur was also slow to paint in the Android WebView. */
+.screen.enter { animation: screenIn .3s var(--ease-out) both; z-index: 1; }
+.screen.exit { pointer-events: none; z-index: 0; }
+.screen.still .hello .wave { animation: none; }
+@keyframes screenIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 .scroll { overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; flex: 1 1 0; min-height: 0; scrollbar-width: none; touch-action: pan-y; overscroll-behavior: contain; }
 .scroll::-webkit-scrollbar { display: none; }
 .pad { padding: 16px; }
@@ -538,6 +540,9 @@ input { font: inherit; }
 @keyframes revealIn { from { opacity: 0; transform: scale(1.25); filter: blur(10px); } to { opacity: 1; transform: none; filter: none; } }
 .cap.reveal .cap-in { background: none; font-family: 'Bebas'; font-weight: 400; font-size: 46px; line-height: .98; letter-spacing: .03em; color: #fff3ea; text-shadow: 0 0 28px rgba(230,57,70,.75), 0 4px 0 rgba(0,0,0,.6); padding: 0 24px; }
 .cap.reveal .cap-in::before { display: none; }
+.cap.reveal.r-mid .cap-in { font-size: 38px; }
+.cap.reveal.r-long { top: 30%; } .cap.reveal.r-long .cap-in { font-size: 31px; line-height: 1.02; }
+.cap.reveal.r-xl { top: 22%; } .cap.reveal.r-xl .cap-in { font-size: 25px; line-height: 1.06; }
 .cap.reveal .cap-in::after { left: 30%; right: 30%; bottom: -16px; height: 3px; background: linear-gradient(90deg, transparent, #e63946, transparent); }
 
 .fmt-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-family: 'Barlow'; font-weight: 600; font-size: 13px; font-variant-numeric: tabular-nums; }

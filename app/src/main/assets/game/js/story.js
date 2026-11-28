@@ -103,8 +103,8 @@ const Story = {
     const cur = UI.cur;
     if (!cur || !this.st) return false;
     if (cur.classList.contains('story-scene')) { this.pauseMenu(); return true; }
-    if (cur.classList.contains('book-page') || cur.classList.contains('ep-end') || cur.classList.contains('my-stories')) { Sfx.select(); this.home(); return true; }
-    if (cur.classList.contains('home') && this.homeCat) { this.homeCat = null; this.home(); return true; }
+    if (cur.classList.contains('book-page') || cur.classList.contains('ep-end') || cur.classList.contains('my-stories')) { Sfx.select(); this.home(cur.classList.contains('my-stories') ? 'fast' : undefined); return true; }
+    if (cur.classList.contains('home') && this.homeCat) { this.homeCat = null; this.home('cat'); return true; }
     return false;
   },
 
@@ -138,7 +138,8 @@ const Story = {
   // ---------- Home: hero, all stories, chapter list ----------
   // ---------- Home: featured banner, continue reading, categories, rows, bottom tabs ----------
   // The server can set what shows where (manifest "home"): { featured: [ids], top: [ids], rows: [{ title, tag }] }.
-  home() {
+  // mode: passed to UI.show ('fast' from the bottom tabs, 'swap' when the home redraws itself)
+  home(mode) {
     const s = this.st;
     // forget a saved place in an episode the server has withdrawn
     for (const id in s.books) { const c = s.books[id].cur; if (c && !EPISODES.some(e => e.id === c.ep)) s.books[id].cur = null; }
@@ -177,11 +178,26 @@ const Story = {
     const chips = cats.length ? `<div class="h-chips">${[['', '', 'All'], ...cats].map(([tag, ico, label]) => `<button class="h-chip ${(cat || '') === tag ? 'on' : ''}" data-cat="${tag}">${ico ? ico + ' ' : ''}${t(label)}</button>`).join('')}</div>` : '';
 
     const filtered = cat ? `<div class="h-grid">${order.filter(b => (b.tags || []).includes(cat)).map((b, k) => card(b, 'cat_' + cat, k)).join('')}</div>` : '';
-    const sections = cat ? filtered : [
+    const sections = `<div data-sections>${cat ? filtered : [
       top.length > 1 ? sec(`🔥 ${t('Popular now')}`, `<div class="h-row top">${top.map((b, k) => `<button class="hc-top" data-open="${esc(b.id)}" data-from="top" data-pos="${k + 1}"><span class="num">${k + 1}</span><span class="hc-top-in">${cover(b)}<b>${esc(this.bt(b.title))}</b><span>${sub(b)}</span></span></button>`).join('')}</div>`) : '',
       soon.length ? sec(`🗳️ ${t('Coming soon · you decide')}`, `<div class="h-row">${soon.map((b, k) => `<div class="hc-card soon"><button class="hc-card-in" data-open="${esc(b.id)}" data-from="soon" data-pos="${k + 1}">${cover(b)}<b>${esc(this.bt(b.title))}</b><span>${sub(b)}</span></button><button class="want" data-open="${esc(b.id)}" data-from="want" data-pos="${k + 1}">🔔 ${t('Want this')}</button></div>`).join('')}</div><div class="h-note">${t('The story with the most taps gets written first.')}</div>`) : '',
       ...rows.map(r => { const list = live.filter(b => (b.tags || []).includes(r.tag)); return list.length ? sec(esc(this.bt(t(r.title))), `<div class="h-row">${list.map((b, k) => card(b, 'row_' + r.tag, k)).join('')}</div>`) : ''; }),
-    ].join('');
+    ].join('')}</div>`;
+
+    // Category chip on the home already showing: swap only the list under the chips. Redrawing the whole
+    // screen made it flash, reset the banner and jump the page back to the top.
+    const cur = UI.cur, curSec = mode === 'cat' && cur && cur.classList.contains('home') && !cur.classList.contains('my-stories') && !UI.sheet && $('[data-sections]', cur);
+    if (curSec) {
+      const wrap = document.createElement('div'); wrap.innerHTML = sections;
+      const next = wrap.firstElementChild;
+      this.bindHomeCards(next);
+      curSec.replaceWith(next);
+      $$('[data-cat]', cur).forEach(n => n.classList.toggle('on', (n.dataset.cat || '') === (cat || '')));
+      // keep the chips in view: if the page was scrolled past them, bring them back to the top
+      const sc = $('.home-body', cur), ch = $('.h-chips', cur);
+      if (sc && ch) { const d = ch.getBoundingClientRect().top - sc.getBoundingClientRect().top - 8; if (d < 0) sc.scrollTop += d; }
+      return;
+    }
 
     const el = UI.show(`<div class="screen story-home home">
       ${this.hudHtml('', 'home')}
@@ -192,18 +208,14 @@ const Story = {
         ${banner}${cont}${chips}${sections}
         <div class="key-note">${s.keys < ECON.keyMax ? `${KEY_SVG} ${t('Next free key in {time}', { time: this.nextKeyIn() })}` : `${KEY_SVG} ${t('Keys full. Each new chapter uses 1 key.')}`}</div>
       </div>
-      ${this.tabsHtml('home')}</div>`);
+      ${this.tabsHtml('home')}</div>`, mode === 'cat' ? 'swap' : mode);
     this.bindHud(el, 'home'); this.bindTabs(el);
     const how = $('[data-howto]', el); if (how) how.onclick = () => this.howTo();
-    $$('[data-open]', el).forEach(n => n.onclick = (e) => { e.stopPropagation(); this.pickBook(n.dataset.open, n.dataset.from, +n.dataset.pos); });
-    $$('[data-play]', el).forEach(n => n.onclick = (e) => {
-      e.stopPropagation(); Sfx.select();
-      const b = this.bookDef(n.dataset.play), nx = this.nextOf(b);
-      Track.ev('book_open', { book: b.id, from: n.classList.contains('hc-cont') ? 'continue' : 'banner_play', pos: 0, shelf: this.shelf().name });
-      this.st.book = b.id; this.bk(); this.save();
-      nx.cur ? this.resume() : nx.nextIdx >= 0 ? this.tryStart(nx.nextIdx) : this.openBook(b.id);
+    this.bindHomeCards(el);
+    $$('[data-cat]', el).forEach(n => n.onclick = () => {
+      if ((n.dataset.cat || null) === (this.homeCat || null)) return;
+      Sfx.select(); this.homeCat = n.dataset.cat || null; if (this.homeCat) Track.ev('category_open', { tag: this.homeCat }); this.home('cat');
     });
-    $$('[data-cat]', el).forEach(n => n.onclick = () => { Sfx.select(); this.homeCat = n.dataset.cat || null; if (this.homeCat) Track.ev('category_open', { tag: this.homeCat }); this.home(); });
     // banner: swipe with the finger, dots follow, and it moves on by itself every few seconds until touched
     const tr = $('[data-track]', el), dots = $$('.hb-dots i', el);
     if (tr && dots.length) {
@@ -213,6 +225,16 @@ const Story = {
       tr.addEventListener('pointerdown', () => clearInterval(auto), { once: true });
     }
   },
+  bindHomeCards(root) {
+    $$('[data-open]', root).forEach(n => n.onclick = (e) => { e.stopPropagation(); this.pickBook(n.dataset.open, n.dataset.from, +n.dataset.pos); });
+    $$('[data-play]', root).forEach(n => n.onclick = (e) => {
+      e.stopPropagation(); Sfx.select();
+      const b = this.bookDef(n.dataset.play), nx = this.nextOf(b);
+      Track.ev('book_open', { book: b.id, from: n.classList.contains('hc-cont') ? 'continue' : 'banner_play', pos: 0, shelf: this.shelf().name });
+      this.st.book = b.id; this.bk(); this.save();
+      nx.cur ? this.resume() : nx.nextIdx >= 0 ? this.tryStart(nx.nextIdx) : this.openBook(b.id);
+    });
+  },
   // bottom tabs: Home · My stories · Rewards · Me
   tabsHtml(on) {
     const tab = (id, ico, label) => `<button class="tab ${on === id ? 'on' : ''}" data-tab="${id}"><b>${ico}</b>${t(label)}</button>`;
@@ -220,15 +242,18 @@ const Story = {
   },
   bindTabs(el) {
     $$('[data-tab]', el).forEach(n => n.onclick = () => {
-      const id = n.dataset.tab; Sfx.select();
-      if (id === 'home') { this.homeCat = null; this.home(); }
-      else if (id === 'mine') this.myStories();
+      const id = n.dataset.tab, at = n.classList.contains('on');
+      if (at && id === 'home' && this.homeCat) { Sfx.select(); this.homeCat = null; this.home('cat'); return; }
+      if (at && (id === 'home' || id === 'mine')) return;
+      Sfx.select();
+      if (id === 'home') { this.homeCat = null; this.home('fast'); }
+      else if (id === 'mine') this.myStories('fast');
       else if (id === 'rewards') this.store();
       else this.settings();
     });
   },
   // My stories: everything started or finished, with progress
-  myStories() {
+  myStories(mode) {
     const I = b => this.bookInfo(b);
     const list = BOOKS.filter(b => I(b).playable && I(b).started).sort((x, y) => this.bookRank(x) - this.bookRank(y));
     const el = UI.show(`<div class="screen story-home home my-stories">
@@ -239,7 +264,7 @@ const Story = {
           <span class="hcc-t"><b>${esc(this.bt(b.title))}</b><small>${i.finished ? '✓ ' + t('Finished') : t('{done} of {total} chapters read', { done: i.done, total: i.eps.length })}</small><span class="pbar"><i style="width:${Math.round(i.done / i.eps.length * 100)}%"></i></span></span><span class="go">›</span></button>`; }).join('')}</div>`
           : `<div class="hello-sub" style="margin-top:10px">${t('Stories you start will appear here.')}</div>`}
       </div>
-      ${this.tabsHtml('mine')}</div>`);
+      ${this.tabsHtml('mine')}</div>`, mode);
     this.bindHud(el, 'home'); this.bindTabs(el);
     $$('[data-open]', el).forEach(n => n.onclick = () => this.pickBook(n.dataset.open, 'mine', 0));
   },
@@ -360,7 +385,7 @@ const Story = {
     $('[data-name]', el).addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
   },
 
-  bookScreen() {
+  bookScreen(mode) {
     this.refillKeys(); this.save();
     const s = this.st;
     const b = this.book(), EPS = this.eps(), T = this.teaser(b), RK = this.relKeys();
@@ -386,7 +411,7 @@ const Story = {
           </div>
           <div class="key-note">${s.keys < ECON.keyMax ? `${KEY_SVG} ${t('Next free key in {time}', { time: this.nextKeyIn() })}` : `${KEY_SVG} ${t('Keys full')}`}</div>
         </div>
-      </div></div>`);
+      </div></div>`, mode);
     this.bindHud(el, 'book');
     this.bindRows(el, b);
     const m = $('[data-main]', el);
@@ -620,7 +645,9 @@ const Story = {
     this.el.classList.toggle('reveal-on', reveal);
     if (kind === 'n') {
       this.focus(null);
-      layer.innerHTML = `<div class="cap ${reveal ? 'reveal' : ''}"><div class="cap-in"><span data-tx></span></div></div>`;
+      // big reveal text shrinks for long lines so it always fits on a phone (Dropped Ch 10/16 ran off the screen)
+      const rlen = Array.from(text).length, rsize = !reveal ? '' : rlen > 140 ? ' r-xl' : rlen > 90 ? ' r-long' : rlen > 55 ? ' r-mid' : '';
+      layer.innerHTML = `<div class="cap ${reveal ? 'reveal' : ''}${rsize}"><div class="cap-in"><span data-tx></span></div></div>`;
       if (reveal) { Sfx.boom(); haptic(220); setTimeout(() => Sfx.heartbeat(), 700); setTimeout(() => Sfx.heartbeat(), 1800); }
     } else if (kind === 'th') {
       this.focus(null);
@@ -854,6 +881,32 @@ const Story = {
     if (!at || !(window.AndroidBridge && AndroidBridge.requestReview)) return;
     s.reviewAt = (s.reviewAt || []).concat(at); this.save();
     setTimeout(() => { try { AndroidBridge.requestReview(); } catch (e) {} }, 2600);
+  },
+
+  // "A new version is ready": only on the phone, only on the home / My stories screens (never mid-chapter),
+  // when manifest.update.latest is newer than the installed app. "Later" hides it for 3 days.
+  // Below manifest.update.min there is no "Later" (for a release that old versions can't do without).
+  maybeUpdate() {
+    const u = CONTENT_UPDATE, s = this.st;
+    if (!s || !u.latest || UI.sheet || !(window.AndroidBridge && AndroidBridge.appVersion && AndroidBridge.openStore)) return;
+    const cur = UI.cur;
+    if (!cur || !(cur.classList.contains('home') || cur.classList.contains('my-stories'))) return;
+    let have = 0; try { have = AndroidBridge.appVersion(); } catch (e) {}
+    if (!have || have >= u.latest) return;
+    const must = !!(u.min && have < u.min), seen = s.updAsk || {};
+    if (!must && seen.v === u.latest && Date.now() - seen.at < 3 * 864e5) return;
+    s.updAsk = { v: u.latest, at: Date.now() }; this.save();
+    Track.ev('update_prompt', { from: have, to: u.latest, must: must ? 1 : 0 });
+    openSheet(`<div class="pad" style="text-align:center">
+      <div style="font-size:54px;line-height:1;margin:4px 0 6px">🎁</div>
+      <div class="sheet-title">${t('A new version is ready')}</div>
+      <div class="small muted" style="margin:8px auto 0;max-width:300px">${must ? t('This version of Gully to Glory is too old for the newest chapters. Update to keep reading.') : t('Update Gully to Glory for the latest fixes and new features. Your progress stays safe.')}</div>
+      <button class="btn primary block" style="margin-top:16px" data-up>${t('Update now')}</button>
+      ${must ? '' : `<button class="btn ghost block" style="margin-top:8px" data-no>${t('Later')}</button>`}</div>`, sh => {
+      $('[data-up]', sh).onclick = () => { Track.ev('update_tap', { to: u.latest }); try { AndroidBridge.openStore(); } catch (e) {} if (!must) closeSheet(); };
+      const no = $('[data-no]', sh); if (no) no.onclick = () => closeSheet();
+      if (must && UI.sheet) UI.sheet.bg.onclick = null;
+    });
   },
 
   // Soft pre-prompt first; Android's own dialog only if the player says yes.

@@ -282,6 +282,16 @@ public class MainActivity extends Activity {
         } catch (Exception ignored) {}
     }
 
+    // Play Store page for this app (the Play app if installed, else the web page)
+    private void openStore() {
+        String id = getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, android.net.Uri.parse("market://details?id=" + id)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        } catch (Exception e) {
+            try { startActivity(new Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://play.google.com/store/apps/details?id=" + id))); } catch (Exception ignored) {}
+        }
+    }
+
     // ---------- Analytics ----------
     private void initAnalytics() {
         try {
@@ -346,6 +356,18 @@ public class MainActivity extends Activity {
                 v.vibrate(ms);
             }
         }
+
+        // installed versionCode, so the game can tell the player when a newer version is on Play
+        @JavascriptInterface
+        public int appVersion() {
+            try {
+                android.content.pm.PackageInfo pi = act.getPackageManager().getPackageInfo(act.getPackageName(), 0);
+                return Build.VERSION.SDK_INT >= 28 ? (int) pi.getLongVersionCode() : pi.versionCode;
+            } catch (Exception e) { return 0; }
+        }
+
+        @JavascriptInterface
+        public void openStore() { act.runOnUiThread(act::openStore); }
 
         @JavascriptInterface
         public void exit() { act.runOnUiThread(act::finish); }

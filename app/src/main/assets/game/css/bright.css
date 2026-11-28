@@ -98,7 +98,7 @@ html, body { background: var(--bg); color: var(--text); }
 .sec-head span, .sec-head button { font-size: 13px; font-weight: 600; color: var(--muted); }
 .sec-head button { color: var(--violet); font-weight: 800; }
 
-.shelf { display: flex; gap: 12px; overflow-x: auto; margin: 0 -16px; padding: 2px 16px 10px; scroll-snap-type: x mandatory; scroll-padding: 0 16px; scrollbar-width: none; touch-action: pan-x pan-y; }
+.shelf { display: flex; gap: 12px; overflow-x: auto; margin: 0 -16px; padding: 2px 16px 10px; scroll-snap-type: x mandatory; scroll-padding: 0 16px; scrollbar-width: none; touch-action: pan-x pan-y; overscroll-behavior-x: contain; }
 .shelf::-webkit-scrollbar { display: none; }
 .shelf-card { flex: none; width: 124px; text-align: left; scroll-snap-align: start; color: var(--text); }
 .shelf-card:active { transform: scale(.97); }
@@ -286,7 +286,7 @@ html.indic .mi-title, html.indic .ep-card-title, html.indic .hero-title { word-b
 
 /* ---------- Home 1.5.6: banner, rows, chips, bottom tabs ---------- */
 .home .home-body { padding-bottom: 96px; }
-.hb-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin: 14px -16px 0; padding: 0 16px; gap: 12px; scrollbar-width: none; touch-action: pan-x pan-y; }
+.hb-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin: 14px -16px 0; padding: 0 16px; gap: 12px; scrollbar-width: none; touch-action: pan-x pan-y; overscroll-behavior-x: contain; }
 .hb-track::-webkit-scrollbar { display: none; }
 .hb-slide { position: relative; flex: none; width: calc(100vw - 32px); height: 236px; border-radius: 22px; overflow: hidden; scroll-snap-align: center; cursor: pointer; box-shadow: 0 16px 34px -16px rgba(120, 30, 90, .6); background: #2b1640; }
 .hb-art { position: absolute; inset: 0; background: center 22%/cover; transform: scale(1.02); }
@@ -299,7 +299,7 @@ html.indic .mi-title, html.indic .ep-card-title, html.indic .hero-title { word-b
 .hb-dots { display: flex; gap: 5px; justify-content: center; margin-top: 9px; }
 .hb-dots i { width: 6px; height: 6px; border-radius: 9px; background: #E9D3DE; transition: width .3s, background .3s; }
 .hb-dots i.on { width: 18px; background: var(--pink); }
-.h-row { display: flex; gap: 10px; overflow-x: auto; margin: 0 -16px; padding: 2px 16px 10px; scroll-snap-type: x proximity; scrollbar-width: none; touch-action: pan-x pan-y; }
+.h-row { display: flex; gap: 10px; overflow-x: auto; margin: 0 -16px; padding: 2px 16px 10px; scroll-snap-type: x proximity; scroll-padding: 0 16px; scrollbar-width: none; touch-action: pan-x pan-y; overscroll-behavior-x: contain; }
 .h-row::-webkit-scrollbar { display: none; }
 .hc-card, .hc-card-in { flex: none; display: block; width: 116px; min-width: 0; text-align: left; color: var(--text); scroll-snap-align: start; }
 .hc-card:active, .hc-top:active, .hc-cont:active { transform: scale(.97); }
@@ -325,7 +325,7 @@ html.indic .mi-title, html.indic .ep-card-title, html.indic .hero-title { word-b
 .hcc-t small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hcc-t .pbar { height: 5px; margin-top: 8px; }
 .hc-cont .go { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--grad); color: #fff; font-size: 13px; }
-.h-chips { display: flex; gap: 7px; overflow-x: auto; margin: 18px -16px 0; padding: 2px 16px 4px; scrollbar-width: none; touch-action: pan-x pan-y; }
+.h-chips { display: flex; gap: 7px; overflow-x: auto; margin: 18px -16px 0; padding: 2px 16px 4px; scrollbar-width: none; touch-action: pan-x pan-y; overscroll-behavior-x: contain; }
 .h-chips::-webkit-scrollbar { display: none; }
 .h-chip { flex: none; padding: 8px 13px; border-radius: 99px; background: #fff; color: var(--text); font-family: 'Barlow'; font-weight: 800; font-size: 13px; box-shadow: 0 3px 10px -6px rgba(90, 40, 120, .45); }
 .h-chip.on { background: var(--text); color: #fff; }

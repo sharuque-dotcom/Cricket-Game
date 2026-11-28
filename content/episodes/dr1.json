@@ -36,6 +36,18 @@
   "caller": {
    "name": "Delhi number",
    "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
   }
  },
  "nodes": [
@@ -95,7 +107,7 @@
    "n": "Evening. Kuttanad, Alappuzha. Amma's houseboat, the Lakshmi, is tied up where it has always been, its roof patched with blue tarpaulin."
   },
   {
-   "n": "By day it's a floating restaurant for tourists. Karimeen fry, ₹350 a plate. By night it's home."
+   "n": "By day it's a floating restaurant for tourists. Fried pearl-spot fish, ₹350 a plate. By night it's home."
   },
   {
    "enter": "shibu",
@@ -115,7 +127,7 @@
   },
   {
    "s": "amma",
-   "t": "I made payasam. If they pick you, we eat it. If they don't pick you, we still eat it. I'm not wasting milk."
+   "t": "I made rice pudding. If they pick you, we eat it. If they don't pick you, we still eat it. I'm not wasting milk."
   },
   {
    "n": "The TV crackles. A man in a grey suit reads fifteen names, slowly, like he's paid by the second."
@@ -133,14 +145,14 @@
   },
   {
    "s": "amma",
-   "t": "Mone...",
+   "t": "My boy...",
    "mood": "soft",
    "ex": "tearful"
   },
   {
    "choice": [
     {
-     "t": "\"Pass the payasam, Amma.\"",
+     "t": "\"Pass the pudding, Amma.\"",
      "d": "Smile for her.",
      "fx": {
       "amma": 2
@@ -175,7 +187,7 @@
   },
   {
    "s": "amma",
-   "t": "Your Achan rowed the snake boat for twelve years and never won. He said the losing years make the oarsmen.",
+   "t": "Your father rowed in the snake-boat races for twelve years and never won. He said the losing years make the oarsmen.",
    "mood": "soft"
   },
   {
@@ -280,7 +292,7 @@
    "bg": "bg_backwater_night"
   },
   {
-   "n": "9 PM. A white SUV stops on the bund road. A man in a linen shirt and a very large gold watch picks his way along the jetty, holding his shoes."
+   "n": "9 PM. A white SUV stops on the embankment road. A man in a linen shirt and a very large gold watch picks his way along the jetty, holding his shoes."
   },
   {
    "enter": "faisal",
@@ -304,7 +316,7 @@
   },
   {
    "s": "shibu",
-   "t": "Da. Before you say anything. The boat failed its survey last month. The hull is rotten. Six lakh to fix, or the Lakshmi can't take tourists after March.",
+   "t": "Listen. Before you say anything. The boat failed its survey last month. The hull is rotten. Six lakh to fix, or the Lakshmi can't take tourists after March.",
    "mood": "soft"
   },
   {
@@ -426,7 +438,7 @@
    "label": "endSigned"
   },
   {
-   "th": "Somewhere on the bund road, a letter with my name on it is riding to Kochi in a white SUV."
+   "th": "Somewhere on the embankment road, a letter with my name on it is riding to Kochi in a white SUV."
   },
   {
    "exit": "all"

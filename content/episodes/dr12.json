@@ -1,0 +1,269 @@
+{
+ "id": "dr12",
+ "no": 12,
+ "book": "dropped",
+ "title": "Semi-final",
+ "art": "bg_london_rain",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_press_room"
+  },
+  {
+   "n": "The day before the semi-final. Diya walks into the press room with her pass back on, and every reporter in the room claps. She goes red to the ears."
+  },
+  {
+   "enter": "diya",
+   "side": "right"
+  },
+  {
+   "s": "diya",
+   "t": "Don't. Don't say anything. I will cry in front of forty sports journalists and they will never let me forget it.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "s": "diya",
+   "t": "Interview. Officially. My editor wants the \"Dropped Nine Times\" story. Real answers this time."
+  },
+  {
+   "s": "diya",
+   "t": "What would you tell the boy you were, the night of the ninth drop?"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Keep counting the stars. Even when you lose count.\"",
+     "d": "Soft.",
+     "fx": {
+      "diya": 1
+     },
+     "set": "answerStars"
+    },
+    {
+     "t": "\"Find out who rows with you. Then never let go of them.\"",
+     "d": "Your father's rule.",
+     "fx": {
+      "amma": 1,
+      "shibu": 1
+     },
+     "set": "answerRow"
+    },
+    {
+     "t": "\"Don't throw the remote. Amma charges for it.\"",
+     "d": "Make her laugh.",
+     "fx": {
+      "diya": 1
+     },
+     "set": "answerJoke"
+    }
+   ]
+  },
+  {
+   "s": "diya",
+   "t": "That's the headline. You keep giving me headlines. It's very unprofessional.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_intl_stadium"
+  },
+  {
+   "n": "Semi-final. A day game under a white English sky. You're chasing two hundred and ninety. You come in at a hundred and twelve for three, and the game goes slowly, slowly, then all at once."
+  },
+  {
+   "moment": {
+    "kind": "chase",
+    "title": "11 off 6",
+    "desc": "Semi-final. One more win and it's the World Cup final. Diya in the press box, Kuttanad on the riverbank. Eleven to win.",
+    "bowler": "Ruan de Wet",
+    "balls": 6,
+    "need": 11,
+    "winCall": "INTO THE FINAL!",
+    "winSub": "The temple and the church ring together again.",
+    "loseCall": "OUT!",
+    "loseSub": "Sameer finishes it with two balls left."
+   },
+   "win": "won",
+   "lose": "lost"
+  },
+  {
+   "label": "won"
+  },
+  {
+   "set": "semiHero"
+  },
+  {
+   "n": "Four. Four. Two. One. Your bat goes up, your helmet comes off, and for the first time all tournament you don't look for the camera. You look for the press box."
+  },
+  {
+   "go": "night"
+  },
+  {
+   "label": "lost"
+  },
+  {
+   "n": "You hole out to long-off with four needed. Sameer walks past you to the crease, touches your shoulder, and finishes it in two balls. Then he points his bat at you, not at the crowd."
+  },
+  {
+   "label": "night"
+  },
+  {
+   "bg": "bg_london_rain"
+  },
+  {
+   "n": "Night. Rain again, light this time. The same street. The same café, closed. She's there before you, like she knew."
+  },
+  {
+   "enter": "diya",
+   "side": "right"
+  },
+  {
+   "s": "diya",
+   "t": "I wrote the column. I deleted the last line six times. Do you want to hear it?",
+   "mood": "soft"
+  },
+  {
+   "s": "diya",
+   "t": "\"The ninth man has stopped counting. I haven't. I'm counting the days until I stop pretending this is just a story.\"",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "if": {
+    "rel": "diya",
+    "min": 11
+   },
+   "go": "loveOk"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Don't stop counting. Please.\"",
+     "d": "Say it plainly.",
+     "fx": {
+      "diya": 2
+     },
+     "set": "confessed"
+    },
+    {
+     "t": "\"After the final. Ask me after the final.\"",
+     "d": "Not yet. Not like this.",
+     "set": "waitFinal"
+    }
+   ]
+  },
+  {
+   "go": "end12"
+  },
+  {
+   "label": "loveOk"
+  },
+  {
+   "choice": [
+    {
+     "t": "Kiss her, in the rain, under the dead café sign.",
+     "d": "Nine times dropped. Not this.",
+     "fx": {
+      "diya": 3
+     },
+     "set": "kissed"
+    },
+    {
+     "t": "\"Don't stop counting. Please.\"",
+     "d": "Say it plainly.",
+     "fx": {
+      "diya": 2
+     },
+     "set": "confessed"
+    },
+    {
+     "t": "\"After the final. Ask me after the final.\"",
+     "d": "Not yet. Not like this.",
+     "set": "waitFinal"
+    }
+   ]
+  },
+  {
+   "label": "end12"
+  },
+  {
+   "if": "waitFinal",
+   "go": "wait"
+  },
+  {
+   "s": "diya",
+   "t": "Okay. I'll be in the press box. Pretending to be neutral. Badly.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "go": "end12b"
+  },
+  {
+   "label": "wait"
+  },
+  {
+   "s": "diya",
+   "t": "After the final, then. I'll hold you to it. Journalists keep notes.",
+   "mood": "soft"
+  },
+  {
+   "label": "end12b"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "The World Cup final. Three days. Against the hosts, and the fastest bowler you've ever faced."
+  }
+ ]
+}

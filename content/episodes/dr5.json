@@ -1,0 +1,283 @@
+{
+ "id": "dr5",
+ "no": 5,
+ "book": "dropped",
+ "title": "The Tenth Time",
+ "art": "bg_board_room",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "6:58 AM. Room 1204 is at the end of a corridor that smells of carpet cleaner. You have your kit bag. All of it. Like he said."
+  },
+  {
+   "th": "Nine times I waited for a phone call. This time I get a door."
+  },
+  {
+   "bg": "bg_board_room"
+  },
+  {
+   "n": "A long table. Rain on the windows. Prakash Bhandari at one end, a folder in front of him. At the other end, a woman you've never seen, in a maroon saree and a grey blazer, reading glasses on the tip of her nose."
+  },
+  {
+   "enter": "rekha",
+   "side": "left"
+  },
+  {
+   "s": "rekha",
+   "t": "Rekha Iyer. The Board sent me last night. I run inquiries. Sit down, {first}. You can put the bag down. Nobody's going anywhere yet."
+  },
+  {
+   "enter": "bhandari",
+   "side": "right"
+  },
+  {
+   "s": "bhandari",
+   "t": "Madam, this is a selection matter. Not a courtroom."
+  },
+  {
+   "s": "rekha",
+   "t": "Nine vetoes, Mr Bhandari. In my experience, nine of anything is a courtroom."
+  },
+  {
+   "n": "She closes her folder. She goes out to take a call and leaves the two of you alone with the rain."
+  },
+  {
+   "exit": "rekha"
+  },
+  {
+   "s": "bhandari",
+   "t": "Let me make this simple. Those minutes in the papers are a forgery. You will say so. In front of her. Today.",
+   "mood": "soft"
+  },
+  {
+   "s": "bhandari",
+   "t": "Say it, and you're in the fifteen for the whole tournament. My word. Refuse, and the inquiry will find that your journalist friend stole Board papers, and that you helped her."
+  },
+  {
+   "th": "Ten minutes ago I thought he was sending me home. He isn't. He's buying me."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"They're real. You know they're real.\"",
+     "d": "Nine times is enough.",
+     "fx": {
+      "diya": 1
+     },
+     "set": "refusedDeal"
+    },
+    {
+     "t": "\"I'll think about it.\"",
+     "d": "Buy time. He hates that.",
+     "set": "stalled"
+    },
+    {
+     "t": "Say nothing. Pick up your kit bag and walk out.",
+     "d": "Let your silence answer.",
+     "set": "walkedOut"
+    }
+   ]
+  },
+  {
+   "if": "stalled",
+   "go": "stall"
+  },
+  {
+   "if": "walkedOut",
+   "go": "walk"
+  },
+  {
+   "s": "bhandari",
+   "t": "Brave. Bravery is cheap at twenty-four. It gets expensive at thirty.",
+   "mood": "shout",
+   "ex": "angry"
+  },
+  {
+   "go": "rekhaBack"
+  },
+  {
+   "label": "stall"
+  },
+  {
+   "s": "bhandari",
+   "t": "Think fast. She's back in four minutes."
+  },
+  {
+   "go": "rekhaBack"
+  },
+  {
+   "label": "walk"
+  },
+  {
+   "n": "You stand. You lift the bag. At the door you stop, because Rekha Iyer is standing in it, phone in her hand, and she has heard every word."
+  },
+  {
+   "label": "rekhaBack"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "enter": "rekha",
+   "side": "left"
+  },
+  {
+   "s": "rekha",
+   "t": "The Board has decided two things. Mr Bhandari steps away from selection while I look into this. And Aryan Khurana is out of the World Cup with his injury."
+  },
+  {
+   "s": "rekha",
+   "t": "That leaves a place in the fifteen. Captain Pradhan asked for you by name. Unpack, {first}. Properly this time."
+  },
+  {
+   "if": "walkedOut",
+   "go": "rekhaWalk"
+  },
+  {
+   "go": "afterRekha"
+  },
+  {
+   "label": "rekhaWalk"
+  },
+  {
+   "s": "rekha",
+   "t": "And for the record: I heard what he offered you. Walking out was the right answer. It was also the quietest one I've ever heard.",
+   "mood": "soft"
+  },
+  {
+   "fx": {
+    "diya": 1
+   }
+  },
+  {
+   "label": "afterRekha"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "In the lobby, a man in a cream linen shirt is eating the free breakfast like he paid for it. He waves at you with a croissant."
+  },
+  {
+   "enter": "faisal",
+   "side": "right"
+  },
+  {
+   "if": "signed",
+   "go": "fSigned"
+  },
+  {
+   "s": "faisal",
+   "t": "No hard feelings about the letter, boss. Business is business. My offer is still open. It only gets bigger when you score."
+  },
+  {
+   "s": "faisal",
+   "t": "I'll be at every match. Front row. Think of me as your fan with a pen."
+  },
+  {
+   "go": "afterFaisal"
+  },
+  {
+   "label": "fSigned"
+  },
+  {
+   "s": "faisal",
+   "t": "Congratulations on staying. Truly. It makes your signature worth more."
+  },
+  {
+   "s": "faisal",
+   "t": "I didn't file it Monday. Why would I? A World Cup player who's secretly signed for the Gulf? That's not a contract any more. That's a headline. And headlines have a price.",
+   "mood": "soft",
+   "ex": "angry"
+  },
+  {
+   "label": "afterFaisal"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "phone": "Shibu",
+   "msgs": [
+    {
+     "t": "IN THE FIFTEEN?????"
+    },
+    {
+     "t": "Amma dropped the rice pot. The whole street heard."
+    },
+    {
+     "t": "Collar. Don't forget the collar."
+    }
+   ]
+  },
+  {
+   "phone": "Diya Nair",
+   "msgs": [
+    {
+     "t": "Rekha Iyer is the toughest person at the Board. She once made a minister cry."
+    },
+    {
+     "t": "If she's on your side, you're safe."
+    },
+    {
+     "t": "If she isn't, nobody is. Including me."
+    }
+   ]
+  },
+  {
+   "end": true,
+   "cliff": "You're in the fifteen. Bhandari is out of the room, but not out of the game. And Faisal has a front-row seat."
+  }
+ ]
+}

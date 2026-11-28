@@ -36,6 +36,18 @@
   "caller": {
    "name": "Delhi number",
    "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
   }
  },
  "nodes": [
@@ -49,7 +61,7 @@
    "phone": "Amma",
    "msgs": [
     {
-     "t": "Whole of Kuttanad is on the bund. Shibu put a bedsheet on the coconut trees and a projector on his auto."
+     "t": "Whole of Kuttanad is on the riverbank. Shibu put a bedsheet on the coconut trees and a projector on his auto."
     },
     {
      "t": "Father Joseph blessed the projector."
@@ -74,7 +86,7 @@
    "choice": [
     {
      "t": "Send a selfie: thumbs up, fake confidence.",
-     "d": "For the bund.",
+     "d": "For the riverbank.",
      "fx": {
       "amma": 1,
       "shibu": 1
@@ -159,7 +171,7 @@
    "label": "innings"
   },
   {
-   "n": "You bat. Forty overs of it. Block, nudge, run. Twelve. Thirty. Fifty-one, and you touch your collar, and four hundred people on a bund in Kuttanad scream at a bedsheet."
+   "n": "You bat. Forty overs of it. Block, nudge, run. Twelve. Thirty. Fifty-one, and you touch your collar, and four hundred people on a riverbank in Kuttanad scream at a bedsheet."
   },
   {
    "if": "keptQuiet",
@@ -215,7 +227,7 @@
     "balls": 6,
     "need": 13,
     "winCall": "YOU STAY!",
-    "winSub": "Four hundred people on a bund go mad.",
+    "winSub": "Four hundred people on a riverbank go mad.",
     "loseCall": "SO CLOSE",
     "loseSub": "The captain is already on his feet, clapping."
    },

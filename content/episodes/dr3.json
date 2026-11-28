@@ -36,6 +36,18 @@
   "caller": {
    "name": "Delhi number",
    "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
   }
  },
  "nodes": [
@@ -298,7 +310,7 @@
    "bg": "bg_overseas_hotel"
   },
   {
-   "n": "The only chai in this town is a vending machine near the lifts. You buy two. They taste like warm cardboard. Diya drinks hers like it's from a Thattukada."
+   "n": "The only chai in this town is a vending machine near the lifts. You buy two. They taste like warm cardboard. Diya drinks hers like it's from a roadside tea stall back home."
   },
   {
    "s": "diya",

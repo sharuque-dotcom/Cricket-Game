@@ -1,0 +1,287 @@
+{
+ "id": "dr11",
+ "no": 11,
+ "book": "dropped",
+ "title": "Quarter-final",
+ "art": "bg_intl_stadium",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "aryan_hood": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "8 AM. The hotel restaurant. Faisal has ordered for both of you. Eggs, toast, three kinds of jam, and a coffee for you that's gone cold on purpose."
+  },
+  {
+   "enter": "faisal",
+   "side": "right"
+  },
+  {
+   "if": "signed",
+   "go": "letter"
+  },
+  {
+   "s": "faisal",
+   "t": "I'll be quick. Five crore. Three years. After the World Cup, you retire from India and come to the Gulf. Your mother never worries about a boat again."
+  },
+  {
+   "s": "faisal",
+   "t": "They dropped you nine times. They'll do it again the first time you fail. I won't. I'm a terrible man, but I'm very loyal to money, and you are money."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Yes. After the World Cup.\"",
+     "d": "Amma's future, guaranteed.",
+     "set": "gulfYes"
+    },
+    {
+     "t": "\"No. I want to wear the teal cap until they take it off me.\"",
+     "d": "Play for India until the end.",
+     "set": "gulfNo"
+    },
+    {
+     "t": "\"Ask me after the final.\"",
+     "d": "You haven't decided. He hates that.",
+     "set": "gulfLater"
+    }
+   ]
+  },
+  {
+   "if": "gulfYes",
+   "go": "yesL"
+  },
+  {
+   "s": "faisal",
+   "t": "Romantic again. All right. My card is in your pocket. It'll still be there when you're thirty and nobody's calling."
+  },
+  {
+   "go": "afterF"
+  },
+  {
+   "label": "yesL"
+  },
+  {
+   "s": "faisal",
+   "t": "Finally, a smart cricketer. I'll draw it up. No signature until the trophy's in the cabinet. I'm not a monster."
+  },
+  {
+   "go": "afterF"
+  },
+  {
+   "label": "letter"
+  },
+  {
+   "s": "faisal",
+   "t": "I'll be quick. Your letter of intent. Front page of every paper on quarter-final morning. \"Kerala hero secretly signed for Gulf league mid-World Cup.\" Unless.",
+   "ex": "angry"
+  },
+  {
+   "s": "faisal",
+   "t": "Unless you buy it back. Fifteen lakh now. Or you sign the real contract after the tournament. Five crore. Your choice.",
+   "ex": "angry"
+  },
+  {
+   "choice": [
+    {
+     "t": "Go straight to Rekha Iyer and tell her everything.",
+     "d": "Tell the truth first, before he sells it.",
+     "set": "toldRekha"
+    },
+    {
+     "t": "\"Fine. I'll sign the real one after the World Cup.\"",
+     "d": "Make the threat go away. Take the money.",
+     "set": "gulfYes"
+    }
+   ]
+  },
+  {
+   "if": "gulfYes",
+   "go": "yesL"
+  },
+  {
+   "bg": "bg_board_room"
+  },
+  {
+   "enter": "rekha",
+   "side": "left"
+  },
+  {
+   "n": "Rekha reads the letter of intent twice. Then she does something you've never seen her do. She laughs."
+  },
+  {
+   "s": "rekha",
+   "t": "A letter of intent that was never filed with the league and never registered with the Board is a piece of paper, {first}. It's not a contract. It's barely a napkin."
+  },
+  {
+   "s": "rekha",
+   "t": "Mr Kutty, on the other hand, has just tried to blackmail a World Cup player in writing. I'll take it from here."
+  },
+  {
+   "set": "gulfNo"
+  },
+  {
+   "fx": {
+    "diya": 1
+   }
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "label": "afterF"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_intl_stadium"
+  },
+  {
+   "n": "Quarter-final. Night game. Floodlights. Sixty thousand people, and the opposition has a spinner who hasn't conceded a boundary all tournament."
+  },
+  {
+   "n": "Sameer gets out early. Then two more. Twenty-two for three. The dressing room is silent. You walk out into a noise like the sea."
+  },
+  {
+   "moment": {
+    "kind": "nets",
+    "title": "Survive the Spell",
+    "desc": "The world's best spinner, on a turning pitch, at twenty-two for three. Don't try to win it yet. Just survive his over. Four balls.",
+    "bowler": "Tariq Jameel",
+    "balls": 4,
+    "goal": "survive",
+    "winCall": "SURVIVED!",
+    "winSub": "You've seen him off. Now the runs can come.",
+    "loseCall": "STUMPED",
+    "loseSub": "Harpreet and the tail still have to finish it."
+   },
+   "win": "qfWon",
+   "lose": "qfLost"
+  },
+  {
+   "label": "qfWon"
+  },
+  {
+   "set": "qfHero"
+  },
+  {
+   "n": "You see him off. Then you take the next bowler for fourteen in an over. A hundred and four, not out. India win with six overs to spare."
+  },
+  {
+   "go": "end11"
+  },
+  {
+   "label": "qfLost"
+  },
+  {
+   "n": "Stumped by a foot, on thirty-eight. You walk off furious. Then the lower order bat like men with nothing to lose, and India get home with two balls left. You watch the winning runs through your fingers."
+  },
+  {
+   "label": "end11"
+  },
+  {
+   "phone": "Diya Nair",
+   "msgs": [
+    {
+     "t": "Rekha Iyer called me."
+    },
+    {
+     "t": "Aryan gave her a statement this morning. All of it. He was my source's source."
+    },
+    {
+     "t": "I'm cleared. I'm back. I'm covering the semi-final."
+    }
+   ]
+  },
+  {
+   "if": "aryanExposed",
+   "go": "exposedNote"
+  },
+  {
+   "phone": "Aryan",
+   "msgs": [
+    {
+     "t": "Told her. Told my mother first. She said she was proud of me. I didn't expect that."
+    },
+    {
+     "t": "Win the next one, Kerala."
+    }
+   ]
+  },
+  {
+   "fx": {
+    "aryan": 1
+   }
+  },
+  {
+   "go": "end11b"
+  },
+  {
+   "label": "exposedNote"
+  },
+  {
+   "phone": "Aryan",
+   "msgs": [
+    {
+     "t": "You didn't have to tell them first. I was going to."
+    },
+    {
+     "t": "Doesn't matter now. Win the next one."
+    }
+   ]
+  },
+  {
+   "label": "end11b"
+  },
+  {
+   "end": true,
+   "cliff": "Semi-final. Diya's back in the press box. And Bhandari has nowhere left to hide."
+  }
+ ]
+}
