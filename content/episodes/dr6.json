@@ -1,0 +1,269 @@
+{
+ "id": "dr6",
+ "no": 6,
+ "book": "dropped",
+ "title": "Twelfth Man",
+ "art": "bg_intl_stadium",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_intl_dressing"
+  },
+  {
+   "n": "World Cup, first match. You're the twelfth man. Drinks, towels, spare gloves, and the best seat in the house to watch other people do your job."
+  },
+  {
+   "enter": "sameer",
+   "side": "right"
+  },
+  {
+   "s": "sameer",
+   "t": "I know. It's terrible. I was twelfth man for two years. You learn what everyone needs before they know they need it. That's half of captaincy."
+  },
+  {
+   "s": "sameer",
+   "t": "Over thirty. Run out the drinks. And tell Harpreet his front foot is opening up. He won't listen to me. He might listen to a man carrying bananas."
+  },
+  {
+   "choice": [
+    {
+     "t": "Tell Harpreet straight.",
+     "d": "He bowled you in the nets. Return the favour.",
+     "set": "toldHarpreet"
+    },
+    {
+     "t": "Tell him with a joke.",
+     "d": "A banana and a smile.",
+     "set": "jokedHarpreet"
+    }
+   ]
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_intl_stadium"
+  },
+  {
+   "if": "jokedHarpreet",
+   "go": "joke"
+  },
+  {
+   "n": "Harpreet glares at you, drinks his water, and fixes his front foot. Next over, he takes two wickets. He doesn't look at you once. That's how fast bowlers say thank you."
+  },
+  {
+   "go": "win1"
+  },
+  {
+   "label": "joke"
+  },
+  {
+   "n": "\"Your front foot is opening like a fridge door,\" you tell him, handing him a banana. He laughs so hard he nearly drops it. Next over, two wickets."
+  },
+  {
+   "label": "win1"
+  },
+  {
+   "n": "India win by forty runs. You didn't face a ball. You still have grass stains on your knees from running out with the drinks."
+  },
+  {
+   "bg": "bg_bund_screening"
+  },
+  {
+   "n": "Six thousand miles away, on the riverbank in Kuttanad, a bedsheet tied between two coconut trees is still glowing at 1 AM. Four hundred people are watching the replay. Of the drinks break."
+  },
+  {
+   "enter": "shibu",
+   "side": "left"
+  },
+  {
+   "phone": "Shibu",
+   "msgs": [
+    {
+     "t": "Video call. NOW."
+    }
+   ]
+  },
+  {
+   "s": "shibu",
+   "t": "Look! Look at them! They're cheering for you carrying WATER!",
+   "mood": "shout",
+   "ex": "happy"
+  },
+  {
+   "s": "shibu",
+   "t": "I'm charging ten rupees a chair. Twenty for the front row. The grandmother who runs the tea shop is charging for chai. Boat fund is at ninety-one thousand."
+  },
+  {
+   "enter": "amma",
+   "side": "right"
+  },
+  {
+   "s": "amma",
+   "t": "You looked thin on TV. Are you eating? They gave you bananas. Bananas are not food. Bananas are a snack."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"I'm eating, Amma. I promise. The pickle is almost finished.\"",
+     "d": "Make her happy.",
+     "fx": {
+      "amma": 1
+     },
+     "set": "pickle"
+    },
+    {
+     "t": "\"Shibu, you're charging people to watch me carry drinks?\"",
+     "d": "Tease him.",
+     "fx": {
+      "shibu": 1
+     }
+    }
+   ]
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_rooftop_lounge"
+  },
+  {
+   "n": "11 PM. The hotel rooftop. Closed, technically. The door was open. Diya is already there, sitting on a sun lounger in a hoodie, typing."
+  },
+  {
+   "enter": "diya",
+   "side": "right"
+  },
+  {
+   "s": "diya",
+   "t": "Twelfth man. I wrote four hundred words about you anyway. My editor said, \"He didn't play.\" I said, \"That's the story.\""
+  },
+  {
+   "s": "diya",
+   "t": "Can I ask you something off the record? Really off. Not for the column.",
+   "mood": "soft"
+  },
+  {
+   "s": "diya",
+   "t": "When they dropped you the ninth time. What did you do that night?"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"I sat on the roof of the boat and counted stars. I lost count at nine.\"",
+     "d": "The truth.",
+     "fx": {
+      "diya": 2
+     },
+     "set": "starsTold"
+    },
+    {
+     "t": "\"I threw the TV remote in the backwater.\"",
+     "d": "The funny truth.",
+     "show": "remote",
+     "fx": {
+      "diya": 1
+     },
+     "set": "remoteTold"
+    },
+    {
+     "t": "\"I don't remember.\"",
+     "d": "You remember everything.",
+     "set": "closedOff"
+    }
+   ]
+  },
+  {
+   "if": "closedOff",
+   "go": "closed"
+  },
+  {
+   "n": "She laughs, and then she doesn't. She puts the laptop down and looks at the city for a long time."
+  },
+  {
+   "s": "diya",
+   "t": "My brother cried for a week the fourth time. Then he never talked about cricket again. You still count stars. That's the difference.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "go": "sky"
+  },
+  {
+   "label": "closed"
+  },
+  {
+   "s": "diya",
+   "t": "Fine. Liar. I'll find out one day."
+  },
+  {
+   "label": "sky"
+  },
+  {
+   "n": "Below you, an ambulance siren. Above you, no stars at all. English clouds."
+  },
+  {
+   "enter": "sameer",
+   "side": "left"
+  },
+  {
+   "n": "The rooftop door bangs open. It's Sameer, in a team tracksuit, holding his phone like it's on fire."
+  },
+  {
+   "s": "sameer",
+   "t": "There you are. Kiran fractured his finger at practice an hour ago. You're in the eleven on Thursday."
+  },
+  {
+   "s": "sameer",
+   "t": "Get some sleep. That's an order. Your first order from your captain in a match that counts."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Thursday. The eleven. A World Cup debut, against the fastest attack in the tournament."
+  }
+ ]
+}
