@@ -12,7 +12,7 @@
 
 **Already have (reused):** stadium by day (Thiruvananthapuram semi-final), auto at night, airport gate, rainy overseas hotel, physio room, nets, press room, international dressing room, international stadium.
 
-**Until the art arrives** the chapters still play: characters show as a coloured name card, and the two new scenes fall back to the bundled home and dusk-street pictures.
+**Status:** all 12 images are in (`content/img/`), added 2026-11-28.
 
 **Priority:** A1 Amma → A2 Shibu → A3 Diya → C1 houseboat → A4 Aryan → A5 Bhandari → A6 Sameer → A7 Faisal → C2 → B.
 
