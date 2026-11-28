@@ -426,7 +426,7 @@ ep(`The Tenth Time`, 'bg_board_room', [
   ),
   iff('stalled', 'stall'),
   iff('walkedOut', 'walk'),
-  s('bhandari', `Brave. Bravery is cheap at twenty-four. It gets expensive at thirty.`, { mood: 'shout' }),
+  s('bhandari', `Brave. Bravery is cheap at twenty-four. It gets expensive at thirty.`, { mood: 'shout', ex: 'angry' }),
   go('rekhaBack'),
   lb('stall'),
   s('bhandari', `Think fast. She's back in four minutes.`),
@@ -858,7 +858,7 @@ ep(`Amma in England`, 'bg_airport_gate', [
   s('rekha', `The selection minutes are real. Three selectors have confirmed it. The source has confirmed it. The vetoes were not cricket. They were family.`),
   s('rekha', `Mr Bhandari is removed as chairman of selectors, permanently. The Board will also review every selection he made in six years.`),
   on('bhandari', 'right'),
-  s('bhandari', `Six years I gave this game. And a boy from a boat ends it.`, { mood: 'shout' }),
+  s('bhandari', `Six years I gave this game. And a boy from a boat ends it.`, { mood: 'shout', ex: 'angry' }),
   ch(
     o(`"I didn't end it. You did. Nine times."`, `The truth, finally said out loud.`, { set: 'toldBhandari' }),
     o(`"I hope Aryan gets a fair chance now. He's better than you let him be."`, `Think of Aryan.`, { fx: { aryan: 2 }, set: 'forAryan' }),

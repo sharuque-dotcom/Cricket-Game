@@ -133,7 +133,8 @@
   {
    "s": "bhandari",
    "t": "Brave. Bravery is cheap at twenty-four. It gets expensive at thirty.",
-   "mood": "shout"
+   "mood": "shout",
+   "ex": "angry"
   },
   {
    "go": "rekhaBack"
