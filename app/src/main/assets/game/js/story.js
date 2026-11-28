@@ -178,7 +178,7 @@ const Story = {
 
     const filtered = cat ? `<div class="h-grid">${order.filter(b => (b.tags || []).includes(cat)).map((b, k) => card(b, 'cat_' + cat, k)).join('')}</div>` : '';
     const sections = cat ? filtered : [
-      top.length > 1 ? sec(`🔥 ${t('Popular now')}`, `<div class="h-row top">${top.map((b, k) => `<button class="hc-top" data-open="${esc(b.id)}" data-from="top" data-pos="${k + 1}"><span class="num">${k + 1}</span>${cover(b)}</button>`).join('')}</div>`) : '',
+      top.length > 1 ? sec(`🔥 ${t('Popular now')}`, `<div class="h-row top">${top.map((b, k) => `<button class="hc-top" data-open="${esc(b.id)}" data-from="top" data-pos="${k + 1}"><span class="num">${k + 1}</span><span class="hc-top-in">${cover(b)}<b>${esc(this.bt(b.title))}</b><span>${sub(b)}</span></span></button>`).join('')}</div>`) : '',
       soon.length ? sec(`🗳️ ${t('Coming soon · you decide')}`, `<div class="h-row">${soon.map((b, k) => `<div class="hc-card soon"><button class="hc-card-in" data-open="${esc(b.id)}" data-from="soon" data-pos="${k + 1}">${cover(b)}<b>${esc(this.bt(b.title))}</b><span>${sub(b)}</span></button><button class="want" data-open="${esc(b.id)}" data-from="want" data-pos="${k + 1}">🔔 ${t('Want this')}</button></div>`).join('')}</div><div class="h-note">${t('The story with the most taps gets written first.')}</div>`) : '',
       ...rows.map(r => { const list = live.filter(b => (b.tags || []).includes(r.tag)); return list.length ? sec(esc(this.bt(t(r.title))), `<div class="h-row">${list.map((b, k) => card(b, 'row_' + r.tag, k)).join('')}</div>`) : ''; }),
     ].join('');

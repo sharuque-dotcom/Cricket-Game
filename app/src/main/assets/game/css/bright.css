@@ -301,20 +301,21 @@ html.indic .mi-title, html.indic .ep-card-title, html.indic .hero-title { word-b
 .hb-dots i.on { width: 18px; background: var(--pink); }
 .h-row { display: flex; gap: 10px; overflow-x: auto; margin: 0 -16px; padding: 2px 16px 10px; scroll-snap-type: x proximity; scrollbar-width: none; touch-action: pan-x pan-y; }
 .h-row::-webkit-scrollbar { display: none; }
-.hc-card, .hc-card-in { flex: none; width: 116px; text-align: left; color: var(--text); scroll-snap-align: start; }
+.hc-card, .hc-card-in { flex: none; display: block; width: 116px; min-width: 0; text-align: left; color: var(--text); scroll-snap-align: start; }
 .hc-card:active, .hc-top:active, .hc-cont:active { transform: scale(.97); }
 .hc-cover { position: relative; width: 100%; aspect-ratio: 3 / 4; border-radius: 14px; background: linear-gradient(160deg, #FF6A55, #7A3CF0 70%, #2b1640) center 20%/cover; box-shadow: 0 8px 18px -10px rgba(90, 40, 120, .6); overflow: hidden; }
 .hc-cover .bdg { position: absolute; left: 6px; top: 6px; font-size: 9.5px; padding: 3px 7px; }
 .hc-name { position: absolute; left: 9px; right: 9px; bottom: 9px; font-family: 'Bebas'; font-size: 22px; line-height: .92; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.4); }
-.hc-card b, .hc-card-in b { display: block; margin-top: 6px; font-family: 'Barlow'; font-weight: 800; font-size: 13.5px; line-height: 1.15; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.hc-card span:not(.bdg):not(.hc-name), .hc-card-in span:not(.bdg):not(.hc-name) { display: block; font-size: 11.5px; color: var(--muted); }
+.hc-card b, .hc-card-in b, .hc-top-in b { display: block; margin-top: 6px; font-family: 'Barlow'; font-weight: 800; font-size: 13.5px; line-height: 1.15; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hc-card span:not(.bdg):not(.hc-name), .hc-card-in span:not(.bdg):not(.hc-name), .hc-top-in > span { display: block; font-size: 11.5px; color: var(--muted); }
 .hc-card.soon { width: 116px; flex: none; }
 .hc-card.soon .hc-cover { filter: saturate(.9); }
 .want { display: block; width: 100%; margin-top: 6px; padding: 7px 0; border-radius: 99px; background: #fff; color: var(--pink); font-family: 'Barlow'; font-weight: 800; font-size: 12px; box-shadow: 0 3px 10px -6px rgba(90, 40, 120, .5); }
 .h-note { font-size: 12px; color: var(--muted); font-weight: 600; margin: 0 2px; }
 .h-row.top { gap: 0; }
-.hc-top { flex: none; display: flex; align-items: flex-end; width: 142px; scroll-snap-align: start; }
-.hc-top .num { font-family: 'Bebas'; font-size: 88px; line-height: .8; color: #fff; -webkit-text-stroke: 2px var(--text); margin-right: -12px; position: relative; z-index: 2; }
+.hc-top { flex: none; display: flex; align-items: flex-start; width: 142px; text-align: left; color: var(--text); scroll-snap-align: start; }
+.hc-top-in { display: block; width: 100px; min-width: 0; flex: none; }
+.hc-top .num { font-family: 'Bebas'; font-size: 88px; line-height: .8; color: #fff; -webkit-text-stroke: 2px var(--text); margin-right: -12px; margin-top: 63px; position: relative; z-index: 2; }
 .hc-top .hc-cover { width: 100px; flex: none; }
 .hc-cont { flex: none; width: 262px; display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 16px; background: #fff; box-shadow: var(--card-sh); text-align: left; color: var(--text); }
 .hc-cont.wide { width: 100%; margin-bottom: 10px; }
@@ -328,7 +329,7 @@ html.indic .mi-title, html.indic .ep-card-title, html.indic .hero-title { word-b
 .h-chips::-webkit-scrollbar { display: none; }
 .h-chip { flex: none; padding: 8px 13px; border-radius: 99px; background: #fff; color: var(--text); font-family: 'Barlow'; font-weight: 800; font-size: 13px; box-shadow: 0 3px 10px -6px rgba(90, 40, 120, .45); }
 .h-chip.on { background: var(--text); color: #fff; }
-.h-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 10px; margin-top: 14px; }
+.h-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 14px 10px; margin-top: 14px; }
 .h-grid .hc-card { width: auto; }
 .tabs { position: absolute; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; justify-content: space-around; align-items: center; height: calc(64px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); background: #fff; border-radius: 20px 20px 0 0; box-shadow: 0 -8px 24px -14px rgba(90, 40, 120, .45); }
 .tab { display: grid; place-items: center; gap: 3px; min-width: 64px; font-family: 'Barlow'; font-weight: 800; font-size: 11px; color: var(--muted); }
