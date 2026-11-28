@@ -1,0 +1,385 @@
+{
+ "id": "dr3",
+ "no": 3,
+ "book": "dropped",
+ "title": "Cover",
+ "art": "bg_academy_nets",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_academy_nets"
+  },
+  {
+   "n": "9 AM. Nets. Rain has stopped, mostly. Captain Sameer stands behind the net with a coffee and the expression of a man who has already decided something."
+  },
+  {
+   "enter": "sameer",
+   "side": "right"
+  },
+  {
+   "s": "sameer",
+   "t": "Harpreet. Bowl at him properly. If he's cover, I want to know what I'm covering with."
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "moment": {
+    "kind": "nets",
+    "title": "Net Two",
+    "desc": "Harpreet Gill, 147 clicks. Fourteen players pretending not to watch. The captain is timing your feet. Survive four balls.",
+    "bowler": "Harpreet Gill",
+    "balls": 4,
+    "goal": "survive",
+    "winCall": "STILL STANDING",
+    "winSub": "Sameer puts his coffee down.",
+    "loseCall": "BOWLED",
+    "loseSub": "Somebody behind you laughs."
+   },
+   "win": "netsWon",
+   "lose": "netsLost"
+  },
+  {
+   "label": "netsWon"
+  },
+  {
+   "set": "netsWon"
+  },
+  {
+   "enter": "sameer",
+   "side": "right"
+  },
+  {
+   "s": "sameer",
+   "t": "Hm. Nine times, they dropped that. Interesting."
+  },
+  {
+   "go": "breakfast"
+  },
+  {
+   "label": "netsLost"
+  },
+  {
+   "enter": "sameer",
+   "side": "right"
+  },
+  {
+   "s": "sameer",
+   "t": "Harpreet does that to everyone on day one. He did it to me. Again tomorrow."
+  },
+  {
+   "label": "breakfast"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "Breakfast. Aryan sits alone at the window, walking a little too carefully to the toaster. Nobody notices. Except you."
+  },
+  {
+   "th": "Thursday is tomorrow. If I say nothing, he plays on a torn leg, and I fly home. If I say something, I play, and every newspaper in Delhi calls me a snake."
+  },
+  {
+   "choice": [
+    {
+     "t": "Tell the team doctor.",
+     "d": "It's his leg, but it's the team's World Cup.",
+     "fx": {
+      "aryan": -3,
+      "diya": 1
+     },
+     "set": "toldDoc"
+    },
+    {
+     "t": "Sit down opposite Aryan. \"Tell them yourself. Today.\"",
+     "d": "Give him the chance first.",
+     "fx": {
+      "aryan": 1
+     },
+     "set": "pushed"
+    },
+    {
+     "t": "Keep quiet.",
+     "d": "It's not your secret.",
+     "fx": {
+      "aryan": 2
+     },
+     "set": "keptQuiet"
+    }
+   ]
+  },
+  {
+   "if": "toldDoc",
+   "go": "doc"
+  },
+  {
+   "if": "pushed",
+   "go": "push"
+  },
+  {
+   "n": "You eat your eggs. Aryan catches your eye once and gives the smallest nod. It doesn't feel like a win."
+  },
+  {
+   "go": "press"
+  },
+  {
+   "label": "doc"
+  },
+  {
+   "n": "The doctor listens, nods, and goes very pale. By lunch the whole hotel knows. By tea, so does Aryan."
+  },
+  {
+   "enter": "aryan",
+   "side": "right"
+  },
+  {
+   "s": "aryan",
+   "t": "You couldn't wait two days? Three years you've been waiting. You couldn't wait two days?",
+   "mood": "shout"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "go": "press"
+  },
+  {
+   "label": "push"
+  },
+  {
+   "enter": "aryan",
+   "side": "right"
+  },
+  {
+   "s": "aryan",
+   "t": "And if I don't?"
+  },
+  {
+   "th": "I don't answer. I don't need to."
+  },
+  {
+   "n": "He looks at his plate for a long time. Then he gets up, slowly, and walks to the doctor's table himself."
+  },
+  {
+   "s": "aryan",
+   "t": "Don't think this makes us friends.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "label": "press"
+  },
+  {
+   "bg": "bg_press_room"
+  },
+  {
+   "n": "Afternoon. Media hour. Every new face gets fifteen minutes in front of the cameras. You get five, and four of them are about Aryan."
+  },
+  {
+   "n": "When the room clears, one reporter stays. Diya, with a brown envelope."
+  },
+  {
+   "enter": "diya",
+   "side": "right"
+  },
+  {
+   "s": "diya",
+   "t": "Selection meeting minutes. Three years. A friend in the Board office owes me a very big favour."
+  },
+  {
+   "s": "diya",
+   "t": "Every time, three selectors voted for you. Every time, the chairman used his veto. Nine vetoes. One name."
+  },
+  {
+   "th": "Bhandari. Not bad luck. Not \"next time\". One man, nine times."
+  },
+  {
+   "s": "diya",
+   "t": "If you go on record, this is front page tomorrow. If you don't, I still have a story. But it's weaker.",
+   "mood": "soft"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Put my name on it.\"",
+     "d": "Nine times is enough.",
+     "set": "onRecord"
+    },
+    {
+     "t": "\"Not now. I want to win my place, not a headline.\"",
+     "d": "Let the bat talk first.",
+     "fx": {
+      "diya": 1
+     },
+     "set": "batFirst"
+    },
+    {
+     "t": "\"Forget the story. Chai? It's raining. That's practically Kerala.\"",
+     "d": "Take her out of this room.",
+     "cost": 20,
+     "fx": {
+      "diya": 2
+     },
+     "set": "rainChai"
+    }
+   ]
+  },
+  {
+   "if": "rainChai",
+   "go": "chai"
+  },
+  {
+   "if": "onRecord",
+   "go": "record"
+  },
+  {
+   "s": "diya",
+   "t": "Your bat first. Fine. But I'm keeping the envelope warm."
+  },
+  {
+   "go": "thursday"
+  },
+  {
+   "label": "record"
+  },
+  {
+   "s": "diya",
+   "t": "Are you sure? Once it's out, he'll know exactly who to blame."
+  },
+  {
+   "s": "diya",
+   "t": "...Okay. Tomorrow, page one."
+  },
+  {
+   "go": "thursday"
+  },
+  {
+   "label": "chai"
+  },
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "The only chai in this town is a vending machine near the lifts. You buy two. They taste like warm cardboard. Diya drinks hers like it's from a Thattukada."
+  },
+  {
+   "s": "diya",
+   "t": "This is the worst chai I've ever had.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "s": "diya",
+   "t": "Ask me again tomorrow. Same machine.",
+   "mood": "soft"
+  },
+  {
+   "n": "She leaves the envelope on the table between you, and doesn't pick it up again."
+  },
+  {
+   "label": "thursday"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_physio_room"
+  },
+  {
+   "n": "Thursday. The fitness test. Ten sprints between cones, while a doctor holds a stopwatch and Prakash Bhandari holds his breath."
+  },
+  {
+   "if": "keptQuiet",
+   "go": "quietTest"
+  },
+  {
+   "n": "Aryan doesn't run. He sits on the bench with his leg strapped and his World Cup over. The announcement takes eleven words."
+  },
+  {
+   "enter": "bhandari",
+   "side": "right"
+  },
+  {
+   "s": "bhandari",
+   "t": "Congratulations. You've been very clever.",
+   "mood": "soft"
+  },
+  {
+   "s": "bhandari",
+   "t": "Warm-up game, Saturday. Number four. Fail, and you're on the first flight to Kochi. I'll drive you to the airport myself."
+  },
+  {
+   "go": "end3"
+  },
+  {
+   "label": "quietTest"
+  },
+  {
+   "n": "Aryan runs ten sprints. His face is grey by the sixth. He passes. Bhandari claps him on the back like a man who has won a horse race."
+  },
+  {
+   "enter": "sameer",
+   "side": "left"
+  },
+  {
+   "s": "sameer",
+   "t": "Both of you play Saturday. Aryan at five. You at four. I want to see something."
+  },
+  {
+   "enter": "bhandari",
+   "side": "right"
+  },
+  {
+   "s": "bhandari",
+   "t": "Fine. One game. Fail, and the cover goes home. Tidily."
+  },
+  {
+   "label": "end3"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "Saturday. Number four. Fail, and they drop you a tenth time, in front of the world."
+  }
+ ]
+}
