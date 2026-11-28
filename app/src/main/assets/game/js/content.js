@@ -185,6 +185,10 @@ const Content = (() => {
     const MOODS = ['calm', 'romance', 'tense', 'festive', 'stadium', 'off'];
     if (m.music && typeof m.music === 'object') for (const k in m.music) if (RE_NAME.test(k) && MOODS.includes(m.music[k])) CONTENT_MUSIC[k] = m.music[k];
     applyShelf(m.shelf);
+    // "please update": { latest: versionCode on Play, min: oldest versionCode that may skip it (optional) }
+    const vc = v => typeof v === 'number' && v >= 1 && v <= 1e6 ? Math.floor(v) : undefined;
+    const u = m.update && typeof m.update === 'object' ? m.update : {};
+    CONTENT_UPDATE.latest = vc(u.latest); CONTENT_UPDATE.min = vc(u.min);
     // home layout: { featured: [book ids], top: [book ids], rows: [{ title, tag }] }
     Object.keys(CONTENT_HOME).forEach(k => { CONTENT_HOME[k] = undefined; });
     if (m.home && typeof m.home === 'object') {
@@ -290,6 +294,7 @@ const Content = (() => {
     },
     // after a refresh, update whatever screen is showing
     announce(added) {
+      try { Story.maybeUpdate(); } catch (e) {}
       if (!added || !added.length) return;
       Content.redraw();
       // brand-new players: everything is new, so a toast is just noise. Same batch twice: say it once.
@@ -308,3 +313,4 @@ const CONTENT_AMB = {};
 const CONTENT_MUSIC = {};
 const CONTENT_SHELF = {};
 const CONTENT_HOME = {};
+const CONTENT_UPDATE = {}; // { latest, min } versionCodes from manifest.update; see Story.maybeUpdate

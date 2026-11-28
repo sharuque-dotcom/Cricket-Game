@@ -96,3 +96,10 @@ Only when the engine changes: a new node type, a new kind of cricket moment, new
 - **music**: mood per background: `calm`, `romance`, `tense`, `festive`, `stadium` or `off`. Inside an episode, a node `{ "music": "tense" }` switches the mood until the next background change.
 - **economy**: keys held, minutes per free key, free chapters at the start of every story.
 - **shelf**: shelf order and the story brand-new players start on. With `variants`, each player is placed in one group for good, and `book_open` / `chapter_*` events carry `shelf` (the group name) so Firebase can compare them. Without `shelf`, in-progress books come first in the built-in order.
+
+## "Please update" prompt (app 1.5.7+; older apps ignore it)
+After a new version is live on Play (and has finished rolling out), add to `manifest.json`:
+```json
+"update": { "latest": 31 }
+```
+`latest` is the new `versionCode`. Players on an older version (1.5.7 or later) get a "A new version is ready" sheet on the home / My stories screen with **Update now** (opens the Play page) and **Later** (hides it for 3 days). Add `"min": 31` only when old versions must not keep playing (no **Later** button below that versionCode). Never set `latest` before the release is actually live, or players get sent to a Play page with nothing new on it. Events: `update_prompt {from, to, must}`, `update_tap {to}`.

@@ -881,6 +881,32 @@ const Story = {
     setTimeout(() => { try { AndroidBridge.requestReview(); } catch (e) {} }, 2600);
   },
 
+  // "A new version is ready": only on the phone, only on the home / My stories screens (never mid-chapter),
+  // when manifest.update.latest is newer than the installed app. "Later" hides it for 3 days.
+  // Below manifest.update.min there is no "Later" (for a release that old versions can't do without).
+  maybeUpdate() {
+    const u = CONTENT_UPDATE, s = this.st;
+    if (!s || !u.latest || UI.sheet || !(window.AndroidBridge && AndroidBridge.appVersion && AndroidBridge.openStore)) return;
+    const cur = UI.cur;
+    if (!cur || !(cur.classList.contains('home') || cur.classList.contains('my-stories'))) return;
+    let have = 0; try { have = AndroidBridge.appVersion(); } catch (e) {}
+    if (!have || have >= u.latest) return;
+    const must = !!(u.min && have < u.min), seen = s.updAsk || {};
+    if (!must && seen.v === u.latest && Date.now() - seen.at < 3 * 864e5) return;
+    s.updAsk = { v: u.latest, at: Date.now() }; this.save();
+    Track.ev('update_prompt', { from: have, to: u.latest, must: must ? 1 : 0 });
+    openSheet(`<div class="pad" style="text-align:center">
+      <div style="font-size:54px;line-height:1;margin:4px 0 6px">🎁</div>
+      <div class="sheet-title">${t('A new version is ready')}</div>
+      <div class="small muted" style="margin:8px auto 0;max-width:300px">${must ? t('This version of Gully to Glory is too old for the newest chapters. Update to keep reading.') : t('Update Gully to Glory for the latest fixes and new features. Your progress stays safe.')}</div>
+      <button class="btn primary block" style="margin-top:16px" data-up>${t('Update now')}</button>
+      ${must ? '' : `<button class="btn ghost block" style="margin-top:8px" data-no>${t('Later')}</button>`}</div>`, sh => {
+      $('[data-up]', sh).onclick = () => { Track.ev('update_tap', { to: u.latest }); try { AndroidBridge.openStore(); } catch (e) {} if (!must) closeSheet(); };
+      const no = $('[data-no]', sh); if (no) no.onclick = () => closeSheet();
+      if (must && UI.sheet) UI.sheet.bg.onclick = null;
+    });
+  },
+
   // Soft pre-prompt first; Android's own dialog only if the player says yes.
   askNotify(fromBell) {
     const st = Notify.state();
