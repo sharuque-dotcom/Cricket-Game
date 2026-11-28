@@ -252,16 +252,18 @@ const Parallax = (() => {
 
 // Fallback touch scrolling for WebViews that don't scroll nested containers
 (() => {
-  let el = null, y0 = 0, top0 = 0, manual = false, lastY = 0, lastT = 0, vel = 0, raf = 0;
+  // The first clear direction of a swipe wins: a sideways swipe on a card row never moves the page up or down.
+  let el = null, x0 = 0, y0 = 0, top0 = 0, manual = false, lastY = 0, lastT = 0, vel = 0, raf = 0;
   document.addEventListener('touchstart', e => {
     cancelAnimationFrame(raf);
     el = e.target.closest && e.target.closest('.scroll'); if (!el) return;
-    y0 = lastY = e.touches[0].clientY; top0 = el.scrollTop; manual = false; vel = 0; lastT = performance.now();
+    x0 = e.touches[0].clientX; y0 = lastY = e.touches[0].clientY; top0 = el.scrollTop; manual = false; vel = 0; lastT = performance.now();
   }, { passive: true });
   document.addEventListener('touchmove', e => {
     if (!el) return;
-    const y = e.touches[0].clientY, dy = y - y0, now = performance.now();
-    if (!manual && Math.abs(dy) > 12 && el.scrollTop === top0) manual = true;
+    const x = e.touches[0].clientX, y = e.touches[0].clientY, dx = x - x0, dy = y - y0, now = performance.now();
+    if (!manual && Math.abs(dx) > 8 && Math.abs(dx) >= Math.abs(dy)) { el = null; return; } // sideways: leave it to the row
+    if (!manual && Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx) * 1.5 && el.scrollTop === top0) manual = true;
     if (manual) el.scrollTop = top0 - dy;
     vel = (lastY - y) / Math.max(1, now - lastT) * 16; lastY = y; lastT = now;
   }, { passive: true });

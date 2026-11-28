@@ -2,31 +2,57 @@
 const Sfx = (() => {
   let ctx = null, master = null, crowdGain = null, crowdSrc = null, muted = false;
   let amb = { kind: null, nodes: [], timers: [] };
-  let noiseBuf = null;
+  let noiseBuf = null, softBuf = null;
+
+  // Pink noise (energy falls off with pitch) for beds, crowds and rain: white noise through phone speakers
+  // is the harsh "grainy" hiss players reported. Ends are crossfaded so a looping bed has no click.
+  function makeSoft(sec) {
+    const n = Math.floor(ctx.sampleRate * sec), b = ctx.createBuffer(1, n, ctx.sampleRate), d = b.getChannelData(0);
+    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0, pk = 0;
+    for (let i = 0; i < n; i++) {
+      const w = Math.random() * 2 - 1;
+      b0 = .99886 * b0 + w * .0555179; b1 = .99332 * b1 + w * .0750759; b2 = .969 * b2 + w * .153852;
+      b3 = .8665 * b3 + w * .3104856; b4 = .55 * b4 + w * .5329522; b5 = -.7616 * b5 - w * .016898;
+      d[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * .5362; b6 = w * .115926;
+    }
+    const fade = Math.floor(ctx.sampleRate * .25);
+    for (let i = 0; i < fade; i++) { const k = i / fade; d[i] = d[i] * k + d[n - fade + i] * (1 - k); }
+    const out = ctx.createBuffer(1, n - fade, ctx.sampleRate), o = out.getChannelData(0);
+    for (let i = 0; i < o.length; i++) { o[i] = d[i]; pk = Math.max(pk, Math.abs(d[i])); }
+    for (let i = 0; i < o.length; i++) o[i] /= pk;
+    return out;
+  }
 
   function init() {
     if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
     try {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
-      master = ctx.createGain(); master.gain.value = muted ? 0 : 0.8; master.connect(ctx.destination);
-      musicGain = ctx.createGain(); musicGain.gain.value = 1.6; musicGain.connect(master);
+      // master -> gentle top cut (phone speakers turn >10 kHz into fizz) -> limiter, so stacked sounds
+      // (a cheer over music over a crowd) never clip and crackle
+      master = ctx.createGain(); master.gain.value = muted ? 0 : 0.8;
+      const air = ctx.createBiquadFilter(); air.type = 'lowpass'; air.frequency.value = 9000; air.Q.value = .5;
+      const lim = ctx.createDynamicsCompressor();
+      lim.threshold.value = -10; lim.knee.value = 8; lim.ratio.value = 8; lim.attack.value = .004; lim.release.value = .25;
+      master.connect(air); air.connect(lim); lim.connect(ctx.destination);
+      musicGain = ctx.createGain(); musicGain.gain.value = 1.3; musicGain.connect(master);
       noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
       const d = noiseBuf.getChannelData(0);
       for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      softBuf = makeSoft(4);
       if (musicWant) setTimeout(() => setMood(musicWant), 0);
     } catch (e) { ctx = null; }
   }
 
-  function noise(dur, { type = 'bandpass', freq = 1000, q = 1, gain = .5, attack = .005, decay = dur } = {}) {
+  function noise(dur, { type = 'bandpass', freq = 1000, q = 1, gain = .5, attack = .005, decay = dur, soft = false } = {}) {
     if (!ctx) return;
     const t = ctx.currentTime;
-    const src = ctx.createBufferSource(); src.buffer = noiseBuf;
+    const src = ctx.createBufferSource(); src.buffer = soft ? softBuf : noiseBuf;
     const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
     const g = ctx.createGain(); g.gain.setValueAtTime(0, t);
     g.gain.linearRampToValueAtTime(gain, t + attack);
     g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
     src.connect(f); f.connect(g); g.connect(master);
-    src.start(t, Math.random()); src.stop(t + dur + .05);
+    src.start(t, Math.random() * Math.max(0, src.buffer.duration - dur - .1)); src.stop(t + dur + .05);
   }
 
   function tone(freq, dur, { type = 'sine', gain = .3, slide = 0, attack = .005, delay = 0 } = {}) {
@@ -102,7 +128,7 @@ const Sfx = (() => {
     if (dr === 'k') { mvoice('sine', 220, t, .22, .16); mnoise(t, .09, 'bandpass', 400, .06, 1.2); } // dhol bass, pitched for phone speakers
     else if (dr === 's') mnoise(t, .08, 'bandpass', 1900, .07, 1.5);
     else if (dr === 'c') { mnoise(t, .1, 'bandpass', 1500, .09, .8); mnoise(t + .012, .08, 'bandpass', 2200, .05, .8); }
-    if (m.shake[s16] === 'h') mnoise(t, .04, 'highpass', 6000, .025);
+    if (m.shake[s16] === 'h') mnoise(t, .04, 'bandpass', 5200, .012, .9);
   }
   function mtick() {
     const m = MOODS[mus.mood]; if (!m || !ctx) return;
@@ -137,7 +163,7 @@ const Sfx = (() => {
     get _ctx() { return ctx; },
     tap() { tone(520, .07, { type: 'triangle', gain: .12, slide: 180 }); },
     select() { tone(660, .09, { type: 'triangle', gain: .14 }); tone(990, .12, { type: 'triangle', gain: .1, delay: .05 }); },
-    whoosh() { noise(.45, { type: 'bandpass', freq: 900, q: .7, gain: .25, attack: .15, decay: .45 }); },
+    whoosh() { noise(.45, { type: 'bandpass', freq: 900, q: .7, gain: .3, attack: .15, decay: .45, soft: true }); },
     bat(power = 1) { // willow crack
       noise(.12, { type: 'highpass', freq: 1800, gain: .55 * power, decay: .1 });
       tone(180, .12, { type: 'square', gain: .12 * power, slide: -80 });
@@ -152,36 +178,37 @@ const Sfx = (() => {
     bounce() { noise(.06, { type: 'lowpass', freq: 700, gain: .25, decay: .06 }); },
     heartbeat() { tone(55, .16, { type: 'sine', gain: .5, slide: -15 }); tone(50, .18, { type: 'sine', gain: .4, delay: .22, slide: -15 }); },
     cheer(size = 1) {
-      noise(2.6 * size, { type: 'bandpass', freq: 1400, q: .4, gain: .35 * size, attack: .25, decay: 2.6 * size });
-      noise(2.2 * size, { type: 'bandpass', freq: 600, q: .5, gain: .25 * size, attack: .2, decay: 2.2 * size });
+      // a crowd roar: warm pink noise in two voice-like bands, rising and falling, no white hiss
+      noise(2.6 * size, { type: 'bandpass', freq: 1100, q: .7, gain: .5 * size, attack: .3, decay: 2.6 * size, soft: true });
+      noise(2.2 * size, { type: 'bandpass', freq: 520, q: .7, gain: .45 * size, attack: .22, decay: 2.2 * size, soft: true });
     },
-    groan() { noise(1.4, { type: 'lowpass', freq: 500, gain: .3, attack: .1, decay: 1.4 }); tone(160, 1.1, { type: 'sawtooth', gain: .03, slide: -60 }); },
+    groan() { noise(1.4, { type: 'lowpass', freq: 500, gain: .3, attack: .1, decay: 1.4, soft: true }); tone(160, 1.1, { type: 'sawtooth', gain: .03, slide: -60 }); },
     coin() { tone(1320, .08, { type: 'square', gain: .08 }); tone(1760, .25, { type: 'square', gain: .07, delay: .08 }); },
     stinger() { // chapter / big moment
       tone(110, 1.6, { type: 'sawtooth', gain: .08, attack: .02 });
       tone(165, 1.6, { type: 'sawtooth', gain: .06, attack: .02 });
-      noise(1.2, { type: 'lowpass', freq: 300, gain: .4, attack: .01, decay: 1.2 });
+      noise(1.2, { type: 'lowpass', freq: 300, gain: .4, attack: .01, decay: 1.2, soft: true });
       tone(55, 1.8, { type: 'sine', gain: .5, attack: .01 });
     },
-    rise() { tone(220, 1.2, { type: 'sawtooth', gain: .05, slide: 660, attack: .3 }); noise(1.2, { type: 'highpass', freq: 2000, gain: .12, attack: 1.1, decay: 1.2 }); },
+    rise() { tone(220, 1.2, { type: 'sawtooth', gain: .05, slide: 660, attack: .3 }); noise(1.2, { type: 'bandpass', freq: 2200, q: .6, gain: .14, attack: 1.1, decay: 1.2, soft: true }); },
     success() { [523, 659, 784, 1046].forEach((f, i) => tone(f, .35, { type: 'triangle', gain: .14, delay: i * .08 })); },
     fail() { [392, 330, 262].forEach((f, i) => tone(f, .4, { type: 'triangle', gain: .14, delay: i * .12 })); },
     gavel() { noise(.12, { type: 'lowpass', freq: 900, gain: .8, decay: .12 }); tone(120, .2, { type: 'sine', gain: .5 }); },
     crowd(on, level = .12) {
       if (!ctx) return;
       if (on && !crowdSrc) {
-        crowdSrc = ctx.createBufferSource(); crowdSrc.buffer = noiseBuf; crowdSrc.loop = true;
-        const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 900; f.Q.value = .35;
+        crowdSrc = ctx.createBufferSource(); crowdSrc.buffer = softBuf; crowdSrc.loop = true;
+        const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 800; f.Q.value = .6;
         crowdGain = ctx.createGain(); crowdGain.gain.value = 0;
         crowdSrc.connect(f); f.connect(crowdGain); crowdGain.connect(master); crowdSrc.start();
       }
-      if (crowdGain) crowdGain.gain.linearRampToValueAtTime(on ? level : 0, ctx.currentTime + 1);
+      if (crowdGain) { const t = ctx.currentTime; crowdGain.gain.cancelScheduledValues(t); crowdGain.gain.setValueAtTime(crowdGain.gain.value, t); crowdGain.gain.linearRampToValueAtTime(on ? level * 1.4 : 0, t + 1); }
       if (!on && crowdSrc) { const s = crowdSrc; crowdSrc = null; setTimeout(() => { try { s.stop(); } catch (e) {} }, 1200); }
     },
     // soft typewriter tick
-    tick() { tone(1800 + Math.random() * 300, .02, { type: 'square', gain: .012 }); },
+    tick() { tone(1800 + Math.random() * 300, .025, { type: 'sine', gain: .014 }); },
     // deep cinematic hit for reveals
-    boom() { tone(48, 2.2, { type: 'sine', gain: .7, attack: .005, slide: -18 }); noise(1.6, { type: 'lowpass', freq: 220, gain: .55, decay: 1.6 }); tone(96, 1.2, { type: 'triangle', gain: .12, slide: -40 }); },
+    boom() { tone(48, 2.2, { type: 'sine', gain: .7, attack: .005, slide: -18 }); noise(1.6, { type: 'lowpass', freq: 220, gain: .55, decay: 1.6, soft: true }); tone(96, 1.2, { type: 'triangle', gain: .12, slide: -40 }); },
     // looping scene ambience: stall | maidan | room | rain | night | off
     ambience(kind) {
       if (!ctx) return;
@@ -192,31 +219,31 @@ const Sfx = (() => {
       amb = { kind, nodes: [], timers: [] };
       if (!kind || kind === 'off') return;
       const bed = (type, freq, q, level) => {
-        const s = ctx.createBufferSource(); s.buffer = noiseBuf; s.loop = true;
+        const s = ctx.createBufferSource(); s.buffer = softBuf; s.loop = true;
         const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
         const g = ctx.createGain(); g.gain.value = 0; g.gain.linearRampToValueAtTime(level, ctx.currentTime + 1.5);
-        s.connect(f); f.connect(g); g.connect(master); s.start(0, Math.random()); amb.nodes.push({ s, g });
+        s.connect(f); f.connect(g); g.connect(master); s.start(0, Math.random() * 3); amb.nodes.push({ s, g });
       };
       const every = (ms, fn, chance = 1) => amb.timers.push(setInterval(() => { if (Math.random() < chance && !muted) fn(); }, ms));
       if (kind === 'stall') {
-        bed('bandpass', 750, .6, .09); bed('bandpass', 2600, 2, .03);
-        every(5200, () => noise(1.8, { type: 'bandpass', freq: 3200, q: 1.5, gain: .05, attack: .4, decay: 1.8 }), .5); // kettle hiss
+        bed('bandpass', 750, .7, .1); bed('bandpass', 2400, 2, .02);
+        every(5200, () => noise(1.8, { type: 'bandpass', freq: 3000, q: 2, gain: .04, attack: .4, decay: 1.8, soft: true }), .5); // kettle hiss
         every(9000, () => { tone(392, .5, { type: 'sawtooth', gain: .035 }); tone(494, .5, { type: 'sawtooth', gain: .03 }); tone(392, .35, { type: 'sawtooth', gain: .03, delay: .6 }); }, .45); // bus horn
         every(3700, () => tone(1300 + Math.random() * 500, .06, { type: 'triangle', gain: .02 }), .4); // glasses clink
       } else if (kind === 'maidan') {
-        bed('bandpass', 900, .5, .08); bed('highpass', 4000, .5, .02);
+        bed('bandpass', 900, .6, .09);
         every(2300, () => { const f = 2600 + Math.random() * 1600; [0, .09, .18].forEach(d => tone(f + Math.random() * 300, .07, { type: 'sine', gain: .03, delay: d, slide: 400 })); }, .55); // birds
-        every(6000, () => noise(1.2, { type: 'bandpass', freq: 1100, q: .6, gain: .05, attack: .3, decay: 1.2 }), .4); // distant kids shout
+        every(6000, () => noise(1.2, { type: 'bandpass', freq: 1100, q: .7, gain: .06, attack: .3, decay: 1.2, soft: true }), .4); // distant kids shout
       } else if (kind === 'room') {
-        bed('bandpass', 650, .6, .055); bed('bandpass', 4200, 6, .015);
+        bed('bandpass', 650, .7, .06);
         every(900, () => { tone(4400, .03, { type: 'sine', gain: .05 }); tone(4400, .03, { type: 'sine', gain: .05, delay: .06 }); }, .6); // crickets
       } else if (kind === 'night') {
         bed('bandpass', 700, .6, .065);
         every(1100, () => { tone(4100, .03, { type: 'sine', gain: .05 }); tone(4100, .03, { type: 'sine', gain: .05, delay: .07 }); }, .5);
       } else if (kind === 'rain') {
-        bed('highpass', 1200, .3, .12); bed('bandpass', 600, .5, .05);
-        every(700, () => noise(.04, { type: 'highpass', freq: 3000, gain: .05, decay: .04 }), .7); // drips on tin
-        every(11000, () => { noise(3.2, { type: 'lowpass', freq: 140, gain: .5, attack: .2, decay: 3.2 }); }, .45); // thunder
+        bed('bandpass', 1600, .5, .11); bed('bandpass', 600, .6, .06); // steady rain, no fizz
+        every(700, () => tone(2200 + Math.random() * 900, .03, { type: 'sine', gain: .02, slide: -600 }), .7); // drips on tin
+        every(11000, () => { noise(3.2, { type: 'lowpass', freq: 140, gain: .5, attack: .2, decay: 3.2, soft: true }); }, .45); // thunder
       }
     },
   };
