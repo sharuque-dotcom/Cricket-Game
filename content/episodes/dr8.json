@@ -1,0 +1,273 @@
+{
+ "id": "dr8",
+ "no": 8,
+ "book": "dropped",
+ "title": "The Leak",
+ "art": "bg_london_rain",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_board_room"
+  },
+  {
+   "n": "The inquiry room again. This time with a camera crew in the corridor, three Board lawyers, and Diya sitting at the far end of the table without her press pass."
+  },
+  {
+   "enter": "rekha",
+   "side": "left"
+  },
+  {
+   "s": "rekha",
+   "t": "Ms Nair's newspaper has suspended her until this is settled. Mr Bhandari says she stole the minutes from a Board office in Mumbai."
+  },
+  {
+   "s": "rekha",
+   "t": "{first}. Did you ever see those papers before they were printed?"
+  },
+  {
+   "enter": "diya",
+   "side": "right"
+  },
+  {
+   "n": "Diya looks at you. Very slightly, she shakes her head. Don't. Protect yourself."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Yes. She showed me. And she never stole anything.\"",
+     "d": "Stand next to her.",
+     "fx": {
+      "diya": 2
+     },
+     "set": "stoodByDiya"
+    },
+    {
+     "t": "\"I saw them. I don't know where they came from.\"",
+     "d": "True, and careful.",
+     "fx": {
+      "diya": 1
+     },
+     "set": "careful"
+    },
+    {
+     "t": "\"No.\"",
+     "d": "Do what she asked you to do.",
+     "set": "deniedDiya"
+    }
+   ]
+  },
+  {
+   "if": "deniedDiya",
+   "go": "denied"
+  },
+  {
+   "s": "rekha",
+   "t": "Thank you. That's the first straight answer I've had all week."
+  },
+  {
+   "go": "afterQ"
+  },
+  {
+   "label": "denied"
+  },
+  {
+   "n": "Rekha writes something down. Diya looks at the table. She asked you to say it. It still lands like a slap."
+  },
+  {
+   "label": "afterQ"
+  },
+  {
+   "s": "rekha",
+   "t": "Ms Nair. Who gave you the minutes?"
+  },
+  {
+   "s": "diya",
+   "t": "A source. I don't name sources. Not to you, not to anyone. You can suspend me forever."
+  },
+  {
+   "s": "rekha",
+   "t": "Then this inquiry stays open. And so does your suspension. I'm sorry.",
+   "mood": "soft"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_london_rain"
+  },
+  {
+   "n": "9 PM. You find her two streets from the hotel, standing under a café awning in the rain, with no umbrella and no plan."
+  },
+  {
+   "enter": "diya",
+   "side": "right"
+  },
+  {
+   "s": "diya",
+   "t": "Six years. I've filed stories from flooded stadiums and from a hospital waiting room. They took my pass in four minutes.",
+   "mood": "soft",
+   "ex": "sad"
+  },
+  {
+   "if": "deniedDiya",
+   "go": "coldDiya"
+  },
+  {
+   "s": "diya",
+   "t": "And you said that in there. In front of all of them. Nobody does that for me.",
+   "mood": "soft"
+  },
+  {
+   "go": "choiceRain"
+  },
+  {
+   "label": "coldDiya"
+  },
+  {
+   "s": "diya",
+   "t": "I told you to say no. I know I did. I don't know why it hurts.",
+   "mood": "soft",
+   "ex": "sad"
+  },
+  {
+   "label": "choiceRain"
+  },
+  {
+   "choice": [
+    {
+     "t": "Give her your team jacket and stand in the rain with her.",
+     "d": "Words can wait.",
+     "fx": {
+      "diya": 2
+     },
+     "set": "jacket"
+    },
+    {
+     "t": "\"We'll find your source. And we'll get them to talk.\"",
+     "d": "Make it a plan.",
+     "fx": {
+      "diya": 1
+     },
+     "set": "plan"
+    },
+    {
+     "t": "Buy two terrible coffees and walk her back the long way.",
+     "d": "The longest walk in London.",
+     "cost": 20,
+     "fx": {
+      "diya": 3
+     },
+     "set": "longWalk"
+    }
+   ]
+  },
+  {
+   "if": "longWalk",
+   "go": "walk"
+  },
+  {
+   "if": "plan",
+   "go": "planned"
+  },
+  {
+   "n": "The jacket is far too big for her. The sleeves cover her hands. She laughs, wet hair stuck to her face, and for one minute the rain sounds like applause."
+  },
+  {
+   "s": "diya",
+   "t": "If anyone takes a photo of this, we're both finished. Stand closer so they can't see my face.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "go": "end8"
+  },
+  {
+   "label": "planned"
+  },
+  {
+   "s": "diya",
+   "t": "You sound like an editor. It's annoying. It's also the nicest thing anyone's said to me all day.",
+   "mood": "soft"
+  },
+  {
+   "go": "end8"
+  },
+  {
+   "label": "walk"
+  },
+  {
+   "n": "The coffee is undrinkable. The long way takes ninety minutes. You talk about everything but cricket: her brother's insurance job, Amma's rice pudding, a dog she had at nine called Captain."
+  },
+  {
+   "s": "diya",
+   "t": "I've decided something. I'm not going to cry about the job. I'm going to cry about this coffee. It's a crime.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "label": "end8"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "phone": "Unknown",
+   "msgs": [
+    {
+     "t": "It's Aryan."
+    },
+    {
+     "t": "I need to tell you something. Not on the phone. Video call. Tonight."
+    },
+    {
+     "t": "Please."
+    }
+   ]
+  },
+  {
+   "end": true,
+   "cliff": "Aryan wants to talk. Tonight. And he said please."
+  }
+ ]
+}

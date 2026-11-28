@@ -1,0 +1,238 @@
+{
+ "id": "dr7",
+ "no": 7,
+ "book": "dropped",
+ "title": "Debut",
+ "art": "ev_collar_six",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_intl_dressing"
+  },
+  {
+   "n": "Thursday. 9:15 AM. Sameer hands you a teal cap. Not a training cap. The real one. There's a number stitched on the back."
+  },
+  {
+   "enter": "sameer",
+   "side": "right"
+  },
+  {
+   "s": "sameer",
+   "t": "Everybody gets a speech when they get this. Mine was twenty minutes long. I'll give you three words. Bat like Kuttanad."
+  },
+  {
+   "choice": [
+    {
+     "t": "Put the cap on and say nothing.",
+     "d": "Some moments don't need words.",
+     "set": "capQuiet"
+    },
+    {
+     "t": "\"Nine times, Captain. Thank you for the tenth.\"",
+     "d": "Say it.",
+     "set": "capThanks"
+    }
+   ]
+  },
+  {
+   "s": "sameer",
+   "t": "Don't thank me. Score.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_bund_screening"
+  },
+  {
+   "n": "On the riverbank in Kuttanad, it's 2 PM, and nobody has gone to work. The temple has stopped ringing its bell so people can hear the commentary."
+  },
+  {
+   "bg": "bg_intl_stadium"
+  },
+  {
+   "n": "Forty-four overs gone. You came in at five, with the team wobbling. You've batted for an hour and a half. Sixty-two runs. Not one ball has been easy."
+  },
+  {
+   "n": "Now it's the last over. The scoreboard is very simple and very cruel."
+  },
+  {
+   "moment": {
+    "kind": "chase",
+    "title": "12 off 6",
+    "desc": "Your World Cup debut. The fastest attack in the tournament. Your village is watching on a bedsheet. Twelve to win.",
+    "bowler": "Dale Brennan",
+    "balls": 6,
+    "need": 12,
+    "winCall": "WORLD CUP WIN!",
+    "winSub": "Four hundred people on a riverbank lose their minds.",
+    "loseCall": "SO CLOSE",
+    "loseSub": "The whole stadium stands for the new boy."
+   },
+   "win": "won",
+   "lose": "lost"
+  },
+  {
+   "label": "won"
+  },
+  {
+   "set": "debutWon"
+  },
+  {
+   "bg": "ev_collar_six"
+  },
+  {
+   "n": "The last ball goes high over long-on and lands in a sea of teal and orange flags. Before you even think about it, your left hand goes to your collar.",
+   "reveal": true
+  },
+  {
+   "n": "In Kuttanad, a man in a checked shirt and a white wrap-around sarong falls off the roof of his own auto-rickshaw. He is fine. He will tell the story for the rest of his life."
+  },
+  {
+   "go": "after"
+  },
+  {
+   "label": "lost"
+  },
+  {
+   "n": "Two short. Brennan's last ball is a perfect yorker. You dig it out and run, and it isn't enough. Seventy-one runs, on debut, in a losing team."
+  },
+  {
+   "bg": "ev_collar_six"
+  },
+  {
+   "n": "And yet, when you walk off, the whole stadium stands. And somewhere on the way, your hand goes to your collar. A camera catches it.",
+   "reveal": true
+  },
+  {
+   "label": "after"
+  },
+  {
+   "bg": "bg_press_room"
+  },
+  {
+   "n": "Within an hour, the clip has twelve million views. \"Who is he touching his collar for?\" Everyone has a theory. A girlfriend. A god. A curse."
+  },
+  {
+   "enter": "diya",
+   "side": "right"
+  },
+  {
+   "s": "diya",
+   "t": "Twelve million. My phone has been ringing since the last ball. Everyone wants to know who the collar is for."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"For Shibu. My friend with the auto.\"",
+     "d": "Tell the world.",
+     "fx": {
+      "shibu": 2,
+      "diya": 1
+     },
+     "set": "collarShibu"
+    },
+    {
+     "t": "\"For everyone in Kuttanad watching on a bedsheet.\"",
+     "d": "Tell the world, bigger.",
+     "fx": {
+      "amma": 1,
+      "shibu": 1
+     },
+     "set": "collarVillage"
+    },
+    {
+     "t": "\"That's between me and the collar.\"",
+     "d": "Keep the secret. Shibu will love it.",
+     "fx": {
+      "shibu": 1
+     },
+     "set": "collarSecret"
+    }
+   ]
+  },
+  {
+   "s": "diya",
+   "t": "That's going to be the best headline I've written this year.",
+   "mood": "soft",
+   "ex": "happy"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "Midnight. Room 908. You can't sleep. There's a sports channel on mute. Then the ticker along the bottom of the screen changes."
+  },
+  {
+   "if": "onRecord",
+   "go": "recNews"
+  },
+  {
+   "n": "\"BOARD INQUIRY: Leaked selection papers 'stolen by journalist', claims former chairman. Reporter Diya Nair named.\"",
+   "reveal": true
+  },
+  {
+   "go": "end7"
+  },
+  {
+   "label": "recNews"
+  },
+  {
+   "n": "\"BOARD INQUIRY: Former chairman says debutant and reporter Diya Nair 'conspired' to steal Board papers.\"",
+   "reveal": true
+  },
+  {
+   "label": "end7"
+  },
+  {
+   "end": true,
+   "cliff": "The best day of your life, and Bhandari has just named Diya."
+  }
+ ]
+}

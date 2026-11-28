@@ -93,12 +93,6 @@
         "shibu": "Shibu",
         "diya": "Diya",
         "aryan": "Aryan"
-      },
-      "teaser": {
-        "no": 5,
-        "title": "The Tenth Time",
-        "art": "bg_intl_dressing",
-        "note": "Coming soon"
       }
     },
     {
@@ -431,24 +425,96 @@
       "id": "dr1",
       "no": 1,
       "file": "episodes/dr1.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "dr2",
       "no": 2,
       "file": "episodes/dr2.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "dr3",
       "no": 3,
       "file": "episodes/dr3.json",
-      "rev": 1
+      "rev": 2
     },
     {
       "id": "dr4",
       "no": 4,
       "file": "episodes/dr4.json",
+      "rev": 2
+    },
+    {
+      "id": "dr5",
+      "no": 5,
+      "file": "episodes/dr5.json",
+      "rev": 1
+    },
+    {
+      "id": "dr6",
+      "no": 6,
+      "file": "episodes/dr6.json",
+      "rev": 1
+    },
+    {
+      "id": "dr7",
+      "no": 7,
+      "file": "episodes/dr7.json",
+      "rev": 1
+    },
+    {
+      "id": "dr8",
+      "no": 8,
+      "file": "episodes/dr8.json",
+      "rev": 1
+    },
+    {
+      "id": "dr9",
+      "no": 9,
+      "file": "episodes/dr9.json",
+      "rev": 1
+    },
+    {
+      "id": "dr10",
+      "no": 10,
+      "file": "episodes/dr10.json",
+      "rev": 1
+    },
+    {
+      "id": "dr11",
+      "no": 11,
+      "file": "episodes/dr11.json",
+      "rev": 1
+    },
+    {
+      "id": "dr12",
+      "no": 12,
+      "file": "episodes/dr12.json",
+      "rev": 1
+    },
+    {
+      "id": "dr13",
+      "no": 13,
+      "file": "episodes/dr13.json",
+      "rev": 1
+    },
+    {
+      "id": "dr14",
+      "no": 14,
+      "file": "episodes/dr14.json",
+      "rev": 1
+    },
+    {
+      "id": "dr15",
+      "no": 15,
+      "file": "episodes/dr15.json",
+      "rev": 1
+    },
+    {
+      "id": "dr16",
+      "no": 16,
+      "file": "episodes/dr16.json",
       "rev": 1
     }
   ],
@@ -498,7 +564,14 @@
     "bg_mandap": "bd_stadium_night",
     "ev_runaway_bride": "bd_stadium_night",
     "bg_houseboat": "bg_home",
-    "bg_backwater_night": "bg_street_dusk"
+    "bg_backwater_night": "bg_street_dusk",
+    "bg_board_room": "bg_hotel_lobby",
+    "bg_bund_screening": "bg_street_dusk",
+    "bg_london_rain": "bg_street_dusk",
+    "ev_collar_six": "bd_stadium_night",
+    "bg_kuttanad_storm": "bg_street_dusk",
+    "ev_snake_boat_race": "bd_maidan",
+    "bg_lakshmi_new": "bg_home"
   },
   "fx": {
     "ev_the_call": "dust",
@@ -543,7 +616,14 @@
     "bg_mandap": "bokeh",
     "ev_runaway_bride": "bokeh",
     "bg_houseboat": "bokeh",
-    "bg_backwater_night": "bokeh"
+    "bg_backwater_night": "bokeh",
+    "bg_board_room": "dust",
+    "bg_bund_screening": "bokeh",
+    "bg_london_rain": "rain",
+    "ev_collar_six": "bokeh",
+    "bg_kuttanad_storm": "rain",
+    "ev_snake_boat_race": "dust",
+    "bg_lakshmi_new": "bokeh"
   },
   "day": [
     "bg_academy_nets",
@@ -554,7 +634,9 @@
     "bg_kapoor_mansion",
     "ev_real_wedding",
     "bg_girls_ground",
-    "bg_marine_drive"
+    "bg_marine_drive",
+    "ev_snake_boat_race",
+    "bg_lakshmi_new"
   ],
   "amb": {
     "ev_the_call": "stall",
@@ -599,58 +681,72 @@
     "bg_mandap": "night",
     "ev_runaway_bride": "night",
     "bg_houseboat": "night",
-    "bg_backwater_night": "night"
+    "bg_backwater_night": "night",
+    "bg_board_room": "room",
+    "bg_bund_screening": "night",
+    "bg_london_rain": "rain",
+    "ev_collar_six": "night",
+    "bg_kuttanad_storm": "rain",
+    "ev_snake_boat_race": "maidan",
+    "bg_lakshmi_new": "maidan"
   },
   "art": {
     "bg_academy_nets": "img/bg_academy_nets.webp",
     "bg_academy_room": "img/bg_academy_room.webp",
     "bg_airport_gate": "img/bg_airport_gate.webp",
+    "bg_auto_night": "img/bg_auto_night.webp",
     "bg_awards_gala": "img/bg_awards_gala.webp",
+    "bg_backwater_night": "img/bg_backwater_night.webp",
+    "bg_balcony_night": "img/bg_balcony_night.webp",
+    "bg_board_room": "img/bg_board_room.webp",
     "bg_brand_shoot": "img/bg_brand_shoot.webp",
+    "bg_bund_screening": "img/bg_bund_screening.webp",
     "bg_delhi_night": "img/bg_delhi_night.webp",
+    "bg_dining_room": "img/bg_dining_room.webp",
+    "bg_film_set": "img/bg_film_set.webp",
+    "bg_gate_four": "img/bg_gate_four.webp",
+    "bg_girls_ground": "img/bg_girls_ground.webp",
+    "bg_goa_beach": "img/bg_goa_beach.webp",
+    "bg_hotel_suite": "img/bg_hotel_suite.webp",
+    "bg_houseboat": "img/bg_houseboat.webp",
     "bg_intl_dressing": "img/bg_intl_dressing.webp",
     "bg_intl_stadium": "img/bg_intl_stadium.webp",
+    "bg_kapoor_mansion": "img/bg_kapoor_mansion.webp",
+    "bg_kuttanad_storm": "img/bg_kuttanad_storm.webp",
+    "bg_lakshmi_new": "img/bg_lakshmi_new.webp",
+    "bg_london_rain": "img/bg_london_rain.webp",
+    "bg_mandap": "img/bg_mandap.webp",
+    "bg_mansion_party": "img/bg_mansion_party.webp",
+    "bg_marine_drive": "img/bg_marine_drive.webp",
+    "bg_mehendi": "img/bg_mehendi.webp",
     "bg_overseas_hotel": "img/bg_overseas_hotel.webp",
+    "bg_owner_box": "img/bg_owner_box.webp",
+    "bg_owner_office": "img/bg_owner_office.webp",
+    "bg_palace_wedding": "img/bg_palace_wedding.webp",
     "bg_physio_room": "img/bg_physio_room.webp",
     "bg_press_room": "img/bg_press_room.webp",
     "bg_rajgarh_festival": "img/bg_rajgarh_festival.webp",
-    "bg_rooftop_lounge": "img/bg_rooftop_lounge.webp",
-    "bg_stadium_tunnel": "img/bg_stadium_tunnel.webp",
-    "cover_bluecap": "img/cover_bluecap.webp",
-    "ev_blue_cap": "img/ev_blue_cap.webp",
-    "ev_last_over": "img/ev_last_over.webp",
-    "ev_the_call": "img/ev_the_call.webp",
-    "ev_viral": "img/ev_viral.webp",
-    "ev_fake_wedding": "img/ev_fake_wedding.webp",
-    "bg_seaface_flat": "img/bg_seaface_flat.webp",
-    "ev_kiss_cam": "img/ev_kiss_cam.webp",
-    "ev_real_wedding": "img/ev_real_wedding.webp",
-    "bg_film_set": "img/bg_film_set.webp",
-    "bg_hotel_suite": "img/bg_hotel_suite.webp",
-    "bg_kapoor_mansion": "img/bg_kapoor_mansion.webp",
-    "bg_goa_beach": "img/bg_goa_beach.webp",
-    "bg_palace_wedding": "img/bg_palace_wedding.webp",
     "bg_red_carpet": "img/bg_red_carpet.webp",
+    "bg_rooftop_lounge": "img/bg_rooftop_lounge.webp",
+    "bg_seaface_flat": "img/bg_seaface_flat.webp",
+    "bg_stadium_tunnel": "img/bg_stadium_tunnel.webp",
     "bg_tv_studio": "img/bg_tv_studio.webp",
-    "cover_owner": "img/cover_owner.webp",
-    "bg_mansion_party": "img/bg_mansion_party.webp",
-    "bg_auto_night": "img/bg_auto_night.webp",
-    "bg_marine_drive": "img/bg_marine_drive.webp",
-    "bg_owner_box": "img/bg_owner_box.webp",
-    "bg_gate_four": "img/bg_gate_four.webp",
-    "bg_dining_room": "img/bg_dining_room.webp",
-    "bg_girls_ground": "img/bg_girls_ground.webp",
-    "bg_owner_office": "img/bg_owner_office.webp",
-    "bg_balcony_night": "img/bg_balcony_night.webp",
-    "bg_mehendi": "img/bg_mehendi.webp",
-    "bg_mandap": "img/bg_mandap.webp",
-    "ev_runaway_bride": "img/ev_runaway_bride.webp",
     "cover_banned": "img/cover_banned.webp",
-    "cover_groundsman": "img/cover_groundsman.webp",
-    "cover_trade": "img/cover_trade.webp",
+    "cover_bluecap": "img/cover_bluecap.webp",
     "cover_dropped": "img/cover_dropped.webp",
-    "bg_houseboat": "img/bg_houseboat.webp",
-    "bg_backwater_night": "img/bg_backwater_night.webp"
+    "cover_groundsman": "img/cover_groundsman.webp",
+    "cover_owner": "img/cover_owner.webp",
+    "cover_trade": "img/cover_trade.webp",
+    "ev_blue_cap": "img/ev_blue_cap.webp",
+    "ev_collar_six": "img/ev_collar_six.webp",
+    "ev_fake_wedding": "img/ev_fake_wedding.webp",
+    "ev_kiss_cam": "img/ev_kiss_cam.webp",
+    "ev_last_over": "img/ev_last_over.webp",
+    "ev_real_wedding": "img/ev_real_wedding.webp",
+    "ev_runaway_bride": "img/ev_runaway_bride.webp",
+    "ev_snake_boat_race": "img/ev_snake_boat_race.webp",
+    "ev_the_call": "img/ev_the_call.webp",
+    "ev_viral": "img/ev_viral.webp"
   },
   "chars": {
     "imran": "img/char_imran.webp",
@@ -707,7 +803,15 @@
     "aryan_angry": "img/char_aryan_angry.webp",
     "bhandari": "img/char_bhandari.webp",
     "sameer": "img/char_sameer.webp",
-    "faisal": "img/char_faisal.webp"
+    "faisal": "img/char_faisal.webp",
+    "rekha": "img/char_rekha.webp",
+    "amma_coat": "img/char_amma_coat.webp",
+    "bhandari_angry": "img/char_bhandari_angry.webp",
+    "shibu_happy": "img/char_shibu_happy.webp",
+    "diya_sad": "img/char_diya_sad.webp",
+    "aryan_sad": "img/char_aryan_sad.webp",
+    "shibu_sad": "img/char_shibu_sad.webp",
+    "faisal_angry": "img/char_faisal_angry.webp"
   },
   "i18n": {
     "hinglish": [
@@ -1034,21 +1138,81 @@
       {
         "ep": "dr1",
         "file": "i18n/hinglish/dr1.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr2",
         "file": "i18n/hinglish/dr2.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr3",
         "file": "i18n/hinglish/dr3.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr4",
         "file": "i18n/hinglish/dr4.json",
+        "rev": 2
+      },
+      {
+        "ep": "dr5",
+        "file": "i18n/hinglish/dr5.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr6",
+        "file": "i18n/hinglish/dr6.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr7",
+        "file": "i18n/hinglish/dr7.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr8",
+        "file": "i18n/hinglish/dr8.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr9",
+        "file": "i18n/hinglish/dr9.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr10",
+        "file": "i18n/hinglish/dr10.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr11",
+        "file": "i18n/hinglish/dr11.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr12",
+        "file": "i18n/hinglish/dr12.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr13",
+        "file": "i18n/hinglish/dr13.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr14",
+        "file": "i18n/hinglish/dr14.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr15",
+        "file": "i18n/hinglish/dr15.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr16",
+        "file": "i18n/hinglish/dr16.json",
         "rev": 1
       }
     ],
@@ -1376,21 +1540,81 @@
       {
         "ep": "dr1",
         "file": "i18n/manglish/dr1.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr2",
         "file": "i18n/manglish/dr2.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr3",
         "file": "i18n/manglish/dr3.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr4",
         "file": "i18n/manglish/dr4.json",
+        "rev": 2
+      },
+      {
+        "ep": "dr5",
+        "file": "i18n/manglish/dr5.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr6",
+        "file": "i18n/manglish/dr6.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr7",
+        "file": "i18n/manglish/dr7.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr8",
+        "file": "i18n/manglish/dr8.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr9",
+        "file": "i18n/manglish/dr9.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr10",
+        "file": "i18n/manglish/dr10.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr11",
+        "file": "i18n/manglish/dr11.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr12",
+        "file": "i18n/manglish/dr12.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr13",
+        "file": "i18n/manglish/dr13.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr14",
+        "file": "i18n/manglish/dr14.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr15",
+        "file": "i18n/manglish/dr15.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr16",
+        "file": "i18n/manglish/dr16.json",
         "rev": 1
       }
     ],
@@ -1718,21 +1942,81 @@
       {
         "ep": "dr1",
         "file": "i18n/banglish/dr1.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr2",
         "file": "i18n/banglish/dr2.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr3",
         "file": "i18n/banglish/dr3.json",
-        "rev": 1
+        "rev": 2
       },
       {
         "ep": "dr4",
         "file": "i18n/banglish/dr4.json",
+        "rev": 2
+      },
+      {
+        "ep": "dr5",
+        "file": "i18n/banglish/dr5.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr6",
+        "file": "i18n/banglish/dr6.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr7",
+        "file": "i18n/banglish/dr7.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr8",
+        "file": "i18n/banglish/dr8.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr9",
+        "file": "i18n/banglish/dr9.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr10",
+        "file": "i18n/banglish/dr10.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr11",
+        "file": "i18n/banglish/dr11.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr12",
+        "file": "i18n/banglish/dr12.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr13",
+        "file": "i18n/banglish/dr13.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr14",
+        "file": "i18n/banglish/dr14.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr15",
+        "file": "i18n/banglish/dr15.json",
+        "rev": 1
+      },
+      {
+        "ep": "dr16",
+        "file": "i18n/banglish/dr16.json",
         "rev": 1
       }
     ]
@@ -1785,6 +2069,13 @@
     "bg_mandap": "tense",
     "ev_runaway_bride": "stadium",
     "bg_houseboat": "calm",
-    "bg_backwater_night": "tense"
+    "bg_backwater_night": "tense",
+    "bg_board_room": "tense",
+    "bg_bund_screening": "festive",
+    "bg_london_rain": "romance",
+    "ev_collar_six": "stadium",
+    "bg_kuttanad_storm": "tense",
+    "ev_snake_boat_race": "festive",
+    "bg_lakshmi_new": "festive"
   }
 }

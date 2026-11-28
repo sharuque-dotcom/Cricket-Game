@@ -36,6 +36,14 @@
   "caller": {
    "name": "Delhi number",
    "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
   }
  },
  "nodes": [
@@ -51,10 +59,10 @@
   },
   {
    "s": "amma",
-   "t": "Three jars of mango pickle. One jar of fish pickle. Two thorthu towels. Don't tell me England has towels. I've seen hotel towels. They're thin."
+   "t": "Three jars of mango pickle. One jar of fish pickle. Two cotton towels. Don't tell me England has towels. I've seen hotel towels. They're thin."
   },
   {
-   "n": "She presses something into your palm. A brass oar-blade, no bigger than a thumb, on a black thread. Achan wore it in every snake-boat race."
+   "n": "She presses something into your palm. A brass oar-blade, no bigger than a thumb, on a black thread. Your father wore it in every snake-boat race."
   },
   {
    "s": "amma",
@@ -114,7 +122,7 @@
    "bg": "bg_auto_night"
   },
   {
-   "n": "Shibu drives you to Kochi in his auto, Achan's old cricket bag strapped to the roof with a fishing net."
+   "n": "Shibu drives you to Kochi in his auto, your father's old cricket bag strapped to the roof with a fishing net."
   },
   {
    "enter": "shibu",

@@ -1,0 +1,224 @@
+{
+ "id": "dr9",
+ "no": 9,
+ "book": "dropped",
+ "title": "Monsoon",
+ "art": "bg_kuttanad_storm",
+ "cast": {
+  "amma": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  },
+  "shibu": {
+   "name": "Shibu",
+   "col": "#22d3ee"
+  },
+  "diya": {
+   "name": "Diya Nair",
+   "col": "#fb923c"
+  },
+  "aryan": {
+   "name": "Aryan Khurana",
+   "col": "#f87171"
+  },
+  "bhandari": {
+   "name": "Prakash Bhandari",
+   "col": "#94a3b8"
+  },
+  "sameer": {
+   "name": "Sameer Pradhan",
+   "col": "#60a5fa"
+  },
+  "faisal": {
+   "name": "Faisal Kutty",
+   "col": "#a3e635"
+  },
+  "caller": {
+   "name": "Delhi number",
+   "col": "#cbd5e1"
+  },
+  "rekha": {
+   "name": "Rekha Iyer",
+   "col": "#c084fc"
+  },
+  "amma_coat": {
+   "name": "Amma",
+   "col": "#f59e0b"
+  }
+ },
+ "nodes": [
+  {
+   "bg": "bg_overseas_hotel"
+  },
+  {
+   "n": "11:40 PM. Video call. Aryan is in his bedroom in Delhi, a crutch leaning on the wall, a grey hoodie, no gel in his hair. He looks five years younger and ten years older."
+  },
+  {
+   "enter": "aryan",
+   "side": "right"
+  },
+  {
+   "s": "aryan",
+   "t": "I gave Diya's source the minutes. Both times. I photographed them off my uncle's laptop the night after you found me in the physio room.",
+   "mood": "soft",
+   "ex": "sad"
+  },
+  {
+   "s": "aryan",
+   "t": "I kept thinking about what you said. That I'd tear it right through. You were the only person who said something true to me that whole tour."
+  },
+  {
+   "s": "aryan",
+   "t": "Now they're going to destroy her for something I did. And my uncle is my uncle. He pays my mother's hospital bills.",
+   "mood": "soft",
+   "ex": "sad"
+  },
+  {
+   "choice": [
+    {
+     "t": "\"Tell Rekha Iyer. I'll be standing next to you.\"",
+     "d": "Row together.",
+     "fx": {
+      "aryan": 2
+     },
+     "set": "aryanAsked"
+    },
+    {
+     "t": "\"You owe Diya the truth. Not me.\"",
+     "d": "Fair, and hard.",
+     "fx": {
+      "aryan": 1
+     },
+     "set": "aryanPushed"
+    },
+    {
+     "t": "\"I'll tell them myself, then.\"",
+     "d": "Take it out of his hands.",
+     "fx": {
+      "aryan": -2
+     },
+     "set": "aryanExposed"
+    }
+   ]
+  },
+  {
+   "if": "aryanExposed",
+   "go": "expose"
+  },
+  {
+   "s": "aryan",
+   "t": "...Okay. Give me two days. I have to tell my mother first.",
+   "mood": "soft"
+  },
+  {
+   "go": "storm"
+  },
+  {
+   "label": "expose"
+  },
+  {
+   "s": "aryan",
+   "t": "Then do it. I'd do the same. That's the problem with us. We'd both do the same.",
+   "mood": "shout"
+  },
+  {
+   "label": "storm"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "n": "You hang up at 12:20. At 12:24, your phone lights up with a weather alert for Alappuzha. Red. Then another. Then Shibu."
+  },
+  {
+   "bg": "bg_kuttanad_storm"
+  },
+  {
+   "n": "Kuttanad. The monsoon has come back two weeks late and very angry. The river is over the bank. Lightning turns the whole sky purple."
+  },
+  {
+   "enter": "shibu",
+   "side": "left"
+  },
+  {
+   "s": "shibu",
+   "t": "Amma's safe! Amma is safe! She's at the church hall with everyone. Listen to me. Amma is safe.",
+   "mood": "shout",
+   "ex": "sad"
+  },
+  {
+   "s": "shibu",
+   "t": "The Lakshmi isn't. The mooring broke. She's on her side by the jetty. Half the roof is in the river.",
+   "mood": "soft",
+   "ex": "sad"
+  },
+  {
+   "n": "He turns the phone. In the lightning, you see her. Your father's houseboat, the one Amma kept afloat for twenty years, tilted in the water like a tired animal.",
+   "reveal": true
+  },
+  {
+   "enter": "amma",
+   "side": "right"
+  },
+  {
+   "s": "amma",
+   "t": "Don't look at it. Look at me. I'm fine. A boat is wood and rope. We have more wood. We have more rope.",
+   "mood": "soft",
+   "ex": "tearful"
+  },
+  {
+   "s": "amma",
+   "t": "You have a match in three days. Don't you dare get on a plane."
+  },
+  {
+   "choice": [
+    {
+     "t": "\"I'm coming home, Amma.\"",
+     "d": "Some things matter more.",
+     "fx": {
+      "amma": 1
+     },
+     "set": "wantsHome"
+    },
+    {
+     "t": "\"Okay. I'll stay. But I'm sending my match fee. All of it.\"",
+     "d": "Help from here.",
+     "fx": {
+      "amma": 2
+     },
+     "set": "sentFee"
+    }
+   ]
+  },
+  {
+   "if": "wantsHome",
+   "go": "home"
+  },
+  {
+   "s": "amma",
+   "t": "Keep half. Buy proper food. Not bananas.",
+   "mood": "soft"
+  },
+  {
+   "go": "end9"
+  },
+  {
+   "label": "home"
+  },
+  {
+   "s": "amma",
+   "t": "{first}. Listen to your mother. If you come home, I will put you back on the plane myself.",
+   "mood": "shout"
+  },
+  {
+   "label": "end9"
+  },
+  {
+   "exit": "all"
+  },
+  {
+   "end": true,
+   "cliff": "The Lakshmi is half under water. Amma says stay. Every part of you says go."
+  }
+ ]
+}
