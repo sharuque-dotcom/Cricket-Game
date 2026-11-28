@@ -5,17 +5,34 @@ const app = document.getElementById('app');
 
 const UI = {
   cur: null, backAt: 0,
+  // mode: (none) = new screen slides in over the old one; 'fast' = instant switch (bottom tabs);
+  // 'swap' = the same screen redrawn with new data: instant, and scroll positions are kept.
+  // The old screen never fades out: it stays fully drawn underneath until the new one covers it, so
+  // the page background can't show through mid-transition (that was the flicker on every tap).
   show(html, mode) {
     const old = this.cur;
     const wrap = document.createElement('div'); wrap.innerHTML = html.trim();
     const el = wrap.firstElementChild;
-    if (mode !== 'fast') el.classList.add('enter');
+    const animate = mode !== 'fast' && mode !== 'swap';
+    el.classList.add(animate ? 'enter' : 'still');
     app.appendChild(el);
-    if (old) { old.classList.add('exit'); setTimeout(() => old.remove(), 360); }
+    if (mode === 'swap' && old) this.keepScroll(old, el);
+    // a screen still leaving from an earlier tap goes now, so only one ever sits underneath
+    Array.from(app.querySelectorAll(':scope > .screen.exit')).forEach(n => n.remove());
+    if (old) { old.classList.add('exit'); setTimeout(() => old.remove(), animate ? 320 : 60); }
     this.cur = el;
     try { SceneFX.scan(el); } catch (e) {}
     if (!el.classList.contains('story-scene')) { Sfx.ambience('off'); Sfx.music(el.classList.contains('match-screen') ? 'off' : 'calm'); }
     return el;
+  },
+  // copy scroll offsets from a screen to its redrawn copy (lists are matched in page order)
+  keepScroll(from, to) {
+    const sel = '.scroll, .h-row, .h-chips, [data-track]';
+    const a = from.querySelectorAll(sel), b = to.querySelectorAll(sel);
+    b.forEach((n, k) => {
+      const o = a[k]; if (!o || o.className !== n.className) return;
+      n.style.scrollBehavior = 'auto'; n.scrollTop = o.scrollTop; n.scrollLeft = o.scrollLeft; n.style.scrollBehavior = '';
+    });
   },
   waitTap(sel, root) {
     return new Promise(res => {

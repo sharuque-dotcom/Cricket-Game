@@ -283,8 +283,10 @@ const Content = (() => {
       if (UI.sheet || !Story.st) return;
       const cur = UI.cur;
       if (!cur) return;
-      if (cur.classList.contains('home')) Story.home();
-      else if (cur.classList.contains('book-page')) Story.bookScreen();
+      // 'swap': redraw in place (no slide-in, scroll kept), so new content arriving doesn't flash the screen
+      if (cur.classList.contains('my-stories')) Story.myStories('swap');
+      else if (cur.classList.contains('home')) Story.home('swap');
+      else if (cur.classList.contains('book-page')) Story.bookScreen('swap');
     },
     // after a refresh, update whatever screen is showing
     announce(added) {
